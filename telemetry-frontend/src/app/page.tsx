@@ -4,13 +4,14 @@ import NavBar from '../../components/navbar';
 import DynamicChart from '../../components/chart';
 import SideNav from '../../components/sideNav';
 import ThrottleMonitor from '../../components/output';
+import TrackSelection from '../../components/trackSelection';
 import { Container } from '@mui/material';
 
 const Home = () => {
   return (
     <div >
         <NavBar/>
-        <SideNav/>
+        <SideNav><TrackSelection/></SideNav>
         <DynamicChart />
         <ThrottleMonitor/>
       

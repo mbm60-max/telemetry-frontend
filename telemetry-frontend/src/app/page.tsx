@@ -3,9 +3,10 @@ import React from 'react';
 import NavBar from '../../components/navbar';
 import DynamicChart from '../../components/chart';
 import SideNav from '../../components/sideNav';
-import ThrottleMonitor from '../../components/output';
 import TrackSelection from '../../components/trackSelection';
+import TyreTemps from '../../components/tyresTempindicator/tyreTemps';
 import { Container } from '@mui/material';
+import ThrottleComponent from '../../components/throttle';
 
 const Home = () => {
   return (
@@ -13,7 +14,8 @@ const Home = () => {
         <NavBar/>
         <SideNav><TrackSelection/></SideNav>
         <DynamicChart />
-        <ThrottleMonitor/>
+        <ThrottleComponent/>
+        <TyreTemps/>
       
     </div>
   );

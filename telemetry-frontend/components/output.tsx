@@ -16,7 +16,7 @@ const ThrottleMonitor: React.FC = () => {
         console.log('SignalR connection established.');
          
         try {
-          let name = "max";
+          let name = "red";
           connection.send("SendMessage", name);
           //connection.on('ReceiveThrottleValue', (receivedValue: string) => {
         //console.log(receivedValue);

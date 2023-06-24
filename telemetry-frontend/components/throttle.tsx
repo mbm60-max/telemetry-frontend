@@ -27,6 +27,7 @@ const ThrottleComponent: React.FC = () => {
         });
         connection.on("positionMessage", (receivedPosition: Vector3) => {
           setPosition(receivedPosition);
+          
         });
 
         await connection.start();
@@ -36,7 +37,7 @@ const ThrottleComponent: React.FC = () => {
         console.error("Error establishing SignalR connection: ", error);
         setError("Error establishing SignalR connection.");
         // Retry after 3 seconds
-        setTimeout(startConnection, 3000);
+        setTimeout(startConnection, 200000);//3000 before
       }
     };
 

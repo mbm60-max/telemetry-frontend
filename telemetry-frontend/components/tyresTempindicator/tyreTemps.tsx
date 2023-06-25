@@ -10,7 +10,6 @@ import chroma from 'chroma-js';
 const calcColor = (colorScale:string[],temp:number,targetTemp:number)=>{
   let color="";
   let difference = targetTemp-temp;
-  console.log(difference)
   if(difference>=colorScale.length){
     return colorScale[colorScale.length-1];
   }else if(difference<=1){
@@ -49,7 +48,7 @@ const TyreTemps = () => {
  
   </Grid>
   <Grid item xs>
-  <Box sx={{ width: 120, height: 230, backgroundColor: "white",border: "3px solid black" }} ><StatusBar tyre={"FR"} temp={80} color={colorInterpolation(Red, Green,Blue, numberOfSteps,84,85)} /><StatusBar tyre={"RR"} temp={79} color={colorInterpolation(Red, Green,Blue, numberOfSteps,86,85)}/></Box>
+  <Box sx={{ width: 120, height: 230, backgroundColor: "white",border: "3px solid black" }} ><StatusBar tyre={"FR"} temp={80} color={colorInterpolation(Red, Green,Blue, numberOfSteps,105,85)} /><StatusBar tyre={"RR"} temp={79} color={colorInterpolation(Red, Green,Blue, numberOfSteps,86,85)}/></Box>
   </Grid>
 </Grid>
     </div>

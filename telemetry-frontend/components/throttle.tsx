@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
-
+import ExtendedPacket from "../interfaces/extendedPacketInterface";
 interface Vector3 {
   x: number;
   y: number;
   z: number;
 }
+
+const handleFullPacketMessage = (receivedExtendedPacket: ExtendedPacket) => {
+  console.log('Received FullPacketMessage:', receivedExtendedPacket);}
 
 const ThrottleComponent: React.FC = () => {
   const [throttleValue, setThrottleValue] = useState<number | null>(null);
@@ -29,6 +32,7 @@ const ThrottleComponent: React.FC = () => {
           setPosition(receivedPosition);
           
         });
+        connection.on('FullPacketMessage', handleFullPacketMessage);
 
         await connection.start();
         console.log("SignalR connection established.");
@@ -67,4 +71,3 @@ const ThrottleComponent: React.FC = () => {
 };
 
 export default ThrottleComponent;
-

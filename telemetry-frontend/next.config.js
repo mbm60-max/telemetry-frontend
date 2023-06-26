@@ -1,14 +1,17 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {reactStrictMode:false,images: {
-  domains: ['images.unsplash.com'],
-},
-  webpack:(config, {isServer}) =>{
+module.exports ={
+  reactStrictmode:false,
+  webpack:(config,{isServer})=>{
     if(!isServer){
       config.resolve.fallback = {
         fs:false,
       };
-    }return config;
+    }
+    return config;
   }
-  }
+}
 
-module.exports = nextConfig
+//module.exports = nextConfig
+
+//images: {
+  //domains: ['images.unsplash.com'],
+//},

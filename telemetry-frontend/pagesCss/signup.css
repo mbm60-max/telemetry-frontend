@@ -1,0 +1,8 @@
+.elevatedBox {
+    width: 950px;
+    height: 600px;
+    background-color: #847E7E; /* Hide any content that overflows the parallelogram shape */
+    border-radius: 0;
+    padding: 0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+  }

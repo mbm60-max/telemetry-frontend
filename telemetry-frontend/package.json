@@ -24,6 +24,8 @@
     "eslint": "8.41.0",
     "eslint-config-next": "13.4.4",
     "gl-matrix": "^3.4.3",
+    "icons": "^1.0.0",
+    "mongodb": "^5.6.0",
     "mui": "^0.0.1",
     "next": "^13.4.7",
     "react": "18.2.0",

@@ -13,10 +13,10 @@ const NavBar = () => {
 
             <ImageBox Width={'300px'} Height={'100px'} MarginRight={'180px'} MarginLeft={'20px'} MarginTop={'20px'} imageSrc="/images/Screenshot 2023-06-25 at 11.19 1.svg"></ImageBox>
                 <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Home</Link></Button>
-                <Button className="parallelogram-button" ><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Start Session</Link></Button>
+                <Button className="parallelogram-button" ><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/session"}>Start Session</Link></Button>
                 <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Recomended</Link></Button>
-                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Review</Link></Button>
-                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Settings</Link></Button>
+                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/review"}>Review</Link></Button>
+                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/settings"}>Settings</Link></Button>
                 <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Account</Link><div className="triangle"></div></Button>
                 
             </Box>

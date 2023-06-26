@@ -5,17 +5,40 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+interface BasicCardProps{
+  ml:number
+  mt:number
+  mr:number
+  width:number
+  noOfLines:number
+  lineFontSizes:number[]
+  lineFontColors:string[]
+  lineContent:string[]
+  lineMR:number[]
+  lineML:number[]
+  lineMT:number[]
+  lineWhiteSpace: string[];
 
-export default function BasicCard() {
+}
+export default function BasicCard({ml,mt,mr,width,noOfLines,lineFontSizes,lineFontColors,lineContent,lineML,lineMR,lineMT,lineWhiteSpace}:BasicCardProps) {
   return (
-    <Card sx={{ ml:20, mt:20,width: 550, borderRadius:0,backgroundColor:'#847E7E',boxShadow: 'none'  }}>
+    <Card sx={{ ml:ml, mt:mt, mr:mr,width: width, borderRadius:0,backgroundColor:'#847E7E',boxShadow: 'none'  }}>
       <CardContent>
-        <Typography sx={{ fontSize: 32 }}component="div" color="#FC7272">
-          Boost Your Learning
-        </Typography>
-        <Typography sx={{ fontSize: 24 }} color="#F6F6F6" gutterBottom>
-        Sign-up to start a session and begin gaining every tenth available
-        </Typography>
+      {Array.from({ length: noOfLines }, (_, index) => (
+  <Typography
+    key={index}
+    sx={{
+      fontSize: lineFontSizes[index] || 16, // Default font size: 16 if not provided
+      color: lineFontColors[index] || '#F6F6F6', // Default color: black if not provided
+      ml: lineML[index] || 0, // Default margin-left: 0 if not provided
+      mr: lineMR[index] || 0, // Default margin-right: 0 if not provided
+      mt: lineMT[index] || 0, // Default margin-top: 0 if not provided
+      whiteSpace: lineWhiteSpace[index] || 'initial',// Use lineWhiteSpace prop or default to 'initial'
+    }}
+  >
+    {lineContent[index] || ''} {/* Empty string if content is not provided */}
+  </Typography>
+))} 
       </CardContent>
     </Card>
   );

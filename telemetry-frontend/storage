@@ -1,0 +1,5 @@
+<NavBar/>
+        <SideNav><TrackSelection/></SideNav>
+        <DynamicChart />
+        <ThrottleComponent/>
+        <TyreTemps/>

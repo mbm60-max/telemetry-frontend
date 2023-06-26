@@ -1,21 +1,11 @@
-.parallelogram-button {
+.action-button {
     position: relative;
     width: 150px;
     height: 60px;
     transform: skewX(-025deg); /* Skew the button to create a parallelogram shape */
-    background-color: #847E7E; /* Hide any content that overflows the parallelogram shape */
+    background-color: #DA2E22; /* Hide any content that overflows the parallelogram shape */
     border-radius: 0;
     padding: 0;
-  }
-
-  .calltoaction {
-    position: relative;
-    width: 150px;
-    height: 60px;
-    transform: skewX(-025deg); /* Skew the button to create a parallelogram shape */
-    background-color: #847E7E; /* Hide any content that overflows the parallelogram shape */
-    border-radius: 0;
-    padding: 10;
   }
   .triangle {
     width: 0;
@@ -28,29 +18,28 @@
 
  
 
-  .parallelogram-button > * {
+  .action-button > * {
     position: relative;
     transform: skewX(25deg); 
     /* Counter-skew the content to make it appear normal */
   }
-  .parallelogramContainer  {
+  .actionContainer  {
     margin-left: 0px;
     display: flex;
   align-items: center;
   }
   
-  .parallelogram-button:not(:last-child)::after {
+  .action-button:not(:last-child)::after {
     content: '';
     position: absolute;
     top: 0;
     right: 0px;
     width: 0px; /* Adjust this value based on your needs */
     height: 100%;
-    background-color: #847E7E; /* Match the background color of the NavBar */
+    background-color: #DA2E22; /* Match the background color of the NavBar */
     transform: skewX(-25deg); /* Skew the pseudo-element to complete the parallelogram shape */
   }
   
-  .parallelogram-button:hover {
-    background-color: #DA2E22;
+  .action-button:hover {
+    background-color: #847E7E;
   }
-  

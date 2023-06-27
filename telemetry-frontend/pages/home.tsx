@@ -36,7 +36,7 @@ const Home = () => {
         MarginTop={'0px'}
         imageSrc="/images/i1puHqsYDXFby.svg"
       />
-    </div></Homepage>
+    </div><ThrottleComponent/></Homepage>
   );
 };
 

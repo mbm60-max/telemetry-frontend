@@ -1,5 +1,4 @@
-import { vec3 } from 'gl-matrix';
-import IPEndPoint from './IPEndPoint';
+
 enum SimulatorInterfaceGameType {
     GT6 = "GT6",
     GTSport = "GTSport",
@@ -20,19 +19,16 @@ enum SimulatorInterfaceGameType {
     ASMActive = 1 << 10,
     TCSActive = 1 << 11
   }
-
+  
 interface ExtendedPacket {
   distanceFromStart?: number;
-  IsSpecial?: boolean;
-  AdditionalMethod?(): void;
-  RemoteEndPoint?: IPEndPoint;
-  DateReceived?: DateTimeOffset;
+  DateReceived?: string;
   GameType?: SimulatorInterfaceGameType;
-  Position?: vec3;
-  Velocity?: vec3;
-  Rotation?: vec3;
+  Position?: string[];
+  Velocity?: string[];
+  Rotation?: string[];
   RelativeOrientationToNorth?: number;
-  AngularVelocity?: vec3;
+  AngularVelocity?: string[];
   BodyHeight?: number;
   EngineRPM?: number;
   GasLevel?: number;
@@ -49,9 +45,9 @@ interface ExtendedPacket {
   PacketId?: number;
   LapCount?: number;
   LapsInRace?: number;
-  BestLapTime?: TimeSpan;
-  LastLapTime?: TimeSpan;
-  TimeOfDayProgression?: TimeSpan;
+  BestLapTime?: string;
+  LastLapTime?: string;
+  TimeOfDayProgression?: string;
   PreRaceStartPositionOrQualiPos?: number;
   NumCarsAtPreRace?: number;
   MinAlertRPM?: number;
@@ -63,7 +59,7 @@ interface ExtendedPacket {
   Throttle?: number;
   Brake?: number;
   Empty_0x93?: number;
-  RoadPlane?: vec3;
+  RoadPlane?: string[];
   RoadPlaneDistance?: number;
   WheelFL_RevPerSecond?: number;
   WheelFR_RevPerSecond?: number;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import { TextField, Button, Typography } from "@mui/material";
 import Link from "next/link";
@@ -9,28 +9,128 @@ import ImageBox from "../components/homepageTrack";
 import IconBox from "../components/iconBox";
 import BadgeIcon from "@mui/icons-material/Badge";
 import Divider from "@mui/material/Divider";
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 
 const SignUpForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+   
+    
     try {
-      // Send the data to the server
-      await axios.post("/api/registerapi", { username, password });
-
+      let Failed = false;
+       //Send the data to the server
+       const userResponse: AxiosResponse = await axios.get('/api/checkuserapi', {
+        params: { username },
+      });console.log(userResponse.data.message);
+      const emailResponse: AxiosResponse = await axios.get('/api/checkemailapi', {
+        params: { email },
+      });
+      
+      if (userResponse.data.message === 'Success') {
+        //username taken
+        setUsernameError("This Username is already taken")
+        Failed = true;
+      }
+      if(emailResponse.data.message === "Success"){
+        setEmailError("This Email is already taken")
+        Failed = true;
+      }
+      if(username==""){
+        setUsernameError("Username required")
+        Failed = true;
+      }
+      if(password != confirmPassword){
+        setConfirmPasswordError("Must match password")
+        Failed = true;
+      }
+      if(validateEmail(email)==false){
+        setEmailError("Invalid Email")
+        Failed = true;
+      }
+      if(validatePassword(password)==false){
+        setPasswordError("Password Required")
+        Failed = true;
+      }
+      if(Failed==true){
+        return
+      }
+      await axios.post("/api/registerapi", { username, email, password });
       // Clear the form
       setUsername("");
       setPassword("");
+      setEmail("");
+      setConfirmPassword("");
 
       // Redirect to the login page
       router.push("/login");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
+  };
+  //split this up
+  const validatePassword = (password: string) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
+    //At least one lowercase letter ((?=.*[a-z])
+    //At least one uppercase letter ((?=.*[A-Z])
+    //At least one digit ((?=.*\d))
+    //Length of at least 6 characters ([a-zA-Z\d]{6,})
+    if (!passwordRegex.test(password)) {
+      return false;
+    }
+  
+    return true;
+  };
+  //find an api to do this better
+  const validateEmail = (str: string) => {
+    const regex = /.*@.*/;
+  
+    if (!regex.test(str)) {
+      return false;
+    }
+  
+    return true;
+  };
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+    setUsernameError(""); // Clear username error on change
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (validatePassword(password)) {
+      setPasswordError("");
+      return
+    } else {
+      setPasswordError("Password does not meet the criteria");
+    }
+     // Clear password error on change
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    if (validateEmail(email)) {
+      setEmailError("");
+      return
+    } else {
+      setEmailError("Invalid Email")
+    }
+  };
+
+  const handleConfirmPasswordChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setConfirmPassword(e.target.value);
+    setConfirmPasswordError(""); // Clear confirm password error on change
   };
 
   return (
@@ -59,15 +159,17 @@ const SignUpForm: React.FC = () => {
                 height: "610px",
               }}
             >
-              <div style={{ marginTop: 100 }}>
+              <div style={{ marginTop: 150 }}>
                 <form onSubmit={handleSubmit}>
-                  <div style={{ position: "relative", marginBottom: 14 }}>
+                  <div style={{ position: "relative", marginBottom: 24 }}>
                     <IconBox icon={BadgeIcon}></IconBox>
                     <TextField
                       label="Username"
                       variant="outlined"
                       value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      onChange={handleUsernameChange}
+                      error={Boolean(usernameError)}
+                      helperText={usernameError}
                       sx={{
                         position: "absolute",
                         top: 0,
@@ -76,14 +178,52 @@ const SignUpForm: React.FC = () => {
                       }}
                     />
                   </div>
-                  <div style={{ position: "relative", marginBottom: 14 }}>
-                    <IconBox icon={BadgeIcon}></IconBox>
+                  <div style={{ position: "relative", marginBottom: 24 }}>
+                    <IconBox icon={VpnKeyIcon}></IconBox>
+                    <TextField
+                      label="Email"
+                      variant="outlined"
+                      type="email"
+                      value={email}
+                      onChange={handleEmailChange}
+                      error={Boolean(emailError)}
+                      helperText={emailError}
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: "43px",
+                        width: "310px",
+                      }}
+                    />
+                  </div>
+                  <div style={{ position: "relative", marginBottom: 24 }}>
+                    <IconBox icon={VpnKeyIcon}></IconBox>
                     <TextField
                       label="Password"
                       variant="outlined"
                       type="password"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={handlePasswordChange}
+                      error={Boolean(passwordError)}
+                      helperText={passwordError}
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: "43px",
+                        width: "310px",
+                      }}
+                    />
+                  </div>
+                  <div style={{ position: "relative", marginBottom: 24 }}>
+                    <IconBox icon={VpnKeyIcon}></IconBox>
+                    <TextField
+                      label="Confirm Password"
+                      variant="outlined"
+                      type="confirm password"
+                      value={confirmPassword}
+                      onChange={handleConfirmPasswordChange}
+                      error={Boolean(confirmPasswordError)}
+                      helperText={confirmPasswordError}
                       sx={{
                         position: "absolute",
                         top: 0,
@@ -109,11 +249,6 @@ const SignUpForm: React.FC = () => {
                     </Link>
                   </Button>
                 </form>
-                <Divider sx={{ width: "350px", mt:6, fontSize:17}} >or</Divider>
-                
-                <Button variant="contained" sx={{ width: "350px", mt: 6 }}>
-                  Sign in with Google
-                </Button>
                 <Typography sx={{ fontSize: 12, mt: 2, color: "#AFAFAF" }}>
                   Image Credit: Max Böttinger
                 </Typography>

@@ -4,27 +4,39 @@ import { MongoClient, MongoClientOptions } from 'mongodb';
 const MONGODB_URI = 'mongodb+srv://MaxByng-Maddick:Kismetuni66@cluster0.a31ajbo.mongodb.net/';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'POST') {
-    const { username,email, password } = req.body;
+  if (req.method === 'GET') {
+    const { username } = req.query;
 
     try {
       // Connect to the MongoDB cluster
       const client = await MongoClient.connect(MONGODB_URI, {
         useUnifiedTopology: true,
       } as MongoClientOptions);
+
       // Access the database and collection
       const db = client.db('Test');
       const collection = db.collection('Users');
-      // Create a new document with the username and password
-      const document = { username,email, password };
-      await collection.insertOne(document);
+
+      // Search for a document with the matching username
+      const usernameQuery = { username };
+      const usernameResult = await collection.findOne(usernameQuery);
+
+      if (usernameResult) {
+        // User with the matching username found
+        // Now check if the password matches
+        console.log('User found');
+        res.status(200).json({ message: 'Success' });
+        
+      } else {
+        // User with the matching username not found
+        console.error('User not found');
+        res.status(200).json({ message: 'User not found' });
+      }
 
       // Close the database connection
       client.close();
-
-      res.status(200).json({ message: 'Document inserted successfully' });
     } catch (error) {
-      console.error('Error inserting document:', error);
+      console.error('Error searching for user:', error);
       res.status(500).json({ message: 'An error occurred' });
     }
   } else {

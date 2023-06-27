@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios,{ AxiosResponse } from 'axios';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Divider, Grid, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
-
+import ImageBox from '../components/homepageTrack';
+import IconBox from '../components/iconBox';
+import BadgeIcon from "@mui/icons-material/Badge";
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -45,27 +47,106 @@ const LoginForm: React.FC = () => {
 };
 
   return (
-    <form onSubmit={handleSubmit}>
-    <div>
-      <TextField
-        label="Username"
-        variant="outlined"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-    </div>
-    <div>
-      <TextField
-        label="Password"
-        variant="outlined"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-    </div>
-    <Button type="submit" variant="contained">Submit</Button>
-    <Button variant="contained" ><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/signup"}>Sign Up</Link></Button>
-  </form>
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <div className="elevatedBox">
+          <Grid
+            container
+            rowSpacing={0}
+            columnSpacing={{ xs: 1, sm: 2, md: 0 }}
+          >
+            <Grid
+              item
+              xs={6}
+              sx={{
+                justifyContent: "center",
+                display: "flex",
+                backgroundColor: "#F6F6F6",
+                height: "610px",
+              }}
+            >
+              <div style={{ marginTop: 100 }}>
+                <form onSubmit={handleSubmit}>
+                  <div style={{ position: "relative", marginBottom: 14 }}>
+                    <IconBox icon={BadgeIcon}></IconBox>
+                    <TextField
+                      label="Username"
+                      variant="outlined"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        left: "43px",
+                        width: "310px",
+                      }}
+                    />
+                  </div>
+                  <div style={{ position: "relative", marginBottom: 14 }}>
+                    <IconBox icon={VpnKeyIcon}></IconBox>
+                    <TextField
+                    label="Password"
+                    variant="outlined"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    sx={{
+                      position: "absolute",
+                      top: 0,
+                      left: "43px",
+                      width: "310px",
+                    }}
+                  />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ mr: 2, width: "167px" }}
+                  >
+                    Submit
+                  </Button>
+                  <Button variant="contained" sx={{ width: "167px" }}>
+                    <Link
+                      style={{ color: "#F6F6F6", textDecoration: "none" }}
+                      href={"/signup"}
+                    >
+                      Sign Up
+                    </Link>
+                  </Button>
+                </form>
+                <Divider sx={{ width: "350px", mt:6, fontSize:17,color: "#AFAFAF"}} >or</Divider>
+                
+                <Button variant="contained" sx={{ width: "350px", mt: 6 }}>
+                  Sign in with Google
+                </Button>
+                <Typography sx={{ fontSize: 12, mt: 2, color: "#AFAFAF" }}>
+                  Image Credit: Todd Jiang 
+                </Typography>
+              </div>
+            </Grid>
+            <Grid item xs={6} sx={{ height: "610px" }}>
+              <ImageBox
+                Width={"475px"}
+                Height={"610px"}
+                MarginRight={"0px"}
+                MarginLeft={"0px"}
+                MarginTop={"0px"}
+                objectFit={"cover"}
+                imageSrc="/images/todd-jiang-QK1MH_T5VwM-unsplash.jpg"
+              />
+            </Grid>
+          </Grid>
+        </div>
+      </div>
+    </>
   );
 };
 

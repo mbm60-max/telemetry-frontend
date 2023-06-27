@@ -15,7 +15,7 @@
     transform: skewX(-025deg); /* Skew the button to create a parallelogram shape */
     background-color: #847E7E; /* Hide any content that overflows the parallelogram shape */
     border-radius: 0;
-    padding: 10;
+    padding: 0;
   }
   .triangle {
     width: 0;

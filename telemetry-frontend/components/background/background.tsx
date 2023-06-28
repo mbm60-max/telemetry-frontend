@@ -3,11 +3,12 @@ import './background.css';
 
 interface HomepageProps {
   children?: React.ReactNode;
+  style?:string;
 }
 
-const Homepage: React.FC<HomepageProps> = ({ children }) => {
+const Homepage: React.FC<HomepageProps> = ({ children,style }) => {
   return (
-    <div className="homepage-container">
+    <div className={style}>
       {children}
     </div>
   );

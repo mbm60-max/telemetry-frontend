@@ -31,7 +31,7 @@ const Home = () => {
 
   console.log(isLoggedIn);
   return (
-      <Homepage><NavBar/><div style={{ display: 'flex' }}>
+      <Homepage style={'homepage-container'}><NavBar/><div style={{ display: 'flex' }}>
       <div style={{ display: 'flex', flexDirection:'column'}}><BasicCard ml={20} mt={10} mr={0} width={400} noOfLines={3} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard><div style={marginLeft}><Button className="action-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/about">Start Session</Link></Button></div></div><div style={{  position: 'absolute', top: '100px', left: '525px', zIndex: 1}}><BasicCard ml={35} mt={5} mr={0} width={350} noOfLines={2} lineFontSizes={Card2Fonts}lineFontColors={Card2Colors} lineContent={Card2Content} lineML={[]} lineMR={[]} lineMT={[]}lineWhiteSpace={['initial',
   'pre-line']}></BasicCard></div>
       <ImageBox

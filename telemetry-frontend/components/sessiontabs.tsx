@@ -5,7 +5,11 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import BasicChart from './chart';
-import { useEffect, useState } from 'react';
+import './sessiontab.css'
+import Homepage from './background/background';
+import styled from '@emotion/styled';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Button, Link } from '@mui/material';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -14,7 +18,9 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-
+  
+  
+  
   return (
     <div
       role="tabpanel"
@@ -25,7 +31,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography >{children}</Typography>
         </Box>
       )}
     </div>
@@ -41,27 +47,46 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-  const [isWindowAvailable, setIsWindowAvailable] = useState(false);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsWindowAvailable(true);
-    }
-  }, []);
+  const WhiteTextTab = styled(Tab)({
+    color: '#F6F6F6',
+    backgrounColor: '#847E7E',
+    '&:hover': {
+      backgroundColor: '#DA2E22',
+      color: '#F6F6F6',
+    },
+  });
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#F6F6F6', // Replace with your desired primary color
+      },
+      secondary: {
+        main: '#DA2E22', // Replace with your desired secondary color
+      },
+    },
+  });
   return (
+    
+    <Homepage style={'homepage-alt'}>
+    <Box className='header'><Button><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Exit Session</Link></Button></Box>
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered>
-          <Tab label="General" {...a11yProps(0)} />
-          <Tab label="Engine" {...a11yProps(1)} />
-          <Tab label="Gearbox" {...a11yProps(2)} />
-          <Tab label="Tyres/Suspension" {...a11yProps(2)} />
+      <ThemeProvider theme={theme}>
+        <Tabs value={value} textColor="primary" indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example" centered >
+        <WhiteTextTab label="General" {...a11yProps(0)} />
+        <WhiteTextTab label="Engine" {...a11yProps(1)} />
+        <WhiteTextTab label="Gearbox" {...a11yProps(2)} />
+        <WhiteTextTab label="Tyres/Suspension" {...a11yProps(3)} />
         </Tabs>
+        </ThemeProvider>
       </Box>
-      <TabPanel value={value} index={0}>
-      {isWindowAvailable && <BasicChart />}
+      <TabPanel value={value} index={0} >
+      <Box sx={{ width: '50%' }}>
+      <BasicChart />
+      </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
         Item Two
@@ -73,5 +98,6 @@ export default function BasicTabs() {
         Item Four<h1>hi</h1>
       </TabPanel>
     </Box>
+    </Homepage>
   );
 }

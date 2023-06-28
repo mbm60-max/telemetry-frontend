@@ -1,10 +1,14 @@
+'use client'
 import ApexCharts, { ApexOptions }  from "apexcharts"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import SignalRService from '../utils/signalrEndpoint';
 import StopButton from '../components/stopButton';
 import ExtendedPacket from "../interfaces/extendedPacketInterface";
-
+import dynamic from 'next/dynamic';
+const DynamicChart = dynamic(() => import('react-apexcharts'), {
+  ssr: false // Render the component only on the client side
+});
 
 export default function BasicChart() {
   const signalRService = new SignalRService();
@@ -63,7 +67,6 @@ yaxis:{
 
 function handlePacket(receivedExtendedPacket:ExtendedPacket) {
   console.log('Received FullPacketMessage:', receivedExtendedPacket);
-  console.log("hi");
   console.log(receivedExtendedPacket);
   console.log(JSON.stringify(receivedExtendedPacket, null, 2));
   var jsonString = JSON.stringify(receivedExtendedPacket);
@@ -94,7 +97,7 @@ async function appendData(dataPoint: number){
  
   return (
     <>
-   <Chart series={series} options={options} height={250}></Chart>
+   <DynamicChart series={series} options={options} height={250}></DynamicChart>
    <StopButton signalRService={signalRService} />
    </>
   );

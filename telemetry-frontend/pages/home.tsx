@@ -42,7 +42,7 @@ const Home = () => {
         MarginTop={'0px'}
         imageSrc="/images/i1puHqsYDXFby.svg"
       />
-    </div>{isLoggedIn && <h1>Hello, user!</h1>}</Homepage>
+    </div>{isLoggedIn && <h1>Hello, user!</h1>}<BasicChart></BasicChart></Homepage>
   );
 };
 

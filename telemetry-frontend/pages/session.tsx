@@ -1,11 +1,13 @@
+'use client'
+import { Box } from '@mui/material';
 import React from 'react';
-
+import SessionTabs from '../components/sessiontabs';
 const Session = () => {
   return (
-    <div>
-      <h1>Session Page</h1>
-      {/* Add your about page content */}
-    </div>
+    <>
+     
+      <SessionTabs/>
+    </>
   );
 };
 

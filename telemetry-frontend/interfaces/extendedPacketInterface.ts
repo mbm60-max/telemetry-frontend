@@ -56,7 +56,7 @@ interface ExtendedPacket {
   Flags?: SimulatorFlags;
   CurrentGear?: number;
   SuggestedGear?: number;
-  Throttle?: number;
+  Throttle: number;
   Brake?: number;
   Empty_0x93?: number;
   RoadPlane?: string[];

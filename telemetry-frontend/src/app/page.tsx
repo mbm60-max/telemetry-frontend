@@ -1,10 +1,12 @@
 'use client'
+import { AuthProvider } from "../../components/authProvider";
 import Home from "../../pages/home";
-const App = () => {
-
+function MyApp() {
   return (
-<Home/>
+    <AuthProvider>
+      <Home></Home>
+    </AuthProvider>
   );
-};
+}
 
-export default App;
+export default MyApp;

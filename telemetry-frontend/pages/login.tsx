@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios,{ AxiosResponse } from 'axios';
 import { TextField, Button, Divider, Grid, Typography } from '@mui/material';
 import Link from 'next/link';
@@ -7,11 +7,12 @@ import ImageBox from '../components/homepageTrack';
 import IconBox from '../components/iconBox';
 import BadgeIcon from "@mui/icons-material/Badge";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import { AuthContext } from '../components/authProvider';
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-
+  const { isLoggedIn,setUserLoggedIn } = useContext(AuthContext);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   const response: AxiosResponse = await axios.get('/api/loginapi', {
@@ -34,6 +35,8 @@ const LoginForm: React.FC = () => {
         // Clear the form
         setUsername('');
         setPassword('');
+        setUserLoggedIn();
+        console.log(isLoggedIn);
         router.push('/');
         // Do something after successful login
         // e.g., redirect to a different page

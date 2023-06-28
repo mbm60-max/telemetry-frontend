@@ -22,9 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const emailResult = await collection.findOne(emailQuery);
 
       if (emailResult) {
-        
           res.status(200).json({ message: 'Success' });
-      
       } else {
         // User with the matching username not found
         console.error('Email not found');

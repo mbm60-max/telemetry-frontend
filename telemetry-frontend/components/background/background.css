@@ -4,9 +4,9 @@
     overflow: hidden; 
     background: linear-gradient(to bottom, #847E7E 600px, #EFEFEF 600px);
   }
-  .homepage-alt{
+  .homepage{
     width: 100%;
-      height: 820px;
+      height: 100%;
       overflow: hidden; 
       background: #847E7E;
   }

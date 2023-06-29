@@ -7,9 +7,12 @@ import Box from '@mui/material/Box';
 import BasicChart from './chart';
 import './sessiontab.css'
 import Homepage from './background/background';
-import styled from '@emotion/styled';
+import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Button, Link } from '@mui/material';
+import { Button, Grid, Link, Paper } from '@mui/material';
+import BasicGrid from './flexgridGeneral';
+import dynamic from 'next/dynamic';
+import { noSSR } from 'next/dynamic';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -18,7 +21,6 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-  
   
   
   return (
@@ -31,7 +33,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography >{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -45,11 +47,23 @@ function a11yProps(index: number) {
   };
 }
 
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
 export default function BasicTabs() {
+  const DynamicChart = dynamic(() => import('./chart'), { 
+    loader: () => import('./chart'),
+    ssr: false 
+  });
   const [value, setValue] = React.useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  
   const WhiteTextTab = styled(Tab)({
     color: '#F6F6F6',
     backgrounColor: '#847E7E',
@@ -69,8 +83,8 @@ export default function BasicTabs() {
     },
   });
   return (
-    
-    <Homepage style={'homepage-alt'}>
+    <>
+        <Homepage style={'homepage'}>
     <Box className='header'><Button><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Exit Session</Link></Button></Box>
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -84,12 +98,11 @@ export default function BasicTabs() {
         </ThemeProvider>
       </Box>
       <TabPanel value={value} index={0} >
-      <Box sx={{ width: '50%' }}>
-      <BasicChart />
-      </Box>
+      <BasicGrid/>
+
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+       
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three
@@ -99,5 +112,6 @@ export default function BasicTabs() {
       </TabPanel>
     </Box>
     </Homepage>
+    </>
   );
 }

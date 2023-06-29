@@ -48,7 +48,7 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
       enabled: false
     },
     stroke: {
-      curve: 'smooth'
+      curve: 'straight'
     },
     title: {
       text: label || 'No label provided',
@@ -58,7 +58,7 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
       }
     },
     markers: {
-      size: 2
+      size: 0
     },
     xaxis: {
       range: 30,
@@ -117,10 +117,10 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
     <>
     <Box sx={{ backgroundColor: 'black' }}>
       <Box sx={{ p: 1 }}>
-        <DynamicChart series={series} options={options} height={250} label={label} />
-        <StopButton signalRService={signalrservice} />
+        <DynamicChart series={series} options={options} height={400} label={label} />
       </Box>
     </Box>
     </>
   );
 }
+//<StopButton signalRService={signalrservice} />

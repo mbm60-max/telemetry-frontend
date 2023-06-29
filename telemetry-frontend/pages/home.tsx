@@ -14,6 +14,7 @@ import '../calltoaction.css';
 import Link from "next/link";
 import BasicChart from '../components/chart';
 import { AuthContext } from '../components/authProvider';
+import GearDisplay from '../components/gearDisplay.';
 
 
 const Home = () => {

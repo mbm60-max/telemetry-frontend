@@ -1,12 +1,18 @@
 import { Button, Grid, Paper, styled } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { JsxElement } from "typescript";
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import StatusBar from "./statusBar";
 import chroma from 'chroma-js';
+import ExtendedPacket from "../../interfaces/extendedPacketInterface";
+import SignalRService from "../../utils/signalrEndpoint";
 
+interface tyreTempKeys{
+  targetAttributes:string[];
+  signalrservice: SignalRService;
+}
 const calcColor = (colorScale:string[],temp:number,targetTemp:number)=>{
   let color="";
   let difference = targetTemp-temp;
@@ -31,6 +37,7 @@ const colorInterpolation = (color1: string, color2: string,  color3: string, ste
   }
 };
 
+
 // Usage
 const Red = '#ff0000'; 
 const Green = '#00ff00';
@@ -40,15 +47,39 @@ const numberOfSteps = 20;
 //const colorsBetween = colorInterpolation(Red, Green,Blue, numberOfSteps,70,85);
 //console.log(colorsBetween);
 
-const TyreTemps = () => {
+const TyreTemps = ({targetAttributes, signalrservice}:tyreTempKeys) => {
+  const [frontLeftTemp, setFrontLeftTemp] = useState<number>(0);
+  const [frontRightTemp, setFrontRightTemp] = useState<number>(0);
+  const [rearLeftTemp, setRearLeftTemp] = useState<number>(0);
+  const [rearRightTemp, setRearRightTemp] = useState<number>(0);
+
+  function handlePacket(receivedExtendedPacket: ExtendedPacket) {
+    var jsonString = JSON.stringify(receivedExtendedPacket);
+    var parsedObject = JSON.parse(jsonString);
+    setFrontLeftTemp(parsedObject[targetAttributes[0]]);
+    setFrontRightTemp(parsedObject[targetAttributes[1]]);
+    setRearLeftTemp(parsedObject[targetAttributes[2]]);
+    setRearRightTemp(parsedObject[targetAttributes[3]]);
+    console.log(parsedObject[targetAttributes[0]]);
+  };
+  useEffect(() => {
+  signalrservice.setHandleFullPacket(handlePacket);
+  
+  return () => {
+    signalrservice.removeHandleFullPacket();
+  };
+  }, []);
     return (
       <div style={{ height: "100%", width:"100%"}}>
-      <Grid container spacing={17} columns={16}>
-  <Grid item xs={1.5}> <Box sx={{ width: 120, height: 230, backgroundColor: "white" ,border: "3px solid black"}} ><StatusBar tyre={"FL"} temp={80} color={colorInterpolation(Red, Green,Blue, numberOfSteps,105,85)}/><StatusBar tyre={"RL"} temp={79} color={colorInterpolation(Red, Green,Blue, numberOfSteps,86,85)}/></Box>
+      <Grid container spacing={1} columns={6}>
+  <Grid item xs={2}> <Box sx={{ width: 120, height: 230, backgroundColor: "white" ,border: "3px solid black"}} ><StatusBar tyre={"FL"} temp={frontLeftTemp} color={colorInterpolation(Red, Green,Blue, numberOfSteps,frontLeftTemp,85)}/><StatusBar tyre={"RL"} temp={frontRightTemp} color={colorInterpolation(Red, Green,Blue, numberOfSteps,frontRightTemp,85)}/></Box>
  
   </Grid>
-  <Grid item xs>
-  <Box sx={{ width: 120, height: 230, backgroundColor: "white",border: "3px solid black" }} ><StatusBar tyre={"FR"} temp={80} color={colorInterpolation(Red, Green,Blue, numberOfSteps,105,85)} /><StatusBar tyre={"RR"} temp={79} color={colorInterpolation(Red, Green,Blue, numberOfSteps,86,85)}/></Box>
+  <Grid item xs={2}><Box sx={{width:120}}>Some info</Box>
+ 
+  </Grid>
+  <Grid item xs={2}>
+  <Box sx={{ width: 120, height: 230, backgroundColor: "white",border: "3px solid black" }} ><StatusBar tyre={"FR"} temp={rearLeftTemp} color={colorInterpolation(Red, Green,Blue, numberOfSteps,rearLeftTemp,85)} /><StatusBar tyre={"RR"} temp={rearRightTemp} color={colorInterpolation(Red, Green,Blue, numberOfSteps,rearRightTemp,85)}/></Box>
   </Grid>
 </Grid>
     </div>

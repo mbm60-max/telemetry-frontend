@@ -15,36 +15,10 @@ const LoginForm: React.FC = () => {
   const { isLoggedIn,setUserLoggedIn} = useContext(AuthContext);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  const response: AxiosResponse = await axios.get('/api/loginapi', {
-    params: { username, password },
-  });
+  
 
     try {
-      // get data from server
-      await axios.get('/api/loginapi', {
-        params: { username, password },
-      });
-      setUserLoggedIn(username)
-      // Clear the form
       
-
-      // Do something after successful submission
-      // e.g., redirect to a different page
-      if (response.data.message === 'Success') {
-        // Clear the form
-        ;
-        setUsername('');
-        setPassword('');
-        console.log(isLoggedIn);
-        router.push('/');
-        // Do something after successful login
-        // e.g., redirect to a different page
-      } else {
-        setUsername('');
-        setPassword('');
-        // Handle unsuccessful login
-        console.log('Invalid username or password');
-      }
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -60,22 +34,10 @@ const LoginForm: React.FC = () => {
           height: "100vh",
         }}
       >
-        <div className="elevatedBox">
-          <Grid
-            container
-            rowSpacing={0}
-            columnSpacing={{ xs: 1, sm: 2, md: 0 }}
-          >
-            <Grid
-              item
-              xs={6}
-              sx={{
-                justifyContent: "center",
-                display: "flex",
-                backgroundColor: "#F6F6F6",
-                height: "610px",
-              }}
-            >
+        <div style={{justifyContent: "center",
+        display: "flex",
+        backgroundColor: "#F6F6F6",
+        height: "610px",width:600}}>
               <div style={{ marginTop: 100 }}>
                 <form onSubmit={handleSubmit}>
                   <div style={{ position: "relative", marginBottom: 14 }}>
@@ -135,19 +97,6 @@ const LoginForm: React.FC = () => {
                   Image Credit: Todd Jiang 
                 </Typography>
               </div>
-            </Grid>
-            <Grid item xs={6} sx={{ height: "610px" }}>
-              <ImageBox
-                Width={"475px"}
-                Height={"610px"}
-                MarginRight={"0px"}
-                MarginLeft={"0px"}
-                MarginTop={"0px"}
-                objectFit={"cover"}
-                imageSrc="/images/todd-jiang-QK1MH_T5VwM-unsplash.jpg"
-              />
-            </Grid>
-          </Grid>
         </div>
       </div>
     </>

@@ -8,11 +8,13 @@ import IconBox from '../components/iconBox';
 import BadgeIcon from "@mui/icons-material/Badge";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { AuthContext } from '../components/authProvider';
-const LoginForm: React.FC = () => {
+import QuickFilteringGrid from '../components/carSelectionTable/carSelectionTable';
+const SessionStartup: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
   const { isLoggedIn,setUserLoggedIn} = useContext(AuthContext);
+  const [selectedCar, setSelectedBrand] = useState('');
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   
@@ -23,7 +25,9 @@ const LoginForm: React.FC = () => {
       console.error('Error submitting form:', error);
     }
 };
-
+const handleBrandSelection = (brand: string) => {
+  setSelectedBrand(brand);
+};
   return (
     <>
       <div
@@ -90,12 +94,8 @@ const LoginForm: React.FC = () => {
                 </form>
                 <Divider sx={{ width: "350px", mt:6, fontSize:17,color: "#AFAFAF"}} >or</Divider>
                 
-                <Button variant="contained" sx={{ width: "350px", mt: 6 }}>
-                  Sign in with Google
-                </Button>
-                <Typography sx={{ fontSize: 12, mt: 2, color: "#AFAFAF" }}>
-                  Image Credit: Todd Jiang 
-                </Typography>
+                <QuickFilteringGrid onSelectCar={handleBrandSelection}></QuickFilteringGrid>
+                <div>{selectedCar}</div>
               </div>
         </div>
       </div>
@@ -103,4 +103,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default SessionStartup;

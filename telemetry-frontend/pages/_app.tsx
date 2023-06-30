@@ -2,7 +2,7 @@
 import { AppProps } from "next/app";
 import { Component } from "react";
 import { AuthProvider } from "../components/authProvider"
-import Home from "./home";
+import Home from ".";
 import Session from "./session";
 
 function MyApp({ Component, pageProps }:AppProps) {

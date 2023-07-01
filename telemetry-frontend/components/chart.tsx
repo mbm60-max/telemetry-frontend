@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import ApexCharts, { ApexOptions } from "apexcharts";
 import SignalRService from '../utils/signalrEndpoint';
@@ -81,26 +81,28 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
       }
     }
   };
-
-    function handlePacket(receivedExtendedPacket: ExtendedPacket) {
-      //console.log('Received FullPacketMessage:', receivedExtendedPacket);
+  const handlePacket = useCallback((receivedExtendedPacket: ExtendedPacket) => {
+    //console.log('Received FullPacketMessage:', receivedExtendedPacket);
       //console.log(JSON.stringify(receivedExtendedPacket, null, 2));
       var jsonString = JSON.stringify(receivedExtendedPacket);
       var parsedObject = JSON.parse(jsonString);
       var attributeValue = parsedObject[targetAttribute];
       //console.log(attributeValue);
-      
+      console.log(attributeValue);
       if (attributeValue !== undefined && typeof attributeValue === "number") {
         appendData(attributeValue); // Update the throttle value
+        console.log(attributeValue);
       }
-    };
+  }, [targetAttribute]);
+
+    
     useEffect(() => {
     signalrservice.setHandleFullPacket(handlePacket);
 
     return () => {
       signalrservice.removeHandleFullPacket();
     };
-  }, []);
+  }, [signalrservice, handlePacket]);
 
   const appendData = (dataPoint: number) => {
     setDataStream(oldArray => {

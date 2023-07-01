@@ -94,6 +94,7 @@ export default function BasicTabs() {
         <WhiteTextTab label="Engine" {...a11yProps(1)} />
         <WhiteTextTab label="Gearbox" {...a11yProps(2)} />
         <WhiteTextTab label="Tyres/Suspension" {...a11yProps(3)} />
+        <WhiteTextTab label="Setup" {...a11yProps(4)} />
         </Tabs>
         </ThemeProvider>
       </Box>
@@ -109,6 +110,9 @@ export default function BasicTabs() {
       </TabPanel>
       <TabPanel value={value} index={3}>
         Item Four<h1>hi</h1>
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        Setup
       </TabPanel>
     </Box>
     </Homepage>

@@ -1,4 +1,7 @@
 module.exports ={
+  images: {
+  domains: ['images.unsplash.com'],
+},
   reactStrictmode:false,
   webpack:(config,{isServer})=>{
     if(!isServer){

@@ -1,5 +1,23 @@
-<NavBar/>
-        <SideNav><TrackSelection/></SideNav>
-        <DynamicChart />
-        <ThrottleComponent/>
-        <TyreTemps/>
+<Grid container spacing={2}>
+        <Grid item xs={8}>
+          <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="throttle" signalrservice={signalRService} ></DynamicBasicChart></Item>
+        </Grid>
+        <Grid item xs={4}>
+          <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps signalrservice={signalRService} targetAttributes={tyreAttributes} ></TyreTemps></Box><div>fuel ?</div></ItemCentered>
+        </Grid>
+        <Grid item xs={3}>
+          <Item><WrappedImageBox /></Item>
+        </Grid>
+        <Grid item xs={6}>
+                <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="metersPerSecond" signalrservice={signalRService} ></DynamicBasicChart></Item>
+              </Grid>
+        <Grid item xs={3}>
+          <Item><GearDisplay targetAttributes={gearAttributes} signalrservice={signalRService}></GearDisplay></Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item><SmallLapTable targetAttributes={lapAttributes} signalrservice={signalRService}></SmallLapTable></Item>
+        </Grid>
+        <Grid item xs={8}>
+          <Item><DynamicBasicChart label={'Brake Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="brake" signalrservice={signalRService} ></DynamicBasicChart></Item>
+        </Grid>
+      </Grid>

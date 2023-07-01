@@ -75,7 +75,7 @@ export default function BasicGrid() {
           <Item><WrappedImageBox /></Item>
         </Grid>
         <Grid item xs={6}>
-          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="speed" signalrservice={signalRService} ></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="metersPerSecond" signalrservice={signalRService} ></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={3}>
           <Item><GearDisplay targetAttributes={gearAttributes} signalrservice={signalRService}></GearDisplay></Item>

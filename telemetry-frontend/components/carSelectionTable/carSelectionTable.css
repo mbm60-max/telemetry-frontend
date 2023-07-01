@@ -12,3 +12,11 @@
     background-color: #ffffff; /* Set the background color of odd rows */
     /* Add any other styles you want for odd rows */
   }
+  .header-cell {
+    background-color: #f5f5f5; /* Set the background color of the header */
+    color: #333; /* Set the text color of the header */
+    /* Add any other styles you want for the header cells */
+  }
+  .header-cell .MuiDataGrid-sortIcon {
+    display: none;
+  }

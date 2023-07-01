@@ -30,7 +30,6 @@ export default function QuickFilteringGrid({onSelectCar}:GridProps) {
         const name = selectedRow.name;
         const car = brand + " " +  name;
         onSelectCar(car);
-        console.log(car);
       }
     }
   };

@@ -47,13 +47,7 @@ function a11yProps(index: number) {
   };
 }
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+
 export default function BasicTabs() {
   const DynamicChart = dynamic(() => import('./chart'), { 
     loader: () => import('./chart'),
@@ -64,6 +58,23 @@ export default function BasicTabs() {
     setValue(newValue);
   };
   
+  const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
+const ItemCentered = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+  display:'flex',
+  justifyContent:'center',
+  alignItems:'center'
+}));
   const WhiteTextTab = styled(Tab)({
     color: '#F6F6F6',
     backgrounColor: '#847E7E',

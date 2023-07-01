@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import TrackSelection from './trackSelection';
 import ImageBox from './homepageTrack';
 import { useEffect, useState } from 'react';
+import TextField from '@mui/material/TextField';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,18 +21,21 @@ const style = {
 };
 
 interface TrackSelectionModalProps {
-  onSelectTrack: (track: string) => void;
+  onSubmit: (name: string) => void;
 }
 
-export default function TrackSelectionModal({ onSelectTrack }: TrackSelectionModalProps) {
+export default function SetupCreatorModal({ onSubmit }: TrackSelectionModalProps) {
   const [open, setOpen] = React.useState(false);
-
+  const [name, setName] = React.useState('');
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleTrackSelection = (track: string) => {
-    onSelectTrack(track); 
+  const handleTrackSelection = () => {
+    onSubmit(name); 
     handleClose();
+  };
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
   };
 
   return (
@@ -44,9 +48,11 @@ export default function TrackSelectionModal({ onSelectTrack }: TrackSelectionMod
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <TrackSelection onSelectTrack={handleTrackSelection} />
+        <TextField id="name" label="Name" variant="outlined"  onChange={handleNameChange} />
+        <Button onClick={handleTrackSelection}>Submit</Button>
         </Box>
       </Modal>
     </>
   );
 }
+

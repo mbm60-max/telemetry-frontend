@@ -53,22 +53,22 @@ const TyreTemps = ({targetAttributes, signalrservice}:tyreTempKeys) => {
   const [rearLeftTemp, setRearLeftTemp] = useState<number>(0);
   const [rearRightTemp, setRearRightTemp] = useState<number>(0);
 
-  function handlePacket(receivedExtendedPacket: ExtendedPacket) {
-    var jsonString = JSON.stringify(receivedExtendedPacket);
-    var parsedObject = JSON.parse(jsonString);
-    setFrontLeftTemp(parsedObject[targetAttributes[0]]);
-    setFrontRightTemp(parsedObject[targetAttributes[1]]);
-    setRearLeftTemp(parsedObject[targetAttributes[2]]);
-    setRearRightTemp(parsedObject[targetAttributes[3]]);
-    console.log(parsedObject[targetAttributes[0]]);
-  };
-  useEffect(() => {
-  signalrservice.setHandleFullPacket(handlePacket);
+  //function handlePacket(receivedExtendedPacket: ExtendedPacket) {
+  //  var jsonString = JSON.stringify(receivedExtendedPacket);
+   // var parsedObject = JSON.parse(jsonString);
+   // setFrontLeftTemp(parsedObject[targetAttributes[0]]);
+  //  setFrontRightTemp(parsedObject[targetAttributes[1]]);
+   // setRearLeftTemp(parsedObject[targetAttributes[2]]);
+   // setRearRightTemp(parsedObject[targetAttributes[3]]);
+   // console.log(parsedObject[targetAttributes[0]]);
+  //};
+  //useEffect(() => {
+  //signalrservice.setHandleFullPacket(handlePacket);
   
-  return () => {
-    signalrservice.removeHandleFullPacket();
-  };
-  }, []);
+  //return () => {
+  //  signalrservice.removeHandleFullPacket();
+  //};
+ // }, []);
     return (
       <div style={{ height: "100%", width:"100%"}}>
       <Grid container spacing={1} columns={6}>

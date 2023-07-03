@@ -16,14 +16,13 @@ interface BasicChartProps {
   label?: string;
   expectedMinValue: number;
   expectedMaxValue: number;
-  targetAttribute: string;
-  signalrservice: SignalRService;
+  dataStream: { x: number; y: number; }[];
 }
 
-export default function BasicChart({ label, expectedMaxValue, expectedMinValue, targetAttribute, signalrservice }: BasicChartProps) {
+export default function BasicChart({ label, expectedMaxValue, expectedMinValue, dataStream }: BasicChartProps) {
  // const signalRService = new SignalRService();
 
-  const [dataStream, setDataStream] = useState([{ x: 0, y: 0 }]);
+  
   const series = [{
     name: 'Throttle',
     data: dataStream
@@ -81,39 +80,7 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
       }
     }
   };
-  const handlePacket = useCallback((receivedExtendedPacket: ExtendedPacket) => {
-    //console.log('Received FullPacketMessage:', receivedExtendedPacket);
-      //console.log(JSON.stringify(receivedExtendedPacket, null, 2));
-      var jsonString = JSON.stringify(receivedExtendedPacket);
-      var parsedObject = JSON.parse(jsonString);
-      var attributeValue = parsedObject[targetAttribute];
-      //console.log(attributeValue);
-      console.log(attributeValue);
-      if (attributeValue !== undefined && typeof attributeValue === "number") {
-        appendData(attributeValue); // Update the throttle value
-        console.log(attributeValue);
-      }
-  }, [targetAttribute]);
-
-    
-    useEffect(() => {
-    signalrservice.setHandleFullPacket(handlePacket);
-
-    return () => {
-      signalrservice.removeHandleFullPacket();
-    };
-  }, [signalrservice, handlePacket]);
-
-  const appendData = (dataPoint: number) => {
-    setDataStream(oldArray => {
-      const prev = oldArray[oldArray.length - 1];
-      const newArray = [...oldArray, { x: prev.x + 1, y: dataPoint }];
-      if (newArray.length > 30) {
-        return newArray.slice(1);
-      }
-      return newArray;
-    });
-  };
+  
 
   return (
     <>

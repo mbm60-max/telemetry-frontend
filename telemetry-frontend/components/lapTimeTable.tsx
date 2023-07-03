@@ -51,23 +51,23 @@ function createData(
 export default function SmallLapTable({signalrservice,targetAttributes}:smallLapTableProps) {
     const [rows, setRows] = useState<Array<any>>([])
 
-    function handlePacket(receivedExtendedPacket: ExtendedPacket) {
-        var jsonString = JSON.stringify(receivedExtendedPacket);
-        var parsedObject = JSON.parse(jsonString);
-        const lapTime = parsedObject[targetAttributes[0]];
-        const newRow = createData(lapTime, 0.1, 'Hard', 'Basic');
+    //function handlePacket(receivedExtendedPacket: ExtendedPacket) {
+    //    var jsonString = JSON.stringify(receivedExtendedPacket);
+     //   var parsedObject = JSON.parse(jsonString);
+     //   const lapTime = parsedObject[targetAttributes[0]];
+      //  const newRow = createData(lapTime, 0.1, 'Hard', 'Basic');
 
-    setRows((prevRows) => [...prevRows, newRow]);
+    //setRows((prevRows) => [...prevRows, newRow]);
       
-          console.log(parsedObject[targetAttributes[0]]);
-        }
-    useEffect(() => {
-        signalrservice.setHandleFullPacket(handlePacket);
+      //    console.log(parsedObject[targetAttributes[0]]);
+      //  }
+    //useEffect(() => {
+     //   signalrservice.setHandleFullPacket(handlePacket);
             
-        return () => {
-            signalrservice.removeHandleFullPacket();
-        };
-        }, []);
+      //  return () => {
+      //      signalrservice.removeHandleFullPacket();
+      //  };
+      //  }, []);
       
       
   return (

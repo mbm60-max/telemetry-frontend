@@ -28,20 +28,20 @@ export default function GearDisplay({signalrservice, targetAttributes}:gearProps
   const [suggestedGear,setSuggestedGear] = useState<number>(0);
   const [currentGear,setCurrentGear] = useState<number>(0);
 
-  function handlePacket(receivedExtendedPacket: ExtendedPacket) {
-    var jsonString = JSON.stringify(receivedExtendedPacket);
-    var parsedObject = JSON.parse(jsonString);
-    setSuggestedGear(parsedObject[targetAttributes[0]]);
-    setCurrentGear(parsedObject[targetAttributes[1]]);
-    console.log(parsedObject[targetAttributes[0]]);
-  };
-  useEffect(() => {
-  signalrservice.setHandleFullPacket(handlePacket);
+  //function handlePacket(receivedExtendedPacket: ExtendedPacket) {
+  //  var jsonString = JSON.stringify(receivedExtendedPacket);
+   // var parsedObject = JSON.parse(jsonString);
+   // setSuggestedGear(parsedObject[targetAttributes[0]]);
+   // setCurrentGear(parsedObject[targetAttributes[1]]);
+   // console.log(parsedObject[targetAttributes[0]]);
+  //};
+  //useEffect(() => {
+  //signalrservice.setHandleFullPacket(handlePacket);
   
-  return () => {
-    signalrservice.removeHandleFullPacket();
-  };
-  }, []);
+  //return () => {
+  //  signalrservice.removeHandleFullPacket();
+  //};
+  //}, []);
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container rowSpacing={6.35} columns={1} >

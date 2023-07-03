@@ -51,6 +51,7 @@ export default function ArraySliderText({
             max={10}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
+            valueLabelDisplay="auto"
           />
         </Grid>
         {textValues.map((textValue, index) => (

@@ -170,25 +170,23 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
         Value: finalGearRatio,
         Units: "",
       },};
-
+    setNameError("");
     if(name != ''){
       try{
         if (nameResponse.data.message === 'Success') {
-          //username taken
-          setNameError("This name is already taken")
-          //onSubmit(name);
+          setNameError("This name is already taken") // currently checking all files should only be user specific
           return
         }
         if(userName != ''){
           await axios.post("/api/createsetupapi", { username, name, setupObject });
-          //onSubmit(name);
           setName('');
           onSetupAddition();
           handleClose();
+
         }
       }catch{
-
       }
+
     }
   };
   const handleInputChange =
@@ -229,7 +227,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                     type="submit"
                     variant="contained"
                     sx={{ mr: 2, width: "167px" }}
-                  ></Button>
+                  >Submit</Button>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <InputSlider
@@ -238,6 +236,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 }
                 width={350}
                 targetAttribute={"Power Level"}
+                minValue={1}
+                maxValue={3}
+                step={1}
               />
               <InputSlider
                 onValueChange={(value) =>
@@ -245,6 +246,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 }
                 width={350}
                 targetAttribute={"Weight Reduction Level"}
+                minValue={1}
+                maxValue={3}
+                step={1}
               />
               <InputSlider
                 onValueChange={(value) =>
@@ -252,6 +256,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 }
                 width={350}
                 targetAttribute={"Power Ratio"}
+                minValue={0}
+                maxValue={200}
+                step={1}
               />
               <InputSlider
                 onValueChange={(value) =>
@@ -259,6 +266,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 }
                 width={350}
                 targetAttribute={"Weight Reduction Ratio"}
+                minValue={0}
+                maxValue={200}
+                step={1}
               />
               <InputSlider
                 onValueChange={(value) =>
@@ -266,6 +276,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 }
                 width={350}
                 targetAttribute={"Traction Control"}
+                minValue={1}
+                maxValue={5}
+                step={1}
               />
               <InputSlider
                 onValueChange={(value) =>
@@ -273,6 +286,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 }
                 width={350}
                 targetAttribute={"Brake Balance"}
+                minValue={-5}
+                maxValue={5}
+                step={1}
               />
               <TextField
                 id="name"
@@ -288,11 +304,15 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 }
                 width={350}
                 targetAttribute={"Max Speed (Auto Set)"}
+                minValue={0}
+                maxValue={500}
+                step={1}
               />
               <ArraySliderText
                 width={350}
                 targetAttribute={"Number of Gears"}
                 onValueChange={setGearRatios}
+                
               />
               <InputSlider
                 onValueChange={(value) =>
@@ -300,6 +320,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 }
                 width={350}
                 targetAttribute={"Final Gear "}
+                minValue={1}
+                maxValue={5}
+                step={0.001}///might need changing
               />
             </Grid>
             <Grid item xs={6}>
@@ -312,6 +335,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={(value) =>
                   handleInputChangeArray(setRideHeight)(value)
                 }
+                minValue={0}
+                maxValue={300}
+                step={1}
               />
               <ArraySlider
                 width={350}
@@ -319,6 +345,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={(value) =>
                   handleInputChangeArray(setNaturalFrequency)(value)
                 }
+                minValue={1}
+                maxValue={5}
+                step={0.1}
               />
               <ArraySlider
                 width={350}
@@ -326,6 +355,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={(value) =>
                   handleInputChangeArray(setAntiRollBar)(value)
                 }
+                minValue={1}
+                maxValue={10}
+                step={1}
               />
               <ArraySlider
                 width={350}
@@ -333,6 +365,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={(value) =>
                   handleInputChangeArray(setDampingRatioCompression)(value)
                 }
+                minValue={0}
+                maxValue={100}
+                step={1}
               />
               <ArraySlider
                 width={350}
@@ -340,6 +375,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={(value) =>
                   handleInputChangeArray(setDampingRatioRebound)(value)
                 }
+                minValue={0}
+                maxValue={100}
+                step={1}
               />
               <ArraySlider
                 width={350}
@@ -347,6 +385,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={(value) =>
                   handleInputChangeArray(setCamberAngle)(value)
                 }
+                minValue={-10}
+                maxValue={10}
+                step={1}
               />
               <ArraySlider
                 width={350}
@@ -354,6 +395,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={(value) =>
                   handleInputChangeArray(setToeAngle)(value)
                 }
+                minValue={-1}
+                maxValue={1}
+                step={0.01}
               />
               <ArraySlider
                 width={350}
@@ -361,6 +405,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={(value) =>
                   handleInputChangeArray(setDownforce)(value)
                 }
+                minValue={0}
+                maxValue={5000}
+                step={10}//adjust this
               />
             </Grid>
           </Grid>
@@ -376,6 +423,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             onValueChange={(value) =>
               handleInputChangeArray(setLsdIntiailTorque)(value)
             }
+            minValue={0}
+            maxValue={100}
+            step={1}
           />
           <ArraySlider
             width={350}
@@ -383,6 +433,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             onValueChange={(value) =>
               handleInputChangeArray(setLsdAccelerationSensitivity)(value)
             }
+            minValue={0}
+            maxValue={100}
+            step={1}
           />
           <ArraySlider
             width={350}
@@ -390,6 +443,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             onValueChange={(value) =>
               handleInputChangeArray(setLsdBrakingSensitivity)(value)
             }
+            minValue={0}
+            maxValue={100}
+            step={1}
           />
           <InputSlider
             width={350}
@@ -397,6 +453,9 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             onValueChange={(value) =>
               handleInputChange(setFrontRearTorqueDistribution)(value)
             }
+            minValue={1}//need to make a new component for this
+            maxValue={3}
+            step={1}
           />
         </Box></form>
       </Modal>

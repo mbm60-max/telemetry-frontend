@@ -7,6 +7,7 @@ import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 
+
 const Input = styled(MuiInput)`
   width: 42px;
 `;
@@ -15,8 +16,11 @@ interface InputSliderProps{
 width:number
 targetAttribute:string
 onValueChange: (value:string ) => void;
+minValue:number;
+maxValue:number;
+step:number;
 }
-export default function InputSlider({width,targetAttribute,onValueChange}:InputSliderProps) {
+export default function InputSlider({width,targetAttribute,onValueChange,minValue,maxValue,step}:InputSliderProps) {
   const [value, setValue] = React.useState<number | string | Array<number | string>>(
     30,
   );
@@ -37,6 +41,10 @@ export default function InputSlider({width,targetAttribute,onValueChange}:InputS
             value={typeof value === 'number' ? value : 0}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
+            valueLabelDisplay="auto"
+            min={minValue}
+            max={maxValue}
+            step={step}
           />
         </Grid>
       </Grid>

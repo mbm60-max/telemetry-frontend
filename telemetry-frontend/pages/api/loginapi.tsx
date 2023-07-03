@@ -30,12 +30,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(200).json({ message: 'Success' });
         } else {
           // Password doesn't match
-          res.status(401).json({ message: 'Invalid password' });
+          res.status(200).json({ message: 'Invalid password' });
         }
       } else {
         // User with the matching username not found
         console.error('User not found');
-        res.status(404).json({ message: 'User not found' });
+        res.status(200).json({ message: 'User not found' });
       }
 
       // Close the database connection

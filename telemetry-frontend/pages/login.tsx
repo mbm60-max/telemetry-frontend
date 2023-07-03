@@ -11,40 +11,55 @@ import { AuthContext } from '../components/authProvider';
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
   const router = useRouter();
   const { isLoggedIn,setUserLoggedIn} = useContext(AuthContext);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  const response: AxiosResponse = await axios.get('/api/loginapi', {
+    const userResponse: AxiosResponse = await axios.get('/api/checkuserapi', {
+      params: { username },
+    });
+  const loginResponse: AxiosResponse = await axios.get('/api/loginapi', {
     params: { username, password },
   });
+  //const emailResponse: AxiosResponse = await axios.get('/api/checkemailapi', {
+   // params: { email },
+  //}); add email password login
 
     try {
       // get data from server
       await axios.get('/api/loginapi', {
         params: { username, password },
       });
-      setUserLoggedIn(username)
+      setUserLoggedIn(username);
+      setPasswordError('');
+      setUsernameError('');
       // Clear the form
       
 
       // Do something after successful submission
       // e.g., redirect to a different page
-      if (response.data.message === 'Success') {
+      if (loginResponse.data.message === 'Success') {
         // Clear the form
         ;
         setUsername('');
         setPassword('');
-        console.log(isLoggedIn);
         router.push('/');
+        return;
         // Do something after successful login
         // e.g., redirect to a different page
-      } else {
-        setUsername('');
+      } else if(userResponse.data.message === 'Success'){
         setPassword('');
         // Handle unsuccessful login
-        console.log('Invalid username or password');
+        setPasswordError("Invalid Password")
+        return
       }
+      setUsername('');
+      setPassword('');
+      setPasswordError("Invalid Username or Password")
+      setUsernameError("Invalid Username or Password")
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -78,7 +93,7 @@ const LoginForm: React.FC = () => {
             >
               <div style={{ marginTop: 100 }}>
                 <form onSubmit={handleSubmit}>
-                  <div style={{ position: "relative", marginBottom: 14 }}>
+                  <div style={{ position: "relative", marginBottom: 24 }}>
                     <IconBox icon={BadgeIcon}></IconBox>
                     <TextField
                       label="Username"
@@ -91,9 +106,11 @@ const LoginForm: React.FC = () => {
                         left: "43px",
                         width: "310px",
                       }}
+                      error={Boolean(usernameError)}
+                      helperText={usernameError}
                     />
                   </div>
-                  <div style={{ position: "relative", marginBottom: 14 }}>
+                  <div style={{ position: "relative", marginBottom: 24 }}>
                     <IconBox icon={VpnKeyIcon}></IconBox>
                     <TextField
                     label="Password"
@@ -107,6 +124,8 @@ const LoginForm: React.FC = () => {
                       left: "43px",
                       width: "310px",
                     }}
+                    error={Boolean(passwordError)}
+                      helperText={passwordError}
                   />
                   </div>
 

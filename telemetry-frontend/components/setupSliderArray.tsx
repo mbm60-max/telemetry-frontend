@@ -9,12 +9,18 @@ interface ArraySliderProps {
   width: number;
   targetAttribute: string;
   onValueChange: (value: string[]) => void;
+  minValue:number;
+  maxValue:number;
+  step:number;
 }
 
 export default function ArraySlider({
   width,
   targetAttribute,
   onValueChange,
+  minValue,
+  maxValue,
+  step,
 }: ArraySliderProps) {
   const [values, setValues] = React.useState<string[]>(['', '']);
 
@@ -39,6 +45,10 @@ export default function ArraySlider({
             onChange={handleSliderChange(0) as any}
             aria-labelledby="input-slider"
             sx={{width:150}}
+            valueLabelDisplay="auto"
+            min={minValue}
+            max={maxValue}
+            step={step}
           />
         </Grid>
         <Grid item xs={3}>
@@ -50,6 +60,10 @@ export default function ArraySlider({
             onChange={handleSliderChange(1) as any}
             aria-labelledby="input-slider"
             sx={{width:150}}
+            valueLabelDisplay="auto"
+            min={minValue}
+            max={maxValue}
+            step={step}
           />
         </Grid>
       </Grid>

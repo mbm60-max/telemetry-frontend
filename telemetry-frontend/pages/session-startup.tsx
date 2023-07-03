@@ -43,15 +43,17 @@ const SessionStartup: React.FC = () => {
     alignItems: "center",
   }));
   const [selectedCar, setSelectedCar] = useState("");
-  const [selectedCompound, setSelectedCompound] = useState("");
-  const [selectedTrack, setSelectedTrack] = useState("");
+  const [selectedTrack, setSelectedTrack] = useState("noTrack");
+  const [selectedCompound, setSelectedCompound] = React.useState("");
   const [selectedSetup, setSelectedSetup] = useState("");
   const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+ console.log(selectedTrack)
 
-    if (selectedCar.trim() !== "") {
+ console.log(selectedCar)
+    if (((selectedCar.trim() !== "") && (selectedCompound.trim() !== ""))&&( selectedTrack != "noTrack")) {
       router.push(`/session?car=${selectedCar}`);
     }
   };
@@ -60,7 +62,7 @@ const SessionStartup: React.FC = () => {
     setSelectedCar(car);
   };
   const handleCompoundSelection = (event: SelectChangeEvent) => {
-    setCompound(event.target.value);
+    setSelectedCompound(event.target.value);
   };
   const handleTrackSelection = (track: string) => {
     setSelectedTrack(track);
@@ -68,7 +70,7 @@ const SessionStartup: React.FC = () => {
   const handlesetupSelection = (setup: string) => {
     setSelectedSetup(setup);
   };
-  const [compound, setCompound] = React.useState("");
+
 
   return (
     <>
@@ -120,7 +122,7 @@ const SessionStartup: React.FC = () => {
                         <Select
                           labelId="demo-simple-select-label"
                           id="demo-simple-select"
-                          value={compound}
+                          value={selectedCompound}
                           label="Compound"
                           onChange={handleCompoundSelection}
                         >
@@ -170,7 +172,7 @@ const SessionStartup: React.FC = () => {
               </Grid>
               <div>
                 {selectedCar}
-                {compound}
+                {selectedCompound}
                 {selectedTrack}
                 {selectedSetup}
               </div>

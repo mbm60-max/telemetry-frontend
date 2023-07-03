@@ -13,6 +13,9 @@ import { Button, Grid, Link, Paper } from '@mui/material';
 import BasicGrid from './flexgridGeneral';
 import dynamic from 'next/dynamic';
 import { noSSR } from 'next/dynamic';
+import { useContext } from 'react';
+import { AuthContext } from './authProvider';
+import { useRouter } from 'next/router';
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -49,6 +52,8 @@ function a11yProps(index: number) {
 
 
 export default function BasicTabs() {
+  const router = useRouter();
+  const { isLoggedIn, userName } = useContext(AuthContext);
   const DynamicChart = dynamic(() => import('./chart'), { 
     loader: () => import('./chart'),
     ssr: false 
@@ -93,10 +98,13 @@ const ItemCentered = styled(Paper)(({ theme }) => ({
       },
     },
   });
+  function handleExitSession(){
+    router.push('/')
+  }
   return (
     <>
         <Homepage style={'homepage'}>
-    <Box className='header'><Button><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Exit Session</Link></Button></Box>
+    <Box className='header'><Button onClick={handleExitSession}>Exit Session</Button></Box>
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <ThemeProvider theme={theme}>
@@ -106,6 +114,7 @@ const ItemCentered = styled(Paper)(({ theme }) => ({
         <WhiteTextTab label="Gearbox" {...a11yProps(2)} />
         <WhiteTextTab label="Tyres/Suspension" {...a11yProps(3)} />
         <WhiteTextTab label="Setup" {...a11yProps(4)} />
+        <WhiteTextTab label="blah" {...a11yProps(5)} />
         </Tabs>
         </ThemeProvider>
       </Box>
@@ -124,6 +133,9 @@ const ItemCentered = styled(Paper)(({ theme }) => ({
       </TabPanel>
       <TabPanel value={value} index={4}>
         Setup
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        {userName}
       </TabPanel>
     </Box>
     </Homepage>

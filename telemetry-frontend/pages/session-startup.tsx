@@ -45,6 +45,7 @@ const SessionStartup: React.FC = () => {
   const [selectedCar, setSelectedCar] = useState("");
   const [selectedCompound, setSelectedCompound] = useState("");
   const [selectedTrack, setSelectedTrack] = useState("");
+  const [selectedSetup, setSelectedSetup] = useState("");
   const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -63,6 +64,9 @@ const SessionStartup: React.FC = () => {
   };
   const handleTrackSelection = (track: string) => {
     setSelectedTrack(track);
+  };
+  const handlesetupSelection = (setup: string) => {
+    setSelectedSetup(setup);
   };
   const [compound, setCompound] = React.useState("");
 
@@ -162,12 +166,13 @@ const SessionStartup: React.FC = () => {
                     </Box>
                   </ItemCentered>
                 </Grid>
-                <Grid item xs={6}><Item><SetupTable/></Item></Grid>
+                <Grid item xs={6}><Item><SetupTable onSelectSetup={handlesetupSelection}/></Item></Grid>
               </Grid>
               <div>
                 {selectedCar}
                 {compound}
                 {selectedTrack}
+                {selectedSetup}
               </div>
               <Button
                 type="submit"

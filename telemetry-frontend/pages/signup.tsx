@@ -262,7 +262,7 @@ const SignUpForm: React.FC = () => {
                 MarginLeft={"0px"}
                 MarginTop={"0px"}
                 objectFit={"cover"}
-                imageSrc="/images/max-bottinger-0k_dCKxyIHc-unsplash.jpg"
+                imageSrc="/images/Coffee.jpg"
               />
             </Grid>
           </Grid>{" "}

@@ -6,18 +6,20 @@ import { useDemoData } from '@mui/x-data-grid-generator';
 import { carData } from '../data/gtCarList';
 import './carSelectionTable/carSelectionTable.css';
 import SetupCreatorModal from './setupCreatorModal';
+import axios, { AxiosResponse } from 'axios';
+import { useContext } from 'react';
+import { AuthContext } from './authProvider';
 
 const VISIBLE_FIELDS = ['name', 'rating', 'country', 'dateCreated', 'isAdmin'];
 
-interface GridProps {
-  onSelectCar: (car: string) => void;
+interface SetupTableProps {
+  onSelectSetup: (setup: string) => void;
 }
 
-export default function SetupTable() {
-  const [setupData, setSetupData] = React.useState([
-    { id: 1, name: 'Abarth' },
-    { id: 2, name: 'Abarth' }
-  ]);
+export default function SetupTable({onSelectSetup}:SetupTableProps) {
+  const { isLoggedIn,userName} = useContext(AuthContext);
+  const username = userName;
+  const [setupData, setSetupData] = React.useState<{ id: number; name: string }[]>([]);
   const newIdRef = React.useRef(setupData.length + 1);
 
   // Otherwise filter will be applied on fields such as the hidden column id
@@ -28,7 +30,7 @@ export default function SetupTable() {
         width: 350,
         headerClassName: 'removed',
         renderHeader: () => (
-          <SetupCreatorModal onSubmit={handleAddToList}/>
+          <SetupCreatorModal onSetupAddition={forceFetchData} />
         )
       }
     ],
@@ -38,21 +40,37 @@ export default function SetupTable() {
   const rows = React.useMemo(() => setupData, [setupData]);
 
   const handleSelectionChange = (selectionModel: any) => {
-    if (selectionModel.length > 0) {
+    if (selectionModel.length > 0 && rows.length > 0) {
       const selectedRow = rows.find((row) => row.id === selectionModel[0]);
       if (selectedRow) {
         const setup = selectedRow.name;
+        onSelectSetup(setup);
       }
     }
   };
-  
-  const handleAddToList = (name: string) => {
-    const newId = newIdRef.current;
-    newIdRef.current += 1;
-    const newRow = { id: newId, name: name };
-    setSetupData(prevData => [...prevData, newRow]);
+  const forceFetchData = () => {
+    console.log('no')
+    fetchData();
   };
 
+  
+  const fetchData = React.useCallback(async () => {
+    try {
+      const setupResponse: AxiosResponse = await axios.get('/api/getsetuplistapi', {
+        params: { username },
+      });
+      const data = setupResponse.data;
+      const rowsWithId = data.setupNames.map((row: any, index: number) => ({ ...row, id: index + 1 }));
+      setSetupData(rowsWithId);
+    } catch (error) {
+      console.error('Error fetching setup data:', error);
+    }
+  }, [username]);
+
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+  
   return (
     <Box
       sx={{

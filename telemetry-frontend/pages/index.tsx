@@ -29,7 +29,7 @@ const Home = () => {
   const Card2Content=["Spa-Francorchamps","Lap Distance: 5.1mi\n Total Laps: 20"]
   const Card2Ml=[0,0]
   const marginLeft = {
-    marginLeft: '250px', // Replace '10px' with the desired value for marginLeft
+    marginLeft: '250px',
   };
   console.log(isLoggedIn);
   useEffect(() => {
@@ -37,7 +37,7 @@ const Home = () => {
     if (!isLoggedIn) {
       router.push('/login');
     }
-  }, []);
+  }, [isLoggedIn, router]);
   return (
       <Homepage style={'homepage-container'}><NavBar/><div style={{ display: 'flex' }}>
       <div style={{ display: 'flex', flexDirection:'column'}}><BasicCard ml={20} mt={10} mr={0} width={400} noOfLines={3} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard><div style={marginLeft}><Button className="action-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/about">Start Session</Link></Button></div></div><div style={{  position: 'absolute', top: '100px', left: '525px', zIndex: 1}}><BasicCard ml={35} mt={5} mr={0} width={350} noOfLines={2} lineFontSizes={Card2Fonts}lineFontColors={Card2Colors} lineContent={Card2Content} lineML={[]} lineMR={[]} lineMT={[]}lineWhiteSpace={['initial',
@@ -48,7 +48,7 @@ const Home = () => {
         MarginRight={'0px'}
         MarginLeft={'450px'}
         MarginTop={'0px'}
-        imageSrc="/images/i1puHqsYDXFby.svg"
+        imageSrc="/images/spa.svg"
       />
     </div>{isLoggedIn && <h1>Hello, {userName}!</h1>}</Homepage>
   );

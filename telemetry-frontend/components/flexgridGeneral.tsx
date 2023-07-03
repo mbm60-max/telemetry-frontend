@@ -46,7 +46,7 @@ const WrappedImageBox = () => (
       MarginRight={'0px'}
       MarginLeft={'0px'}
       MarginTop={'0px'}
-      imageSrc="/images/i1puHqsYDXFby.svg"
+      imageSrc="/images/spa.svg"
     />
   </BlackBox>
 );

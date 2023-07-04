@@ -17,12 +17,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import IconBox from "../components/iconBox";
 import BadgeIcon from "@mui/icons-material/Badge";
-import QuickFilteringGrid from "../components/carSelectionTable/carSelectionTable";
-import CompoundSelect from "../components/compoundSelector";
-import TrackSelection from "../components/trackSelection";
-import TrackSelectionModal from "../components/trackSelectionModal";
+import QuickFilteringGrid from "../components/sessionStartupComponents/setupComponents/carSelectionTable/carSelectionTable";
+import CompoundSelect from "../components/sessionStartupComponents/setupComponents/compoundSelector";
+import TrackSelection from "../components/sessionStartupComponents/setupComponents/trackSelection";
+import TrackSelectionModal from "../components/sessionStartupComponents/setupComponents/trackSelectionModal";
 import ImageBox from "../components/homepageTrack";
-import SetupTable from "../components/setupCreator";
+import SetupTable from "../components/sessionStartupComponents/setupComponents/setupCreator";
 
 const SessionStartup: React.FC = () => {
   const Item = styled(Paper)(({ theme }) => ({

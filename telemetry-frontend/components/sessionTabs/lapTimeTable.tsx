@@ -8,9 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box } from '@mui/material';
-import SignalRService from '../utils/signalrEndpoint';
+import SignalRService from '../../utils/signalrEndpoint';
 import { useEffect, useState } from 'react';
-import ExtendedPacket from '../interfaces/extendedPacketInterface';
+import ExtendedPacket from '../../interfaces/extendedPacketInterface';
 
 
 interface smallLapTableProps{

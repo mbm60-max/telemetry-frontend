@@ -5,7 +5,7 @@ import React from "react";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Image from "next/image";
-import { itemData } from "../data/imageData";
+import { itemData } from "../../../data/imageData";
 interface TrackSelectionProps{
   onSelectTrack: (track: string) => void;
 

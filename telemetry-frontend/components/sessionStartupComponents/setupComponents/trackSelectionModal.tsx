@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TrackSelection from './trackSelection';
-import ImageBox from './homepageTrack';
+import ImageBox from '../../homepageTrack';
 import { useEffect, useState } from 'react';
 
 const style = {

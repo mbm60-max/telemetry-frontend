@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import ApexCharts, { ApexOptions } from "apexcharts";
-import SignalRService from '../utils/signalrEndpoint';
-import StopButton from '../components/stopButton';
-import ExtendedPacket from "../interfaces/extendedPacketInterface";
+import SignalRService from '../../utils/signalrEndpoint';
+import StopButton from '../bin/stopButton';
+import ExtendedPacket from "../../interfaces/extendedPacketInterface";
 import { noSSR } from 'next/dynamic';
 import { Box } from "@mui/material";
 

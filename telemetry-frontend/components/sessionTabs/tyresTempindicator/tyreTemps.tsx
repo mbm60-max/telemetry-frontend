@@ -6,8 +6,8 @@ import { JsxElement } from "typescript";
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import StatusBar from "./statusBar";
 import chroma from 'chroma-js';
-import ExtendedPacket from "../../interfaces/extendedPacketInterface";
-import SignalRService from "../../utils/signalrEndpoint";
+import ExtendedPacket from "../../../interfaces/extendedPacketInterface";
+import SignalRService from "../../../utils/signalrEndpoint";
 
 interface tyreTempKeys{
   frontLeftTemp:number,

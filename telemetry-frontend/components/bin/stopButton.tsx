@@ -1,5 +1,5 @@
 import React from "react";
-import SignalRService from "../utils/signalrEndpoint";
+import SignalRService from "../../utils/signalrEndpoint";
 
 interface StopButtonProps {
   signalRService: SignalRService;

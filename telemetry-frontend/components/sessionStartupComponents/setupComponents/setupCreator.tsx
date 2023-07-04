@@ -3,12 +3,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { useDemoData } from '@mui/x-data-grid-generator';
-import { carData } from '../data/gtCarList';
+import { carData } from '../../../data/gtCarList';
 import './carSelectionTable/carSelectionTable.css';
 import SetupCreatorModal from './setupCreatorModal';
 import axios, { AxiosResponse } from 'axios';
 import { useContext } from 'react';
-import { AuthContext } from './authProvider';
+import { AuthContext } from '../../authProvider';
 
 const VISIBLE_FIELDS = ['name', 'rating', 'country', 'dateCreated', 'isAdmin'];
 

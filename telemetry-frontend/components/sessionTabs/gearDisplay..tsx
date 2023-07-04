@@ -6,13 +6,15 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import SignalRService from '../utils/signalrEndpoint';
+import SignalRService from '../../utils/signalrEndpoint';
 import { useEffect, useState } from 'react';
-import ExtendedPacket from '../interfaces/extendedPacketInterface';
+import ExtendedPacket from '../../interfaces/extendedPacketInterface';
 
-interface gearProps {
-  currentGear:number;
-  suggestedGear:number;
+interface twoValueProps {
+  dataValueOne:number;//current
+  dataValueTwo:number;
+  nameOne:string;//current
+  nameTwo:string
 }
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -23,7 +25,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function GearDisplay({currentGear,suggestedGear}:gearProps) {
+export default function TwoValueDisplay({dataValueOne,dataValueTwo,nameOne,nameTwo}:twoValueProps) {
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container rowSpacing={6.35} columns={1} >
@@ -31,10 +33,10 @@ export default function GearDisplay({currentGear,suggestedGear}:gearProps) {
           <Item>
       <CardContent>
         <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>
-          Current Gear
+          {nameOne}
         </Typography>
         <Typography variant="h2" component="div" color="text.primary">
-         {currentGear}
+         {dataValueOne}
         </Typography>
       </CardContent>
     </Item>
@@ -44,10 +46,10 @@ export default function GearDisplay({currentGear,suggestedGear}:gearProps) {
           <Item>
       <CardContent>
       <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>
-        Suggested Gear
+        {nameTwo}
       </Typography>
       <Typography variant="h2" component="div" color="text.primary">
-       {suggestedGear}
+       {dataValueTwo}
       </Typography>
     </CardContent>
   </Item>

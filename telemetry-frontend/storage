@@ -21,3 +21,65 @@
           <Item><DynamicBasicChart label={'Brake Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="brake" signalrservice={signalRService} ></DynamicBasicChart></Item>
         </Grid>
       </Grid>
+
+
+
+      <InputSlider
+            onValueChange={(value) => handleInputChange(setPowerLevel)(value)}
+            width={250}
+            targetAttribute={"Power Level"}
+          />
+          <InputSlider
+            onValueChange={(value) => handleInputChange(setWeightReductionLevel)(value)}
+            width={250}
+            targetAttribute={"Weight Reduction Level"}
+          />
+          <InputSlider
+            onValueChange={(value) => handleInputChange(setPowerRatio)(value)}
+            width={250}
+            targetAttribute={"Power Ratio"}
+          />
+          <InputSlider
+            onValueChange={(value) => handleInputChange(setWeightReductionRatio)(value)}
+            width={250}
+            targetAttribute={"Weight Reduction Ratio"}
+          />
+           <InputSlider
+            onValueChange={(value) => handleInputChange(setTractionControl)(value)}
+            width={250}
+            targetAttribute={"Traction Control"}
+          />
+           <InputSlider
+            onValueChange={(value) => handleInputChange(setBrakeBalance)(value)}
+            width={250}
+            targetAttribute={"Brake Balance"}
+          />
+          <ArraySlider width={250} targetAttribute={"Ride Height"} onValueChange={(value) => handleInputChangeArray(setRideHeight)(value)}/>
+          <ArraySlider width={250} targetAttribute={"Natural Frequency"} onValueChange={(value) => handleInputChangeArray(setNaturalFrequency)(value)}/>
+          <ArraySlider width={250} targetAttribute={"Anti Roll Bar"} onValueChange={(value) => handleInputChangeArray(setAntiRollBar)(value)}/>
+          <ArraySlider width={250} targetAttribute={"Damping Ratio Compression"} onValueChange={(value) => handleInputChangeArray(setDampingRatioCompression)(value)}/>
+          <ArraySlider width={250} targetAttribute={"Damping Ratio Rebound"} onValueChange={(value) => handleInputChangeArray(setDampingRatioRebound)(value)}/>
+          <ArraySlider width={250} targetAttribute={"Camber Angle"} onValueChange={(value) => handleInputChangeArray(setCamberAngle)(value)}/>
+          <ArraySlider width={250} targetAttribute={"Toe Angle"} onValueChange={(value) => handleInputChangeArray(setToeAngle)(value)}/>
+          <ArraySlider width={250} targetAttribute={"Downforce"} onValueChange={(value) => handleInputChangeArray(setDownforce)(value)}/>
+          <TextField
+            id="name"
+            label="Differential gear"
+            variant="outlined"
+            onChange={(value) => handleInputText(setDifferentialGear)(value)}
+          />
+           <ArraySlider width={250} targetAttribute={"LSD Initial Torque"} onValueChange={(value) => handleInputChangeArray(setToeAngle)(value)}/>
+           <ArraySlider width={250} targetAttribute={"LSD Acceleration Sensitivity"} onValueChange={(value) => handleInputChangeArray(setToeAngle)(value)}/>
+           <ArraySlider width={250} targetAttribute={"Front Rear Torque Distribution"} onValueChange={(value) => handleInputChangeArray(setToeAngle)(value)}/>
+           <ArraySlider width={250} targetAttribute={"LSD Acceleration Sensitivity"} onValueChange={(value) => handleInputChangeArray(setToeAngle)(value)}/>
+           <TextField
+            id="name"
+            label="Transmission Type"
+            variant="outlined"
+            onChange={(value) => handleInputText(setDifferentialGear)(value)}
+          />
+           <InputSlider
+            onValueChange={(value) => handleInputChange(setTractionControl)(value)}
+            width={250}
+            targetAttribute={"Max Speed (Auto Set)"}
+          />

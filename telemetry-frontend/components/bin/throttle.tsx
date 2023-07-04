@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as signalR from "@microsoft/signalr";
-import ExtendedPacket from "../interfaces/extendedPacketInterface";
+import ExtendedPacket from "../../interfaces/extendedPacketInterface";
 interface Vector3 {
   x: number;
   y: number;

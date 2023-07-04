@@ -1,20 +1,20 @@
 'use client'
 import React,{ useContext, useEffect } from 'react';
 import NavBar from '../components/navbar/navbar';
-import DynamicChart from '../components/chart';
+import DynamicChart from '../components/sessionTabs/chart';
 import SideNav from '../components/sideNav';
-import TrackSelection from '../components/trackSelection';
-import TyreTemps from '../components/tyresTempindicator/tyreTemps';
+import TrackSelection from '../components/sessionStartupComponents/setupComponents/trackSelection';
+import TyreTemps from '../components/sessionTabs/tyresTempindicator/tyreTemps';
 import { Card, Container,Button  } from '@mui/material';
-import ThrottleComponent from '../components/throttle';
+import ThrottleComponent from '../components/bin/throttle';
 import Homepage from '../components/background/background';
 import ImageBox from '../components/homepageTrack';
 import BasicCard from '../components/card';
 import '../calltoaction.css';
 import Link from "next/link";
-import BasicChart from '../components/chart';
+import BasicChart from '../components/sessionTabs/chart';
 import { AuthContext } from '../components/authProvider';
-import GearDisplay from '../components/gearDisplay.';
+import GearDisplay from '../components/sessionTabs/gearDisplay.';
 import { useRouter } from 'next/router';
 
 

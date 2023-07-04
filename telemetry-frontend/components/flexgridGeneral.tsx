@@ -50,15 +50,26 @@ const WrappedImageBox = () => (
     />
   </BlackBox>
 );
-const tyreAttributes = ["tireFL_SurfaceTemperature","tireFR_SurfaceTemperature","tireRL_SurfaceTemperature","tireRR_SurfaceTemperature"];
+
+
+export default function BasicGrid() {
+  const tyreAttributes = ["tireFL_SurfaceTemperature","tireFR_SurfaceTemperature","tireRL_SurfaceTemperature","tireRR_SurfaceTemperature"];
 const gearAttributes =  ["suggestedGear","currentGear"];
 const lapAttributes = ["lastLapTime"];
 
-export default function BasicGrid() {
   const [throttleStream, setThrottleStream] = useState([{ x: 0, y: 0 }]);
   const [tyreStream, setTyreStream] = useState([{ x: 0, y: 0 }]);
   const [brakeStream, setBrakeStream] = useState([{ x: 0, y: 0 }]);
   const [speedStream, setSpeedStream] = useState([{ x: 0, y: 0 }]);
+  const [suggestedGear,setSuggestedGear] = useState([{ x: 0, y: 0 }]);
+  const [currentGear,setCurrentGear] = useState([{ x: 0, y: 0 }]);
+  const [frontLeftTemp, setFrontLeftTemp] = useState([{ x: 0, y: 0 }]);
+  const [frontRightTemp, setFrontRightTemp] = useState([{ x: 0, y: 0 }]);
+  const [rearLeftTemp, setRearLeftTemp] = useState([{ x: 0, y: 0 }]);
+  const [rearRightTemp, setRearRightTemp] = useState([{ x: 0, y: 0 }]);
+  const [lastLapTime, setLastLapTime] = useState('');
+  const [bestLapTime, setBestLapTime] = useState('');
+
   const signalRService = new SignalRService();
   useEffect(() => {
    signalRService.startConnection();
@@ -70,22 +81,20 @@ export default function BasicGrid() {
 
 
  function handlePacket (receivedExtendedPacket: ExtendedPacket){
-  //console.log('Received FullPacketMessage:', receivedExtendedPacket);
+  console.log('Received FullPacketMessage:', receivedExtendedPacket);
     //console.log(JSON.stringify(receivedExtendedPacket, null, 2));
     var jsonString = JSON.stringify(receivedExtendedPacket);
     var parsedObject = JSON.parse(jsonString);
-    const attributes=["throttle","brake","speed"];
+    const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime'];
     for(const attribute in attributes){
-      var attributeValue = parsedObject[attribute];
-      if (attributeValue !== undefined && typeof attributeValue === "number") {
-        appendData(attribute,attributeValue); // Update the throttle value
-       // console.log(attributeValue);
+      var attributeValue = parsedObject[attributes[attribute]];
+      if (attributeValue !== undefined && typeof attributeValue == "string") {
+        appendStringData(attributes[attribute],attributeValue); 
+      }else if(attributeValue !== undefined && typeof attributeValue != "string"){
+        appendData(attributes[attribute],attributeValue); 
       }
+
     }
-    
-    //console.log(attributeValue);
-    //console.log(attributeValue);
-    
   };
 
   
@@ -96,17 +105,33 @@ export default function BasicGrid() {
     signalRService.removeHandleFullPacket();
   };
 }, []);
+
+
 type StateSetters = Record<string, React.Dispatch<React.SetStateAction<{ x: number; y: number; }[]>>>;
 const appendData = (attribute: string, dataPoint: number) => {
   const stateSetters: StateSetters = {
     throttle: setThrottleStream,
     brake: setBrakeStream,
-    speed: setSpeedStream,
-    // Add more attribute-state mappings if needed
+    metersPerSecond: setSpeedStream,
+    suggestedGear: setSuggestedGear,
+    currentGear: setCurrentGear,
+    tireFL_SurfaceTemperature: setFrontLeftTemp,
+    tireRL_SurfaceTemperature: setRearLeftTemp,
+    tireFR_SurfaceTemperature: setFrontRightTemp,
+    tireRR_SurfaceTemperature: setRearRightTemp,
   };
-
   const stateSetter = stateSetters[attribute];
-  if (stateSetter) {
+  if(stateSetter == setSpeedStream){
+    stateSetter((oldArray) => {
+      const prev = oldArray[oldArray.length - 1];
+      const newArray = [...oldArray, { x: prev.x + 1, y: convertMpsToMph(dataPoint) }];
+      if (newArray.length > 30) {
+        return newArray.slice(1);
+      }
+      return newArray;
+    });
+  }
+  else if (stateSetter) {
     stateSetter((oldArray) => {
       const prev = oldArray[oldArray.length - 1];
       const newArray = [...oldArray, { x: prev.x + 1, y: dataPoint }];
@@ -117,30 +142,54 @@ const appendData = (attribute: string, dataPoint: number) => {
     });
   }
 };
+type StateSettersStrings = Record<string, React.Dispatch<React.SetStateAction<string>>>;
+const appendStringData = (attribute: string, dataPoint: string) => {
+  const stateSettersStrings: StateSettersStrings = {
+    lastLapTime:setLastLapTime,
+    bestLapTime:setBestLapTime,
+  };
+  const stateSetterStrings = stateSettersStrings[attribute];
+  if (stateSetterStrings) {
+    stateSetterStrings(dataPoint);
+  }
+};
 
+function parseNumberStream(stream: { x: number; y: number; }[]) {
+  if (stream.length === 0) {
+    return -1;
+  }
+  
+  const lastItem = stream[stream.length - 1];
+  return lastItem.y;
+}
+
+
+function convertMpsToMph(dataPoint:number){
+  return Math.round(dataPoint * 2.23694);
+}
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={8}>
-          <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="throttle" signalrservice={signalRService} dataStream={throttleStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={4}>
-          <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps signalrservice={signalRService} targetAttributes={tyreAttributes} ></TyreTemps></Box><div>fuel ?</div></ItemCentered>
+          <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} ></TyreTemps></Box><div>fuel ?</div></ItemCentered>
         </Grid>
         <Grid item xs={3}>
           <Item><WrappedImageBox /></Item>
         </Grid>
         <Grid item xs={6}>
-          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="metersPerSecond" signalrservice={signalRService} dataStream={speedStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={speedStream}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={3}>
-          <Item><GearDisplay targetAttributes={gearAttributes} signalrservice={signalRService}></GearDisplay></Item>
+          <Item><GearDisplay currentGear={parseNumberStream(currentGear)} suggestedGear={parseNumberStream(suggestedGear)}></GearDisplay></Item>
         </Grid>
         <Grid item xs={4}>
-          <Item><SmallLapTable targetAttributes={lapAttributes} signalrservice={signalRService}></SmallLapTable></Item>
+          <Item><SmallLapTable lastLapTime={lastLapTime} bestLapTime={bestLapTime}></SmallLapTable></Item>
         </Grid>
         <Grid item xs={8}>
-          <Item><DynamicBasicChart label={'Brake Trace '} expectedMaxValue={255} expectedMinValue={-1} targetAttribute="brake" signalrservice={signalRService} dataStream={brakeStream} ></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Brake Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={brakeStream} ></DynamicBasicChart></Item>
         </Grid>
       </Grid>
     </Box>

@@ -237,7 +237,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 width={350}
                 targetAttribute={"Power Level"}
                 minValue={1}
-                maxValue={3}
+                maxValue={5}
                 step={1}
               />
               <InputSlider
@@ -247,7 +247,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 width={350}
                 targetAttribute={"Weight Reduction Level"}
                 minValue={1}
-                maxValue={3}
+                maxValue={5}
                 step={1}
               />
               <InputSlider

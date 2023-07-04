@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 import ExtendedPacket from '../interfaces/extendedPacketInterface';
 
 interface gearProps {
-  signalrservice: SignalRService;
-  targetAttributes: string[];
+  currentGear:number;
+  suggestedGear:number;
 }
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -23,25 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function GearDisplay({signalrservice, targetAttributes}:gearProps) {
-
-  const [suggestedGear,setSuggestedGear] = useState<number>(0);
-  const [currentGear,setCurrentGear] = useState<number>(0);
-
-  //function handlePacket(receivedExtendedPacket: ExtendedPacket) {
-  //  var jsonString = JSON.stringify(receivedExtendedPacket);
-   // var parsedObject = JSON.parse(jsonString);
-   // setSuggestedGear(parsedObject[targetAttributes[0]]);
-   // setCurrentGear(parsedObject[targetAttributes[1]]);
-   // console.log(parsedObject[targetAttributes[0]]);
-  //};
-  //useEffect(() => {
-  //signalrservice.setHandleFullPacket(handlePacket);
-  
-  //return () => {
-  //  signalrservice.removeHandleFullPacket();
-  //};
-  //}, []);
+export default function GearDisplay({currentGear,suggestedGear}:gearProps) {
   return (
     <Box sx={{ width: '100%' }}>
       <Grid container rowSpacing={6.35} columns={1} >

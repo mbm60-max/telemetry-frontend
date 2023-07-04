@@ -14,8 +14,8 @@ import ExtendedPacket from '../interfaces/extendedPacketInterface';
 
 
 interface smallLapTableProps{
-    signalrservice: SignalRService;
-    targetAttributes: string[];
+    lastLapTime:string;
+    bestLapTime:string;
 }
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -48,28 +48,75 @@ function createData(
 
 
 
-export default function SmallLapTable({signalrservice,targetAttributes}:smallLapTableProps) {
+export default function SmallLapTable({lastLapTime,bestLapTime}:smallLapTableProps) {
     const [rows, setRows] = useState<Array<any>>([])
+    const [prevLap, setPrevLap] = useState('')
+      /* won't work if the lap times are indentical */ 
+      //add sorting and check for time of -1second
+      useEffect(() => {
+        if (prevLap !== lastLapTime) {
+          setRows((prevRows) => [
+            createData(bestLapTime, 0.1, 'Hard', 'Basic'),
+            ...prevRows,
+            createData(lastLapTime, 0.1, 'Hard', 'Basic'),
+          ]);
+          setPrevLap(lastLapTime);
+        }
+      }, [lastLapTime, bestLapTime, prevLap]);
 
-    //function handlePacket(receivedExtendedPacket: ExtendedPacket) {
-    //    var jsonString = JSON.stringify(receivedExtendedPacket);
-     //   var parsedObject = JSON.parse(jsonString);
-     //   const lapTime = parsedObject[targetAttributes[0]];
-      //  const newRow = createData(lapTime, 0.1, 'Hard', 'Basic');
+      function MergeSort(array:Array<any>){
+        let length = array.length;
+        if(length <=1){
+          return;
+        }
+        let halfway = Math.floor(array.length / 2)
+        let arrayLeft = array.slice(0, halfway);
+        let arrayRight = array.slice(halfway, array.length);
+        
+        let i = 0 //left array
+        let j = 0 //left array
 
-    //setRows((prevRows) => [...prevRows, newRow]);
-      
-      //    console.log(parsedObject[targetAttributes[0]]);
-      //  }
-    //useEffect(() => {
-     //   signalrservice.setHandleFullPacket(handlePacket);
-            
-      //  return () => {
-      //      signalrservice.removeHandleFullPacket();
-      //  };
-      //  }, []);
-      
-      
+        for(let i=0; i < length; i++){
+          if(i<halfway){
+            arrayLeft[i] =  array[i];
+          }else{
+            arrayRight[j] = array[i];
+            j++;
+          }
+        }
+        MergeSort(arrayLeft);
+        MergeSort(arrayRight); 
+        Merge(arrayLeft,arrayRight,array);
+
+      }
+
+      function Merge(leftArray:Array<any>, rightArray:Array<any>, wholeArray:Array<any>){
+        let sizeLeft =  wholeArray.length /2;
+        let sizeRight =  wholeArray.length - sizeLeft;
+        let i=0, l=0, r=0; //indicies
+        while(l< sizeLeft && r < sizeRight){
+          if(leftArray[l][0].localeCompare(rightArray[r][0])<0){
+            wholeArray[i]= leftArray[l];
+            i++;
+            l++;
+          }else{
+            wholeArray[i] = rightArray[r];
+            i++;
+            r++;
+          }
+        }while(l<sizeLeft){
+          wholeArray[i]= leftArray[l];
+          i++;
+          l++;
+        }while(r<sizeRight){
+          wholeArray[i]= rightArray[r];
+          i++;
+          r++;
+        }
+      }
+
+
+
   return (
     <Box sx={{padding:0.5}}>
     <TableContainer sx={{ maxHeight: 423 }} component={Paper}>

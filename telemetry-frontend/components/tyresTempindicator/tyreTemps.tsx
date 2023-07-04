@@ -10,8 +10,10 @@ import ExtendedPacket from "../../interfaces/extendedPacketInterface";
 import SignalRService from "../../utils/signalrEndpoint";
 
 interface tyreTempKeys{
-  targetAttributes:string[];
-  signalrservice: SignalRService;
+  frontLeftTemp:number,
+  frontRightTemp:number,
+  rearLeftTemp:number,
+  rearRightTemp:number,
 }
 const calcColor = (colorScale:string[],temp:number,targetTemp:number)=>{
   let color="";
@@ -47,28 +49,8 @@ const numberOfSteps = 20;
 //const colorsBetween = colorInterpolation(Red, Green,Blue, numberOfSteps,70,85);
 //console.log(colorsBetween);
 
-const TyreTemps = ({targetAttributes, signalrservice}:tyreTempKeys) => {
-  const [frontLeftTemp, setFrontLeftTemp] = useState<number>(0);
-  const [frontRightTemp, setFrontRightTemp] = useState<number>(0);
-  const [rearLeftTemp, setRearLeftTemp] = useState<number>(0);
-  const [rearRightTemp, setRearRightTemp] = useState<number>(0);
-
-  //function handlePacket(receivedExtendedPacket: ExtendedPacket) {
-  //  var jsonString = JSON.stringify(receivedExtendedPacket);
-   // var parsedObject = JSON.parse(jsonString);
-   // setFrontLeftTemp(parsedObject[targetAttributes[0]]);
-  //  setFrontRightTemp(parsedObject[targetAttributes[1]]);
-   // setRearLeftTemp(parsedObject[targetAttributes[2]]);
-   // setRearRightTemp(parsedObject[targetAttributes[3]]);
-   // console.log(parsedObject[targetAttributes[0]]);
-  //};
-  //useEffect(() => {
-  //signalrservice.setHandleFullPacket(handlePacket);
-  
-  //return () => {
-  //  signalrservice.removeHandleFullPacket();
-  //};
- // }, []);
+const TyreTemps = ({frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp}:tyreTempKeys) => {
+ 
     return (
       <div style={{ height: "100%", width:"100%"}}>
       <Grid container spacing={1} columns={6}>

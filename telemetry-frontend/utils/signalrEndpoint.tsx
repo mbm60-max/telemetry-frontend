@@ -56,7 +56,7 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
     this.handleFullPacketCallback = null;
   };
     public handleFullPacket = (receivedExtendedPacket: ExtendedPacket) => {
-        console.log('Received FullPacketMessage:', receivedExtendedPacket);
+        //console.log('Received FullPacketMessage:', receivedExtendedPacket);
         if (this.handleFullPacketCallback) {
             this.handleFullPacketCallback(receivedExtendedPacket);
           }

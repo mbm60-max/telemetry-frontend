@@ -55,65 +55,62 @@ export default function SmallLapTable({lastLapTime,bestLapTime}:smallLapTablePro
       //add sorting and check for time of -1second
       useEffect(() => {
         if (prevLap !== lastLapTime) {
-          setRows((prevRows) => [
-            createData(bestLapTime, 0.1, 'Hard', 'Basic'),
-            ...prevRows,
-            createData(lastLapTime, 0.1, 'Hard', 'Basic'),
-          ]);
-          setPrevLap(lastLapTime);
+          const newRow = createData(lastLapTime, 0.1, 'Hard', 'Basic');
+      setRows(prevRows => {
+        const updatedRows = [...prevRows, newRow];
+        const sortedRows = MergeSort(updatedRows);
+        return sortedRows;
+      });
+      setPrevLap(lastLapTime);
         }
-      }, [lastLapTime, bestLapTime, prevLap]);
+      }, [lastLapTime, bestLapTime, prevLap, rows, MergeSort]);
 
-      function MergeSort(array:Array<any>){
+      function MergeSort(array: Array<any>): Array<any> {
         let length = array.length;
-        if(length <=1){
-          return;
+        if (length <= 1) {
+          return array;
         }
-        let halfway = Math.floor(array.length / 2)
+        let halfway = Math.floor(array.length / 2);
         let arrayLeft = array.slice(0, halfway);
         let arrayRight = array.slice(halfway, array.length);
-        
-        let i = 0 //left array
-        let j = 0 //left array
-
-        for(let i=0; i < length; i++){
-          if(i<halfway){
-            arrayLeft[i] =  array[i];
-          }else{
-            arrayRight[j] = array[i];
-            j++;
-          }
-        }
-        MergeSort(arrayLeft);
-        MergeSort(arrayRight); 
-        Merge(arrayLeft,arrayRight,array);
-
+        console.log(arrayLeft);
+        console.log(arrayRight);
+        arrayLeft = MergeSort(arrayLeft); // Recursive call to sort the left subarray
+        arrayRight = MergeSort(arrayRight); // Recursive call to sort the right subarray
+      
+        return Merge(arrayLeft, arrayRight);
       }
-
-      function Merge(leftArray:Array<any>, rightArray:Array<any>, wholeArray:Array<any>){
-        let sizeLeft =  wholeArray.length /2;
-        let sizeRight =  wholeArray.length - sizeLeft;
-        let i=0, l=0, r=0; //indicies
-        while(l< sizeLeft && r < sizeRight){
-          if(leftArray[l][0].localeCompare(rightArray[r][0])<0){
-            wholeArray[i]= leftArray[l];
-            i++;
+      
+      function Merge(leftArray: Array<any>, rightArray: Array<any>): Array<any> {
+        let mergedArray: Array<any> = [];
+        let l = 0;
+        let r = 0;
+      
+        while (l < leftArray.length && r < rightArray.length) {
+          if (leftArray[l].lapTime.localeCompare(rightArray[r].lapTime) <= 0) {
+            mergedArray.push(leftArray[l]);
             l++;
-          }else{
-            wholeArray[i] = rightArray[r];
-            i++;
+          } else {
+            mergedArray.push(rightArray[r]);
             r++;
           }
-        }while(l<sizeLeft){
-          wholeArray[i]= leftArray[l];
-          i++;
+        }
+      
+        // Append any remaining elements from leftArray
+        while (l < leftArray.length) {
+          mergedArray.push(leftArray[l]);
           l++;
-        }while(r<sizeRight){
-          wholeArray[i]= rightArray[r];
-          i++;
+        }
+      
+        // Append any remaining elements from rightArray
+        while (r < rightArray.length) {
+          mergedArray.push(rightArray[r]);
           r++;
         }
+      
+        return mergedArray;
       }
+      
 
 
 

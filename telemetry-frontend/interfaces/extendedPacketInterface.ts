@@ -79,5 +79,6 @@ interface ExtendedPacket {
   TransmissionTopSpeed?: number;
   GearRatios?: number[];
   CarCode?: number;
+  LapTimer?:string;
 }
 export default ExtendedPacket;

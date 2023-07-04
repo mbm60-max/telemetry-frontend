@@ -69,7 +69,7 @@ const lapAttributes = ["lastLapTime"];
   const [rearRightTemp, setRearRightTemp] = useState([{ x: 0, y: 0 }]);
   const [lastLapTime, setLastLapTime] = useState('');
   const [bestLapTime, setBestLapTime] = useState('');
-
+  const [lapTimer, setLapTimer] = useState('');
   const signalRService = new SignalRService();
   useEffect(() => {
    signalRService.startConnection();
@@ -86,6 +86,9 @@ const lapAttributes = ["lastLapTime"];
     var jsonString = JSON.stringify(receivedExtendedPacket);
     var parsedObject = JSON.parse(jsonString);
     const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime'];
+    var timerValue = parsedObject['lapTiming'];
+
+    setLapTimer(timerValue);
     for(const attribute in attributes){
       var attributeValue = parsedObject[attributes[attribute]];
       if (attributeValue !== undefined && typeof attributeValue == "string") {
@@ -163,7 +166,7 @@ function parseNumberStream(stream: { x: number; y: number; }[]) {
   return lastItem.y;
 }
 
-
+console.log(lapTimer);
 function convertMpsToMph(dataPoint:number){
   return Math.round(dataPoint * 2.23694);
 }
@@ -177,7 +180,7 @@ function convertMpsToMph(dataPoint:number){
           <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} ></TyreTemps></Box><div>fuel ?</div></ItemCentered>
         </Grid>
         <Grid item xs={3}>
-          <Item><WrappedImageBox /></Item>
+          <Item>{lapTimer}</Item>
         </Grid>
         <Grid item xs={6}>
           <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={speedStream}></DynamicBasicChart></Item>

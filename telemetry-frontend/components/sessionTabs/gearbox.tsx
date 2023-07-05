@@ -1,3 +1,5 @@
+
+//engine RPM,current gear,suggested gear,clutch pedal,clutch engagement, rpm clutch to gearbox
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -13,7 +15,7 @@ import ImageBox from '../homepageTrack';
 import GearDisplay from './gearDisplay.';
 import SmallLapTable from './lapTimeTable';
 import TwoValueDisplay from './gearDisplay.';
-import Test from '../liveTrack';
+import Gauge from './fuelGauge';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
@@ -53,45 +55,43 @@ const WrappedImageBox = () => (
   </BlackBox>
 );
 
-interface GeneralGridProps{
-  throttleStream: { x: number; y: number; }[];
-  brakeStream: { x: number; y: number; }[];
-  speedStream: { x: number; y: number; }[];
-  suggestedGear:number;
-  currentGear:number;
-  frontLeftTemp:number;
-  frontRightTemp:number;
-  rearLeftTemp:number;
-  rearRightTemp:number;
-  lastLapTime:string;
-  bestLapTime:string;
+interface GearboxGridProps{
+  currentGearStream: { x: number; y: number; }[];
+  suggestedGearStream: { x: number; y: number; }[];
+  rpmStream: { x: number; y: number; }[];
+  rpmClutchToGearboxStream: { x: number; y: number; }[];
+  clutchPedalStream: { x: number; y: number; }[];
+  clutchEngagementStream: { x: number; y: number; }[];
   lapTimer:string;
 }
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer}:GeneralGridProps) {
- 
+export default function GearboxGrid({currentGearStream,suggestedGearStream,rpmStream,rpmClutchToGearboxStream,clutchEngagementStream,clutchPedalStream,lapTimer}:GearboxGridProps) {
+    
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
-        </Grid>
-        <Grid item xs={4}>
-          <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps frontLeftTemp={frontLeftTemp} frontRightTemp={frontRightTemp} rearLeftTemp={rearLeftTemp} rearRightTemp={rearRightTemp} ></TyreTemps></Box><div>fuel ?</div></ItemCentered>
-        </Grid>
-        <Grid item xs={3}>
-          <Item>{lapTimer}<Test testOffset={0}targetSrc={"/images/legunaSeca.svg"} trackName={"legunaSeca"} /></Item>
+        <Grid item xs={6}>
+          <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={rpmStream}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={6}>
-          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={speedStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'RPM Clutch To Gearbox '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={rpmClutchToGearboxStream}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={3}>
-          <Item><TwoValueDisplay dataValueOne={currentGear} dataValueTwo={suggestedGear} nameOne={"Current Gear"} nameTwo={"Suggested Gear"}></TwoValueDisplay></Item>
+          <Item><DynamicBasicChart label={'Suggested Gear'} expectedMaxValue={255} expectedMinValue={-1}  dataStream={suggestedGearStream}></DynamicBasicChart></Item>
+        </Grid>
+        <Grid item xs={6}>
+          <Item><DynamicBasicChart label={'Current Gear'} expectedMaxValue={255} expectedMinValue={-1}  dataStream={currentGearStream}></DynamicBasicChart></Item>
+        </Grid>
+        <Grid item xs={3}>
+          <Item>shifts</Item>
         </Grid>
         <Grid item xs={4}>
-          <Item><SmallLapTable lastLapTime={lastLapTime} bestLapTime={bestLapTime}></SmallLapTable></Item>
+          <Item><DynamicBasicChart label={'Clutch Pedal Input Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={clutchPedalStream}></DynamicBasicChart></Item>
         </Grid>
-        <Grid item xs={8}>
-          <Item><DynamicBasicChart label={'Brake Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={brakeStream} ></DynamicBasicChart></Item>
+        <Grid item xs={4}>
+          <Item>{lapTimer}<DynamicBasicChart label={'Clutch Engagement Trace'} expectedMaxValue={255} expectedMinValue={-1}  dataStream={clutchEngagementStream}></DynamicBasicChart></Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>hi</Item>
         </Grid>
       </Grid>
     </Box>

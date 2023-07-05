@@ -1,12 +1,12 @@
 import React from 'react';
 
-interface FuelGaugeProps {
+interface GaugeProps {
   gasLevel: number;
   gasCapacity: number;
   targetSrc:string;
 }
 
-const FuelGauge = ({ gasLevel, gasCapacity, targetSrc }: FuelGaugeProps) => {
+const Gauge = ({ gasLevel, gasCapacity, targetSrc }: GaugeProps) => {
   function calculateFuelPercentage(gasLevel: number, gasCapacity: number) {
     const fuel =  Math.round((gasLevel / gasCapacity) * 100);
     if(isNaN(fuel)){
@@ -47,6 +47,6 @@ const FuelGauge = ({ gasLevel, gasCapacity, targetSrc }: FuelGaugeProps) => {
   );
 };
 
-export default FuelGauge;
+export default Gauge;
 
 

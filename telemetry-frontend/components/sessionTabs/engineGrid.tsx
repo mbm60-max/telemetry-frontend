@@ -13,7 +13,7 @@ import ImageBox from '../homepageTrack';
 import GearDisplay from './gearDisplay.';
 import SmallLapTable from './lapTimeTable';
 import TwoValueDisplay from './gearDisplay.';
-import FuelGauge from './fuelGauge';
+import Gauge from './fuelGauge';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
@@ -89,7 +89,7 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
           <Item><TwoValueDisplay nameOne='Calculated Max Speed' nameTwo='Transmission Max Speed' dataValueOne={calculatedMaxSpeed} dataValueTwo={transmissionTopSpeed}/></Item>
         </Grid>
         <Grid item xs={4}>
-          <Item><Grid container spacing={1}><Grid item xs={6}> Fuel Level: {gasLevel} %<FuelGauge gasCapacity={gasCapacity} gasLevel={gasLevel} targetSrc={"/images/fuel.svg"}/></Grid><Grid item xs={6}> Turbo Pressure:{turboBoost} 100kPa<FuelGauge gasCapacity={turboBoost} gasLevel={100} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
+          <Item><Grid container spacing={1}><Grid item xs={6}> Fuel Level: {gasLevel}%<Gauge gasCapacity={gasCapacity} gasLevel={gasLevel} targetSrc={"/images/fuel.svg"}/></Grid><Grid item xs={6}> Turbo Pressure: {turboBoost*100} kPa<Gauge gasCapacity={100} gasLevel={turboBoost} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
         </Grid>
         <Grid item xs={4}>
           <Item>{lapTimer}<DynamicBasicChart label={'Oil Pressure'} expectedMaxValue={255} expectedMinValue={-1}  dataStream={oilPressureStream}></DynamicBasicChart></Item>

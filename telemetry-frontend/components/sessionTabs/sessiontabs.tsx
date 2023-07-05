@@ -16,6 +16,7 @@ import SignalRService from '../../utils/signalrEndpoint';
 import ExtendedPacket from '../../interfaces/extendedPacketInterface';
 import GeneralGrid from './flexgridGeneral';
 import EngineGrid from './engineGrid';
+import GearboxGrid from './gearbox';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -107,9 +108,14 @@ export default function BasicTabs() {
     const [transmissionTopSpeed,setTransmissionTopSpeed]= useState(0);
     const [gasCapacity,setGasCapacity]= useState(0);
     const [gasLevel,setGasLevel]= useState(0);
+    const [turboBoost,setTurboBoost]= useState(0);
+    const [inLapShifts, setInLapShifts] = useState(0);
     const [rpmStream, setRpmStream] = useState([{ x: 0, y: 0 }]);
     const [waterTempStream, setWaterTemperatureStream] = useState([{ x: 0, y: 0 }]);
     const [oilPressureStream, setOilPressureStream] = useState([{ x: 0, y: 0 }]);
+    const [clutchEngagementStream,setClutchEngagementStream] = useState([{ x: 0, y: 0 }]);
+    const [clutchPedalStream,setClutchPedalStream]= useState([{ x: 0, y: 0 }]);
+    const [rpmClutchToGearboxStream,setRpmFromClutchToGearbox]= useState([{ x: 0, y: 0 }]);
     const signalRService = new SignalRService();
     useEffect(() => {
      signalRService.startConnection();
@@ -125,7 +131,7 @@ export default function BasicTabs() {
       //console.log(JSON.stringify(receivedExtendedPacket, null, 2));
       var jsonString = JSON.stringify(receivedExtendedPacket);
       var parsedObject = JSON.parse(jsonString);
-      const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime','engineRPM','oilTemperature','minAlertRPM','maxAlertRPM','transmissionTopSpeed','calculatedMaxSpeed','oilPressure','waterTemperature','gasLevel','gasCapacity'];
+      const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime','engineRPM','oilTemperature','minAlertRPM','maxAlertRPM','transmissionTopSpeed','calculatedMaxSpeed','oilPressure','waterTemperature','gasLevel','gasCapacity','turboBoost','rpmFromClutchToGearbox','clutchEngagement','clutchPedal','InLapShifts'];
       var timerValue = parsedObject['lapTiming'];
   
       setLapTimer(timerValue);
@@ -151,6 +157,12 @@ export default function BasicTabs() {
               appendNumberData(attributes[attribute],attributeValue)
               break;
             case 'gasLevel':
+              appendNumberData(attributes[attribute],attributeValue)
+            break;
+            case 'turboBoost':
+              appendNumberData(attributes[attribute],attributeValue)
+            break;
+            case 'InLapShifts':
               appendNumberData(attributes[attribute],attributeValue)
             break;
             default:
@@ -188,6 +200,9 @@ export default function BasicTabs() {
       oilTemperature: setOilTempStream,
       oilPressure: setOilPressureStream,
       waterTemperature: setWaterTemperatureStream,
+      clutchPedal: setClutchPedalStream,
+      rpmFromClutchToGearbox: setRpmFromClutchToGearbox,
+      clutchEngagement: setClutchEngagementStream,
     };
     const stateSetter = stateSetters[attribute];
     if(stateSetter == setSpeedStream){
@@ -232,6 +247,8 @@ export default function BasicTabs() {
       transmissionTopSpeed:setTransmissionTopSpeed,
       gasCapacity:setGasCapacity,
       gasLevel:setGasLevel,
+      turboBoost:setTurboBoost,
+      InLapShifts:setInLapShifts,
     };
     const stateSetterNumber = stateSettersNumber[attribute];
     if (stateSetterNumber) {
@@ -273,13 +290,12 @@ export default function BasicTabs() {
       <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel}/>
+      <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+      <GearboxGrid currentGearStream={currentGear} rpmClutchToGearboxStream={rpmClutchToGearboxStream} rpmStream={rpmStream} clutchEngagementStream={clutchEngagementStream} clutchPedalStream={clutchPedalStream} suggestedGearStream={suggestedGear} lapTimer={lapTimer}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Item Four<h1>hi</h1>
       </TabPanel>
       <TabPanel value={value} index={4}>
         Setup

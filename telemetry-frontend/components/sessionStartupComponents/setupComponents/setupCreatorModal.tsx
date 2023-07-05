@@ -72,8 +72,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
   const [nameError, setNameError] = useState("");
   const username = userName;
 
-  const handleSetupSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSetupSubmit = async () => {
+    console.log('ji');
     const nameResponse: AxiosResponse = await axios.get('/api/checksetupapi', {
       params: { name },
     });
@@ -212,7 +212,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-      ><form onSubmit={handleSetupSubmit}>
+      ><form >
         <Box sx={style}>
           <TextField
             id="name"
@@ -223,7 +223,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                       helperText={nameError}
           />
           
-          <Button
+          <Button   onClick={() => handleSetupSubmit}
                     type="submit"
                     variant="contained"
                     sx={{ mr: 2, width: "167px" }}

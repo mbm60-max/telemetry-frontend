@@ -49,12 +49,10 @@ const SessionStartup: React.FC = () => {
   const router = useRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
- console.log(selectedTrack)
-
- console.log(selectedCar)
+    event.preventDefault(); 
     if (((selectedCar.trim() !== "") && (selectedCompound.trim() !== ""))&&( selectedTrack != "noTrack")) {
-      router.push(`/session?car=${selectedCar}`);
+      const queryParams = `car=${selectedCar}&compound=${selectedCompound}&track=${selectedTrack}`;
+      router.push(`/session?${queryParams}`);
     }
   };
 

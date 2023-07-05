@@ -66,9 +66,22 @@ interface GeneralGridProps{
   lastLapTime:string;
   bestLapTime:string;
   lapTimer:string;
+  track:string| string[] | undefined;
+  distanceInLap:number;
 }
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer}:GeneralGridProps) {
- 
+function checkTrackStatus(track:string| string[] | undefined){
+  if(typeof track === "string" ){
+    return track
+  }return '';
+}
+function getTrackPath(track:string| string[] | undefined){
+  if(typeof track === "string" ){
+    return "/images/" + track + ".svg";
+  }return "/images/noTrack.svg";
+}
+
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap}:GeneralGridProps) {
+  console.log(distanceInLap);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -79,7 +92,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
           <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps frontLeftTemp={frontLeftTemp} frontRightTemp={frontRightTemp} rearLeftTemp={rearLeftTemp} rearRightTemp={rearRightTemp} ></TyreTemps></Box><div>fuel ?</div></ItemCentered>
         </Grid>
         <Grid item xs={3}>
-          <Item>{lapTimer}<Test testOffset={0}targetSrc={"/images/legunaSeca.svg"} trackName={"legunaSeca"} /></Item>
+          <Item>{lapTimer}<Test testOffset={distanceInLap}targetSrc={getTrackPath(track)} trackName={checkTrackStatus(track)} /></Item>
         </Grid>
         <Grid item xs={6}>
           <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={speedStream}></DynamicBasicChart></Item>

@@ -17,6 +17,7 @@ import ExtendedPacket from '../../interfaces/extendedPacketInterface';
 import GeneralGrid from './flexgridGeneral';
 import EngineGrid from './engineGrid';
 import GearboxGrid from './gearbox';
+import { trackData } from '../../data/trackData';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -55,6 +56,7 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const router = useRouter();
+  const { car, compound, track } = router.query;
   const { isLoggedIn, userName } = useContext(AuthContext);
   const DynamicChart = dynamic(() => import('./chart'), { 
     loader: () => import('./chart'),
@@ -116,6 +118,7 @@ export default function BasicTabs() {
     const [clutchEngagementStream,setClutchEngagementStream] = useState([{ x: 0, y: 0 }]);
     const [clutchPedalStream,setClutchPedalStream]= useState([{ x: 0, y: 0 }]);
     const [rpmClutchToGearboxStream,setRpmFromClutchToGearbox]= useState([{ x: 0, y: 0 }]);
+    const [distanceFromStart, setDistanceFromStart] = useState(0);
     const signalRService = new SignalRService();
     useEffect(() => {
      signalRService.startConnection();
@@ -131,7 +134,7 @@ export default function BasicTabs() {
       //console.log(JSON.stringify(receivedExtendedPacket, null, 2));
       var jsonString = JSON.stringify(receivedExtendedPacket);
       var parsedObject = JSON.parse(jsonString);
-      const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime','engineRPM','oilTemperature','minAlertRPM','maxAlertRPM','transmissionTopSpeed','calculatedMaxSpeed','oilPressure','waterTemperature','gasLevel','gasCapacity','turboBoost','rpmFromClutchToGearbox','clutchEngagement','clutchPedal','InLapShifts'];
+      const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime','engineRPM','oilTemperature','minAlertRPM','maxAlertRPM','transmissionTopSpeed','calculatedMaxSpeed','oilPressure','waterTemperature','gasLevel','gasCapacity','turboBoost','rpmFromClutchToGearbox','clutchEngagement','clutchPedal','InLapShifts','distanceFromStart'];
       var timerValue = parsedObject['lapTiming'];
   
       setLapTimer(timerValue);
@@ -163,6 +166,9 @@ export default function BasicTabs() {
               appendNumberData(attributes[attribute],attributeValue)
             break;
             case 'InLapShifts':
+              appendNumberData(attributes[attribute],attributeValue)
+            break;
+            case 'distanceFromStart':
               appendNumberData(attributes[attribute],attributeValue)
             break;
             default:
@@ -249,13 +255,28 @@ export default function BasicTabs() {
       gasLevel:setGasLevel,
       turboBoost:setTurboBoost,
       InLapShifts:setInLapShifts,
+      distanceFromStart:setDistanceFromStart,
     };
     const stateSetterNumber = stateSettersNumber[attribute];
-    if (stateSetterNumber) {
-      stateSetterNumber(dataPoint);
-    }
+    if(stateSetterNumber == setDistanceFromStart){
+    stateSetterNumber(dataPoint);
+  }else{
+    stateSetterNumber(dataPoint);
+  }
   };
   
+  function getTrackDistancePercentage(track: string | string[] | undefined, dataPoint: number) {
+    const trackInfo = trackData.find((item) => item.title === track);
+    
+    if (trackInfo && dataPoint != 0 && typeof track === "string") {
+      const lapDistanceInMeters = trackInfo.distance;
+      const distancePercentage = Math.round((dataPoint / lapDistanceInMeters) * 100);
+      console.log(distancePercentage)
+      return distancePercentage;
+    }
+  
+    return 0; // Default value when track is not found
+  }
   function parseNumberStream(stream: { x: number; y: number; }[]) {
     if (stream.length === 0) {
       return -1;
@@ -287,7 +308,7 @@ export default function BasicTabs() {
         </ThemeProvider>
       </Box>
       <TabPanel value={value} index={0} >
-      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer}/>
+      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track,distanceFromStart)}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
       <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost}/>

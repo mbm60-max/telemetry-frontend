@@ -8,11 +8,9 @@ interface TestProps {
 }
 
 const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
-  const [offset, setOffset] = useState(0);
 
   const handleOffsetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newOffset = Number(e.target.value);
-    setOffset(newOffset);
     document.documentElement.style.setProperty('--offset', `${newOffset}%`);
   };
 
@@ -45,22 +43,11 @@ const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
           <path id="car-path" d={getPathByTrackName(trackName)} stroke="#FF0707" />
         </g>
         <g className={getCarClass()} style={carStyle}>
-          <path fill="#63c6be" d="M173.2 640.3a63.6 63.6 0 00-30.8-14c-.4-6.5 4 34.5 4 34.5a63.7 63.7 0 0026.8-20.5z" />
+        <circle cx="11" cy="11" r="11" fill="#DA2E22"/>
         </g>
       </svg>
 
-      <aside>
-        <label htmlFor="offset">offset-distance: </label>
-        <output id="offset-output">{offset}%</output>
-        <input
-          id="offset-input"
-          type="range"
-          value={offset}
-          min="0"
-          max="100"
-          onChange={handleOffsetChange}
-        />
-      </aside>
+      
     </div>
   );
 };

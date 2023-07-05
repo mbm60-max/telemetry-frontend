@@ -72,11 +72,12 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
   const [nameError, setNameError] = useState("");
   const username = userName;
 
-  const handleSetupSubmit = async () => {
-    console.log('ji');
+  const handleSetupSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     const nameResponse: AxiosResponse = await axios.get('/api/checksetupapi', {
       params: { name },
     });
+    console.log('hi')
     const setupObject = {
       "Power Level": {
         Value: powerLevel,
@@ -212,7 +213,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-      ><form >
+      >
         <Box sx={style}>
           <TextField
             id="name"
@@ -223,7 +224,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                       helperText={nameError}
           />
           
-          <Button   onClick={() => handleSetupSubmit}
+          <Button   onClick={handleSetupSubmit}
                     type="submit"
                     variant="contained"
                     sx={{ mr: 2, width: "167px" }}
@@ -457,7 +458,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             maxValue={3}
             step={1}
           />
-        </Box></form>
+        </Box>
       </Modal>
     </>
   );

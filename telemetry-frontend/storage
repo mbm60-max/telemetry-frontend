@@ -83,3 +83,25 @@
             width={250}
             targetAttribute={"Max Speed (Auto Set)"}
           />
+
+
+
+          <svg
+        className="path"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 215 347"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-49%, -56%)',
+          transformOrigin: 'center',
+          width: '50%',
+          height: '84%',
+          objectFit: 'cover',
+          zIndex: 1,
+          offsetDistance: `${offset}%`, // Updated CSS property
+        }}
+      >
+        {/* SVG content */}
+      </svg>

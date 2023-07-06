@@ -63,8 +63,9 @@ interface GearboxGridProps{
   clutchPedalStream: { x: number; y: number; }[];
   clutchEngagementStream: { x: number; y: number; }[];
   lapTimer:string;
+  inLapShifts:number;
 }
-export default function GearboxGrid({currentGearStream,suggestedGearStream,rpmStream,rpmClutchToGearboxStream,clutchEngagementStream,clutchPedalStream,lapTimer}:GearboxGridProps) {
+export default function GearboxGrid({currentGearStream,suggestedGearStream,rpmStream,rpmClutchToGearboxStream,clutchEngagementStream,clutchPedalStream,lapTimer,inLapShifts}:GearboxGridProps) {
     
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -82,7 +83,7 @@ export default function GearboxGrid({currentGearStream,suggestedGearStream,rpmSt
           <Item><DynamicBasicChart label={'Current Gear'} expectedMaxValue={255} expectedMinValue={-1}  dataStream={currentGearStream}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={3}>
-          <Item>shifts</Item>
+          <Item><TwoValueDisplay dataValueOne={inLapShifts} dataValueTwo={0} nameOne={'Total Shifts In Lap'} nameTwo={'?'}/></Item>
         </Grid>
         <Grid item xs={4}>
           <Item><DynamicBasicChart label={'Clutch Pedal Input Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={clutchPedalStream}></DynamicBasicChart></Item>

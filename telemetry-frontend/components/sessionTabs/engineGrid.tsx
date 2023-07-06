@@ -101,3 +101,4 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
     </Box>
   );
 }
+

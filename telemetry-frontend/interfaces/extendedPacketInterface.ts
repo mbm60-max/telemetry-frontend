@@ -80,5 +80,6 @@ interface ExtendedPacket {
   GearRatios?: number[];
   CarCode?: number;
   LapTimer?:string;
+  InLapShifts?:number;
 }
 export default ExtendedPacket;

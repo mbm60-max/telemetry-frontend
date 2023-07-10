@@ -23,7 +23,27 @@ const LoginForm: React.FC = () => {
     });
   const loginResponse: AxiosResponse = await axios.get('/api/loginapi', {
     params: { username, password },
-  });
+  });const handleBackendLogin = () => {
+    // Replace with your username value
+    const usernameValue = 'example_username';
+
+    fetch('http://localhost:5000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: usernameValue }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response from the backend
+        console.log(data);
+      })
+      .catch(error => {
+        // Handle any error that occurs during the request
+        console.error('Error:', error);
+      });
+  };
   //const emailResponse: AxiosResponse = await axios.get('/api/checkemailapi', {
    // params: { email },
   //}); add email password login
@@ -46,6 +66,7 @@ const LoginForm: React.FC = () => {
         ;
         setUsername('');
         setPassword('');
+        handleBackendLogin();
         router.push('/');
         return;
         // Do something after successful login

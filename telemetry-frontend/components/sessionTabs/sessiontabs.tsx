@@ -189,7 +189,9 @@ export default function BasicTabs() {
     };
   }, []);
   
-  
+  let mongoDbStatus= signalRService.handleMongoWriteFail;
+
+
   type StateSetters = Record<string, React.Dispatch<React.SetStateAction<{ x: number; y: number; }[]>>>;
   const appendData = (attribute: string, dataPoint: number) => {
     const stateSetters: StateSetters = {
@@ -322,7 +324,7 @@ export default function BasicTabs() {
         Setup
       </TabPanel>
       <TabPanel value={value} index={5}>
-        {userName}
+        {"Mongo Write Status" + mongoDbStatus};
       </TabPanel>
     </Box>
     </Homepage>

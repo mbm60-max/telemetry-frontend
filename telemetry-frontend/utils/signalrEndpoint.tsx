@@ -1,5 +1,8 @@
 import * as signalR from "@microsoft/signalr";
+import { useContext } from "react";
+import { AuthContext } from "../components/authProvider";
 import ExtendedPacket from "../interfaces/extendedPacketInterface";
+
 
 
   enum SimulatorInterfaceGameType {
@@ -25,7 +28,8 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
   class SignalRService {
     private connection: signalR.HubConnection | null = null;
     private handleFullPacketCallback: ((receivedExtendedPacket: ExtendedPacket) => void) | null = null; // Callback function for handleFullPacket
-
+    private isFirstTimeFullPacket: boolean = false;
+    private mongoWriteFailed: boolean = false;
 
     public  startConnection = async () => {
       try {
@@ -35,7 +39,8 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
           .withAutomaticReconnect()
           .build();
         
-        this.connection.on("fullpacketmessage", this.handleFullPacket) 
+        this.connection.on("fullpacketmessage", this.handleFullPacket)
+        this.connection.on("mongoWriteFailmessage", this.handleMongoWriteFail) 
         
 
         await this.connection.start();
@@ -56,12 +61,27 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
     this.handleFullPacketCallback = null;
   };
     public handleFullPacket = (receivedExtendedPacket: ExtendedPacket) => {
+      const { userName } = useContext(AuthContext);
         //console.log('Received FullPacketMessage:', receivedExtendedPacket);
         if (this.handleFullPacketCallback) {
-            this.handleFullPacketCallback(receivedExtendedPacket);
+          
+          if (!this.isFirstTimeFullPacket) {
+            if (this.connection) {
+              // Send the response back to the server
+              this.connection.invoke("SendResponse", userName)
+                  .catch(error => console.error("Error sending response:", error));
+             this.isFirstTimeFullPacket = true;
+         } else {
+              console.error("SignalR connection is null.");
+        }
+          }
+          this.handleFullPacketCallback(receivedExtendedPacket);
           }
     };
 
+    public handleMongoWriteFail = () => {
+      this.mongoWriteFailed = true;
+    };
     public stopConnection = () => {
         if(this.connection){
             this.connection.stop();

@@ -4,42 +4,63 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { ListSubheader } from '@mui/material';
 
 interface ReviewGroupingProps{
     Field:string| null;
     onSelectStream: (stream: string, streamNumber:string) => void;
+    onSelectStreamMinMax: (minValue: string, maxValue:string,streamNumber:string) => void;
+    onSelectStreamGraphTypes: (graphType: string,streamNumber:string) => void;
     streamNumber:string;
 }
-export default function ReviewGrouping({Field,onSelectStream,streamNumber}:ReviewGroupingProps) {
+export default function ReviewGrouping({Field,onSelectStream,streamNumber, onSelectStreamMinMax,onSelectStreamGraphTypes}:ReviewGroupingProps) {
   const [selectedStream, setSelectedStream] = React.useState('');
   const [selectedLabel, setSelectedLabel] = React.useState('Stream');
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedStream(event.target.value as string);
     onSelectStream(event.target.value as string,streamNumber);
+    const minMaxIndex = selectedArray.indexOf(event.target.value as string);
+    console.log(minArray[minMaxIndex]);
+    console.log(maxArray[minMaxIndex]);
+    onSelectStreamMinMax(minArray[minMaxIndex],maxArray[minMaxIndex], streamNumber);
+    onSelectStreamGraphTypes(graphTypeArray[minMaxIndex],streamNumber);
   };
 // Declare your four arrays based on Field value
-const array1 = ["Throttle", "Tyre Temperatures", "MetersPerSecond","CurrentGear","Brake", "InLapShifts","InLapTimer","LastLapTime"];
-const array2 = ["EngineRPM"];
-const array3 = [ "RPMFromClutchToGearbox", "SuggestedGear","ClutchPedal", "ClutchEngagement"];
-const array4 = ["Suspension Height", "Rotational Speed"];
+const array1 = [["Throttle", "Tyre Temperatures", "MetersPerSecond","CurrentGear","Brake", "InLapShifts","InLapTimer","LastLapTime"],["-1","0","-1","1","-1","0","0","0"],["255","200","200","15","255","200","0","0"],["straight","straight","straight","stepline","straight","straight","straight","straight"]];
+const array2 = [["EngineRPM"],["-1"],["12000"],["straight"]];
+const array3 = [[ "RPMFromClutchToGearbox", "SuggestedGear","ClutchPedal", "ClutchEngagement"],["-1","1","0","0"],["12000","15","1","1"],["straight","stepline","straight","straight"]];
+const array4 = [["Suspension Height", "Rotational Speed"],["0","0"],["10","10"],["straight","straight"]];
 let isDisabled = false;
 const defaultValue = "Please select a field";
 // Select the array based on Field value
 let selectedArray: string[] = [];
+let minArray: string[] = [];
+let maxArray: string[] = [];
+let graphTypeArray: string[] = [];
 let newLabel: string = "No Field";
 if (Field === "General") {
-  selectedArray = array1;
+  selectedArray = array1[0];
+  minArray = array1[1];
+  maxArray = array1[2];
+  graphTypeArray = array1[3];
   newLabel = "Stream";
 } else if (Field === "Engine") {
-  selectedArray = array2;
+  selectedArray = array2[0];
+  minArray = array2[1];
+  maxArray = array2[2];
+  graphTypeArray = array2[3];
   newLabel = "Stream";
 } else if (Field === "Gearbox") {
-  selectedArray = array3;
+  selectedArray = array3[0];
+  minArray = array3[1];
+  maxArray = array3[2];
+  graphTypeArray = array3[3];
   newLabel = "Stream";
 } else if (Field === "Tyres/Suspension") {
-  selectedArray = array4;
+  selectedArray = array4[0];
+  minArray = array4[1];
+  maxArray = array4[2];
+  graphTypeArray = array4[3];
   newLabel = "Stream";
 }else {
     isDisabled = true;

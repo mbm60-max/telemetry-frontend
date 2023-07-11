@@ -100,6 +100,16 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
   const [selectedNumber, setSelectedNumber] = React.useState([1]);
   const [selectedNumberLaps, setSelectedNumberLaps] = React.useState([1]);
   const [availableLaps,setAvailableLaps]=  React.useState<string[]>(["No Laps Found"]);
+  const [minValues, setMinValues] = React.useState<{ [key: string]: any }>({
+    min1: 0,
+    min2: 0,
+  });
+  const [maxValues, setMaxValues] = React.useState<{ [key: string]: any }>({
+    max1: 0,
+    max2: 0,
+  });
+  const [graphTypesArray, setGraphTypesArray]= React.useState(["straight"]);
+
   const handleFieldSelection = (field: string, fieldNumber: string) => {
     setSelectedFields((prevFields) => ({
       ...prevFields,
@@ -121,10 +131,32 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
   };
   
   const handleNumberSelection = (numberOfStreams: number) => {
+    if(numberOfStreams == 1){
+      // reset stream 2lap 1 and stream 2 lap 2
+      setSelectedStreamsDataLap1((prevStreams) => ({
+        ...prevStreams,
+        [`stream${2}DataLap1`]: '',}))
+      setSelectedStreamsDataLap2((prevStreams) => ({
+        ...prevStreams,
+        [`stream${2}DataLap2`]: '',}))
+        setSelectedStreams((prevStreams) => ({
+          ...prevStreams,
+          [`stream${2}`]: '',
+        }));
+    }
     setSelectedNumber(Array.from({ length: numberOfStreams }, (_, index) => index + 1));
   };
-  const handleNumberLapsSelection = (numberOfStreams: number) => {
-    setSelectedNumberLaps(Array.from({ length: numberOfStreams }, (_, index) => index + 1));
+  const handleNumberLapsSelection = (numberOfLaps: number) => {
+    if(numberOfLaps == 1){
+      // reset stream 1 lap 2 and stream 2 lap 2
+      setSelectedStreamsDataLap2((prevStreams) => ({
+        ...prevStreams,
+        [`stream${1}DataLap2`]: '',}))
+      setSelectedStreamsDataLap2((prevStreams) => ({
+        ...prevStreams,
+        [`stream${2}DataLap2`]: '',}))
+    }
+    setSelectedNumberLaps(Array.from({ length: numberOfLaps }, (_, index) => index + 1));
   };
 
   const handleLapUpdate = (lapsArray:string[])=>{
@@ -139,14 +171,40 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
     setSelectedStreamsDataLap1((prevStreams) => ({
       ...prevStreams,
       [`stream${streamDataNumber}DataLap1`]: streamData,
-    }));console.log(selectedStreamsDataLap1);
+    }));
   }
   const handleStreamDataLap2 = (streamData:any, streamDataNumber:number)=>{
     console.log(streamData);
     setSelectedStreamsDataLap2((prevStreams) => ({
       ...prevStreams,
       [`stream${streamDataNumber}DataLap2`]: streamData,
-    }));console.log(selectedStreamsDataLap2);
+    }));
+  }
+
+  const handleMinMaxValues = (minValue:string, maxValue:string,streamNumber:string)=> {
+    setMinValues((prevMinValues) => ({
+      ...prevMinValues,
+      [`min${streamNumber}`]: Number(minValue),
+    }));
+    setMaxValues((prevMaxValues) => ({
+      ...prevMaxValues,
+      [`max${streamNumber}`]: Number(maxValue),
+    }));
+  }
+  const handleGraphTypes = (graphType:string, streamNumber:string)=> {
+    const prevGraph = graphTypesArray;
+    let newGraph = prevGraph;
+    const graphTypeIndex = Number(streamNumber);
+    newGraph[graphTypeIndex-1]=graphType;
+    newGraph[graphTypeIndex+1]=graphType;
+    setGraphTypesArray(newGraph);
+  }
+
+  const getLabel = (stream1:string, stream2:string)=> {
+    if(stream2 == ""){
+      return stream1;
+    }
+    return selectedStreams[`stream${1}`]  + " vs " + selectedStreams[`stream${2}`]
   }
   
   function validateData(streamData:any){
@@ -156,13 +214,10 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
       return parsedArray;
     }
     } 
-    console.log(streamData)
       return [0];
   }
-  console.log("validated"+validateData(selectedStreamsDataLap1[`stream1DataLap${1}`]));
   const { userName } = useContext(AuthContext);
   const username = userName;
-  let numberOfStreams = selectedNumber.length * selectedNumberLaps.length;
   function parseSpecailStream(stream:string,parsedObject:any){
     const specailStreams = ["Suspension Height", "Rotational Speed","Tyre Temps"];
     if(stream == specailStreams[0]){
@@ -248,7 +303,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
               <>
             <Grid item xs={12}><Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid>
             <Grid item xs={6}><ReviewFieldSelection onSelectField={handleFieldSelection} fieldNumber={item.toString()}/></Grid>
-            <Grid item xs={6}><ReviewGrouping Field={selectedFields[`field${item}`]} onSelectStream={handleStreamSelection} streamNumber={item.toString()}/></Grid>
+            <Grid item xs={6}><ReviewGrouping Field={selectedFields[`field${item}`]} onSelectStream={handleStreamSelection} streamNumber={item.toString()} onSelectStreamMinMax={handleMinMaxValues} onSelectStreamGraphTypes={handleGraphTypes}/></Grid>
             {selectedFields[`field${item}`]}{selectedStreams[`stream${item}`]}
             </>
           ))}
@@ -257,7 +312,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
         </Item>
         </Grid>
         <Grid item xs={8}>
-        <Item><ReviewChart expectedMaxValue={100} expectedMinValue={0} expectedMaxValueTwo={100} expectedMinValueTwo={0} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])}numberOfStreams={numberOfStreams} curves={['stepline','straight','stepline','straight']} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]}/></Item>
+        <Item><ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`max${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])}numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`],selectedStreams[`stream${2}`])}/></Item>
         </Grid>
       </Grid>
       <Grid container spacing={2}>

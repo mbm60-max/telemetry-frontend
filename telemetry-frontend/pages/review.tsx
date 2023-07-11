@@ -16,6 +16,8 @@ import ReviewStreamNumberSelection from '../components/review/reviewStreamNumbeS
 import ReviewChart from '../components/review/reviewChart';
 import axios, { AxiosResponse } from 'axios';
 import { AuthContext } from '../components/authProvider';
+import ReviewLapTable from '../components/review/reviewLapTable';
+import ReviewLapSelection from '../components/review/reviewLapSelection';
 const DynamicBasicChart = dynamic(() => import('../components/sessionTabs/chart'), { 
   loader: () => import('../components/sessionTabs/chart'),
   ssr: false 
@@ -68,17 +70,6 @@ interface GeneralGridProps{
   distanceInLap:number;
 }
 
-function checkTrackStatus(track:string| string[] | undefined){
-  if(typeof track === "string" ){
-    return track
-  }return '';
-}
-function getTrackPath(track:string| string[] | undefined){
-  if(typeof track === "string" ){
-    return "/images/" + track + ".svg";
-  }return "/images/noTrack.svg";
-}
-
 export default function Review({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap}:GeneralGridProps) {
   const router = useRouter();
   const [selectedFields, setSelectedFields] = React.useState<{ [key: string]: string }>({
@@ -91,8 +82,24 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
     stream2: '',
     stream3: '',
   });
+  const [selectedStreamsDataLap1, setSelectedStreamsDataLap1] = React.useState<{ [key: string]: any }>({
+    stream1DataLap1: '',
+    stream2DataLap1: '',
+    stream3DataLap1: '',
+  });
+  const [selectedStreamsDataLap2, setSelectedStreamsDataLap2] = React.useState<{ [key: string]: any }>({
+    stream1DataLap2: '',
+    stream2DataLap2: '',
+    stream3DataLap2: '',
+  });
+  const [selectedLaps, setSelectedLaps] = React.useState<{ [key: string]: any }>({
+    lap1: '',
+    lap2: '',
+    lap3: '',
+  });
   const [selectedNumber, setSelectedNumber] = React.useState([1]);
-  
+  const [selectedNumberLaps, setSelectedNumberLaps] = React.useState([1]);
+  const [availableLaps,setAvailableLaps]=  React.useState<string[]>(["No Laps Found"]);
   const handleFieldSelection = (field: string, fieldNumber: string) => {
     setSelectedFields((prevFields) => ({
       ...prevFields,
@@ -100,6 +107,12 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
     }));
   };
   
+  const handleLapsSelection = (laps: string, lapNumber: string) => {
+    setSelectedLaps((prevLaps) => ({
+      ...prevLaps,
+      [`lap${lapNumber}`]: laps,
+    }));
+  };
   const handleStreamSelection = (stream: string, streamNumber: string) => {
     setSelectedStreams((prevStreams) => ({
       ...prevStreams,
@@ -110,29 +123,104 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
   const handleNumberSelection = (numberOfStreams: number) => {
     setSelectedNumber(Array.from({ length: numberOfStreams }, (_, index) => index + 1));
   };
+  const handleNumberLapsSelection = (numberOfStreams: number) => {
+    setSelectedNumberLaps(Array.from({ length: numberOfStreams }, (_, index) => index + 1));
+  };
+
+  const handleLapUpdate = (lapsArray:string[])=>{
+    setAvailableLaps(lapsArray);
+  }
   function handleExitReview(){
     router.push('/')
   }
+
+  const handleStreamDataLap1 = (streamData:any, streamDataNumber:number)=>{
+    console.log(streamData);
+    setSelectedStreamsDataLap1((prevStreams) => ({
+      ...prevStreams,
+      [`stream${streamDataNumber}DataLap1`]: streamData,
+    }));console.log(selectedStreamsDataLap1);
+  }
+  const handleStreamDataLap2 = (streamData:any, streamDataNumber:number)=>{
+    console.log(streamData);
+    setSelectedStreamsDataLap2((prevStreams) => ({
+      ...prevStreams,
+      [`stream${streamDataNumber}DataLap2`]: streamData,
+    }));console.log(selectedStreamsDataLap2);
+  }
+  
+  function validateData(streamData:any){
+    if (streamData !== undefined && streamData !== null && streamData !== '') {
+      const parsedArray = JSON.parse(streamData) as number[];
+    if (Array.isArray(parsedArray)) {
+      return parsedArray;
+    }
+    } 
+    console.log(streamData)
+      return [0];
+  }
+  console.log("validated"+validateData(selectedStreamsDataLap1[`stream1DataLap${1}`]));
   const { userName } = useContext(AuthContext);
   const username = userName;
-  const lapDate = "1:30";
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const dataResponse: AxiosResponse = await axios.get('/api/retrivereviewdataapi', {
-          params: { username, lapDate },
-        });
+  let numberOfStreams = selectedNumber.length * selectedNumberLaps.length;
+  function parseSpecailStream(stream:string,parsedObject:any){
+    const specailStreams = ["Suspension Height", "Rotational Speed","Tyre Temps"];
+    if(stream == specailStreams[0]){
+      return [parsedObject.data["TireFL_SusHeight"],parsedObject.data["TireFR_SusHeight"],parsedObject.data["TireRL_SusHeight"],parsedObject.data["TireRR_SusHeight"]];
+    }
+    else if(stream == specailStreams[1]){
+      return [parsedObject.data["WheelFL_RevPerSecond"],parsedObject.data["WheelFR_RevPerSecond"],parsedObject.data["WheelRL_RevPerSecond"],parsedObject.data["WheelRR_RevPerSecond"]];
+    }else if(stream == specailStreams[2]){
+      return [parsedObject.data["TireFL_SurfaceTemperature"],parsedObject.data["TireFR_SurfaceTemperature"],parsedObject.data["TireRL_SurfaceTemperature"],parsedObject.data["TireRR_SurfaceTemperature"]]
+    }return parsedObject.data[stream];
+  }
 
-        if (dataResponse.data.message === 'Success') {
-          // Process the data
+  
+  useEffect(() => {
+    const fetchAvailableLaps = async () => {
+      try {
+        const lapsResponse: AxiosResponse = await axios.get('/api/retrivereviewablelapsapi', {
+          params: { username },
+        });
+        if (lapsResponse.data.message === 'Success') {
+          handleLapUpdate(lapsResponse.data.lapDates);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
-    fetchData();
-  }, [username, lapDate]);
+    fetchAvailableLaps();
+    const fetchData = async (lapSelection:number,lapDate:string) => {
+      try {
+        console.log(lapDate)
+        console.log(selectedLaps[`lap${1}`])
+        const dataResponse: AxiosResponse = await axios.get('/api/retrivereviewdataapi', {
+          params: { username, lapDate },
+        });
+        if (dataResponse.data.message === 'Success') {
+          var jsonString = JSON.stringify(dataResponse.data);
+          var parsedObject = JSON.parse(jsonString);
+          if(lapSelection == 1){
+            handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1)
+            if(selectedNumber.length>=2){
+              handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${2}`],parsedObject),2);
+            }
+          }else{
+            handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1)
+            if(selectedNumber.length>=2){
+              handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${2}`],parsedObject),2);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    for(let i=1; i<=selectedNumberLaps.length; i++){
+      fetchData(i,selectedLaps[`lap${i}`]);
+    }
+  }, [username, selectedLaps,selectedStreams, selectedNumber.length,selectedNumberLaps.length]);
+  
   return (
 
     <>
@@ -145,8 +233,17 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
         <Item> 
           <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}>
             <Grid container spacing={2}>
-            <Grid item xs={12}><Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>Primary View Controller select lap</Typography></Grid>
-            <Grid item xs={12}><ReviewStreamNumberSelection onSelectNumber={handleNumberSelection}/></Grid>
+            <Grid item xs={12}><Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>Primary View Controller select lap{userName}</Typography></Grid>
+            <Grid item xs={12}><ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"}/></Grid>
+            {selectedNumberLaps.map((item) => (
+              <>
+            <Grid item xs={12}><Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Lap {item}</Typography></Grid>
+            <Grid item xs={12}><ReviewLapSelection onSelectLap={handleLapsSelection} lapNumber={item.toString()} availableLaps={availableLaps}/></Grid>
+            {selectedLaps[`lap${item}`]}{selectedStreamsDataLap1[`stream1DataLap${item}`]}{selectedStreamsDataLap2[`stream2DataLap${item}`]}
+            
+            </>
+          ))}
+            <Grid item xs={12}><ReviewStreamNumberSelection onSelectNumber={handleNumberSelection} label={"Number Of Streams"}/></Grid>
             {selectedNumber.map((item) => (
               <>
             <Grid item xs={12}><Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid>
@@ -160,7 +257,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
         </Item>
         </Grid>
         <Grid item xs={8}>
-        <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
+        <Item><ReviewChart expectedMaxValue={100} expectedMinValue={0} expectedMaxValueTwo={100} expectedMinValueTwo={0} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])}numberOfStreams={numberOfStreams} curves={['stepline','straight','stepline','straight']} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]}/></Item>
         </Grid>
       </Grid>
       <Grid container spacing={2}>
@@ -168,7 +265,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
         <Item> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}>Secondary View Controller</Box></Item>
         </Grid>
         <Grid item xs={8}>
-        <Item><ReviewChart expectedMaxValue={10} expectedMinValue={0} expectedMaxValueTwo={100} expectedMinValueTwo={0} seriesOne={[1,2,3,4,5,6,7,8,]} seriesTwo={[8,7,6,5,4,6,7,8,]} numberOfStreams={2} curves={['stepline','straight']}/></Item>
+        <Item></Item>
         </Grid>
       </Grid>
     </Box>

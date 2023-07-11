@@ -44,9 +44,7 @@ const LoginForm: React.FC = () => {
         console.error('Error:', error);
       });
   };
-  //const emailResponse: AxiosResponse = await axios.get('/api/checkemailapi', {
-   // params: { email },
-  //}); add email password login
+
 
     try {
       // get data from server

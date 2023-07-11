@@ -7,7 +7,7 @@ const MONGODB_URI = 'mongodb+srv://MaxByng-Maddick:Kismetuni66@cluster0.a31ajbo.
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    const { username, lapDate } = req.query;
+    const { username } = req.query;
 
     try {
       // Connect to the MongoDB cluster
@@ -17,29 +17,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Access the database
       const db = client.db('UserSessions');
-      console.log(username);
+
       // Search for a collection with the matching username
-      if(typeof username == "string"){
+      if (typeof username === 'string') {
         const collection = db.collection(username);
         if (collection) {
-            // Collection with the matching username found
-            const lapDataQuery = { DateReceived: lapDate };
-            const lapDataResult = await collection.findOne(lapDataQuery);
-    
-            if (lapDataResult) {
-              // Document with matching lap data found
-              res.status(200).json({ message: 'Success', data: lapDataResult });
-            } else {
-              // Document with matching lap data not found
-              console.error('No user lap data found');
-              res.status(200).json({ message: 'No user lap data found' });
-            }
+          // Collection with the matching username found
+          const lapDataResult = await collection.find({}, { projection: { DateReceived: 1 } }).toArray();
+            console.log(lapDataResult);
+          if (lapDataResult.length > 0) {
+            // Documents found
+            const lapDates = lapDataResult.map((doc) => doc.DateReceived);
+            console.log(lapDates);
+            res.status(200).json({ message: 'Success', lapDates });
           } else {
-            // Collection with the matching username not found
-            console.error('No user collection found');
-            res.status(200).json({ message: 'No user collection found' });
+            // No documents found
+            console.error('No user lap data found');
+            res.status(200).json({ message: 'No user lap data found' });
           }
-      }else{
+        } else {
+          // Collection with the matching username not found
+          console.error('No user collection found');
+          res.status(200).json({ message: 'No user collection found' });
+        }
+      } else {
         console.error('No user provided');
         res.status(200).json({ message: 'No user provided' });
       }

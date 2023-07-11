@@ -20,10 +20,10 @@ export default function ReviewGrouping({Field,onSelectStream,streamNumber}:Revie
     onSelectStream(event.target.value as string,streamNumber);
   };
 // Declare your four arrays based on Field value
-const array1 = ["Throttle", "Tyre Temps", "Speed","Gears","Brakes", "in lap shifts?","in lap timer?","lap times?"];
-const array2 = ["Throttle", "RPM"];
-const array3 = ["RPM", "RPM Clutch To Gearbox", "Gears","Clutch Pedal Input", "Clutch Pedal Engagement"];
-const array4 = ["Temps", "Sus height", "Rotational speed","Radius ?"];
+const array1 = ["Throttle", "Tyre Temperatures", "MetersPerSecond","CurrentGear","Brake", "InLapShifts","InLapTimer","LastLapTime"];
+const array2 = ["EngineRPM"];
+const array3 = [ "RPMFromClutchToGearbox", "SuggestedGear","ClutchPedal", "ClutchEngagement"];
+const array4 = ["Suspension Height", "Rotational Speed"];
 let isDisabled = false;
 const defaultValue = "Please select a field";
 // Select the array based on Field value

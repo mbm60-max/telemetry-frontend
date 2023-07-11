@@ -7,15 +7,16 @@ import FormLabel from '@mui/material/FormLabel';
 
 interface ReviewStreamNumberSelectionProps{
     onSelectNumber: (numberOfStreams: number) => void;
+    label:string;
 }
-export default function ReviewStreamNumberSelection({onSelectNumber}:ReviewStreamNumberSelectionProps) {
+export default function ReviewStreamNumberSelection({label,onSelectNumber}:ReviewStreamNumberSelectionProps) {
 
     const handleChoice = (event: React.ChangeEvent<HTMLInputElement>) => {
         onSelectNumber(Number(event.target.value));
       };
   return (
     <FormControl>
-      <FormLabel id="demo-radio-buttons-group-label">Number Of Streams</FormLabel>
+      <FormLabel id="demo-radio-buttons-group-label">{label}</FormLabel>
       <RadioGroup
       row
         aria-labelledby="demo-radio-buttons-group-label"

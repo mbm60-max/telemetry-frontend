@@ -18,15 +18,20 @@ interface ReviewChartProps {
   expectedMaxValue: number;
   expectedMinValueTwo?: number;
   expectedMaxValueTwo?: number;
-  seriesOne: number[];
-  seriesTwo?: number[];
+  seriesOneLapOne: number[];
+  seriesTwoLapOne?: number[];
+  seriesOneLapTwo: number[];
+  seriesTwoLapTwo?: number[];
   height?:number
   numberOfStreams:number;
   curves:string[];
+  leftLabel:string;
+  rightLabel:string;
 }
 
-export default function ReviewChart({ label, expectedMaxValue, expectedMinValue, height, expectedMaxValueTwo, expectedMinValueTwo, seriesOne, seriesTwo, numberOfStreams,curves }: ReviewChartProps) {
+export default function ReviewChart({ label, expectedMaxValue, expectedMinValue, height, expectedMaxValueTwo, expectedMinValueTwo, seriesOneLapOne, seriesTwoLapOne,seriesOneLapTwo, seriesTwoLapTwo, numberOfStreams,curves, leftLabel,rightLabel }: ReviewChartProps) {
     const [series, setSeries] = useState<any[]>([]);
+    console.log(seriesOneLapOne);
     const [options, setOptions] = useState<ApexOptions>({
       chart: {
         type: 'line',
@@ -77,7 +82,7 @@ export default function ReviewChart({ label, expectedMaxValue, expectedMinValue,
         setSeries([
           {
             name: 'Throttle',
-            data: seriesOne
+            data: seriesOneLapOne
           }
         ]);
         setOptions((prevOptions) => ({
@@ -95,24 +100,25 @@ export default function ReviewChart({ label, expectedMaxValue, expectedMinValue,
               show: false
             }
           },title: {
-            text: 'this is a label',
+            text: label || 'No label provided',
             align: 'left',
             style: {
               color: '#F6F6F6' // Set the font color to blue
             }
           },
         }));
-      } else {
+      } else if (numberOfStreams === 2) {
         setSeries([
           {
             name: 'Column A',
-            data: seriesOne,
+            data: seriesOneLapOne,
             
           },
           {
             name: 'Column B',
-            data: seriesTwo
-          }
+            data: seriesTwoLapOne
+          },
+          
         ]);
         setOptions((prevOptions) => ({
           ...prevOptions,
@@ -134,7 +140,7 @@ export default function ReviewChart({ label, expectedMaxValue, expectedMinValue,
                   }
               },
               title: {
-                text: "Column A Data",
+                text: leftLabel,
                 style: {
                     color: '#F6F6F6' // Set the font color to blue
                   }
@@ -158,7 +164,7 @@ export default function ReviewChart({ label, expectedMaxValue, expectedMinValue,
                   }
               },
               title: {
-                text: "Column B Data",
+                text: rightLabel,
                 style: {
                     color: '#F6F6F6' // Set the font color to blue
                   }
@@ -182,8 +188,98 @@ export default function ReviewChart({ label, expectedMaxValue, expectedMinValue,
             curve: ['stepline','straight']
           },
         }));
+      }else if (numberOfStreams === 4){
+        setSeries([
+          {
+            name: 'Column A',
+            data: seriesOneLapOne,
+            
+          },
+          {
+            name: 'Column B',
+            data: seriesTwoLapOne
+          },
+          {
+            name: 'Column C',
+            data: seriesOneLapTwo,
+            
+          },
+          {
+            name: 'Column D',
+            data: seriesTwoLapTwo
+          },
+          
+        ]);
+        setOptions((prevOptions) => ({
+          ...prevOptions,
+          yaxis: [
+            {
+              seriesName: 'Column A',
+              min: expectedMinValue,
+              max: expectedMaxValue,
+              axisTicks: {
+                show: true,
+                style: {
+                    color: '#F6F6F6' // Set the font color to blue
+                  }
+              },
+              axisBorder: {
+                show: true,
+                style: {
+                    color: '#F6F6F6' // Set the font color to blue
+                  }
+              },
+              title: {
+                text: leftLabel,
+                style: {
+                    color: '#F6F6F6' // Set the font color to blue
+                  }
+              }
+            },
+            {
+              opposite: true,
+              seriesName: 'Column B',
+              min: expectedMinValueTwo,
+              max: expectedMaxValueTwo,
+              axisTicks: {
+                show: true,
+                style: {
+                    color: '#F6F6F6' // Set the font color to blue
+                  }
+              },
+              axisBorder: {
+                show: true,
+                style: {
+                    color: '#F6F6F6' // Set the font color to blue
+                  }
+              },
+              title: {
+                text: rightLabel,
+                style: {
+                    color: '#F6F6F6' // Set the font color to blue
+                  }
+              }
+            }
+          ],
+          colors: ['#99C2A2', '#C5EDAC', '#66C7F4','#F6F6F6'],
+          tooltip: {
+            shared: false,
+            intersect: true,
+            x: {
+              show: false
+            }
+          },title: {
+            text: label || 'No label provided',
+            align: 'left',
+            style: {
+              color: '#F6F6F6' // Set the font color to blue
+            }
+          },stroke: {
+            curve: ['stepline','straight','stepline','straight']
+          },
+        }));
       }
-    }, [numberOfStreams, seriesOne, seriesTwo, expectedMinValue, expectedMaxValue, expectedMinValueTwo, expectedMaxValueTwo]);
+    }, [numberOfStreams, seriesOneLapOne, seriesTwoLapOne, expectedMinValue, expectedMaxValue, expectedMinValueTwo, expectedMaxValueTwo]);
   
     return (
       <>

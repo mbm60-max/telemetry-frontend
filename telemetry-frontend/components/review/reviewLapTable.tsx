@@ -42,8 +42,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 export default function ReviewLapTable({laps}:smallLapTableProps) {
-console.log("laps"+laps);
-console.log(laps);
   return (
     <Box sx={{padding:0.5,width: '100%'}}>
     <TableContainer sx={{width: '100%', maxHeight: 210 }} component={Paper}>

@@ -9,24 +9,38 @@ interface ReviewGroupingProps{
     Field:string| null;
     onSelectStream: (stream: string, streamNumber:string) => void;
     onSelectStreamMinMax: (minValue: string, maxValue:string,streamNumber:string) => void;
-    onSelectStreamGraphTypes: (graphType: string,streamNumber:string) => void;
+    onSelectStreamGraphTypes: (graphType: string,streamNumber:string,isSpecial:boolean) => void;
+    onSelectSpecialStream: (isSpecial: boolean,streamNumber:string) => void;
     streamNumber:string;
 }
-export default function ReviewGrouping({Field,onSelectStream,streamNumber, onSelectStreamMinMax,onSelectStreamGraphTypes}:ReviewGroupingProps) {
+export default function ReviewGrouping({Field,onSelectStream,streamNumber, onSelectStreamMinMax,onSelectStreamGraphTypes,onSelectSpecialStream}:ReviewGroupingProps) {
   const [selectedStream, setSelectedStream] = React.useState('');
   const [selectedLabel, setSelectedLabel] = React.useState('Stream');
 
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedStream(event.target.value as string);
     onSelectStream(event.target.value as string,streamNumber);
-    const minMaxIndex = selectedArray.indexOf(event.target.value as string);
-    console.log(minArray[minMaxIndex]);
-    console.log(maxArray[minMaxIndex]);
-    onSelectStreamMinMax(minArray[minMaxIndex],maxArray[minMaxIndex], streamNumber);
-    onSelectStreamGraphTypes(graphTypeArray[minMaxIndex],streamNumber);
+    if(isSpecialGraphCheck(event.target.value as string)){
+      const minMaxIndex = selectedArray.indexOf(event.target.value as string);
+      onSelectSpecialStream(true,streamNumber);
+      onSelectStreamMinMax(minArray[minMaxIndex],maxArray[minMaxIndex], streamNumber);
+      onSelectStreamGraphTypes(graphTypeArray[minMaxIndex],streamNumber,true);
+    }else{
+      console.log("triggered")
+      const minMaxIndex = selectedArray.indexOf(event.target.value as string);
+      onSelectStreamMinMax(minArray[minMaxIndex],maxArray[minMaxIndex], streamNumber);
+      onSelectStreamGraphTypes(graphTypeArray[minMaxIndex],streamNumber,false);
+      onSelectSpecialStream(false,streamNumber);
+    }
   };
+  const isSpecialGraphCheck=(attribute:string)=>{
+    const specialGraphsArray=[ "Tyre Temperatures","Suspension Height", "Rotational Speed"];
+    if(specialGraphsArray.indexOf(attribute)==-1){
+      return false;
+    }return true;
+  }
 // Declare your four arrays based on Field value
-const array1 = [["Throttle", "Tyre Temperatures", "MetersPerSecond","CurrentGear","Brake", "InLapShifts","InLapTimer","LastLapTime"],["-1","0","-1","1","-1","0","0","0"],["255","200","200","15","255","200","0","0"],["straight","straight","straight","stepline","straight","straight","straight","straight"]];
+const array1 = [["Throttle", "Tyre Temperatures", "MetersPerSecond","CurrentGear","Brake", "InLapShifts","InLapTimer","LastLapTime"],["-1","0","-1","1","-1","0","0","0"],["255","150","200","15","255","200","0","0"],["straight","straight","straight","stepline","straight","straight","straight","straight"]];
 const array2 = [["EngineRPM"],["-1"],["12000"],["straight"]];
 const array3 = [[ "RPMFromClutchToGearbox", "SuggestedGear","ClutchPedal", "ClutchEngagement"],["-1","1","0","0"],["12000","15","1","1"],["straight","stepline","straight","straight"]];
 const array4 = [["Suspension Height", "Rotational Speed"],["0","0"],["10","10"],["straight","straight"]];

@@ -92,6 +92,10 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
     stream2DataLap2: '',
     stream3DataLap2: '',
   });
+  const [selectedSpecialStream, setSelectedSpecialStream] = React.useState<{ [key: string]: any }>({
+    stream1isSpecial: '',
+    stream2isSpecial: '',
+  });
   const [selectedLaps, setSelectedLaps] = React.useState<{ [key: string]: any }>({
     lap1: '',
     lap2: '',
@@ -166,18 +170,43 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
     router.push('/')
   }
 
-  const handleStreamDataLap1 = (streamData:any, streamDataNumber:number)=>{
-    console.log(streamData);
-    setSelectedStreamsDataLap1((prevStreams) => ({
+  const handleStreamDataLap1 = (streamData:any, streamDataNumber:number,isSpecial:boolean)=>{
+    if(isSpecial){
+      const stringData = streamData.toString();
+      const fullString = '['+ stringData + ']'
+      setSelectedStreamsDataLap1((prevStreams) => ({
+        ...prevStreams,
+        [`stream${streamDataNumber}DataLap1`]:  fullString,
+      })
+      );
+    }
+    else{
+      setSelectedStreamsDataLap1((prevStreams) => ({
       ...prevStreams,
       [`stream${streamDataNumber}DataLap1`]: streamData,
-    }));
+    })
+    );}
   }
-  const handleStreamDataLap2 = (streamData:any, streamDataNumber:number)=>{
-    console.log(streamData);
-    setSelectedStreamsDataLap2((prevStreams) => ({
-      ...prevStreams,
-      [`stream${streamDataNumber}DataLap2`]: streamData,
+  const handleStreamDataLap2 = (streamData:any, streamDataNumber:number,isSpecial:boolean)=>{
+    if(isSpecial){
+      const stringData = streamData.toString();
+      const fullString = '['+ stringData + ']'
+
+      setSelectedStreamsDataLap2((prevStreams) => ({
+        ...prevStreams,
+        [`stream${streamDataNumber}DataLap2`]: fullString,
+      }));
+    }else{
+      setSelectedStreamsDataLap2((prevStreams) => ({
+        ...prevStreams,
+        [`stream${streamDataNumber}DataLap2`]: streamData,
+      }));
+    }
+  }
+  const handleSpecialStream = (isSpecial:boolean, streamDataNumber:string)=>{
+    setSelectedSpecialStream((prevValues) => ({
+      ...prevValues,
+      [`stream${streamDataNumber}isSpecial`]: isSpecial,
     }));
   }
 
@@ -191,12 +220,20 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
       [`max${streamNumber}`]: Number(maxValue),
     }));
   }
-  const handleGraphTypes = (graphType:string, streamNumber:string)=> {
+  const handleGraphTypes = (graphType:string, streamNumber:string, isSpecial:boolean)=> {
     const prevGraph = graphTypesArray;
     let newGraph = prevGraph;
     const graphTypeIndex = Number(streamNumber);
-    newGraph[graphTypeIndex-1]=graphType;
-    newGraph[graphTypeIndex+1]=graphType;
+    if(isSpecial){
+      const fullArray = [graphType,graphType,graphType,graphType];
+      const stringDataGraphTypes = fullArray.toString();
+      const fullStringGraphTypes = '['+ stringDataGraphTypes + ']'
+      newGraph[graphTypeIndex-1]=fullStringGraphTypes;
+      newGraph[graphTypeIndex+1]=fullStringGraphTypes;
+    }else{
+      newGraph[graphTypeIndex-1]=graphType;
+      newGraph[graphTypeIndex+1]=graphType;
+    }
     setGraphTypesArray(newGraph);
   }
 
@@ -219,7 +256,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
   const { userName } = useContext(AuthContext);
   const username = userName;
   function parseSpecailStream(stream:string,parsedObject:any){
-    const specailStreams = ["Suspension Height", "Rotational Speed","Tyre Temps"];
+    const specailStreams = ["Suspension Height", "Rotational Speed","Tyre Temperatures"];
     if(stream == specailStreams[0]){
       return [parsedObject.data["TireFL_SusHeight"],parsedObject.data["TireFR_SusHeight"],parsedObject.data["TireRL_SusHeight"],parsedObject.data["TireRR_SusHeight"]];
     }
@@ -227,7 +264,8 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
       return [parsedObject.data["WheelFL_RevPerSecond"],parsedObject.data["WheelFR_RevPerSecond"],parsedObject.data["WheelRL_RevPerSecond"],parsedObject.data["WheelRR_RevPerSecond"]];
     }else if(stream == specailStreams[2]){
       return [parsedObject.data["TireFL_SurfaceTemperature"],parsedObject.data["TireFR_SurfaceTemperature"],parsedObject.data["TireRL_SurfaceTemperature"],parsedObject.data["TireRR_SurfaceTemperature"]]
-    }return parsedObject.data[stream];
+    }
+    return parsedObject.data[stream];
   }
 
   
@@ -247,8 +285,6 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
     fetchAvailableLaps();
     const fetchData = async (lapSelection:number,lapDate:string) => {
       try {
-        console.log(lapDate)
-        console.log(selectedLaps[`lap${1}`])
         const dataResponse: AxiosResponse = await axios.get('/api/retrivereviewdataapi', {
           params: { username, lapDate },
         });
@@ -256,14 +292,14 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
           var jsonString = JSON.stringify(dataResponse.data);
           var parsedObject = JSON.parse(jsonString);
           if(lapSelection == 1){
-            handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1)
+            handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1,selectedSpecialStream[`stream1isSpecial`])
             if(selectedNumber.length>=2){
-              handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${2}`],parsedObject),2);
+              handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${2}`],parsedObject),2,selectedSpecialStream[`stream2isSpecial`]);
             }
           }else{
-            handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1)
+            handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1,selectedSpecialStream[`stream1isSpecial`])
             if(selectedNumber.length>=2){
-              handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${2}`],parsedObject),2);
+              handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${2}`],parsedObject),2,selectedSpecialStream[`stream2isSpecial`]);
             }
           }
         }
@@ -274,8 +310,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
     for(let i=1; i<=selectedNumberLaps.length; i++){
       fetchData(i,selectedLaps[`lap${i}`]);
     }
-  }, [username, selectedLaps,selectedStreams, selectedNumber.length,selectedNumberLaps.length]);
-  
+  }, [username, selectedLaps, selectedStreams, selectedNumber.length, selectedNumberLaps.length, selectedSpecialStream]);
   return (
 
     <>
@@ -303,7 +338,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
               <>
             <Grid item xs={12}><Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid>
             <Grid item xs={6}><ReviewFieldSelection onSelectField={handleFieldSelection} fieldNumber={item.toString()}/></Grid>
-            <Grid item xs={6}><ReviewGrouping Field={selectedFields[`field${item}`]} onSelectStream={handleStreamSelection} streamNumber={item.toString()} onSelectStreamMinMax={handleMinMaxValues} onSelectStreamGraphTypes={handleGraphTypes}/></Grid>
+            <Grid item xs={6}><ReviewGrouping Field={selectedFields[`field${item}`]} onSelectStream={handleStreamSelection} streamNumber={item.toString()} onSelectStreamMinMax={handleMinMaxValues} onSelectStreamGraphTypes={handleGraphTypes} onSelectSpecialStream={handleSpecialStream}/></Grid>
             {selectedFields[`field${item}`]}{selectedStreams[`stream${item}`]}
             </>
           ))}
@@ -312,7 +347,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
         </Item>
         </Grid>
         <Grid item xs={8}>
-        <Item><ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`max${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])}numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`],selectedStreams[`stream${2}`])}/></Item>
+        <Item><ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`max${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])}numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`],selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]}/></Item>
         </Grid>
       </Grid>
       <Grid container spacing={2}>

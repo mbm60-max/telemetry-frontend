@@ -185,7 +185,7 @@ const flattenArray = (array: string[]): string[] => {
         },
         
       ]
-      if(!stream1IsSpecial && !stream2IsSpecial){
+      if((!stream1IsSpecial && !stream2IsSpecial)&&(typeof seriesOneLapOne[0] != "object")&&(typeof seriesOneLapTwo[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")){
       if ((numberOfStreams === 1)&& numberOfLaps === 1) {
         setSeries([
           {
@@ -270,18 +270,10 @@ const flattenArray = (array: string[]): string[] => {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
           },
         }));
-      }}//will not work if the tyre temps are 1 value so be careful
-      else if((stream1IsSpecial && !stream2IsSpecial)&&(typeof seriesOneLapOne[0] == "object")&&(typeof seriesOneLapOne[1] == "object")&&(typeof seriesOneLapOne[2] == "object")&&(typeof seriesOneLapOne[3] == "object")){
-       // console.log(seriesOneLapOne[1])
-        //console.log(seriesOneLapOne[2])
-        //console.log(seriesOneLapOne[3])
-       // console.log(flattenArray(curves).map((curve: string) => curveMap[curve]))
+      }}
+      else if((stream1IsSpecial && !stream2IsSpecial)&&(typeof seriesOneLapOne[0] == "object")){
+        console.log("b")
         if ((numberOfStreams === 1)&& numberOfLaps === 1) {
-          console.log(typeof seriesOneLapOne[0])
-        console.log(numberOfStreams)
-        console.log(numberOfLaps)
-        console.log(leftLabel)
-        console.log(seriesOneLapOne)
           setSeries([
             {
               name: "FL"+leftLabel,
@@ -307,7 +299,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        } else if ((numberOfStreams === 2)&& numberOfLaps == 1) {
+        } else if (((numberOfStreams === 2)&& numberOfLaps == 1)&&(typeof seriesTwoLapOne[0] != "object")) {
           setSeries([
             {
               name: "FL"+leftLabel,
@@ -338,7 +330,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        }else if ((numberOfStreams === 2)&& numberOfLaps == 2){
+        }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")&&(typeof seriesTwoLapTwo[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")){
           setSeries([
             {
               name: "FL"+leftLabel,
@@ -389,7 +381,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        }else if ((numberOfStreams === 1)&& numberOfLaps == 2){
+        }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")){
           setSeries([
             {
               name: "FL"+leftLabel,
@@ -432,7 +424,9 @@ const flattenArray = (array: string[]): string[] => {
             },
           }));
         }
-      }else if (!stream1IsSpecial && stream2IsSpecial){
+      }else if ((!stream1IsSpecial && stream2IsSpecial)&&(typeof seriesOneLapOne[0] != "object")){
+        
+        console.log("c")
         if ((numberOfStreams === 1)&& numberOfLaps === 1) {
           setSeries([
             {
@@ -447,7 +441,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        } else if ((numberOfStreams === 2)&& numberOfLaps == 1) {
+        } else if (((numberOfStreams === 2)&& numberOfLaps == 1)&&(typeof seriesTwoLapOne[0] == "object")) {
           setSeries([
             {
               name: leftLabel,
@@ -478,7 +472,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        }else if ((numberOfStreams === 2)&& numberOfLaps == 2){
+        }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] != "object")&&(typeof seriesTwoLapTwo[0] == "object")&&(typeof seriesTwoLapOne[0] == "object")){
           setSeries([
             {
               name: leftLabel + "Lap 1",
@@ -529,7 +523,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        }else if ((numberOfStreams === 1)&& numberOfLaps == 2){
+        }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] != "object")){
           setSeries([
             {
               name: 'Lap 1'+leftLabel,
@@ -551,7 +545,8 @@ const flattenArray = (array: string[]): string[] => {
             },
           }));
         }
-      }else if (stream1IsSpecial && stream2IsSpecial){
+      }else if ((stream1IsSpecial && stream2IsSpecial)&&(typeof seriesOneLapOne[0] == "object")){
+        console.log("d")
         if ((numberOfStreams === 1)&& numberOfLaps === 1) {
           setSeries([
             {
@@ -578,7 +573,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        } else if ((numberOfStreams === 2)&& numberOfLaps == 1) {
+        } else if (((numberOfStreams === 2)&& numberOfLaps == 1)&&(typeof seriesTwoLapOne[0] == "object")) {
           setSeries([
             {
               name: "FL"+leftLabel,
@@ -621,7 +616,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        }else if ((numberOfStreams === 2)&& numberOfLaps == 2){
+        }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesTwoLapOne[0] == "object")&&(typeof seriesOneLapTwo[0] == "object")&&(typeof seriesTwoLapTwo[0] == "object")){
           setSeries([
             {
               name: "FL"+leftLabel +"Lap 1",
@@ -696,7 +691,7 @@ const flattenArray = (array: string[]): string[] => {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        }else if ((numberOfStreams === 1)&& numberOfLaps == 2){
+        }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")){
           setSeries([
             {
               name: "FL"+leftLabel +"Lap 1",

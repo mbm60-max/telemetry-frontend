@@ -18,6 +18,7 @@ import GeneralGrid from './flexgridGeneral';
 import EngineGrid from './engineGrid';
 import GearboxGrid from './gearbox';
 import { trackData } from '../../data/trackData';
+import TyresSuspensionGrid from './tyresSuspension';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -100,6 +101,18 @@ export default function BasicTabs() {
     const [frontRightTemp, setFrontRightTemp] = useState([{ x: 0, y: 0 }]);
     const [rearLeftTemp, setRearLeftTemp] = useState([{ x: 0, y: 0 }]);
     const [rearRightTemp, setRearRightTemp] = useState([{ x: 0, y: 0 }]);
+    const [tireFL_SusHeight, setTireFL_SusHeight] = useState([{x: 0, y: 0}]);
+    const [tireFR_SusHeight, setTireFR_SusHeight] = useState([{x: 0, y: 0}]);
+    const [tireRL_SusHeight, setTireRL_SusHeight] = useState([{x: 0, y: 0}]);
+    const [tireRR_SusHeight, setTireRR_SusHeight] = useState([{x: 0, y: 0}]);
+    const [tireFL_TireRadiu, setTireFL_TireRadius] = useState([{x: 0, y: 0}]);
+    const [tireFR_TireRadius, setTireFR_TireRadius] = useState([{x: 0, y: 0}]);
+    const [tireRL_TireRadius, setTireRL_TireRadius] = useState([{x: 0, y: 0}]);
+    const [tireRR_TireRadius, setTireRR_TireRadius] = useState([{x: 0, y: 0}]);
+    const [wheelFL_RevPerSecond, setWheelFL_RevPerSecond] = useState([{x: 0, y: 0}]);
+    const [wheelFR_RevPerSecond, setWheelFR_RevPerSecond] = useState([{x: 0, y: 0}]);
+    const [wheelRL_RevPerSecond, setWheelRL_RevPerSecond] = useState([{x: 0, y: 0}]);
+    const [wheelRR_RevPerSecond, setWheelRR_RevPerSecond] = useState([{x: 0, y: 0}]);
     const [lastLapTime, setLastLapTime] = useState('');
     const [bestLapTime, setBestLapTime] = useState('');
     const [lapTimer, setLapTimer] = useState('');
@@ -134,7 +147,7 @@ export default function BasicTabs() {
       //console.log(JSON.stringify(receivedExtendedPacket, null, 2));
       var jsonString = JSON.stringify(receivedExtendedPacket);
       var parsedObject = JSON.parse(jsonString);
-      const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime','engineRPM','oilTemperature','minAlertRPM','maxAlertRPM','transmissionTopSpeed','calculatedMaxSpeed','oilPressure','waterTemperature','gasLevel','gasCapacity','turboBoost','rpmFromClutchToGearbox','clutchEngagement','clutchPedal','InLapShifts','distanceFromStart'];
+      const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime','engineRPM','oilTemperature','minAlertRPM','maxAlertRPM','transmissionTopSpeed','calculatedMaxSpeed','oilPressure','waterTemperature','gasLevel','gasCapacity','turboBoost','rpmFromClutchToGearbox','clutchEngagement','clutchPedal','InLapShifts','distanceFromStart','tireFL_SusHeight','tireFR_SusHeight','tireRL_SusHeight','tireRR_SusHeight','tireFL_TireRadius','tireFR_TireRadius','tireRL_TireRadius','tireRR_TireRadius','wheelFL_RevPerSecond','wheelFR_RevPerSecond','wheelRL_RevPerSecond','wheelRR_RevPerSecond'];
       var timerValue = parsedObject['lapTiming'];
   
       setLapTimer(timerValue);
@@ -204,6 +217,18 @@ export default function BasicTabs() {
       tireRL_SurfaceTemperature: setRearLeftTemp,
       tireFR_SurfaceTemperature: setFrontRightTemp,
       tireRR_SurfaceTemperature: setRearRightTemp,
+      tireFL_SusHeight:setTireFL_SusHeight,
+      tireFR_SusHeight:setTireFR_SusHeight,
+      tireRL_SusHeight:setTireRL_SusHeight,
+      tireRR_SusHeight:setTireRR_SusHeight,
+      tireFL_TireRadius:setTireFL_TireRadius,
+      tireFR_TireRadius:setTireFR_TireRadius,
+      tireRL_TireRadius:setTireRL_TireRadius,
+      tireRR_TireRadius:setTireRR_TireRadius,
+      wheelFL_RevPerSecond:setWheelFL_RevPerSecond,
+      wheelFR_RevPerSecond:setWheelFR_RevPerSecond,
+      wheelRL_RevPerSecond:setWheelRL_RevPerSecond,
+      wheelRR_RevPerSecond:setWheelRR_RevPerSecond,
       engineRPM: setRpmStream,
       oilTemperature: setOilTempStream,
       oilPressure: setOilPressureStream,
@@ -319,6 +344,7 @@ export default function BasicTabs() {
       <GearboxGrid currentGearStream={currentGear} rpmClutchToGearboxStream={rpmClutchToGearboxStream} rpmStream={rpmStream} clutchEngagementStream={clutchEngagementStream} clutchPedalStream={clutchPedalStream} suggestedGearStream={suggestedGear} lapTimer={lapTimer} inLapShifts={inLapShifts}/>
       </TabPanel>
       <TabPanel value={value} index={3}>
+      <TyresSuspensionGrid tireFL_SurfaceTemperature={frontLeftTemp} tireRL_SurfaceTemperature={rearLeftTemp} tireFR_SurfaceTemperature={frontRightTemp} tireRR_SurfaceTemperature={rearRightTemp} tireFL_SusHeight={tireFL_SusHeight} tireFR_SusHeight={tireFR_SusHeight} tireRL_SusHeight={tireRL_SusHeight} tireRR_SusHeight={tireRR_SusHeight} tireFL_TireRadius={tireFL_TireRadiu} tireFR_TireRadius={tireFR_TireRadius} tireRL_TireRadius={tireRL_TireRadius} tireRR_TireRadius={tireRR_TireRadius} wheelFL_RevPerSecond={wheelFL_RevPerSecond} wheelFR_RevPerSecond={wheelFR_RevPerSecond} wheelRL_RevPerSecond={wheelRL_RevPerSecond} wheelRR_RevPerSecond={wheelRR_RevPerSecond} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} />
       </TabPanel>
       <TabPanel value={value} index={4}>
         Setup

@@ -23,6 +23,7 @@ import TrackSelection from "../components/sessionStartupComponents/setupComponen
 import TrackSelectionModal from "../components/sessionStartupComponents/setupComponents/trackSelectionModal";
 import ImageBox from "../components/homepageTrack";
 import SetupTable from "../components/sessionStartupComponents/setupComponents/setupCreator";
+import BasicCard from "../components/card";
 
 const SessionStartup: React.FC = () => {
   const Item = styled(Paper)(({ theme }) => ({
@@ -86,18 +87,18 @@ const SessionStartup: React.FC = () => {
             display: "flex",
             backgroundColor: "#F6F6F6",
             height: "610px",
-            width: 1000,
+            width: 1200,
           }}
         >
           <div style={{ marginTop: 25 }}>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <Item>
                     <QuickFilteringGrid onSelectCar={handleCarSelection} />
                   </Item>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <Item>
                     <TrackSelectionModal onSelectTrack={handleTrackSelection} />
                     <ImageBox
@@ -109,7 +110,7 @@ const SessionStartup: React.FC = () => {
                       imageSrc={`/images/${selectedTrack}.svg`}
                     />
                   </Item>
-                </Grid>
+                </Grid><Grid item xs={4}><Item><SetupTable onSelectSetup={handlesetupSelection}/></Item></Grid>
                 <Grid item xs={6}>
                   <ItemCentered>
                     <Box sx={{ minWidth: "100%" }}>
@@ -166,21 +167,18 @@ const SessionStartup: React.FC = () => {
                     </Box>
                   </ItemCentered>
                 </Grid>
-                <Grid item xs={6}><Item><SetupTable onSelectSetup={handlesetupSelection}/></Item></Grid>
-              </Grid>
-              <div>
-                {selectedCar}
-                {selectedCompound}
-                {selectedTrack}
-                {selectedSetup}
-              </div>
-              <Button
+                <Grid item xs={6}><Button
                 type="submit"
                 variant="contained"
                 sx={{ mr: 2, width: "167px" }}
               >
                 Submit
-              </Button>
+              </Button><div><BasicCard ml={0} mt={0} mr={0} width={0} noOfLines={4} lineFontSizes={[]} lineFontColors={[]} lineContent={[selectedCar,
+                selectedCompound,
+                selectedTrack,
+                selectedSetup]} lineMR={[]} lineML={[]} lineMT={[]} lineWhiteSpace={[]}/>
+              </div></Grid>
+              </Grid>
             </form>
           </div>
         </div>

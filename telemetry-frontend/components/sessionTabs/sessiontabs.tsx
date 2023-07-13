@@ -330,7 +330,7 @@ export default function BasicTabs() {
         <WhiteTextTab label="Gearbox" {...a11yProps(2)} />
         <WhiteTextTab label="Tyres/Suspension" {...a11yProps(3)} />
         <WhiteTextTab label="Setup" {...a11yProps(4)} />
-        <WhiteTextTab label="blah" {...a11yProps(5)} />
+        <WhiteTextTab label="Custom Graph" {...a11yProps(5)} />
         </Tabs>
         </ThemeProvider>
       </Box>
@@ -351,6 +351,7 @@ export default function BasicTabs() {
       </TabPanel>
       <TabPanel value={value} index={5}>
         {"Mongo Write Status" + mongoDbStatus};
+
       </TabPanel>
     </Box>
     </Homepage>

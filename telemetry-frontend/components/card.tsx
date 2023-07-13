@@ -22,7 +22,7 @@ interface BasicCardProps{
 }
 export default function BasicCard({ml,mt,mr,width,noOfLines,lineFontSizes,lineFontColors,lineContent,lineML,lineMR,lineMT,lineWhiteSpace}:BasicCardProps) {
   return (
-    <Card sx={{ ml:ml, mt:mt, mr:mr,width: width, borderRadius:0,backgroundColor:'#847E7E',boxShadow: 'none'  }}>
+    <Card sx={{ ml:ml, mt:mt, mr:mr,width: '100%', borderRadius:0,backgroundColor:'#847E7E',boxShadow: 'none'  }}>
       <CardContent>
       {Array.from({ length: noOfLines }, (_, index) => (
   <Typography

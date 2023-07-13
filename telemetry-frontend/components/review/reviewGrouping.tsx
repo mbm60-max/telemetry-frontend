@@ -43,7 +43,7 @@ export default function ReviewGrouping({Field,onSelectStream,streamNumber, onSel
 const array1 = [["Throttle", "Tyre Temperatures", "MetersPerSecond","CurrentGear","Brake", "InLapShifts","InLapTimer","LastLapTime"],["-1","0","-1","1","-1","0","0","0"],["255","150","200","15","255","200","0","0"],["straight","straight","straight","stepline","straight","straight","straight","straight"]];
 const array2 = [["EngineRPM"],["-1"],["12000"],["straight"]];
 const array3 = [[ "RPMFromClutchToGearbox", "SuggestedGear","ClutchPedal", "ClutchEngagement"],["-1","1","0","0"],["12000","15","1","1"],["straight","stepline","straight","straight"]];
-const array4 = [["Suspension Height", "Rotational Speed"],["0","0"],["10","10"],["straight","straight"]];
+const array4 = [["Suspension Height", "Rotational Speed"],["0","0"],["1","100"],["straight","straight"]];
 let isDisabled = false;
 const defaultValue = "Please select a field";
 // Select the array based on Field value

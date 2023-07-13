@@ -39,7 +39,7 @@ export default function ReviewChart({ label, expectedMaxValue, expectedMinValue,
   stepline: 'stepline',
   smooth:'smooth',
 };
-
+console.log(expectedMinValueTwo)
 const flattenArray = (array: string[]): string[] => {
   const flattenedArray: string[] = [];
   for (const item of array) {
@@ -110,56 +110,7 @@ const flattenArray = (array: string[]): string[] => {
     });
   
     useEffect(() => {
-      const yaxis2Streams = [
-        {
-          seriesName: 'Column A',
-          min: expectedMinValue,
-          max: expectedMaxValue,
-          axisTicks: {
-            show: true,
-            style: {
-                color: '#F6F6F6' // Set the font color to blue
-              }
-          },
-          axisBorder: {
-            show: true,
-            style: {
-                color: '#F6F6F6' // Set the font color to blue
-              }
-          },
-          title: {
-            text: leftLabel,
-            style: {
-                color: '#F6F6F6' // Set the font color to blue
-              }
-          }
-        },
-        {
-          opposite: true,
-          seriesName: 'Column B',
-          min: expectedMinValueTwo,
-          max: expectedMaxValueTwo,
-          axisTicks: {
-            show: true,
-            style: {
-                color: '#F6F6F6' // Set the font color to blue
-              }
-          },
-          axisBorder: {
-            show: true,
-            style: {
-                color: '#F6F6F6' // Set the font color to blue
-              }
-          },
-          title: {
-            text: rightLabel,
-            style: {
-                color: '#F6F6F6' // Set the font color to blue
-              }
-          }
-        }
-      ]
-      const yaxis1Stream = [
+      const yaxis1LeftLabel = [
         {
           seriesName: 'Column A',
           min: expectedMinValue,
@@ -185,6 +136,66 @@ const flattenArray = (array: string[]): string[] => {
         },
         
       ]
+      const yaxis1RightLabel = [
+        {
+          opposite: true,
+          seriesName: 'Column B',
+          min: expectedMinValueTwo,
+          max: expectedMaxValueTwo,
+          axisTicks: {
+            show: true,
+            style: {
+                color: '#F6F6F6' // Set the font color to blue
+              }
+          },
+          axisBorder: {
+            show: true,
+            style: {
+                color: '#F6F6F6' // Set the font color to blue
+              }
+          },
+          title: {
+            text: rightLabel,
+            style: {
+                color: '#F6F6F6' // Set the font color to blue
+              }
+          }
+        }
+        
+      ]
+      const yaxis2Streams = [...yaxis1LeftLabel,...yaxis1RightLabel]
+      const extraStreamOne = [
+        {
+          min: expectedMinValue,
+          max: expectedMaxValue,
+          labels: {
+            show: false // Hide the data values
+          }
+        },
+      ];
+      const extraStreamTwo = [
+        {
+          opposite: true,
+          min: expectedMinValueTwo,
+          max: expectedMaxValueTwo,
+          labels: {
+            show: false // Hide the data values
+          }
+        }
+      ];
+      const test = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne]
+      const testExtended = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...yaxis1RightLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamTwo]
+      const test2 = [...yaxis1LeftLabel,...yaxis1RightLabel,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo]
+      const custom = [...yaxis1LeftLabel,...yaxis1RightLabel,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo,...extraStreamOne,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo]
+      const left3right3 = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...yaxis1RightLabel,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo]
+      const left7 = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne]
+      const yaxis2StreamsSpecialFirst = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...yaxis1RightLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo];
+      const extra2Streams =[...extraStreamOne,...extraStreamTwo];
+      const yaxis4Streams = [...yaxis2Streams,...extra2Streams];
+      const yaxis5Streams = [];
+      const yaxis8Streams = [];
+      const yaxis10Streams = [];
+      const yaxis16Streams = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...yaxis1RightLabel,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo,];
       if((!stream1IsSpecial && !stream2IsSpecial)&&(typeof seriesOneLapOne[0] != "object")&&(typeof seriesOneLapTwo[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")){
       if ((numberOfStreams === 1)&& numberOfLaps === 1) {
         setSeries([
@@ -195,7 +206,7 @@ const flattenArray = (array: string[]): string[] => {
         ]);
         setOptions((prevOptions) => ({
           ...prevOptions,
-          yaxis: yaxis1Stream,
+          yaxis: yaxis1LeftLabel,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
           },
@@ -221,6 +232,15 @@ const flattenArray = (array: string[]): string[] => {
           },
         }));
       }else if ((numberOfStreams === 2)&& numberOfLaps == 2){
+        console.log(seriesOneLapOne)
+        console.log(seriesTwoLapOne)
+        console.log(seriesOneLapTwo)
+        console.log(seriesTwoLapTwo)
+        console.log(flattenArray(curves).map((curve: string) => curveMap[curve]))
+        console.log(expectedMaxValue)
+        console.log(expectedMaxValueTwo)
+        console.log(expectedMinValue)
+        console.log(expectedMinValueTwo)
         setSeries([
           {
             name: 'Lap 1'+leftLabel,
@@ -244,7 +264,7 @@ const flattenArray = (array: string[]): string[] => {
         ]);
         setOptions((prevOptions) => ({
           ...prevOptions,
-          yaxis: yaxis2Streams,
+          yaxis: yaxis4Streams,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
           },
@@ -265,7 +285,7 @@ const flattenArray = (array: string[]): string[] => {
         ]);
         setOptions((prevOptions) => ({
           ...prevOptions,
-          yaxis: yaxis1Stream,
+          yaxis: yaxis1LeftLabel,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
           },
@@ -294,7 +314,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis1Stream,
+            yaxis: yaxis1LeftLabel,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -325,7 +345,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis2Streams,
+            yaxis: yaxis2StreamsSpecialFirst,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -333,7 +353,7 @@ const flattenArray = (array: string[]): string[] => {
         }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")&&(typeof seriesTwoLapTwo[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")){
           setSeries([
             {
-              name: "FL"+leftLabel,
+              name: "FL"+leftLabel+ "Lap 1",
               data: seriesOneLapOne[0]
             },
             {
@@ -376,7 +396,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis2Streams,
+            yaxis: testExtended,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -384,7 +404,7 @@ const flattenArray = (array: string[]): string[] => {
         }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")){
           setSeries([
             {
-              name: "FL"+leftLabel,
+              name: "FL"+leftLabel + "Lap 1",
               data: seriesOneLapOne[0]
             },
             {
@@ -418,15 +438,13 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis1Stream,
+            yaxis: test,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
         }
       }else if ((!stream1IsSpecial && stream2IsSpecial)&&(typeof seriesOneLapOne[0] != "object")){
-        
-        console.log("c")
         if ((numberOfStreams === 1)&& numberOfLaps === 1) {
           setSeries([
             {
@@ -436,7 +454,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis1Stream,
+            yaxis: yaxis1LeftLabel,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -445,7 +463,7 @@ const flattenArray = (array: string[]): string[] => {
           setSeries([
             {
               name: leftLabel,
-              data: seriesTwoLapOne
+              data: seriesOneLapOne
             },
             {
               name: "FL"+rightLabel,
@@ -467,7 +485,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis2Streams,
+            yaxis: test2,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -476,7 +494,7 @@ const flattenArray = (array: string[]): string[] => {
           setSeries([
             {
               name: leftLabel + "Lap 1",
-              data: seriesTwoLapOne
+              data: seriesOneLapOne
             },
             {
               name: "FL"+rightLabel+ "Lap 1",
@@ -496,7 +514,7 @@ const flattenArray = (array: string[]): string[] => {
             },
             {
               name: leftLabel+ "Lap 2",
-              data: seriesTwoLapTwo
+              data: seriesOneLapTwo
             },
             {
               name: "FL"+rightLabel+ "Lap 2",
@@ -518,7 +536,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis2Streams,
+            yaxis: custom,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -539,7 +557,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis1Stream,
+            yaxis: yaxis1LeftLabel,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -568,7 +586,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis1Stream,
+            yaxis: yaxis1LeftLabel,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -611,7 +629,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis2Streams,
+            yaxis: left3right3,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -686,7 +704,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis2Streams,
+            yaxis: yaxis16Streams,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
@@ -729,7 +747,7 @@ const flattenArray = (array: string[]): string[] => {
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
-            yaxis: yaxis1Stream,
+            yaxis: test,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },

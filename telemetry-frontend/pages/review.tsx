@@ -113,7 +113,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
     max2: 0,
   });
   const [graphTypesArray, setGraphTypesArray]= React.useState(["straight"]);
-
+  const [lapTimeXAxis, setLapTimeXAxis] = React.useState(["00:00:01"]);
   const handleFieldSelection = (field: string, fieldNumber: string) => {
     setSelectedFields((prevFields) => ({
       ...prevFields,
@@ -291,6 +291,8 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
         if (dataResponse.data.message === 'Success') {
           var jsonString = JSON.stringify(dataResponse.data);
           var parsedObject = JSON.parse(jsonString);
+          setLapTimeXAxis(parsedObject.data["LapTiming"]);
+          console.log(parsedObject.data["LapTiming"]);
           if(lapSelection == 1){
             handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1,selectedSpecialStream[`stream1isSpecial`])
             if(selectedNumber.length>=2){
@@ -347,7 +349,7 @@ export default function Review({throttleStream,brakeStream,speedStream,suggested
         </Item>
         </Grid>
         <Grid item xs={8}>
-        <Item><ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])}numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`],selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]}/></Item>
+        <Item><ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])}numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`],selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={lapTimeXAxis}/></Item>
         </Grid>
       </Grid>
       <Grid container spacing={2}>

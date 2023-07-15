@@ -1,4 +1,12 @@
-export const trackData = [
+type TrackData = {
+  distance: number;
+  title: string;
+  elevationChange: number|string;
+  corners: number|string;
+  longestStraight: number|string;
+};
+
+const trackData: TrackData[] = [
     {
       distance: 7004,
       title: 'spa',
@@ -127,7 +135,7 @@ export const trackData = [
     },
     {
       distance: 5148,
-      title: 'nurburgriggp',
+      title: 'nurburgrigGp',
       elevationChange: 'N/A',
       corners:'N/A',
       longestStraight:'N/A',
@@ -400,7 +408,7 @@ export const trackData = [
     },
     {
       distance: 5809,
-      title: 'autodromoLagoMaggioreGP',
+      title: 'autodromoLagoMaggioreGp',
       elevationChange: 74,
       corners:17,
       longestStraight:800,
@@ -428,7 +436,7 @@ export const trackData = [
     },
     {
       distance: 5809,
-      title: 'autodromoLagoMaggioreGPReverse',
+      title: 'autodromoLagoMaggioreGpReverse',
       elevationChange: 74,
       corners:17,
       longestStraight:800,
@@ -574,3 +582,5 @@ export const trackData = [
       longestStraight:177,
     },
   ];
+
+  export default trackData;

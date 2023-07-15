@@ -1,5 +1,5 @@
 'use client'
-import React,{ useContext, useEffect } from 'react';
+import React,{ useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import NavBar from '../components/navbar/navbar';
 import DynamicChart from '../components/sessionTabs/chart';
 import SideNav from '../components/sideNav';
@@ -20,13 +20,17 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import trackData from '../data/trackData'
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  textAlign: 'left',
+  alignItems: 'center',
+  justifyContent: 'center',
   color: theme.palette.text.secondary,
   backgroundColor: '#847E7E',
+  boxShadow: 'none', // Override the shadow effect
 }));
 const ItemBlack = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -58,11 +62,56 @@ const Home = () => {
   const Card1Content=["Boost Your Learning","Real Time insights, Fully rigged","Sign-up to start a session and begin gaining every tenth"]
   const Card2Fonts=[32,17]
   const Card2Colors=["#F6F6F6","#F6F6F6"]
-  const Card2Content=["Spa-Francorchamps","Lap Distance: 5.1mi\n Total Laps: 20"]
-  const Card2Ml=[0,0]
-  const marginLeft = {
-    marginLeft: '250px',
+  type TrackData = {
+    distance: number;
+    title: string;
+    elevationChange: number|string;
+    corners: number|string;
+    longestStraight: number|string;
   };
+  function getRandomNumber(min:number, max:number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  function splitAndCapitalise(input: string): string {
+    const words = input.split(/(?=[A-Z])/); // Split at capital letters
+    const capitalizedWords = words.map((word) => {
+      const firstLetter = word.charAt(0).toUpperCase();
+      const restOfWord = word.slice(1);
+      return firstLetter + restOfWord;
+    });
+    return capitalizedWords.join(' ');
+  }
+  const checkForNaValues = (data:string|number) =>{
+    if(typeof data == "string"){
+      return "N/A"
+    }
+    return data + " m"
+  }
+  const [randomTrackData, setRandomTrackData] = useState(["null"]);
+  const [trackSvgPath, setTrackSvgPath] = useState('');
+  const removeReverseFromString = (pathString:string) =>{
+    return pathString.replace(/Reverse$/, '');
+  }
+  useEffect(() => {
+    const randomIndex = getRandomNumber(0, trackData.length - 1);
+    const { distance, title, elevationChange, corners, longestStraight } = trackData[randomIndex];
+    
+    // Assign values to string array
+    const trackInfo = [
+      `Title: ${splitAndCapitalise(title)}`,
+      `Distance: ${checkForNaValues(distance)}`,
+      `Elevation Change: ${checkForNaValues(elevationChange)}`,
+      `Corners: ${corners}`,
+      `Longest Straight: ${checkForNaValues(longestStraight)} `,
+    ];
+    setRandomTrackData(trackInfo);
+    
+    // Assign track SVG path
+    const path = `/images/${removeReverseFromString(title)}.svg`;
+    setTrackSvgPath(path);
+  }, []);
+  
+
   console.log(isLoggedIn);
   useEffect(() => {
     console.log(isLoggedIn);
@@ -78,21 +127,21 @@ const Home = () => {
         <Grid item xs={12}>
           <Item><NavBar/></Item>
         </Grid>
-        <Grid item xs={3}>
-          <Item><div style={{ display: 'flex', flexDirection:'column'}}><BasicCard ml={0} mt={0} mr={0} width={200} noOfLines={3} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard><div style={marginLeft}><Button className="action-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></div><div style={{  position: 'absolute', top: '100px', left: '525px', zIndex: 1}}></div></Item>
+        <Grid item xs={5}>
+          <Item><div style={{ display: 'flex', flexDirection:'column'}}><BasicCard ml={0} mt={0} mr={0} width={200} noOfLines={3} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard><div ><Button className="action-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></div><div style={{  position: 'absolute', zIndex: 1}}></div></Item>
         </Grid>
-        <Grid item xs={6}>
-          <Item><BasicCard ml={0} mt={0} mr={0} width={350} noOfLines={2} lineFontSizes={Card2Fonts}lineFontColors={Card2Colors} lineContent={Card2Content} lineML={[]} lineMR={[]} lineMT={[]}lineWhiteSpace={['initial',
+        <Grid item xs={3}>
+          <Item><BasicCard ml={0} mt={0} mr={0} width={350} noOfLines={5} lineFontSizes={Card2Fonts}lineFontColors={Card2Colors} lineContent={randomTrackData} lineML={[]} lineMR={[]} lineMT={[]}lineWhiteSpace={['initial',
 'pre-line']}></BasicCard></Item>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Item><ImageBox
       Width={'400px'}
       Height={'400px'}
       MarginRight={'0px'}
       MarginLeft={'0px'}
       MarginTop={'0px'}
-      imageSrc="/images/spa.svg"
+      imageSrc={trackSvgPath}
     /></Item>
         </Grid>
         <Grid item xs={4}>

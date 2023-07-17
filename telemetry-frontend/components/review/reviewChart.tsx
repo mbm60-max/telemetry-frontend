@@ -248,11 +248,6 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
           }
         }
       ];
-      const series2 = [
-        { sales: 1000, value: 30 },
-        { sales: 2000, value: 35 },
-        { sales: 3000, value: 25 },
-      ];
       const test = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne]
       const testExtended = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...yaxis1RightLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamTwo]
       const test2 = [...yaxis1LeftLabel,...yaxis1RightLabel,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo]

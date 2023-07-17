@@ -30,16 +30,19 @@ interface ReviewChartProps {
   numberOfLaps:number;
   stream1IsSpecial:boolean;
   stream2IsSpecial:boolean;
-  XAxisData:string[];
+  XAxisData:number[];
+  XAxisDataLap2:number[];
 }
 
-export default function ReviewChart({ label, expectedMaxValue, expectedMinValue, height, expectedMaxValueTwo, expectedMinValueTwo, seriesOneLapOne, seriesTwoLapOne,seriesOneLapTwo, seriesTwoLapTwo, numberOfStreams,curves, leftLabel,rightLabel,numberOfLaps,stream1IsSpecial,stream2IsSpecial,XAxisData }: ReviewChartProps) {
+export default function ReviewChart({ label, expectedMaxValue, expectedMinValue, height, expectedMaxValueTwo, expectedMinValueTwo, seriesOneLapOne, seriesTwoLapOne,seriesOneLapTwo, seriesTwoLapTwo, numberOfStreams,curves, leftLabel,rightLabel,numberOfLaps,stream1IsSpecial,stream2IsSpecial,XAxisData,XAxisDataLap2 }: ReviewChartProps) {
     const [series, setSeries] = useState<any[]>([]);
+    const [seriesLap2, setSeriesLap2] = useState<any[]>([]);
     const curveMap: Record<string, 'smooth' | 'straight' | 'stepline'> = {
   straight: 'straight',
   stepline: 'stepline',
   smooth:'smooth',
 };
+const [secondChartIsNeeded,setSecondChartIsNeeded] = useState(false);
 
 const flattenArray = (array: string[]): string[] => {
   const flattenedArray: string[] = [];
@@ -56,60 +59,21 @@ const flattenArray = (array: string[]): string[] => {
   return flattenedArray;
 };
 
-const addTimeSeriesToData = (dataStream: string | number | any[], timeStamps: string[]) => {
+const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDistance:number[]) => {
   const data = [];
-  let timeString = "";
   const formattedLabels: string[] = [];
   let min =0;
   let max=0;
+  console.log(dataStream)
   if (typeof dataStream === "object") {
-    for (let i = 0; i< timeStamps.length; i++){
-      timeString += timeStamps[i];
-    }
-    if(timeString !== "00:00:01"){
-      const modifiedString = timeString.replace(/\[|\]/g, "");  // Remove "[" and "]" from the string
-      const substrings = modifiedString.split(",");
-      for (let i = 0; i < 2; i++) {
-        const [hours, minutes, seconds, milliseconds] = substrings[i].split(/[:.]/);
-        let totalTimeAsNumberInMilliseconds = (Number(hours)*3600*1000)+(Number(minutes)*60*1000)+(Number(seconds)*1000)+(Number(milliseconds))
-        if(i==0){
-          min =  totalTimeAsNumberInMilliseconds;
-        }
-        if(i==1){
-          max = totalTimeAsNumberInMilliseconds;
-        }
-        if (!isNaN(totalTimeAsNumberInMilliseconds)) {
-          data.push([totalTimeAsNumberInMilliseconds, dataStream[i]]);
-          formattedLabels.push(formatXAxisValue(totalTimeAsNumberInMilliseconds)); 
-        }
-      }
+    for(let i=0; i<InLapDistance.length; i++){
+      data.push([InLapDistance[i], dataStream[i]]);
     }
   }
   return {data, formattedLabels, min, max};
 };
-function extractTimeComponents(totalTimeInMilliseconds:number) {
-  const hours = Math.floor(totalTimeInMilliseconds / (3600 * 1000));
-  const minutes = Math.floor((totalTimeInMilliseconds % (3600 * 1000)) / (60 * 1000));
-  const seconds = Math.floor((totalTimeInMilliseconds % (60 * 1000)) / 1000);
-  const milliseconds = Math.floor(totalTimeInMilliseconds % 1000);
 
-  return {
-    hours,
-    minutes,
-    seconds,
-    milliseconds,
-  };
-}
-function formatXAxisValue(value: number) {
-  const { hours, minutes, seconds, milliseconds } = extractTimeComponents(value);
 
-  const formattedHours = hours.toString().padStart(2, '0');
-  const formattedMinutes = minutes.toString().padStart(2, '0');
-  const formattedSeconds = seconds.toString().padStart(2, '0');
-  const formattedMilliseconds = milliseconds.toString().padStart(3, '0');
-
-  return `${formattedHours}:${formattedMinutes}:${formattedSeconds}.${formattedMilliseconds}`;
-}
 
     const [options, setOptions] = useState<ApexOptions>({
       chart: {
@@ -123,9 +87,6 @@ function formatXAxisValue(value: number) {
         intersect: true,
         x: {
           show: false,
-          formatter: function (value: number) {
-            return formatXAxisValue(value);
-          }
         }
       },
       dataLabels: {
@@ -152,9 +113,6 @@ function formatXAxisValue(value: number) {
             colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
           },
         },
-        min:addTimeSeriesToData(seriesOneLapOne,XAxisData).min,
-        max:addTimeSeriesToData(seriesOneLapOne,XAxisData).max,
-        overwriteCategories: addTimeSeriesToData(seriesOneLapOne, XAxisData).formattedLabels,
       },
       yaxis: {
         min: 0,
@@ -166,7 +124,55 @@ function formatXAxisValue(value: number) {
         }
       },colors: [  '#FF0000',  '#00FF00',  '#0000FF',  '#FFFF00',  '#FF00FF',  '#00FFFF',  '#FFA500',  '#800080',  '#008000',  '#FF4500',  '#FFC0CB',  '#A52A2A',  '#00CED1',  '#FFD700',  '#800000',  '#008080'],
     });
-  
+  const [optionsLap2, setOptionsLap2] = useState<ApexOptions>({
+    chart: {
+      type: 'line',
+      toolbar: {
+        show: false,
+      }
+    },
+    tooltip: {
+      shared: false,
+      intersect: true,
+      x: {
+        show: false,
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
+    },
+    title: {
+      text: label || 'No label provided',
+      align: 'left',
+      style: {
+        color: '#F6F6F6' // Set the font color to blue
+      }
+    },
+    markers: {
+      size: 6
+    },
+    xaxis: {
+      type: 'numeric',
+      tickPlacement: 'on',
+      labels: {
+        style: {
+          colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
+        },
+      },
+    },
+    yaxis: {
+      min: 0,
+      max: 10,
+      labels: {
+        style: {
+          colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
+        }
+      }
+    },colors: [  '#FF0000',  '#00FF00',  '#0000FF',  '#FFFF00',  '#FF00FF',  '#00FFFF',  '#FFA500',  '#800080',  '#008000',  '#FF4500',  '#FFC0CB',  '#A52A2A',  '#00CED1',  '#FFD700',  '#800000',  '#008080'],
+  });
   
     useEffect(() => {
       const yaxis1LeftLabel = [
@@ -242,18 +248,11 @@ function formatXAxisValue(value: number) {
           }
         }
       ];
-      const xaxisSpecial: ApexXAxis = {
-        type: 'numeric',
-        tickPlacement: 'on',
-        labels: {
-          style: {
-            colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
-          },
-        },
-        min:addTimeSeriesToData(seriesOneLapOne,XAxisData).min,
-        max:addTimeSeriesToData(seriesOneLapOne,XAxisData).max,
-        overwriteCategories: addTimeSeriesToData(seriesOneLapOne, XAxisData).formattedLabels,
-      }
+      const series2 = [
+        { sales: 1000, value: 30 },
+        { sales: 2000, value: 35 },
+        { sales: 3000, value: 25 },
+      ];
       const test = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne]
       const testExtended = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...yaxis1RightLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamTwo]
       const test2 = [...yaxis1LeftLabel,...yaxis1RightLabel,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo]
@@ -263,16 +262,16 @@ function formatXAxisValue(value: number) {
       const yaxis2StreamsSpecialFirst = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...yaxis1RightLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamOne,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo];
       const extra2Streams =[...extraStreamOne,...extraStreamTwo];
       const yaxis4Streams = [...yaxis2Streams,...extra2Streams];
-      const yaxis5Streams = [];
-      const yaxis8Streams = [];
-      const yaxis10Streams = [];
+ 
       const yaxis16Streams = [...yaxis1LeftLabel,...extraStreamOne,...extraStreamOne,...extraStreamOne,...yaxis1RightLabel,...extraStreamTwo,...extraStreamTwo,...extraStreamTwo,];
+      setSecondChartIsNeeded(false);
       if((!stream1IsSpecial && !stream2IsSpecial)&&(typeof seriesOneLapOne[0] != "object")&&(typeof seriesOneLapTwo[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")){
       if ((numberOfStreams === 1)&& numberOfLaps === 1) {
+        console.log(addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data)
         setSeries([
           {
             name: leftLabel,
-            data: addTimeSeriesToData(seriesOneLapOne,XAxisData).data
+            data: addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data
           }
         ]);
         setOptions((prevOptions) => ({
@@ -281,18 +280,17 @@ function formatXAxisValue(value: number) {
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
           },
-          xaxis: xaxisSpecial
         }));
       } else if ((numberOfStreams === 2)&& numberOfLaps == 1) {
         setSeries([
           {
             name: leftLabel,
-            data: addTimeSeriesToData(seriesOneLapOne,XAxisData).data,
+            data: addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data,
             
           },
           {
             name: rightLabel,
-            data: addTimeSeriesToData(seriesTwoLapOne,XAxisData).data
+            data: addLapDistanceSeriesToData(seriesTwoLapOne,XAxisData).data
           },
           
         ]);
@@ -302,49 +300,59 @@ function formatXAxisValue(value: number) {
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
           },
-          xaxis: xaxisSpecial
         }));
       }else if ((numberOfStreams === 2)&& numberOfLaps == 2){
+        setSecondChartIsNeeded(true);
         setSeries([
           {
             name: 'Lap 1'+leftLabel,
-            data: addTimeSeriesToData(seriesOneLapOne,XAxisData).data,
+            data: addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data,
             
           },
           {
             name: 'Lap 1'+rightLabel,
-            data: addTimeSeriesToData(seriesTwoLapOne,XAxisData).data
-          },
+            data: addLapDistanceSeriesToData(seriesTwoLapOne,XAxisData).data
+          }
+        ]);
+        setSeriesLap2([
           {
             name: 'Lap 2'+leftLabel,
-            data: addTimeSeriesToData(seriesOneLapTwo,XAxisData).data,
+            data: addLapDistanceSeriesToData(seriesOneLapTwo,XAxisDataLap2).data,
             
           },
           {
             name: 'Lap 2'+rightLabel,
-            data: addTimeSeriesToData(seriesTwoLapTwo,XAxisData).data
+            data: addLapDistanceSeriesToData(seriesTwoLapTwo,XAxisDataLap2).data
           },
-          
         ]);
         setOptions((prevOptions) => ({
           ...prevOptions,
-          yaxis: yaxis4Streams,
+          yaxis: yaxis2Streams,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
           },
-          xaxis: xaxisSpecial
+        }));
+        setOptionsLap2((prevOptions) => ({
+          ...prevOptions,
+          yaxis: yaxis2Streams,
+          stroke: {
+            curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
+          },
         }));
       }else if ((numberOfStreams === 1)&& numberOfLaps == 2){
+        setSecondChartIsNeeded(true);
         setSeries([
           {
             name: 'Lap 1'+leftLabel,
-            data: addTimeSeriesToData(seriesOneLapOne,XAxisData).data,
+            data: addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data,
             
-          },
+          }])
+          console.log(seriesOneLapTwo)
+          console.log(XAxisDataLap2)
+          setSeriesLap2([
           {
             name: 'Lap 2'+leftLabel,
-            data: addTimeSeriesToData(seriesOneLapTwo,XAxisData).data,
-            
+            data: addLapDistanceSeriesToData(seriesOneLapTwo,XAxisDataLap2).data,
           },
           
         ]);
@@ -354,7 +362,13 @@ function formatXAxisValue(value: number) {
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
           },
-          xaxis: xaxisSpecial
+        }));
+        setOptionsLap2((prevOptions) => ({
+          ...prevOptions,
+          yaxis: yaxis1LeftLabel,
+          stroke: {
+            curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
+          },
         }));
       }}
       else if((stream1IsSpecial && !stream2IsSpecial)&&(typeof seriesOneLapOne[0] == "object")){
@@ -362,19 +376,19 @@ function formatXAxisValue(value: number) {
           setSeries([
             {
               name: "FL"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
               name: "FR"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
               name: "RL"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
               name: "RR"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
           ]);
           setOptions((prevOptions) => ({
@@ -388,23 +402,23 @@ function formatXAxisValue(value: number) {
           setSeries([
             {
               name: "FL"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
               name: "FR"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
               name: "RL"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
               name: "RR"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
             {
               name: rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne,XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne,XAxisData).data
             },
             
           ]);
@@ -416,46 +430,49 @@ function formatXAxisValue(value: number) {
             },
           }));
         }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")&&(typeof seriesTwoLapTwo[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")){
+          setSecondChartIsNeeded(true);
           setSeries([
             {
               name: "FL"+leftLabel+ "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
               name: "FR"+leftLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
               name: "RL"+leftLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
               name: "RR"+leftLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
             {
               name: rightLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne,XAxisData)
-            },
+              data: addLapDistanceSeriesToData(seriesTwoLapOne,XAxisData).data
+            }
+          ]);
+          setSeriesLap2([
             {
               name: "FL"+leftLabel + "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[0],XAxisDataLap2).data
             },
             {
               name: "FR"+leftLabel + "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[1],XAxisDataLap2).data
             },
             {
               name: "RL"+leftLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[2],XAxisDataLap2).data
             },
             {
               name: "RR"+leftLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[3],XAxisDataLap2).data
             },
             {
               name: rightLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo,XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo,XAxisDataLap2).data
             },
             
           ]);
@@ -466,42 +483,59 @@ function formatXAxisValue(value: number) {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
+          setOptionsLap2((prevOptions) => ({
+            ...prevOptions,
+            yaxis: testExtended,
+            stroke: {
+              curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
+            },
+          }));
         }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")){
+          setSecondChartIsNeeded(true);
           setSeries([
             {
               name: "FL"+leftLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
               name: "FR"+leftLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
               name: "RL"+leftLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
               name: "RR"+leftLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
+            }
+          ]);
+          setOptions((prevOptions) => ({
+            ...prevOptions,
+            yaxis: test,
+            stroke: {
+              curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
+          }));
+          setSeriesLap2([
             {
               name: "FL"+leftLabel + "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[0],XAxisDataLap2).data
             },
             {
               name: "FR"+leftLabel + "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[1],XAxisDataLap2).data
             },
             {
               name: "RL"+leftLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[2],XAxisDataLap2).data
             },
             {
               name: "RR"+leftLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[3],XAxisDataLap2).data
             },
           ]);
-          setOptions((prevOptions) => ({
+          setOptionsLap2((prevOptions) => ({
             ...prevOptions,
             yaxis: test,
             stroke: {
@@ -514,7 +548,7 @@ function formatXAxisValue(value: number) {
           setSeries([
             {
               name: leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne,XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data
             },
           ]);
           setOptions((prevOptions) => ({
@@ -528,23 +562,23 @@ function formatXAxisValue(value: number) {
           setSeries([
             {
               name: leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne,XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data
             },
             {
               name: "FL"+rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[0],XAxisData).data
             },
             {
               name: "FR"+rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[1],XAxisData).data
             },
             {
               name: "RL"+rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[2],XAxisData).data
             },
             {
               name: "RR"+rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[3],XAxisData).data
             },
             
           ]);
@@ -556,48 +590,28 @@ function formatXAxisValue(value: number) {
             },
           }));
         }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] != "object")&&(typeof seriesTwoLapTwo[0] == "object")&&(typeof seriesTwoLapOne[0] == "object")){
+          setSecondChartIsNeeded(true);
           setSeries([
             {
               name: leftLabel + "Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne,XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data
             },
             {
               name: "FL"+rightLabel+ "Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[0],XAxisData).data
             },
             {
               name: "FR"+rightLabel+ "Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[1],XAxisData).data
             },
             {
               name: "RL"+rightLabel+ "Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[2],XAxisData).data
             },
             {
               name: "RR"+rightLabel+ "Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne[3],XAxisData)
-            },
-            {
-              name: leftLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo,XAxisData)
-            },
-            {
-              name: "FL"+rightLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo[0],XAxisData)
-            },
-            {
-              name: "FR"+rightLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo[1],XAxisData)
-            },
-            {
-              name: "RL"+rightLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo[2],XAxisData)
-            },
-            {
-              name: "RR"+rightLabel+ "Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo[3],XAxisData)
-            },
-            
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[3],XAxisData).data
+            } 
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
@@ -606,19 +620,50 @@ function formatXAxisValue(value: number) {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
+          setSeriesLap2([
+            {
+              name: leftLabel+ "Lap 2",
+              data: addLapDistanceSeriesToData(seriesOneLapTwo,XAxisDataLap2).data
+            },
+            {
+              name: "FL"+rightLabel+ "Lap 2",
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo[0],XAxisDataLap2).data
+            },
+            {
+              name: "FR"+rightLabel+ "Lap 2",
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo[1],XAxisDataLap2).data
+            },
+            {
+              name: "RL"+rightLabel+ "Lap 2",
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo[2],XAxisDataLap2).data
+            },
+            {
+              name: "RR"+rightLabel+ "Lap 2",
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo[3],XAxisDataLap2).data
+            },
+          ]);
+          setOptionsLap2((prevOptions) => ({
+            ...prevOptions,
+            yaxis: custom,
+            stroke: {
+              curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
+            },
+          }));
         }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] != "object")){
+          setSecondChartIsNeeded(true);
           setSeries([
             {
               name: 'Lap 1'+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne,XAxisData),
+              data: addLapDistanceSeriesToData(seriesOneLapOne,XAxisData).data,
               
-            },
+            }
+          ]);
+          setSeriesLap2([
             {
               name: 'Lap 2'+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapTwo,XAxisData),
+              data: addLapDistanceSeriesToData(seriesOneLapTwo,XAxisDataLap2).data,
               
-            },
-            
+            }
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
@@ -633,19 +678,19 @@ function formatXAxisValue(value: number) {
           setSeries([
             {
               name: "FL"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
               name: "FR"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
               name: "RL"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
               name: "RR"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
           ]);
           setOptions((prevOptions) => ({
@@ -659,35 +704,35 @@ function formatXAxisValue(value: number) {
           setSeries([
             {
               name: "FL"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
               name: "FR"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
               name: "RL"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
               name: "RR"+leftLabel,
-              data: addTimeSeriesToData(seriesOneLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
             {
               name: "FL"+rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[0],XAxisData).data
             },
             {
               name: "FR"+rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[1],XAxisData).data
             },
             {
               name: "RL"+rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[2],XAxisData).data
             },
             {
               name: "RR"+rightLabel,
-              data: addTimeSeriesToData(seriesTwoLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[3],XAxisData).data
             },
             
           ]);
@@ -699,72 +744,40 @@ function formatXAxisValue(value: number) {
             },
           }));
         }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesTwoLapOne[0] == "object")&&(typeof seriesOneLapTwo[0] == "object")&&(typeof seriesTwoLapTwo[0] == "object")){
+          setSecondChartIsNeeded(true);
           setSeries([
             {
               name: "FL"+leftLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
               name: "FR"+leftLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
               name: "RL"+leftLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
               name: "RR"+leftLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
             {
               name: "FL"+rightLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[0],XAxisData).data
             },
             {
               name: "FR"+rightLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[1],XAxisData).data
             },
             {
               name: "RL"+rightLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[2],XAxisData).data
             },
             {
               name: "RR"+rightLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesTwoLapOne[3],XAxisData)
-            },
-            {
-              name: "FL"+leftLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[0],XAxisData)
-            },
-            {
-              name: "FR"+leftLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[1],XAxisData)
-            },
-            {
-              name: "RL"+leftLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[2],XAxisData)
-            },
-            {
-              name: "RR"+leftLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[3],XAxisData)
-            },
-            {
-              name: "FL"+rightLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo[0],XAxisData)
-            },
-            {
-              name: "FR"+rightLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo[1],XAxisData)
-            },
-            {
-              name: "RL"+rightLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo[2],XAxisData)
-            },
-            {
-              name: "RR"+rightLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesTwoLapTwo[3],XAxisData)
-            },
-            
+              data: addLapDistanceSeriesToData(seriesTwoLapOne[3],XAxisData).data
+            }
           ]);
           setOptions((prevOptions) => ({
             ...prevOptions,
@@ -773,43 +786,93 @@ function formatXAxisValue(value: number) {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
             },
           }));
-        }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")){
-          setSeries([
-            {
-              name: "FL"+leftLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[0],XAxisData)
-            },
-            {
-              name: "FR"+leftLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[1],XAxisData)
-            },
-            {
-              name: "RL"+leftLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[2],XAxisData)
-            },
-            {
-              name: "RR"+leftLabel +"Lap 1",
-              data: addTimeSeriesToData(seriesOneLapOne[3],XAxisData)
-            },
+          setSeriesLap2([
             {
               name: "FL"+leftLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[0],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[0],XAxisDataLap2).data
             },
             {
               name: "FR"+leftLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[1],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[1],XAxisDataLap2).data
             },
             {
               name: "RL"+leftLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[2],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[2],XAxisDataLap2).data
             },
             {
               name: "RR"+leftLabel +"Lap 2",
-              data: addTimeSeriesToData(seriesOneLapTwo[3],XAxisData)
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[3],XAxisDataLap2).data
             },
-            
+            {
+              name: "FL"+rightLabel +"Lap 2",
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo[0],XAxisDataLap2).data
+            },
+            {
+              name: "FR"+rightLabel +"Lap 2",
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo[1],XAxisDataLap2).data
+            },
+            {
+              name: "RL"+rightLabel +"Lap 2",
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo[2],XAxisDataLap2).data
+            },
+            {
+              name: "RR"+rightLabel +"Lap 2",
+              data: addLapDistanceSeriesToData(seriesTwoLapTwo[3],XAxisDataLap2).data
+            }
+          ]);
+          setOptionsLap2((prevOptions) => ({
+            ...prevOptions,
+            yaxis: yaxis16Streams,
+            stroke: {
+              curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
+            },
+          }));
+        }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")){
+          setSecondChartIsNeeded(true);
+          setSeries([
+            {
+              name: "FL"+leftLabel +"Lap 1",
+              data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
+            },
+            {
+              name: "FR"+leftLabel +"Lap 1",
+              data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
+            },
+            {
+              name: "RL"+leftLabel +"Lap 1",
+              data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
+            },
+            {
+              name: "RR"+leftLabel +"Lap 1",
+              data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
+            }
           ]);
           setOptions((prevOptions) => ({
+            ...prevOptions,
+            yaxis: test,
+            stroke: {
+              curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
+            },
+          }));
+          setSeriesLap2([
+            {
+              name: "FL"+leftLabel +"Lap 2",
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[0],XAxisDataLap2).data
+            },
+            {
+              name: "FR"+leftLabel +"Lap 2",
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[1],XAxisDataLap2).data
+            },
+            {
+              name: "RL"+leftLabel +"Lap 2",
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[2],XAxisDataLap2).data
+            },
+            {
+              name: "RR"+leftLabel +"Lap 2",
+              data: addLapDistanceSeriesToData(seriesOneLapTwo[3],XAxisDataLap2).data
+            },
+          ]);
+          setOptionsLap2((prevOptions) => ({
             ...prevOptions,
             yaxis: test,
             stroke: {
@@ -825,6 +888,9 @@ function formatXAxisValue(value: number) {
         <Box sx={{ backgroundColor: 'black' }}>
           <Box sx={{ p: 1 }}>
             <DynamicReviewChart series={series} options={options} height={height} label={label} />
+            {secondChartIsNeeded && (
+             <DynamicReviewChart series={seriesLap2} options={optionsLap2} height={height} label={label} />
+            )}
           </Box>
         </Box>
       </>

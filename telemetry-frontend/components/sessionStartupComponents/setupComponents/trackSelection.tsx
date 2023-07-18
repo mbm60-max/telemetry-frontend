@@ -52,7 +52,7 @@ const TrackSelection = ({ onSelectTrack }: TrackSelectionProps) => {
           overflow: hidden;
           margin-top: 0px;
           background-color: black; /* Set background color to red */
-          border: 3px solid grey;
+          border: 3px solid black;
           border-radius: 0px;
           box-sizing: border-box;
         }
@@ -66,7 +66,7 @@ const TrackSelection = ({ onSelectTrack }: TrackSelectionProps) => {
           align-items: center;
           justify-content: center;
           width: 100%;
-          height: 50px;
+          height: 30px;
           overflow: hidden;
           margin-top: 0px;
           background-color: grey; /* Set background color to red */

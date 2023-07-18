@@ -6,11 +6,11 @@ import Slider from '@mui/material/Slider';
 
 
 interface ArraySliderProps {
-  width: number;
+  width: number|string;
   targetAttribute: string;
   onValueChange: (value: string[]) => void;
-  minValue:number;
-  maxValue:number;
+  minValue:string;
+  maxValue:string;
   step:number;
 }
 
@@ -22,7 +22,7 @@ export default function ArraySlider({
   maxValue,
   step,
 }: ArraySliderProps) {
-  const [values, setValues] = React.useState<string[]>(['', '']);
+  const [values, setValues] = React.useState<string[]>([minValue, minValue]);
 
   const handleSliderChange = (index: number) => (
     event: React.ChangeEvent<{}>,
@@ -36,35 +36,37 @@ export default function ArraySlider({
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={0} direction="row">
-        <Grid item xs={4}>
+        <Grid item xs={6}>
+        <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
           <Typography id="input-slider" gutterBottom>
              {targetAttribute} {values[0]}
           </Typography>
           <Slider
-            value={parseInt(values[0]) || 0}
+            value={parseFloat(values[0]) || 0}
             onChange={handleSliderChange(0) as any}
             aria-labelledby="input-slider"
-            sx={{width:150}}
+            sx={{width:width}}
             valueLabelDisplay="auto"
-            min={minValue}
-            max={maxValue}
+            min={parseFloat(minValue)}
+            max={parseFloat(maxValue)}
             step={step}
-          />
+          /></Box>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6}>
+        <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
           <Typography id="input-slider" gutterBottom>
             {targetAttribute} {values[1]}
           </Typography>
           <Slider
-            value={parseInt(values[1]) || 0}
+            value={parseFloat(values[1]) || 0}
             onChange={handleSliderChange(1) as any}
             aria-labelledby="input-slider"
-            sx={{width:150}}
+            sx={{width:width}}
             valueLabelDisplay="auto"
-            min={minValue}
-            max={maxValue}
+            min={parseFloat(minValue)}
+            max={parseFloat(maxValue)}
             step={step}
-          />
+          /></Box>
         </Grid>
       </Grid>
     </Box>

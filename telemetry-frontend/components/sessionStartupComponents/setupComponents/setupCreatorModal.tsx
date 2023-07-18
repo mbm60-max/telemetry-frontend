@@ -12,14 +12,14 @@ import { AuthContext } from "../../authProvider";
 import InputSlider from "./setupSlider";
 import ArraySlider from "./setupSliderArray";
 import ArraySliderText from "./textFieldArray";
-import { Grid } from "@mui/material";
-
+import { Chip, Divider, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import ClearIcon from '@mui/icons-material/Clear';
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 1000,
+  width: 850,
   height: 600,
   bgcolor: "background.paper",
   border: "2px solid #000",
@@ -34,6 +34,12 @@ interface SetupCreatorModalProps {
 
 export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalProps
 ) {
+  const handleChange = (event: SelectChangeEvent) => {
+    setTransmissionType(event.target.value);
+  };
+  const handleDifferentialGearChange = (event: SelectChangeEvent) => {
+    setDifferentialGear(event.target.value);
+  };
   const { isLoggedIn, userName } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
@@ -77,7 +83,6 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
     const nameResponse: AxiosResponse = await axios.get('/api/checksetupapi', {
       params: { name },
     });
-    console.log('hi')
     const setupObject = {
       "Power Level": {
         Value: powerLevel,
@@ -210,7 +215,6 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
       <Button onClick={handleOpen}>Add Setup</Button>
       <Modal
         open={open}
-        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -229,227 +233,265 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                     variant="contained"
                     sx={{ mr: 2, width: "167px" }}
                   >Submit</Button>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
+                  <Button onClick={handleClose}>Clear<ClearIcon/></Button>
+                  <Divider sx={{}}>
+        <Chip label="General" />
+      </Divider>
+         <Grid container spacing={0} direction="row">
+        <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
                   handleInputChange(setPowerLevel)(value)
                 }
-                width={350}
+                width={'85%'}
                 targetAttribute={"Power Level"}
                 minValue={1}
                 maxValue={5}
                 step={1}
-              />
+              /></Grid>
+              <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
                   handleInputChange(setWeightReductionLevel)(value)
                 }
-                width={350}
+                width={'85%'}
                 targetAttribute={"Weight Reduction Level"}
                 minValue={1}
                 maxValue={5}
                 step={1}
-              />
+              /></Grid>
+              <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
                   handleInputChange(setPowerRatio)(value)
                 }
-                width={350}
+                width={'85%'}
                 targetAttribute={"Power Ratio"}
                 minValue={0}
                 maxValue={200}
                 step={1}
               />
+              </Grid>
+              <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
                   handleInputChange(setWeightReductionRatio)(value)
                 }
-                width={350}
+                width={'85%'}
                 targetAttribute={"Weight Reduction Ratio"}
                 minValue={0}
                 maxValue={200}
                 step={1}
-              />
+              /></Grid>
+              <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
                   handleInputChange(setTractionControl)(value)
                 }
-                width={350}
+                width={'85%'}
                 targetAttribute={"Traction Control"}
                 minValue={1}
                 maxValue={5}
                 step={1}
-              />
+              /></Grid>
+              <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
                   handleInputChange(setBrakeBalance)(value)
                 }
-                width={350}
+                width={'85%'}
                 targetAttribute={"Brake Balance"}
-                minValue={-5}
+                minValue={"-5"}
                 maxValue={5}
                 step={1}
-              />
-              <TextField
-                id="name"
-                label="Transmission Type"
-                variant="outlined"
-                onChange={(value) =>
-                  handleInputText(setTransmissionType)(value)
-                }
-              />
+              /></Grid></Grid>
+                          <Divider>
+        <Chip label="Transmission" />
+      </Divider>
+      <Grid container spacing={0} direction="row">
+              <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
                   handleInputChange(setMaxSpeedAutoSet)(value)
                 }
-                width={350}
+                width={'85%'}
                 targetAttribute={"Max Speed (Auto Set)"}
                 minValue={0}
                 maxValue={500}
                 step={1}
-              />
-              <ArraySliderText
-                width={350}
-                targetAttribute={"Number of Gears"}
-                onValueChange={setGearRatios}
-                
-              />
+              /></Grid>
+              <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
                   handleInputChange(setFinalGearRatio)(value)
                 }
-                width={350}
+                width={'85%'}
                 targetAttribute={"Final Gear "}
                 minValue={1}
                 maxValue={5}
                 step={0.001}///might need changing
-              />
-            </Grid>
-            <Grid item xs={6}>
+              /></Grid>
+              <Grid item xs={6}>
+              <Box sx={{ width: '85%',backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
               <Typography id="input-slider" gutterBottom>
-                Front Rear
+             Transmission Type
+          </Typography>  
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Selected Value</InputLabel>
+        <Select
+          labelId="simple-select-label"
+          id="Transmission-Type-Select"
+          value={transmissionType}
+          label="Selected Value"
+          onChange={handleChange}
+        >
+          <MenuItem value={'Default'}>Default</MenuItem>
+          <MenuItem value={'Fully Customised'}>Fully Customised</MenuItem>
+        </Select>
+      </FormControl>
+    </Box></Grid>
+              <Grid item xs={6}>
+              <ArraySliderText
+                width={'85%'}
+                targetAttribute={"Number of Gears"}
+                onValueChange={setGearRatios}
+                
+              /></Grid>
+            </Grid>
+            <Divider>
+        <Chip label="Suspension and Aerodynamics" />
+      </Divider>
+            <Grid item xs={12}>
+              <Grid container spacing={0} direction="row">
+              <Grid item xs={6}>
+              <Typography id="input-slider" gutterBottom>
+                Front 
               </Typography>
+              </Grid>
+              <Grid item xs={6}>
+              <Typography id="input-slider" gutterBottom>
+                Rear
+              </Typography>
+              </Grid>
+              </Grid>
               <ArraySlider
-                width={350}
+                width={"85%"}
                 targetAttribute={"Ride Height"}
                 onValueChange={(value) =>
                   handleInputChangeArray(setRideHeight)(value)
                 }
-                minValue={0}
-                maxValue={300}
+                minValue={'0'}
+                maxValue={'300'}
                 step={1}
               />
               <ArraySlider
-                width={350}
+                width={'85%'}
                 targetAttribute={"Natural Frequency"}
                 onValueChange={(value) =>
                   handleInputChangeArray(setNaturalFrequency)(value)
                 }
-                minValue={1}
-                maxValue={5}
+                minValue={'1'}
+                maxValue={'5'}
                 step={0.1}
               />
               <ArraySlider
-                width={350}
+                width={'85%'}
                 targetAttribute={"Anti Roll Bar"}
                 onValueChange={(value) =>
                   handleInputChangeArray(setAntiRollBar)(value)
                 }
-                minValue={1}
-                maxValue={10}
+                minValue={'1'}
+                maxValue={'10'}
                 step={1}
               />
               <ArraySlider
-                width={350}
+                width={'85%'}
                 targetAttribute={"Damping Ratio Compression"}
                 onValueChange={(value) =>
                   handleInputChangeArray(setDampingRatioCompression)(value)
                 }
-                minValue={0}
-                maxValue={100}
+                minValue={'0'}
+                maxValue={'85'}
                 step={1}
               />
               <ArraySlider
-                width={350}
+                width={'85%'}
                 targetAttribute={"Damping Ratio Rebound"}
                 onValueChange={(value) =>
                   handleInputChangeArray(setDampingRatioRebound)(value)
                 }
-                minValue={0}
-                maxValue={100}
+                minValue={'0'}
+                maxValue={'85'}
                 step={1}
               />
               <ArraySlider
-                width={350}
+                width={'85%'}
                 targetAttribute={"Camber Angle"}
                 onValueChange={(value) =>
                   handleInputChangeArray(setCamberAngle)(value)
                 }
-                minValue={-10}
-                maxValue={10}
+                minValue={'-10'}
+                maxValue={'10'}
                 step={1}
               />
               <ArraySlider
-                width={350}
+                width={'85%'}
                 targetAttribute={"Toe Angle"}
                 onValueChange={(value) =>
                   handleInputChangeArray(setToeAngle)(value)
                 }
-                minValue={-1}
-                maxValue={1}
+                minValue={'-1'}
+                maxValue={'1'}
                 step={0.01}
               />
               <ArraySlider
-                width={350}
+                width={'85%'}
                 targetAttribute={"Downforce"}
                 onValueChange={(value) =>
                   handleInputChangeArray(setDownforce)(value)
                 }
-                minValue={0}
-                maxValue={5000}
+                minValue={'0'}
+                maxValue={'5000'}
                 step={10}//adjust this
               />
             </Grid>
-          </Grid>
-          <TextField
-            id="name"
-            label="Differential gear"
-            variant="outlined"
-            onChange={(value) => handleInputText(setDifferentialGear)(value)}
-          />
+            <Divider>
+        <Chip label="Differential" />
+      </Divider>
           <ArraySlider
-            width={350}
+            width={'85%'}
             targetAttribute={"LSD Initial Torque"}
             onValueChange={(value) =>
               handleInputChangeArray(setLsdIntiailTorque)(value)
             }
-            minValue={0}
-            maxValue={100}
+            minValue={'0'}
+            maxValue={'85'}
             step={1}
           />
           <ArraySlider
-            width={350}
+            width={'85%'}
             targetAttribute={"LSD Acceleration Sensitivity"}
             onValueChange={(value) =>
               handleInputChangeArray(setLsdAccelerationSensitivity)(value)
             }
-            minValue={0}
-            maxValue={100}
+            minValue={'0'}
+            maxValue={'85'}
             step={1}
           />
           <ArraySlider
-            width={350}
+            width={'85%'}
             targetAttribute={"LSD Braking Sensitivity"}
             onValueChange={(value) =>
               handleInputChangeArray(setLsdBrakingSensitivity)(value)
             }
-            minValue={0}
-            maxValue={100}
+            minValue={'0'}
+            maxValue={'85'}
             step={1}
           />
+          <Grid container spacing={0} direction="row">
+        <Grid item xs={6}>
           <InputSlider
-            width={350}
+            width={'85%'}
             targetAttribute={"Front Rear Torque Distribution"}
             onValueChange={(value) =>
               handleInputChange(setFrontRearTorqueDistribution)(value)
@@ -458,6 +500,28 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             maxValue={3}
             step={1}
           />
+          </Grid>
+          <Grid item xs={6}>
+          <Box sx={{ width: '85%',backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+          <Typography id="input-slider" gutterBottom>
+          Differential Gear
+          </Typography>  
+          <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Selected Value</InputLabel>
+        <Select
+          labelId="simple-select-label"
+          id="Differential-Gear-Select"
+          value={differentialGear}
+          label="Selected Value"
+          onChange={handleDifferentialGearChange}
+        >
+          <MenuItem value={'Default'}>Default</MenuItem>
+          <MenuItem value={'Fully Customised'}>Fully Customised</MenuItem>
+        </Select>
+      </FormControl>
+          </Box>
+          </Grid>
+          </Grid>
         </Box>
       </Modal>
     </>

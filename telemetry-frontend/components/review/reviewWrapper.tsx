@@ -3,26 +3,18 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import '../components/sessionTabs/sessiontab.css'
-import dynamic from 'next/dynamic';
+import '../sessionTabs/sessiontab.css'
 import { useContext, useEffect, useState } from 'react';
-import ExtendedPacket from '../interfaces/extendedPacketInterface';
-import Homepage from '../components/background/background';
-import { Button, Drawer, Modal, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import ReviewFieldSelection from '../components/review/reviewFieldSelection';
-import ReviewGrouping from '../components/review/reviewGrouping';
-import ReviewStreamNumberSelection from '../components/review/reviewStreamNumbeSelection';
-import ReviewChart from '../components/review/reviewChart';
+import { Button, Modal, Typography } from '@mui/material';
+import ReviewFieldSelection from './reviewFieldSelection';
+import ReviewGrouping from './reviewGrouping';
+import ReviewStreamNumberSelection from './reviewStreamNumbeSelection';
+import ReviewChart from './reviewChart';
 import axios, { AxiosResponse } from 'axios';
-import { AuthContext } from '../components/authProvider';
-import ReviewLapTable from '../components/review/reviewLapTable';
-import ReviewLapSelection from '../components/review/reviewLapSelection';
+import { AuthContext } from '../authProvider';
+import ReviewLapSelection from './reviewLapSelection';
 import TuneIcon from '@mui/icons-material/Tune';
-const DynamicBasicChart = dynamic(() => import('../components/sessionTabs/chart'), { 
-  loader: () => import('../components/sessionTabs/chart'),
-  ssr: false 
-});
+
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -383,7 +375,7 @@ export default function ReviewWrapper() {
 </Modal>
 
     
-<ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])} numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`], selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={validateData(lapDistanceXAxis)} XAxisDataLap2={validateData(lapDistanceXAxisLap2)} height={250}/></Item>
+<ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])} numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`], selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={validateData(lapDistanceXAxis)} XAxisDataLap2={validateData(lapDistanceXAxisLap2)} height={350}/></Item>
         </Grid>
       </Grid>
     </Box>

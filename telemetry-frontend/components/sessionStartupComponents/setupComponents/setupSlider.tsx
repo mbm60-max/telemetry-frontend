@@ -13,25 +13,29 @@ const Input = styled(MuiInput)`
 `;
 
 interface InputSliderProps{
-width:number
+width:number|string;
 targetAttribute:string
 onValueChange: (value:string ) => void;
-minValue:number;
+minValue:number|string;
 maxValue:number;
 step:number;
 }
 export default function InputSlider({width,targetAttribute,onValueChange,minValue,maxValue,step}:InputSliderProps) {
   const [value, setValue] = React.useState<number | string | Array<number | string>>(
-    30,
+    parseFloat(minValue),
   );
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue);
     onValueChange(newValue.toString());
   };
-
+ const convertMinValue = (minValue:string|number)=>{
+  if(typeof minValue =="string"){
+    return parseFloat(minValue);
+  }return minValue;
+ }
   return (
-    <Box sx={{ width: width }}>
+    <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
       <Typography id="input-slider" gutterBottom>
         {targetAttribute} {value}
       </Typography>
@@ -42,7 +46,7 @@ export default function InputSlider({width,targetAttribute,onValueChange,minValu
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
             valueLabelDisplay="auto"
-            min={minValue}
+            min={convertMinValue(minValue)}
             max={maxValue}
             step={step}
           />

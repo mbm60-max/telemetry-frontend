@@ -13,7 +13,7 @@ const DynamicReviewChart = dynamic(() => import('react-apexcharts'), {
 });
 
 interface ReviewChartProps {
-  label?: string;
+  label: string;
   expectedMinValue: number;
   expectedMaxValue: number;
   expectedMinValueTwo: number;
@@ -22,7 +22,7 @@ interface ReviewChartProps {
   seriesTwoLapOne: number[];
   seriesOneLapTwo: number[];
   seriesTwoLapTwo: number[];
-  height?:number
+  height:number;
   numberOfStreams:number;
   curves:string[];
   leftLabel:string;
@@ -73,7 +73,12 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
   return {data, formattedLabels, min, max};
 };
 
-
+const title = {
+  text: label,
+  style: {
+    color: '#F6F6F6' // Set the font color to blue
+  }
+}
 
     const [options, setOptions] = useState<ApexOptions>({
       chart: {
@@ -96,7 +101,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
         curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
       },
       title: {
-        text: label || 'No label provided',
+        text: 'No label provided',
         align: 'left',
         style: {
           color: '#F6F6F6' // Set the font color to blue
@@ -110,7 +115,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
         tickPlacement: 'on',
         labels: {
           style: {
-            colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
+            colors: '#F6F6F6' // Set the font color of x-axis labels to blue
           },
         },
       },
@@ -159,7 +164,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
       tickPlacement: 'on',
       labels: {
         style: {
-          colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
+          colors: '#F6F6F6' // Set the font color of x-axis labels to blue
         },
       },
     },
@@ -197,7 +202,11 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             style: {
                 color: '#F6F6F6' // Set the font color to blue
               }
-          }
+          },
+          labels: {
+            style: {
+              colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
+            }},
         },
         
       ]
@@ -224,7 +233,10 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             style: {
                 color: '#F6F6F6' // Set the font color to blue
               }
-          }
+          },labels: {
+            style: {
+              colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
+            }},
         }
         
       ]
@@ -274,7 +286,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
           yaxis: yaxis1LeftLabel,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-          },
+          },title: title
         }));
       } else if ((numberOfStreams === 2)&& numberOfLaps == 1) {
         setSeries([
@@ -287,14 +299,13 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             name: rightLabel,
             data: addLapDistanceSeriesToData(seriesTwoLapOne,XAxisData).data
           },
-          
         ]);
         setOptions((prevOptions) => ({
           ...prevOptions,
           yaxis: yaxis2Streams,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-          },
+          },title: title
         }));
       }else if ((numberOfStreams === 2)&& numberOfLaps == 2){
         setSecondChartIsNeeded(true);
@@ -325,14 +336,14 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
           yaxis: yaxis2Streams,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-          },
+          },title: title
         }));
         setOptionsLap2((prevOptions) => ({
           ...prevOptions,
           yaxis: yaxis2Streams,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-          },
+          },title: title
         }));
       }else if ((numberOfStreams === 1)&& numberOfLaps == 2){
         setSecondChartIsNeeded(true);
@@ -356,33 +367,33 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
           yaxis: yaxis1LeftLabel,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-          },
+          },title: title
         }));
         setOptionsLap2((prevOptions) => ({
           ...prevOptions,
           yaxis: yaxis1LeftLabel,
           stroke: {
             curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-          },
+          },title: title
         }));
       }}
       else if((stream1IsSpecial && !stream2IsSpecial)&&(typeof seriesOneLapOne[0] == "object")){
         if ((numberOfStreams === 1)&& numberOfLaps === 1) {
           setSeries([
             {
-              name: "FL"+leftLabel,
+              name: "FL "+" " +leftLabel,
               data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
-              name: "FR"+leftLabel,
+              name: "FR "+" " +leftLabel,
               data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
-              name: "RL"+leftLabel,
+              name: "RL "+" " +leftLabel,
               data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
-              name: "RR"+leftLabel,
+              name: "RR "+" " +leftLabel,
               data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
           ]);
@@ -391,24 +402,24 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: yaxis1LeftLabel,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         } else if (((numberOfStreams === 2)&& numberOfLaps == 1)&&(typeof seriesTwoLapOne[0] != "object")) {
           setSeries([
             {
-              name: "FL"+leftLabel,
+              name: "FL "+" " +leftLabel,
               data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
-              name: "FR"+leftLabel,
+              name: "FR "+" " +leftLabel,
               data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
-              name: "RL"+leftLabel,
+              name: "RL "+" " +leftLabel,
               data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
-              name: "RR"+leftLabel,
+              name: "RR "+" " +leftLabel,
               data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
             {
@@ -422,25 +433,25 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: yaxis2StreamsSpecialFirst,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")&&(typeof seriesTwoLapTwo[0] != "object")&&(typeof seriesTwoLapOne[0] != "object")){
           setSecondChartIsNeeded(true);
           setSeries([
             {
-              name: "FL"+leftLabel+ "Lap 1",
+              name: "FL "+" " +leftLabel+ "Lap 1",
               data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
-              name: "FR"+leftLabel + "Lap 1",
+              name: "FR "+" " +leftLabel + "Lap 1",
               data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
-              name: "RL"+leftLabel + "Lap 1",
+              name: "RL "+" " +leftLabel + "Lap 1",
               data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
-              name: "RR"+leftLabel + "Lap 1",
+              name: "RR "+" " +leftLabel + "Lap 1",
               data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             },
             {
@@ -450,19 +461,19 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
           ]);
           setSeriesLap2([
             {
-              name: "FL"+leftLabel + "Lap 2",
+              name: "FL "+" " +leftLabel + "Lap 2",
               data: addLapDistanceSeriesToData(seriesOneLapTwo[0],XAxisDataLap2).data
             },
             {
-              name: "FR"+leftLabel + "Lap 2",
+              name: "FR "+" " +leftLabel + "Lap 2",
               data: addLapDistanceSeriesToData(seriesOneLapTwo[1],XAxisDataLap2).data
             },
             {
-              name: "RL"+leftLabel+ "Lap 2",
+              name: "RL "+" " +leftLabel+ "Lap 2",
               data: addLapDistanceSeriesToData(seriesOneLapTwo[2],XAxisDataLap2).data
             },
             {
-              name: "RR"+leftLabel+ "Lap 2",
+              name: "RR "+" " +leftLabel+ "Lap 2",
               data: addLapDistanceSeriesToData(seriesOneLapTwo[3],XAxisDataLap2).data
             },
             {
@@ -476,32 +487,32 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: testExtended,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
           setOptionsLap2((prevOptions) => ({
             ...prevOptions,
             yaxis: testExtended,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")){
           setSecondChartIsNeeded(true);
           setSeries([
             {
-              name: "FL"+leftLabel + "Lap 1",
+              name: "FL "+" " +leftLabel + "Lap 1",
               data: addLapDistanceSeriesToData(seriesOneLapOne[0],XAxisData).data
             },
             {
-              name: "FR"+leftLabel + "Lap 1",
+              name: "FR "+" " +leftLabel + "Lap 1",
               data: addLapDistanceSeriesToData(seriesOneLapOne[1],XAxisData).data
             },
             {
-              name: "RL"+leftLabel + "Lap 1",
+              name: "RL "+" " +leftLabel + "Lap 1",
               data: addLapDistanceSeriesToData(seriesOneLapOne[2],XAxisData).data
             },
             {
-              name: "RR"+leftLabel + "Lap 1",
+              name: "RR "+" " +leftLabel + "Lap 1",
               data: addLapDistanceSeriesToData(seriesOneLapOne[3],XAxisData).data
             }
           ]);
@@ -510,23 +521,23 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: test,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
           setSeriesLap2([
             {
-              name: "FL"+leftLabel + "Lap 2",
+              name: "FL "+" " +leftLabel + "Lap 2",
               data: addLapDistanceSeriesToData(seriesOneLapTwo[0],XAxisDataLap2).data
             },
             {
-              name: "FR"+leftLabel + "Lap 2",
+              name: "FR "+" " +leftLabel + "Lap 2",
               data: addLapDistanceSeriesToData(seriesOneLapTwo[1],XAxisDataLap2).data
             },
             {
-              name: "RL"+leftLabel+ "Lap 2",
+              name: "RL "+" " +leftLabel+ "Lap 2",
               data: addLapDistanceSeriesToData(seriesOneLapTwo[2],XAxisDataLap2).data
             },
             {
-              name: "RR"+leftLabel+ "Lap 2",
+              name: "RR "+ " " + leftLabel+ "Lap 2",
               data: addLapDistanceSeriesToData(seriesOneLapTwo[3],XAxisDataLap2).data
             },
           ]);
@@ -535,7 +546,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: test,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         }
       }else if ((!stream1IsSpecial && stream2IsSpecial)&&(typeof seriesOneLapOne[0] != "object")){
@@ -551,7 +562,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: yaxis1LeftLabel,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         } else if (((numberOfStreams === 2)&& numberOfLaps == 1)&&(typeof seriesTwoLapOne[0] == "object")) {
           setSeries([
@@ -582,7 +593,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: test2,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] != "object")&&(typeof seriesTwoLapTwo[0] == "object")&&(typeof seriesTwoLapOne[0] == "object")){
           setSecondChartIsNeeded(true);
@@ -613,7 +624,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: custom,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
           setSeriesLap2([
             {
@@ -642,7 +653,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: custom,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] != "object")){
           setSecondChartIsNeeded(true);
@@ -665,7 +676,14 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: yaxis1LeftLabel,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
+          }));
+          setOptionsLap2((prevOptions) => ({
+            ...prevOptions,
+            yaxis: yaxis1LeftLabel,
+            stroke: {
+              curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
+            },title: title
           }));
         }
       }else if ((stream1IsSpecial && stream2IsSpecial)&&(typeof seriesOneLapOne[0] == "object")){
@@ -693,7 +711,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: yaxis1LeftLabel,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         } else if (((numberOfStreams === 2)&& numberOfLaps == 1)&&(typeof seriesTwoLapOne[0] == "object")) {
           setSeries([
@@ -736,7 +754,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: left3right3,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         }else if (((numberOfStreams === 2)&& numberOfLaps == 2)&&(typeof seriesTwoLapOne[0] == "object")&&(typeof seriesOneLapTwo[0] == "object")&&(typeof seriesTwoLapTwo[0] == "object")){
           setSecondChartIsNeeded(true);
@@ -779,7 +797,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: yaxis16Streams,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
           setSeriesLap2([
             {
@@ -820,7 +838,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: yaxis16Streams,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         }else if (((numberOfStreams === 1)&& numberOfLaps == 2)&&(typeof seriesOneLapTwo[0] == "object")){
           setSecondChartIsNeeded(true);
@@ -847,7 +865,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: test,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
           setSeriesLap2([
             {
@@ -872,7 +890,7 @@ const addLapDistanceSeriesToData = (dataStream: string | number | any[], InLapDi
             yaxis: test,
             stroke: {
               curve: flattenArray(curves).map((curve: string) => curveMap[curve]),
-            },
+            },title: title
           }));
         }
       }

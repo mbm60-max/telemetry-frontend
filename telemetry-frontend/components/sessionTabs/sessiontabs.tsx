@@ -17,7 +17,7 @@ import ExtendedPacket from '../../interfaces/extendedPacketInterface';
 import GeneralGrid from './flexgridGeneral';
 import EngineGrid from './engineGrid';
 import GearboxGrid from './gearbox';
-import { trackData } from '../../data/trackData';
+import  trackData  from '../../data/trackData';
 import TyresSuspensionGrid from './tyresSuspension';
 
 interface TabPanelProps {
@@ -293,7 +293,7 @@ export default function BasicTabs() {
   };
   
   function getTrackDistancePercentage(track: string | string[] | undefined, dataPoint: number) {
-    const trackInfo = trackData.find((item) => item.title === track);
+    const trackInfo = trackData.find((item: { title: string | string[] }) => item.title === track);
     
     if (trackInfo && dataPoint != 0 && typeof track === "string") {
       const lapDistanceInMeters = trackInfo.distance;

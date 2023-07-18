@@ -6,7 +6,7 @@ import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
 
 interface ArraySliderTextProps {
-  width: number;
+  width: number|string;
   targetAttribute: string;
   onValueChange: (value: string[]) => void;
 }
@@ -42,6 +42,7 @@ export default function ArraySliderText({
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
+        <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
           <Typography id="input-slider" gutterBottom>
             {targetAttribute}: {sliderValue}
           </Typography>
@@ -52,7 +53,7 @@ export default function ArraySliderText({
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
             valueLabelDisplay="auto"
-          />
+          /></Box>
         </Grid>
         {textValues.map((textValue, index) => (
           <Grid item xs={3} key={index}>

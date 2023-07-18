@@ -14,6 +14,7 @@ import GearDisplay from './gearDisplay.';
 import SmallLapTable from './lapTimeTable';
 import TwoValueDisplay from './gearDisplay.';
 import Test from '../liveTrack';
+import WarningsDashboard from '../warningDashboard/keyWarningsDashboard';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
@@ -92,11 +93,12 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
+      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={['test', 'test2', 'test3', 'brah']} valuesOfInterestData={[1, 5, 3, 4]} valuesOfInterestUnits={['KPH', 'RPM', 'M/S', 'KG']} valuesOfInterestDefualtLimits={[0,0,0,100]}/></Box></Grid>
         <Grid item xs={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={4}>
-          <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps frontLeftTemp={frontLeftTemp} frontRightTemp={frontRightTemp} rearLeftTemp={rearLeftTemp} rearRightTemp={rearRightTemp} ></TyreTemps></Box><div>fuel ?</div></ItemCentered>
+          <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps frontLeftTemp={frontLeftTemp} frontRightTemp={frontRightTemp} rearLeftTemp={rearLeftTemp} rearRightTemp={rearRightTemp} ></TyreTemps></Box></ItemCentered>
         </Grid>
         <Grid item xs={3}>
           <Item><Box sx={{backgroundColor:'black'}}>{lapTimer}<Test testOffset={distanceInLap}targetSrc={getTrackPath(track)} trackName={checkTrackStatus(track)} /></Box></Item>

@@ -21,19 +21,20 @@ maxValue:number;
 step:number;
 }
 export default function InputSlider({width,targetAttribute,onValueChange,minValue,maxValue,step}:InputSliderProps) {
+  const convertMinValue = (minValue:string|number)=>{
+    if(typeof minValue =="string"){
+      return parseFloat(minValue);
+    }return minValue;
+   }
   const [value, setValue] = React.useState<number | string | Array<number | string>>(
-    parseFloat(minValue),
+    convertMinValue(minValue),
   );
 
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue);
     onValueChange(newValue.toString());
   };
- const convertMinValue = (minValue:string|number)=>{
-  if(typeof minValue =="string"){
-    return parseFloat(minValue);
-  }return minValue;
- }
+ 
   return (
     <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
       <Typography id="input-slider" gutterBottom>

@@ -98,7 +98,7 @@ const Home = () => {
     
     // Assign values to string array
     const trackInfo = [
-      `Title: ${splitAndCapitalise(title)}`,
+      `${splitAndCapitalise(title)}`,
       `Distance: ${checkForNaValues(distance)}`,
       `Elevation Change: ${checkForNaValues(elevationChange)}`,
       `Corners: ${corners}`,

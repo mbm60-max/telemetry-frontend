@@ -15,9 +15,9 @@ export default function QuickFilteringGrid({onSelectCar}:GridProps) {
   // Otherwise filter will be applied on fields such as the hidden column id
   const columns = React.useMemo(
     () => [
-      { field: 'brand', headerName: 'Brand', width: 150, headerClassName: 'custom-header'},
-      { field: 'name', headerName: 'Name', width: 250 , headerClassName: 'custom-header'},
-      { field: 'category', headerName: 'Category', width: 150 , headerClassName: 'custom-header'},
+      { field: 'brand', headerName: 'Brand', flex: 1, headerClassName: 'custom-header'},
+      { field: 'name', headerName: 'Name',flex: 1, headerClassName: 'custom-header'},
+      { field: 'category', headerName: 'Category',flex: 1, headerClassName: 'custom-header'},
     ],
     [],
   );

@@ -25,9 +25,9 @@ export default function SetupTable({onSelectSetup}:SetupTableProps) {
   // Otherwise filter will be applied on fields such as the hidden column id
   const columns = React.useMemo(
     () => [
-      { field: 'name', headerName: 'Name', width: 150, headerClassName: 'custom-header' },
+      { field: 'name', headerName: 'Name', flex: 1, headerClassName: 'custom-header' },
       {
-        width: 350,
+        flex: 1,
         headerClassName: 'removed',
         renderHeader: () => (
           <SetupCreatorModal onSetupAddition={forceFetchData} />

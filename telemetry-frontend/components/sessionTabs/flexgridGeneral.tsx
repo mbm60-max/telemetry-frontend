@@ -93,23 +93,42 @@ function getTrackPath(track:string| string[] | undefined){
   }return "/images/noTrack.svg";
 }
 
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings}:GeneralGridProps) {
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning}:GeneralGridProps) {
   const [valuesOfInterest,setValuesOfInterest]=useState(['test', 'test2', 'test3', 'brah']);  
   const [valueOfInterestUnits,setValuesOfInterestUnits]=useState(['KPH', 'RPM', 'M/S', 'KG']); 
   const [valuesOfInterestData,setValuesOfInterestData]=useState([1, 5, 3, 4]);
   const [valuesOfInterestDefualtLimits,setValuesOfInterestDefualtLimits]=useState([0, 105, 0, 100]);
-  
+  const [valuesOfInterestCurrentLimits, setValuesOfInterestCurrentLimits] = React.useState<{
+    [key: string]: number;
+  }>({});
+
   const handleSetNewWarning=(updatedValuesOfInterest:string[],updatedValuesOfInterestData:number[],updatedValuesOfInterestUnits:string[],updatedValuesOfInterestDefualtLimits:number[])=>{
     setValuesOfInterest(updatedValuesOfInterest);
     setValuesOfInterestData(updatedValuesOfInterestData);
     setValuesOfInterestDefualtLimits(updatedValuesOfInterestDefualtLimits);
     setValuesOfInterestUnits(updatedValuesOfInterestUnits);
   }
+  const handleSetLimits=(newDict:{[key: string]: number;})=>{
+    setValuesOfInterestCurrentLimits(newDict);
+    console.log(newDict);
+  }
+  useEffect(() => {
+    console.log(valuesOfInterestCurrentLimits);
+  }, [valuesOfInterestCurrentLimits]);
+
+  useEffect(() => {
+    for(let i=0; i<valuesOfInterest.length;i++){
+      if(valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`]){
+        handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+        handleIsWarning();
+      }
+    }
+  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits]);
   
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefualtLimits={valuesOfInterestDefualtLimits} handleSetWarning={handleSetNewWarning} /></Box></Grid>
+      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefualtLimits={valuesOfInterestDefualtLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} /></Box></Grid>
         <Grid item xs={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
         </Grid>

@@ -8,6 +8,7 @@ import WarningDashboardSettings from './warningDashSettings';
 import KeyWarningsSettingsAdd from './keyWarningsSettings';
 import AddIcon from '@mui/icons-material/Add';
 import ActualWarning from './actualWarning';
+import WarningInstance from '../../interfaces/warningInterface';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -22,28 +23,35 @@ const style = {
 };
 
 interface ActualWarningModalProps {
-
+  activewarning: WarningInstance;
 }
 
-export default function ActualWarningModal({  }: ActualWarningModalProps) {
+export default function ActualWarningModal({activewarning}: ActualWarningModalProps) {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const activeWarningCheck=()=>{
+    if(activewarning){
+      console.log(activewarning)
+      setOpen(true);
+    }
+  }
   const closeFunction = ()=>{
     handleClose();
   }
+  React.useEffect(() => {
+    activeWarningCheck();
+  }, []);
 
   return (
     <>
-      <Button variant='contained' onClick={handleOpen}><AddIcon/></Button>
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-         <ActualWarning onClose={closeFunction}/>
+         <ActualWarning onClose={closeFunction} activeWarning={activewarning}/>
         </Box>
       </Modal>
     </>

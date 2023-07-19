@@ -20,6 +20,7 @@ import GearboxGrid from './gearbox';
 import  trackData  from '../../data/trackData';
 import TyresSuspensionGrid from './tyresSuspension';
 import ActualWarningModal from '../warningDashboard/actualWarningModal';
+import WarningInstance from '../../interfaces/warningInterface';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -92,12 +93,7 @@ export default function BasicTabs() {
   function handleExitSession(){
     router.push('/')
   }
-  interface WarningInstance {
-    newWarning: string;
-    newWarningValue: number;
-    newWarningUnits: string;
-    newWarningLimit: number;
-  }
+ 
     const [throttleStream, setThrottleStream] = useState([{ x: 0, y: 0 }]);
     const [brakeStream, setBrakeStream] = useState([{ x: 0, y: 0 }]);
     const [speedStream, setSpeedStream] = useState([{ x: 0, y: 0 }]);
@@ -357,7 +353,7 @@ export default function BasicTabs() {
             warning.newWarning !== newWarning ||
             warning.newWarningValue !== newWarningValue ||
             warning.newWarningUnits !== newWarningUnits ||
-            warning.newWarningLimit !== newWarningLimit
+            warning.newWarningLimit !== newWarningLimit 
         );
       }
     });
@@ -392,7 +388,13 @@ export default function BasicTabs() {
     updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit, setAcknowledgedWarnings);
   };
   return (
-    <> <ActualWarningModal/>
+    <> {activeWarnings.length > 0 ? (
+      activeWarnings.map((value, index) => (
+        <ActualWarningModal key={index} activewarning={value} />
+      ))
+    ) : (
+      <p>No active warnings.</p>
+    )}
         <Homepage style={'homepage'}>
     <Box className='header'><Button onClick={handleExitSession}>Exit Session</Button></Box>
     <Box sx={{ width: '100%' }}>

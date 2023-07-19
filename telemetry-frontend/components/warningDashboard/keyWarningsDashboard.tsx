@@ -1,6 +1,6 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import chroma from "chroma-js";
-import React from "react";
+import React, { useEffect } from "react";
 import WarningDashboardSettingsModal from "./warningDashboardSettingsModal";
 import SettingsIcon from '@mui/icons-material/Settings';
 import KeyWarningsAddModal from "./keyWarningsModal";
@@ -12,13 +12,14 @@ interface WarningsDashboardProps {
   valuesOfInterestUnits: string[];
   valuesOfInterestDefualtLimits: number[];
 handleSetWarning:(updatedValuesOfInterest: string[], updatedValuesOfInterestData: number[], updatedValuesOfInterestUnits: string[], updatedValuesOfInterestDefualtLimits: number[]) => void
+handleSetLimits:(newDict: { [key: string]: number; }) => void;
 }
 export default function WarningsDashboard({
   valuesOfInterest,
   valuesOfInterestData,
   valuesOfInterestUnits,
   valuesOfInterestDefualtLimits,
-  handleSetWarning,
+  handleSetWarning,handleSetLimits,
 }: WarningsDashboardProps) {
   const calcColor = (
     colorScale: string[],
@@ -79,6 +80,7 @@ export default function WarningsDashboard({
       ...prevFields,
       [`limit${index}`]: limit,
     }));
+    
   };
   const handleDeleteWarning = (LimitsIndex:number,valuesIndex:number)=>{
     const updatedValuesOfInterest = [...valuesOfInterest];
@@ -126,6 +128,10 @@ updatedSelectedLimits[`limit${newLimitIndex}`] = newLimit;
 handleSetWarning(updatedValuesOfInterest,updatedValuesOfInterestData,updatedValuesOfInterestUnits,updatedValuesOfInterestDefualtLimits);
 setSelectedLimits(updatedSelectedLimits);
   }
+  useEffect(() => {
+    handleSetLimits(selectedLimits);
+    console.log('me');
+  }, [selectedLimits]);
 return(
 
     <Grid container spacing={2} columns={valuesOfInterest.length}>

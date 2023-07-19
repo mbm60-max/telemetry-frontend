@@ -15,6 +15,7 @@ import SmallLapTable from './lapTimeTable';
 import TwoValueDisplay from './gearDisplay.';
 import Test from '../liveTrack';
 import WarningsDashboard from '../warningDashboard/keyWarningsDashboard';
+import ActualWarningModal from '../warningDashboard/actualWarningModal';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
@@ -76,6 +77,10 @@ interface GeneralGridProps{
   lapTimer:string;
   track:string| string[] | undefined;
   distanceInLap:number;
+  handleIsWarning:() => void;
+  handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+  handleSuppressedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+  handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
 }
 function checkTrackStatus(track:string| string[] | undefined){
   if(typeof track === "string" ){
@@ -88,12 +93,23 @@ function getTrackPath(track:string| string[] | undefined){
   }return "/images/noTrack.svg";
 }
 
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap}:GeneralGridProps) {
-  console.log(distanceInLap);
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings}:GeneralGridProps) {
+  const [valuesOfInterest,setValuesOfInterest]=useState(['test', 'test2', 'test3', 'brah']);  
+  const [valueOfInterestUnits,setValuesOfInterestUnits]=useState(['KPH', 'RPM', 'M/S', 'KG']); 
+  const [valuesOfInterestData,setValuesOfInterestData]=useState([1, 5, 3, 4]);
+  const [valuesOfInterestDefualtLimits,setValuesOfInterestDefualtLimits]=useState([0, 105, 0, 100]);
+  
+  const handleSetNewWarning=(updatedValuesOfInterest:string[],updatedValuesOfInterestData:number[],updatedValuesOfInterestUnits:string[],updatedValuesOfInterestDefualtLimits:number[])=>{
+    setValuesOfInterest(updatedValuesOfInterest);
+    setValuesOfInterestData(updatedValuesOfInterestData);
+    setValuesOfInterestDefualtLimits(updatedValuesOfInterestDefualtLimits);
+    setValuesOfInterestUnits(updatedValuesOfInterestUnits);
+  }
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={['test', 'test2', 'test3', 'brah']} valuesOfInterestData={[1, 5, 3, 4]} valuesOfInterestUnits={['KPH', 'RPM', 'M/S', 'KG']} valuesOfInterestDefualtLimits={[0,0,0,100]}/></Box></Grid>
+      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefualtLimits={valuesOfInterestDefualtLimits} handleSetWarning={handleSetNewWarning} /></Box></Grid>
         <Grid item xs={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
         </Grid>

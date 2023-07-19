@@ -7,6 +7,7 @@ import { useState } from 'react';
 import WarningDashboardSettings from './warningDashSettings';
 import KeyWarningsSettingsAdd from './keyWarningsSettings';
 import AddIcon from '@mui/icons-material/Add';
+import ActualWarning from './actualWarning';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -20,36 +21,17 @@ const style = {
   p: 4,
 };
 
-interface KeyWarningsAddModalProps {
-  handleAddWarning:(newLimit: number, newUnits: string, newWaring: string) => void;
-  allWarnings:string[];
+interface ActualWarningModalProps {
+
 }
 
-export default function KeyWarningsAddModal({ handleAddWarning,allWarnings }: KeyWarningsAddModalProps) {
+export default function ActualWarningModal({  }: ActualWarningModalProps) {
   const [open, setOpen] = useState(false);
-  const [newUnits, setNewUnits] = useState("");
-  const [newWarning, setNewWarning] = useState("");
-  const [newLimit, setNewLimit] = useState(0);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleAddition = () => {
-    handleAddWarning(newLimit,newUnits,newWarning);
-    handleClose();
-  };
-
   const closeFunction = ()=>{
     handleClose();
-  }
-  const newLimitChange = (newLimit:number)=>{
-    setNewLimit(newLimit)
-  }
-  const newUnitsChange = (newUnits:string)=>{
-    setNewUnits(newUnits)
-  }
-  const newWarningChange = (newWarning:string)=>{
-    setNewWarning(newWarning)
   }
 
   return (
@@ -61,7 +43,7 @@ export default function KeyWarningsAddModal({ handleAddWarning,allWarnings }: Ke
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <KeyWarningsSettingsAdd handleAddition={handleAddition}newUnitsChange={newUnitsChange} newWarningChange={newWarningChange} newLimitChange={newLimitChange} onClose={closeFunction} allWarnings={allWarnings} />
+         <ActualWarning onClose={closeFunction}/>
         </Box>
       </Modal>
     </>

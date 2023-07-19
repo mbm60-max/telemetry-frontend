@@ -19,6 +19,7 @@ import EngineGrid from './engineGrid';
 import GearboxGrid from './gearbox';
 import  trackData  from '../../data/trackData';
 import TyresSuspensionGrid from './tyresSuspension';
+import ActualWarningModal from '../warningDashboard/actualWarningModal';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -91,7 +92,12 @@ export default function BasicTabs() {
   function handleExitSession(){
     router.push('/')
   }
-
+  interface WarningInstance {
+    newWarning: string;
+    newWarningValue: number;
+    newWarningUnits: string;
+    newWarningLimit: number;
+  }
     const [throttleStream, setThrottleStream] = useState([{ x: 0, y: 0 }]);
     const [brakeStream, setBrakeStream] = useState([{ x: 0, y: 0 }]);
     const [speedStream, setSpeedStream] = useState([{ x: 0, y: 0 }]);
@@ -140,6 +146,11 @@ export default function BasicTabs() {
        signalRService.stopConnection();
       };
    }, []);
+   const[isWarning,setIsWarning] = useState(false);
+   const[activeWarnings,setActiveWarnings] = useState<WarningInstance[]>([]);
+   const[suppressedWarnings,setSuppressedWarnings] = useState<WarningInstance[]>([]);
+   const[acknowledgedWarnings,setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
+
   
   
    function handlePacket (receivedExtendedPacket: ExtendedPacket){
@@ -317,8 +328,71 @@ export default function BasicTabs() {
   function convertMpsToMph(dataPoint:number){
     return Math.round(dataPoint * 2.23694);
   }
+  const handleIsWarning=()=>{
+    if(!(activeWarnings)&&!(suppressedWarnings)){
+      setIsWarning(false);
+      return;
+    }setIsWarning(true);
+  }
+  const updateWarningsArray = (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number,
+    setWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>
+  ) => {
+    setWarnings((prevWarnings) => {
+      if (add) {
+        const warningInstance: WarningInstance = {
+          newWarning,
+          newWarningValue,
+          newWarningUnits,
+          newWarningLimit,
+        };
+        return [...prevWarnings, warningInstance];
+      } else {
+        return prevWarnings.filter(
+          (warning) =>
+            warning.newWarning !== newWarning ||
+            warning.newWarningValue !== newWarningValue ||
+            warning.newWarningUnits !== newWarningUnits ||
+            warning.newWarningLimit !== newWarningLimit
+        );
+      }
+    });
+  };
+  const handleActiveWarnings = (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number
+  ) => {
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit, setActiveWarnings);
+  };
+
+  const handleSuppressedWarnings = (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number
+  ) => {
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit, setSuppressedWarnings);
+  };
+
+  const handleAcknowledgedWarnings = (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number
+  ) => {
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit, setAcknowledgedWarnings);
+  };
   return (
-    <>
+    <> <ActualWarningModal/>
         <Homepage style={'homepage'}>
     <Box className='header'><Button onClick={handleExitSession}>Exit Session</Button></Box>
     <Box sx={{ width: '100%' }}>
@@ -335,7 +409,7 @@ export default function BasicTabs() {
         </ThemeProvider>
       </Box>
       <TabPanel value={value} index={0} >
-      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track,distanceFromStart)}/>
+      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track,distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
       <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost}/>

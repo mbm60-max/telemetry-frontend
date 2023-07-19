@@ -1,53 +1,54 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
 import { Box} from "@mui/system";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import TextField from '@mui/material/TextField';
-interface KeyWarningsSettingsProps {
-  hanldeAddition:() => void;
-  handleDeletion:() => void;
+interface KeyWarningsSettingsAddProps {
+  handleAddition:() => void;
   newUnitsChange: (newUnits: string) => void;
   newWarningChange: (newWarning: string) => void;
   newLimitChange:(newLimit: number) => void;
-  valuesIndexChange:(valuesIndex: number) => void;
-  limitsIndexChange:(limitsIndex: number) => void;
   onClose:()=>void;
   allWarnings:string[];
 }
 
-const KeyWarningsSettings = ({ hanldeAddition,handleDeletion,newUnitsChange,newWarningChange,newLimitChange,valuesIndexChange,limitsIndexChange,onClose}: KeyWarningsSettingsProps) => {
+const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange,newLimitChange,onClose,allWarnings}: KeyWarningsSettingsAddProps) => {
     const [newUnits, setNewUnits] = useState("");
     const [newWarning, setNewWarning] = useState("");
-    const [newLimit, setNewLimit] = useState(0);
-    const [valuesIndex, setValuesIndex] = useState(0);
-    const [limitsIndex, setLimitsIndex] = useState(0);
-   
+    const [newLimit, setNewLimit] = useState(-1);
+    const [limitError, setLimitError] = useState("");
+    const [warningError, setWarningError] = useState("");
+    const [unitsError, setUnitsError] = useState("");
 
   const handleAdd = () => {
-    hanldeAddition();
+    if(newUnits===""){
+        setUnitsError("You must provide units")
+    }
+    if(newWarning===""){
+        setWarningError("You must select a new attribute")
+    }
+    if(newLimit===-1){
+        setLimitError("You must provide a warning limit")
+    }
+    if((newLimit!==-1)&&(newWarning!=="")&&(newUnits!=="")){
+        handleAddition();
+    }
+    return;
   };
-  const handleDelete = () => {
-   handleDeletion();
-  };
+
   const handleNewUnitsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    newUnitsChange(newUnits);
-    setNewUnits(newUnits);
+    const updatedValue = event.target.value
+    newUnitsChange(updatedValue);
+    setNewUnits(updatedValue);
    };
    const handleNewWarningChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    newWarningChange(newWarning);
-    setNewWarning(newWarning);
+    const updatedValue = event.target.value
+    newWarningChange(updatedValue);
+    setNewWarning(updatedValue);
    };
    const handleNewLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-   newLimitChange(newLimit);
    const newValue = parseInt(event.target.value);
       setNewLimit(isNaN(newValue) ? 0 : Math.max(0, newValue));
-   };
-   const handleValuesIndexChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    valuesIndexChange(valuesIndex);
-    setValuesIndex(valuesIndex);
-   };
-   const handleLimitsIndexChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    limitsIndexChange(limitsIndex);
-    setLimitsIndex(limitsIndex);
+      newLimitChange(newValue);
    };
 
   const handleClose=()=>{
@@ -69,6 +70,7 @@ const KeyWarningsSettings = ({ hanldeAddition,handleDeletion,newUnitsChange,newW
         }}
         value={newLimit}
         onChange={handleNewLimitChange}
+        error={Boolean(limitError)}
       />
       <TextField
         id="outlined-basic"
@@ -76,6 +78,7 @@ const KeyWarningsSettings = ({ hanldeAddition,handleDeletion,newUnitsChange,newW
         variant="outlined"
         value={newUnits}
         onChange={handleNewUnitsChange}
+        error={Boolean(unitsError)}
       />
       <TextField
         id="outlined-basic"
@@ -83,26 +86,12 @@ const KeyWarningsSettings = ({ hanldeAddition,handleDeletion,newUnitsChange,newW
         variant="outlined"
         value={newWarning}
         onChange={handleNewWarningChange}
+        error={Boolean(warningError)}
       />
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={value}
-          label="Age"
-          onChange={handleChange}
-        >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
     <Button onClick={handleAdd}>ADD</Button>
-    <Button onClick={handleDelete}>Delete</Button>
     <Button onClick={handleClose}>Exit</Button>
     </Box>
   );
 };
 
-export default KeyWarningsSettings
+export default KeyWarningsSettingsAdd

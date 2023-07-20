@@ -146,7 +146,74 @@ export default function BasicTabs() {
    const[activeWarnings,setActiveWarnings] = useState<WarningInstance[]>([]);
    const[suppressedWarnings,setSuppressedWarnings] = useState<WarningInstance[]>([]);
    const[acknowledgedWarnings,setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
-  
+   
+   const [valuesOfInterest,setValuesOfInterest]=useState(['test', 'test2', 'test3', 'brah']);  
+  const [valueOfInterestUnits,setValuesOfInterestUnits]=useState(['KPH', 'RPM', 'M/S', 'KG']); 
+  const [valuesOfInterestData,setValuesOfInterestData]=useState([1, 5, 3, 4]);
+  const [valuesOfInterestDefaultLimits,setValuesOfInterestDefaultLimits]=useState([0, 105, 0, 100]);
+  const [valuesOfInterestCurrentLimits, setValuesOfInterestCurrentLimits] = React.useState<{
+    [key: string]: number;
+  }>({});
+  const [dashboardWarnings, setDashboardWarnings] = React.useState<{ [key: string]: string[] }>({
+    dashboard1: ['test', 'test2', 'test3', 'brah'],
+    dashboard2: [],
+    dashboard3: [],
+    dashboard4: [],
+  });
+  const [dashboardWarningsUnits, setDashboardWarningsUnits] = React.useState<{ [key: string]: string[] }>({
+    dashboard1: ['KPH', 'RPM', 'M/S', 'KG'],
+    dashboard2: [],
+    dashboard3: [],
+    dashboard4: [],
+  });
+  const [dashboardWarningsData, setDashboardWarningsData] = React.useState<{ [key: string]: number[] }>({
+    dashboard1: [1, 5, 3, 4],
+    dashboard2: [],
+    dashboard3: [],
+    dashboard4: [],
+  });
+  const [dashboardWarningsDefaultLimits, setDashboardWarningsDefaultLimits] = React.useState<{ [key: string]: number[] }>({
+    dashboard1: [0, 105, 0, 100],
+    dashboard2: [],
+    dashboard3: [],
+    dashboard4: [],
+  });
+  const [dashboardWarningsCurrentLimits, setDashboardWarningsCurrentLimits] = React.useState<{ [key: string]: {[key: string]: number;} }>({
+    dashboard1: {},
+    dashboard2: {"":0},
+    dashboard3: {"":0},
+    dashboard4: {"":0},
+  });
+  const handleSetValuesOfInterest = (newValue:string[],dashNumber: number)=>{
+    setDashboardWarnings((prevDashboardWarnings) => ({
+       ...prevDashboardWarnings,
+      [`dashboard${dashNumber}`]: newValue,
+    }));
+};
+const handleSetValuesOfInterestData = (newValue:number[],dashNumber: number)=>{
+  setDashboardWarningsData((prevDashboardWarnings) => ({
+    ...prevDashboardWarnings,
+   [`dashboard${dashNumber}`]: newValue,
+ }));
+};
+const handleSetValuesOfInterestDefaultLimits = (newValue:number[],dashNumber:number)=>{
+  setDashboardWarningsDefaultLimits((prevDashboardWarnings) => ({
+    ...prevDashboardWarnings,
+   [`dashboard${dashNumber}`]: newValue,
+ }));
+};
+const handleSetValuesOfInterestCurrentLimits = (newDict:{[key: string]: number;},dashNumber:number)=>{
+  setDashboardWarningsCurrentLimits((prevDashboardWarnings) => ({
+    ...prevDashboardWarnings,
+   [`dashboard${dashNumber}`]: newDict,
+ }));
+};
+const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
+  setDashboardWarningsUnits((prevDashboardWarnings) => ({
+    ...prevDashboardWarnings,
+   [`dashboard${dashNumber}`]: newValue,
+ }));
+};
   
    function handlePacket (receivedExtendedPacket: ExtendedPacket){
     console.log('Received FullPacketMessage:', receivedExtendedPacket);
@@ -438,7 +505,7 @@ export default function BasicTabs() {
         </ThemeProvider>
       </Box>
       <TabPanel value={value} index={0} >
-      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track,distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings}/>
+      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track, distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${1}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${1}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${1}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${1}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${1}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
       <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost}/>

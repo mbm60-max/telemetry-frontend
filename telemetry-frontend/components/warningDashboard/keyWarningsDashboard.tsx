@@ -1,25 +1,34 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import chroma from "chroma-js";
-import React, { useEffect } from "react";
+import React, { useEffect,useRef  } from "react";
 import WarningDashboardSettingsModal from "./warningDashboardSettingsModal";
 import SettingsIcon from '@mui/icons-material/Settings';
 import KeyWarningsAddModal from "./keyWarningsModal";
 import KeyWarningsDeleteModal from "./keyWarningsDeleteModal";
+import KeyWarningsIgnoredModal from "./keyWarningsIgnoredModal";
+import WarningInstance from "../../interfaces/warningInterface";
+
 
 interface WarningsDashboardProps {
   valuesOfInterest: string[];
   valuesOfInterestData: number[];
   valuesOfInterestUnits: string[];
-  valuesOfInterestDefualtLimits: number[];
+  valuesOfInterestDefaultLimits: number[];
 handleSetWarning:(updatedValuesOfInterest: string[], updatedValuesOfInterestData: number[], updatedValuesOfInterestUnits: string[], updatedValuesOfInterestDefualtLimits: number[]) => void
 handleSetLimits:(newDict: { [key: string]: number; }) => void;
+handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+acknowledgedWarnings:WarningInstance[];
 }
 export default function WarningsDashboard({
   valuesOfInterest,
   valuesOfInterestData,
   valuesOfInterestUnits,
-  valuesOfInterestDefualtLimits,
+  valuesOfInterestDefaultLimits,
   handleSetWarning,handleSetLimits,
+  handleAcknowledgedWarnings,
+  handleActiveWarnings,
+  acknowledgedWarnings
 }: WarningsDashboardProps) {
   const calcColor = (
     colorScale: string[],
@@ -67,7 +76,7 @@ export default function WarningsDashboard({
   }>(
     valuesOfInterest.reduce(
       (limits: { [key: string]: number }, value: string, index: number) => {
-        limits[`limit${index}`] = valuesOfInterestDefualtLimits[index];
+        limits[`limit${index}`] = valuesOfInterestDefaultLimits[index];
         return limits;
       },
       {}
@@ -81,12 +90,15 @@ export default function WarningsDashboard({
     }));
     
   };
+  const prevSelectedLimits = useRef(selectedLimits);
   const handleDeleteWarning = (LimitsIndex:number,valuesIndex:number)=>{
     const updatedValuesOfInterest = [...valuesOfInterest];
     const updatedValuesOfInterestData = [...valuesOfInterestData];
     const updatedValuesOfInterestUnits = [...valuesOfInterestUnits];
-    const updatedValuesOfInterestDefualtLimits = [...valuesOfInterestDefualtLimits];
+    const updatedValuesOfInterestDefualtLimits = [...valuesOfInterestDefaultLimits];
   
+    handleActiveWarnings(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
+    handleAcknowledgedWarnings(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
     // Remove value of interest at index
     updatedValuesOfInterest.splice(valuesIndex, 1);
     updatedValuesOfInterestData.splice(valuesIndex, 1);
@@ -101,7 +113,7 @@ export default function WarningsDashboard({
         const newLimitsIndex = currentLimitsIndex > LimitsIndex ? currentLimitsIndex - 1 : currentLimitsIndex;
         updatedSelectedLimits[`limit${newLimitsIndex}`] = selectedLimits[key];
       }
-    });
+    }); 
     handleSetWarning(updatedValuesOfInterest,updatedValuesOfInterestData,updatedValuesOfInterestUnits,updatedValuesOfInterestDefualtLimits);
     setSelectedLimits(updatedSelectedLimits);
   }
@@ -111,7 +123,7 @@ const updatedValuesOfInterest = [...valuesOfInterest];
 const updatedSelectedLimits = { ...selectedLimits };
 const updatedValuesOfInterestData = [...valuesOfInterestData];
 const updatedValuesOfInterestUnits = [...valuesOfInterestUnits];
-const updatedValuesOfInterestDefualtLimits = [...valuesOfInterestDefualtLimits];
+const updatedValuesOfInterestDefualtLimits = [...valuesOfInterestDefaultLimits];
 
 // Add value to end of values of interest
 updatedValuesOfInterest.push(newWarning);
@@ -128,12 +140,42 @@ handleSetWarning(updatedValuesOfInterest,updatedValuesOfInterestData,updatedValu
 setSelectedLimits(updatedSelectedLimits);
   }
   useEffect(() => {
+    // Compare selectedLimits with the previous value
+    Object.keys(selectedLimits).forEach((key) => {
+      const limitIndex = parseInt(key.slice(5)); // Extract the index from the key (e.g., "limit0" -> 0)
+      if (selectedLimits[key] !== prevSelectedLimits.current[key]) {
+        // Limit has changed, call handleActiveWarnings and handleAcknowledgedWarnings with the index
+        handleActiveWarnings(
+          false,
+          valuesOfInterest[limitIndex],
+          valuesOfInterestData[limitIndex],
+          valuesOfInterestUnits[limitIndex],
+          valuesOfInterestDefaultLimits[limitIndex]
+        );
+
+        handleAcknowledgedWarnings(
+          false,
+          valuesOfInterest[limitIndex],
+          valuesOfInterestData[limitIndex],
+          valuesOfInterestUnits[limitIndex],
+          valuesOfInterestDefaultLimits[limitIndex]
+        );
+      }
+    });
+
+    // Update the previous value with the current selectedLimits
+    prevSelectedLimits.current = selectedLimits;
+
+    // Rest of the useEffect code...
     handleSetLimits(selectedLimits);
   }, [selectedLimits]);
+
+  // ... rest of the component ...
+  
 return(
 
     <Grid container spacing={2} columns={valuesOfInterest.length}>
-      <Grid item xs={12} sx={{ height: "10px", justifyContent: "end", display: "flex" }}><KeyWarningsAddModal  handleAddWarning={handleAddWarning} allWarnings={valuesOfInterest}/><KeyWarningsDeleteModal  handleDeleteWarning={handleDeleteWarning} allWarnings={valuesOfInterest}/></Grid>
+      <Grid item xs={12} sx={{ height: "10px", justifyContent: "end", display: "flex" }}><KeyWarningsIgnoredModal ignoredWarnings={acknowledgedWarnings}/><KeyWarningsAddModal  handleAddWarning={handleAddWarning} allWarnings={valuesOfInterest}/><KeyWarningsDeleteModal  handleDeleteWarning={handleDeleteWarning} allWarnings={valuesOfInterest}/></Grid>
       {valuesOfInterest.map((value, index) => (
         <Grid
           item

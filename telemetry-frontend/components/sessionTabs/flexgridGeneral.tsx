@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import TyreTemps from './tyresTempindicator/tyreTemps';
 import dynamic from 'next/dynamic';
 import SignalRService from '../../utils/signalrEndpoint';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import ExtendedPacket from '../../interfaces/extendedPacketInterface';
 import ImageBox from '../homepageTrack';
 import GearDisplay from './gearDisplay.';
@@ -84,7 +84,18 @@ interface GeneralGridProps{
   handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
   activeWarnings:WarningInstance[];
   acknowledgedWarnings:WarningInstance[];
+  valuesOfInterest:string[];
+  valueOfInterestUnits:string[];
+  valuesOfInterestData:number[];
+  valuesOfInterestDefaultLimits:number[];
+  valuesOfInterestCurrentLimits:{ [key: string]: number; }
+  setValuesOfInterest:(newValue: string[], dashNumber: number) => void
+  setValuesOfInterestData:(newValue: number[], dashNumber: number) => void
+  setValuesOfInterestDefualtLimits:(newValue: number[], dashNumber: number) => void
+  setValuesOfInterestUnits:(newValue: string[], dashNumber: number) => void
+  setValuesOfInterestCurrentLimits:(newDict: { [key: string]: number; }, dashNumber: number) => void
 }
+
 function checkTrackStatus(track:string| string[] | undefined){
   if(typeof track === "string" ){
     return track
@@ -96,22 +107,16 @@ function getTrackPath(track:string| string[] | undefined){
   }return "/images/noTrack.svg";
 }
 
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings}:GeneralGridProps) {
-  const [valuesOfInterest,setValuesOfInterest]=useState(['test', 'test2', 'test3', 'brah']);  
-  const [valueOfInterestUnits,setValuesOfInterestUnits]=useState(['KPH', 'RPM', 'M/S', 'KG']); 
-  const [valuesOfInterestData,setValuesOfInterestData]=useState([1, 5, 3, 4]);
-  const [valuesOfInterestDefualtLimits,setValuesOfInterestDefualtLimits]=useState([0, 105, 0, 100]);
-  const [valuesOfInterestCurrentLimits, setValuesOfInterestCurrentLimits] = React.useState<{
-    [key: string]: number;
-  }>({});
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestData,valuesOfInterestDefaultLimits}:GeneralGridProps) {
+ 
   const handleSetNewWarning=(updatedValuesOfInterest:string[],updatedValuesOfInterestData:number[],updatedValuesOfInterestUnits:string[],updatedValuesOfInterestDefualtLimits:number[])=>{
-    setValuesOfInterest(updatedValuesOfInterest);
-    setValuesOfInterestData(updatedValuesOfInterestData);
-    setValuesOfInterestDefualtLimits(updatedValuesOfInterestDefualtLimits);
-    setValuesOfInterestUnits(updatedValuesOfInterestUnits);
+    setValuesOfInterest(updatedValuesOfInterest,1);
+    setValuesOfInterestData(updatedValuesOfInterestData,1);
+    setValuesOfInterestDefualtLimits(updatedValuesOfInterestDefualtLimits,1);
+    setValuesOfInterestUnits(updatedValuesOfInterestUnits,1);
   }
   const handleSetLimits=(newDict:{[key: string]: number;})=>{
-    setValuesOfInterestCurrentLimits(newDict);
+    setValuesOfInterestCurrentLimits(newDict,1);
   }
   useEffect(() => {
   }, [valuesOfInterestCurrentLimits]);
@@ -138,7 +143,6 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
           (warning) => warning.newWarning === valuesOfInterest[i]
         )
         if (warningExists) {
-          console.log("hey")
           handleActiveWarnings(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
           handleIsWarning();
           }else if(warningIsIgnored){
@@ -148,11 +152,10 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
       }
     }
   }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits]);
-  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefualtLimits={valuesOfInterestDefualtLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} /></Box></Grid>
+      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings}/></Box></Grid>
         <Grid item xs={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
         </Grid>

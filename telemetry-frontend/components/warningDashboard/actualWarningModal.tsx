@@ -24,9 +24,11 @@ const style = {
 
 interface ActualWarningModalProps {
   activewarning: WarningInstance;
+  handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+  handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
 }
 
-export default function ActualWarningModal({activewarning}: ActualWarningModalProps) {
+export default function ActualWarningModal({activewarning,handleActiveWarnings,handleAcknowledgedWarnings}: ActualWarningModalProps) {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
@@ -42,6 +44,13 @@ export default function ActualWarningModal({activewarning}: ActualWarningModalPr
     activeWarningCheck();
   }, []);
 
+  const handleIgnore = (add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number)=>{
+    handleActiveWarnings(add,newWarning,newWarningValue,newWarningUnits,newWarningLimit);
+  }
+  const handleAddToIgnoredWarnings=(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number)=>{
+    handleAcknowledgedWarnings(add,newWarning,newWarningValue,newWarningUnits,newWarningLimit);
+  }
+
   return (
     <>
       <Modal
@@ -50,7 +59,7 @@ export default function ActualWarningModal({activewarning}: ActualWarningModalPr
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-         <ActualWarning onClose={closeFunction} activeWarning={activewarning}/>
+         <ActualWarning onClose={closeFunction} activeWarning={activewarning} handleActiveWarnings={handleIgnore} handleAcknowledgedWarnings={handleAddToIgnoredWarnings}/>
         </Box>
       </Modal>
     </>

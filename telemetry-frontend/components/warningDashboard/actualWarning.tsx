@@ -6,11 +6,19 @@ import WarningInstance from "../../interfaces/warningInterface";
 interface ActualWarningProps {
   onClose:()=>void;
   activeWarning: WarningInstance;
+  handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+  handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
 }
 
-const ActualWarning = ({onClose,activeWarning}: ActualWarningProps) => {
+const ActualWarning = ({onClose,activeWarning,handleActiveWarnings,handleAcknowledgedWarnings}: ActualWarningProps) => {
   
-  const handleClose=()=>{
+  const handleIgnore=()=>{
+    handleActiveWarnings(false,activeWarning.newWarning,activeWarning.newWarningValue,activeWarning.newWarningUnits,activeWarning.newWarningLimit);
+    handleAcknowledgedWarnings(true,activeWarning.newWarning,activeWarning.newWarningValue,activeWarning.newWarningUnits,activeWarning.newWarningLimit);
+    onClose();
+  }
+
+  const handleSupress=()=>{
     onClose();
   }
 
@@ -21,8 +29,8 @@ const ActualWarning = ({onClose,activeWarning}: ActualWarningProps) => {
                   This is {activeWarning.newWarningLimit}{activeWarning.newWarningUnits}
                   Warning Value: {activeWarning.newWarningValue}
                 </Typography>
-    <Button>Supress</Button>
-    <Button onClick={handleClose }>Ignore</Button>
+    <Button onClick={handleSupress}>Supress</Button>
+    <Button onClick={handleIgnore}>Ignore</Button>
     </Box>
   );
 };

@@ -83,6 +83,7 @@ interface GeneralGridProps{
   handleSuppressedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
   handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
   activeWarnings:WarningInstance[];
+  acknowledgedWarnings:WarningInstance[];
 }
 function checkTrackStatus(track:string| string[] | undefined){
   if(typeof track === "string" ){
@@ -95,7 +96,7 @@ function getTrackPath(track:string| string[] | undefined){
   }return "/images/noTrack.svg";
 }
 
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings}:GeneralGridProps) {
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings}:GeneralGridProps) {
   const [valuesOfInterest,setValuesOfInterest]=useState(['test', 'test2', 'test3', 'brah']);  
   const [valueOfInterestUnits,setValuesOfInterestUnits]=useState(['KPH', 'RPM', 'M/S', 'KG']); 
   const [valuesOfInterestData,setValuesOfInterestData]=useState([1, 5, 3, 4]);
@@ -117,15 +118,33 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
 
   useEffect(() => {
     for(let i=0; i<valuesOfInterest.length;i++){
+      console.log(valuesOfInterestCurrentLimits[`limit${i}`]);
       if((valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
         const warningExists = activeWarnings.some(
           (warning) => warning.newWarning === valuesOfInterest[i]
         )//;
-        console.log(warningExists);
-        if (!warningExists) {
+        const warningIsIgnored = acknowledgedWarnings.some(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        )
+        if ((!warningExists)&&(!warningIsIgnored)) {
         handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
         handleIsWarning();
         }
+      }else if((valuesOfInterestData[i]<valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
+        const warningExists = activeWarnings.some(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        )
+        const warningIsIgnored = acknowledgedWarnings.some(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        )
+        if (warningExists) {
+          console.log("hey")
+          handleActiveWarnings(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+          handleIsWarning();
+          }else if(warningIsIgnored){
+            handleAcknowledgedWarnings(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+            handleIsWarning();
+          }
       }
     }
   }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits]);

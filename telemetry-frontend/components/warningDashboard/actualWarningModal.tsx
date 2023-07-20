@@ -32,7 +32,6 @@ export default function ActualWarningModal({activewarning}: ActualWarningModalPr
 
   const activeWarningCheck=()=>{
     if(activewarning){
-      console.log(activewarning)
       setOpen(true);
     }
   }

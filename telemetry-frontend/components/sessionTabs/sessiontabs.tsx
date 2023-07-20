@@ -21,6 +21,7 @@ import  trackData  from '../../data/trackData';
 import TyresSuspensionGrid from './tyresSuspension';
 import ActualWarningModal from '../warningDashboard/actualWarningModal';
 import WarningInstance from '../../interfaces/warningInterface';
+import { WarningContext } from '../authProviderWarnings';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -61,6 +62,24 @@ export default function BasicTabs() {
   const router = useRouter();
   const { car, compound, track } = router.query;
   const { isLoggedIn, userName } = useContext(AuthContext);
+  const {valuesOfInterest,
+    setValuesOfInterest,
+    valueOfInterestUnits,
+    setValuesOfInterestUnits,
+    valuesOfInterestData,
+    setValuesOfInterestData,
+    valuesOfInterestDefaultLimits,
+    setValuesOfInterestDefaultLimits,
+    valuesOfInterestCurrentLimits,
+    setValuesOfInterestCurrentLimits,
+    isWarning,
+    setIsWarning,
+    activeWarnings,
+    setActiveWarnings,
+    suppressedWarnings,
+    setSuppressedWarnings,
+    acknowledgedWarnings,
+    setAcknowledgedWarnings}=useContext(WarningContext);
   const DynamicChart = dynamic(() => import('./chart'), { 
     loader: () => import('./chart'),
     ssr: false 
@@ -93,7 +112,6 @@ export default function BasicTabs() {
   function handleExitSession(){
     router.push('/')
   }
- 
     const [throttleStream, setThrottleStream] = useState([{ x: 0, y: 0 }]);
     const [brakeStream, setBrakeStream] = useState([{ x: 0, y: 0 }]);
     const [speedStream, setSpeedStream] = useState([{ x: 0, y: 0 }]);
@@ -142,11 +160,6 @@ export default function BasicTabs() {
        signalRService.stopConnection();
       };
    }, []);
-   const[isWarning,setIsWarning] = useState(false);
-   const[activeWarnings,setActiveWarnings] = useState<WarningInstance[]>([]);
-   const[suppressedWarnings,setSuppressedWarnings] = useState<WarningInstance[]>([]);
-   const[acknowledgedWarnings,setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
-
   
   
    function handlePacket (receivedExtendedPacket: ExtendedPacket){
@@ -305,7 +318,6 @@ export default function BasicTabs() {
     if (trackInfo && dataPoint != 0 && typeof track === "string") {
       const lapDistanceInMeters = trackInfo.distance;
       const distancePercentage = Math.round((dataPoint / lapDistanceInMeters) * 100);
-      console.log(distancePercentage)
       return distancePercentage;
     }
   
@@ -320,7 +332,6 @@ export default function BasicTabs() {
     return lastItem.y;
   }
   
-  console.log(lapTimer);
   function convertMpsToMph(dataPoint:number){
     return Math.round(dataPoint * 2.23694);
   }
@@ -336,9 +347,10 @@ export default function BasicTabs() {
     newWarningValue: number,
     newWarningUnits: string,
     newWarningLimit: number,
-    setWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>
+    currentWarningArray: WarningInstance[],
+    setWarnings: (warnings: WarningInstance[]) => void,
   ) => {
-    setWarnings((prevWarnings) => {
+
       if (add) {
         const warningInstance: WarningInstance = {
           newWarning,
@@ -346,26 +358,32 @@ export default function BasicTabs() {
           newWarningUnits,
           newWarningLimit,
         };
-        return [...prevWarnings, warningInstance];
+        const newWarningArray = [...currentWarningArray, warningInstance];
+        setWarnings(newWarningArray);
+        console.log(newWarningArray);
+        console.log(currentWarningArray);
       } else {
-        return prevWarnings.filter(
+        const filteredWarnings = currentWarningArray.filter(
           (warning) =>
             warning.newWarning !== newWarning ||
             warning.newWarningValue !== newWarningValue ||
             warning.newWarningUnits !== newWarningUnits ||
             warning.newWarningLimit !== newWarningLimit 
         );
+        setWarnings(filteredWarnings);
       }
-    });
+   
   };
+  
   const handleActiveWarnings = (
     add: boolean,
     newWarning: string,
     newWarningValue: number,
     newWarningUnits: string,
-    newWarningLimit: number
+    newWarningLimit: number,
+    currentWarningsArray:WarningInstance[],
   ) => {
-    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit, setActiveWarnings);
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,currentWarningsArray, setActiveWarnings);
   };
 
   const handleSuppressedWarnings = (
@@ -373,9 +391,9 @@ export default function BasicTabs() {
     newWarning: string,
     newWarningValue: number,
     newWarningUnits: string,
-    newWarningLimit: number
+    newWarningLimit: number,
   ) => {
-    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit, setSuppressedWarnings);
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,suppressedWarnings, setSuppressedWarnings);
   };
 
   const handleAcknowledgedWarnings = (
@@ -383,10 +401,21 @@ export default function BasicTabs() {
     newWarning: string,
     newWarningValue: number,
     newWarningUnits: string,
-    newWarningLimit: number
+    newWarningLimit: number,
   ) => {
-    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit, setAcknowledgedWarnings);
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,acknowledgedWarnings, setAcknowledgedWarnings);
   };
+  useEffect(() => {
+    setValuesOfInterest(["10"]);
+  }, []);
+  useEffect(() => {
+console.log(isLoggedIn);
+  }, [isLoggedIn]);
+  useEffect(() => {
+    console.log("test");
+    console.log(activeWarnings);
+    console.log("end");
+      }, [activeWarnings]);
   return (
     <> {activeWarnings.length > 0 ? (
       activeWarnings.map((value, index) => (
@@ -411,7 +440,7 @@ export default function BasicTabs() {
         </ThemeProvider>
       </Box>
       <TabPanel value={value} index={0} >
-      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track,distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning}/>
+      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track,distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
       <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost}/>

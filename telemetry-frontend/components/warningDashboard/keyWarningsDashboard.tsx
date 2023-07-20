@@ -67,7 +67,6 @@ export default function WarningsDashboard({
   }>(
     valuesOfInterest.reduce(
       (limits: { [key: string]: number }, value: string, index: number) => {
-        console.log(index)
         limits[`limit${index}`] = valuesOfInterestDefualtLimits[index];
         return limits;
       },
@@ -130,7 +129,6 @@ setSelectedLimits(updatedSelectedLimits);
   }
   useEffect(() => {
     handleSetLimits(selectedLimits);
-    console.log('me');
   }, [selectedLimits]);
 return(
 

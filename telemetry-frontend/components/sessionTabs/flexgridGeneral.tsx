@@ -16,6 +16,7 @@ import TwoValueDisplay from './gearDisplay.';
 import Test from '../liveTrack';
 import WarningsDashboard from '../warningDashboard/keyWarningsDashboard';
 import ActualWarningModal from '../warningDashboard/actualWarningModal';
+import WarningInstance from '../../interfaces/warningInterface';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
@@ -78,9 +79,10 @@ interface GeneralGridProps{
   track:string| string[] | undefined;
   distanceInLap:number;
   handleIsWarning:() => void;
-  handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
-  handleSuppressedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
-  handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+  handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number, currentWarnings:WarningInstance[]) => void
+  handleSuppressedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
+  handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
+  activeWarnings:WarningInstance[];
 }
 function checkTrackStatus(track:string| string[] | undefined){
   if(typeof track === "string" ){
@@ -93,7 +95,7 @@ function getTrackPath(track:string| string[] | undefined){
   }return "/images/noTrack.svg";
 }
 
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning}:GeneralGridProps) {
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings}:GeneralGridProps) {
   const [valuesOfInterest,setValuesOfInterest]=useState(['test', 'test2', 'test3', 'brah']);  
   const [valueOfInterestUnits,setValuesOfInterestUnits]=useState(['KPH', 'RPM', 'M/S', 'KG']); 
   const [valuesOfInterestData,setValuesOfInterestData]=useState([1, 5, 3, 4]);
@@ -110,16 +112,14 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
   }
   const handleSetLimits=(newDict:{[key: string]: number;})=>{
     setValuesOfInterestCurrentLimits(newDict);
-    console.log(newDict);
   }
   useEffect(() => {
-    console.log(valuesOfInterestCurrentLimits);
   }, [valuesOfInterestCurrentLimits]);
 
   useEffect(() => {
     for(let i=0; i<valuesOfInterest.length;i++){
       if(valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`]){
-        handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+        handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`],activeWarnings);
         handleIsWarning();
       }
     }

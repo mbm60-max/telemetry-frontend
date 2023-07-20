@@ -13,7 +13,6 @@ const ActualWarning = ({onClose,activeWarning}: ActualWarningProps) => {
   const handleClose=()=>{
     onClose();
   }
-  console.log(activeWarning)
 
   return (
     <Box sx={{ width: '100%', height: '50%'}}>

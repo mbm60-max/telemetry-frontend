@@ -1,15 +1,15 @@
 'use client'
 import { AppProps } from "next/app";
-import { Component } from "react";
 import { AuthProvider } from "../components/authProvider"
-import Home from ".";
-import Session from "./session";
+import { WarningProvider } from "../components/authProviderWarnings";
 
 function MyApp({ Component, pageProps }:AppProps) {
 
   return (
     <AuthProvider>
+       <WarningProvider>
       <Component {...pageProps} />
+      </WarningProvider>
     </AuthProvider>
   );
 }

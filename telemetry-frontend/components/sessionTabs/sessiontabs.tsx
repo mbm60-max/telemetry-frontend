@@ -62,24 +62,6 @@ export default function BasicTabs() {
   const router = useRouter();
   const { car, compound, track } = router.query;
   const { isLoggedIn, userName } = useContext(AuthContext);
-  const {valuesOfInterest,
-    setValuesOfInterest,
-    valueOfInterestUnits,
-    setValuesOfInterestUnits,
-    valuesOfInterestData,
-    setValuesOfInterestData,
-    valuesOfInterestDefaultLimits,
-    setValuesOfInterestDefaultLimits,
-    valuesOfInterestCurrentLimits,
-    setValuesOfInterestCurrentLimits,
-    isWarning,
-    setIsWarning,
-    activeWarnings,
-    setActiveWarnings,
-    suppressedWarnings,
-    setSuppressedWarnings,
-    acknowledgedWarnings,
-    setAcknowledgedWarnings}=useContext(WarningContext);
   const DynamicChart = dynamic(() => import('./chart'), { 
     loader: () => import('./chart'),
     ssr: false 
@@ -160,6 +142,10 @@ export default function BasicTabs() {
        signalRService.stopConnection();
       };
    }, []);
+   const[isWarning,setIsWarning] = useState(false);
+   const[activeWarnings,setActiveWarnings] = useState<WarningInstance[]>([]);
+   const[suppressedWarnings,setSuppressedWarnings] = useState<WarningInstance[]>([]);
+   const[acknowledgedWarnings,setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
   
   
    function handlePacket (receivedExtendedPacket: ExtendedPacket){
@@ -347,10 +333,9 @@ export default function BasicTabs() {
     newWarningValue: number,
     newWarningUnits: string,
     newWarningLimit: number,
-    currentWarningArray: WarningInstance[],
-    setWarnings: (warnings: WarningInstance[]) => void,
+    setWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>
   ) => {
-
+    setWarnings((prevWarnings) => {
       if (add) {
         const warningInstance: WarningInstance = {
           newWarning,
@@ -358,21 +343,18 @@ export default function BasicTabs() {
           newWarningUnits,
           newWarningLimit,
         };
-        const newWarningArray = [...currentWarningArray, warningInstance];
-        setWarnings(newWarningArray);
-        console.log(newWarningArray);
-        console.log(currentWarningArray);
+        return [...prevWarnings, warningInstance];
       } else {
-        const filteredWarnings = currentWarningArray.filter(
+        return prevWarnings.filter(
           (warning) =>
             warning.newWarning !== newWarning ||
             warning.newWarningValue !== newWarningValue ||
             warning.newWarningUnits !== newWarningUnits ||
+            warning.newWarningLimit !== newWarningLimit ||
             warning.newWarningLimit !== newWarningLimit 
         );
-        setWarnings(filteredWarnings);
       }
-   
+    });
   };
   
   const handleActiveWarnings = (
@@ -380,10 +362,9 @@ export default function BasicTabs() {
     newWarning: string,
     newWarningValue: number,
     newWarningUnits: string,
-    newWarningLimit: number,
-    currentWarningsArray:WarningInstance[],
+    newWarningLimit: number
   ) => {
-    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,currentWarningsArray, setActiveWarnings);
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,setActiveWarnings);
   };
 
   const handleSuppressedWarnings = (
@@ -393,7 +374,7 @@ export default function BasicTabs() {
     newWarningUnits: string,
     newWarningLimit: number,
   ) => {
-    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,suppressedWarnings, setSuppressedWarnings);
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,setSuppressedWarnings);
   };
 
   const handleAcknowledgedWarnings = (
@@ -403,23 +384,32 @@ export default function BasicTabs() {
     newWarningUnits: string,
     newWarningLimit: number,
   ) => {
-    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,acknowledgedWarnings, setAcknowledgedWarnings);
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,setAcknowledgedWarnings);
   };
+
   useEffect(() => {
-    setValuesOfInterest(["10"]);
-  }, []);
-  useEffect(() => {
-console.log(isLoggedIn);
-  }, [isLoggedIn]);
-  useEffect(() => {
-    console.log("test");
-    console.log(activeWarnings);
-    console.log("end");
-      }, [activeWarnings]);
+    // Set the initial active warnings data
+
+    // Set up an interval to trigger re-render every 5 seconds
+    const rerenderInterval = setInterval(() => {
+      // Create a new array by adding a unique identifier to each warning
+      const updatedWarnings = activeWarnings.map((warning, index) => ({
+        ...warning,
+        id: `${warning.newWarning}-${index}-${Date.now()}`,
+      }));
+      setActiveWarnings(updatedWarnings);
+    }, 5000); // 5000 milliseconds (5 seconds)
+
+    // Clean up the interval when the component unmounts to avoid memory leaks
+    return () => clearInterval(rerenderInterval);
+  }, [activeWarnings]);
   return (
     <> {activeWarnings.length > 0 ? (
+      console.log(activeWarnings),
       activeWarnings.map((value, index) => (
-        <ActualWarningModal key={index} activewarning={value} />
+        <>
+        <ActualWarningModal key={value.id} activewarning={value} />
+        </>
       ))
     ) : (
       <p>No active warnings.</p>

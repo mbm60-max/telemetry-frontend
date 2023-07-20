@@ -79,7 +79,7 @@ interface GeneralGridProps{
   track:string| string[] | undefined;
   distanceInLap:number;
   handleIsWarning:() => void;
-  handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number, currentWarnings:WarningInstance[]) => void
+  handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
   handleSuppressedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
   handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
   activeWarnings:WarningInstance[];
@@ -103,7 +103,6 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
   const [valuesOfInterestCurrentLimits, setValuesOfInterestCurrentLimits] = React.useState<{
     [key: string]: number;
   }>({});
-
   const handleSetNewWarning=(updatedValuesOfInterest:string[],updatedValuesOfInterestData:number[],updatedValuesOfInterestUnits:string[],updatedValuesOfInterestDefualtLimits:number[])=>{
     setValuesOfInterest(updatedValuesOfInterest);
     setValuesOfInterestData(updatedValuesOfInterestData);
@@ -118,9 +117,15 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
 
   useEffect(() => {
     for(let i=0; i<valuesOfInterest.length;i++){
-      if(valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`]){
-        handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`],activeWarnings);
+      if((valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
+        const warningExists = activeWarnings.some(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        )//;
+        console.log(warningExists);
+        if (!warningExists) {
+        handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
         handleIsWarning();
+        }
       }
     }
   }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits]);

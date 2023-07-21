@@ -32,7 +32,6 @@ const KeyWarningsSettingsDelete = ({handleDeletion,valuesIndexChange,limitsIndex
     //for some reason it acts as both a string and a number in different cases so watch out
     handleLimitsIndexChange(index)
     handleValuesIndexChange(index)
-    console.log(allWarnings[index])
    };
 
   const handleClose=()=>{

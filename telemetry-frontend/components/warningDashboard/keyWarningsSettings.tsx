@@ -7,15 +7,18 @@ interface KeyWarningsSettingsAddProps {
   newUnitsChange: (newUnits: string) => void;
   newWarningChange: (newWarning: string) => void;
   newLimitChange:(newLimit: number) => void;
+  newLimitChangeLower:(newLimitLower: number) => void;
   onClose:()=>void;
   allWarnings:string[];
 }
 
-const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange,newLimitChange,onClose,allWarnings}: KeyWarningsSettingsAddProps) => {
+const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange,newLimitChange,onClose,allWarnings,newLimitChangeLower}: KeyWarningsSettingsAddProps) => {
     const [newUnits, setNewUnits] = useState("");
     const [newWarning, setNewWarning] = useState("");
     const [newLimit, setNewLimit] = useState(-1);
+    const [newLimitLower, setNewLimitLower] = useState(-1);
     const [limitError, setLimitError] = useState("");
+    const [limitLowerError, setLimitLowerError] = useState("");
     const [warningError, setWarningError] = useState("");
     const [unitsError, setUnitsError] = useState("");
 
@@ -29,7 +32,10 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
     if(newLimit===-1){
         setLimitError("You must provide a warning limit")
     }
-    if((newLimit!==-1)&&(newWarning!=="")&&(newUnits!=="")){
+    if(newLimitLower===-1){
+      setLimitLowerError("You must provide a lower warning limit")
+  }
+    if((newLimitLower!==-1)&&(newLimit!==-1)&&(newWarning!=="")&&(newUnits!=="")){
         handleAddition();
     }
     return;
@@ -50,6 +56,11 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
       setNewLimit(isNaN(newValue) ? 0 : Math.max(0, newValue));
       newLimitChange(newValue);
    };
+   const handleNewLimitChangeLower = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseInt(event.target.value);
+       setNewLimitLower(isNaN(newValue) ? 0 : Math.max(0, newValue));
+       newLimitChangeLower(newValue);
+    };
 
   const handleClose=()=>{
     onClose();
@@ -71,6 +82,18 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
         value={newLimit}
         onChange={handleNewLimitChange}
         error={Boolean(limitError)}
+      />
+      <TextField
+        id="outlined-basic"
+        label="Set Lower Limit"
+        variant="outlined"
+        type="number" // Set input type to 'number'
+        inputProps={{
+          min: 0, // Set minimum value to 0
+        }}
+        value={newLimitLower}
+        onChange={handleNewLimitChangeLower}
+        error={Boolean(limitLowerError)}
       />
       <TextField
         id="outlined-basic"

@@ -20,7 +20,7 @@ const style = {
 };
 
 interface WarningDashboardSettingsModalProps {
-  onSelectLimit: (limit: number, index:string) => void;
+  onSelectLimit: (limit: number,limitLower:number, index:string) => void;
   index:number;
   valueOfInterest:string;
   valueOfInterestUnits:string;
@@ -32,8 +32,8 @@ export default function WarningDashboardSettingsModal({ onSelectLimit,index,valu
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleLimitSelection = (limit: number, index:number) => {
-    onSelectLimit(limit,index.toString()); 
+  const handleLimitSelection = (limit: number,limitLower:number, index:number) => {
+    onSelectLimit(limit,limitLower,index.toString()); 
     handleClose();
   };
   

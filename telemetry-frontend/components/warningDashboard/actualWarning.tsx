@@ -8,9 +8,10 @@ interface ActualWarningProps {
   activeWarning: WarningInstance;
   handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
   handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+  isHigherWarning:boolean;
 }
 
-const ActualWarning = ({onClose,activeWarning,handleActiveWarnings,handleAcknowledgedWarnings}: ActualWarningProps) => {
+const ActualWarning = ({onClose,activeWarning,handleActiveWarnings,handleAcknowledgedWarnings,isHigherWarning}: ActualWarningProps) => {
   
   const handleIgnore=()=>{
     handleActiveWarnings(false,activeWarning.newWarning,activeWarning.newWarningValue,activeWarning.newWarningUnits,activeWarning.newWarningLimit);
@@ -25,9 +26,22 @@ const ActualWarning = ({onClose,activeWarning,handleActiveWarnings,handleAcknowl
   return (
     <Box sx={{ width: '100%', height: '50%'}}>
         <Typography id="input-slider" gutterBottom>
-                  Warning {activeWarning.newWarning} is above the limit you set.
-                  This is {activeWarning.newWarningLimit}{activeWarning.newWarningUnits}
-                  Warning Value: {activeWarning.newWarningValue}
+        {isHigherWarning && (
+        <Typography id="input-slider" gutterBottom>
+          Warning {activeWarning.newWarning} is above the limit you set.
+          This is {activeWarning.newWarningLimit}
+          {activeWarning.newWarningUnits}
+          Warning Value: {activeWarning.newWarningValue}
+        </Typography>
+      )}
+      {!isHigherWarning && (
+        <Typography id="input-slider" gutterBottom>
+          Warning {activeWarning.newWarning} is below the limit you set.
+          This is {activeWarning.newWarningLimit}
+          {activeWarning.newWarningUnits}
+          Warning Value: {activeWarning.newWarningValue}
+        </Typography>
+      )}
                 </Typography>
     <Button onClick={handleSupress}>Supress</Button>
     <Button onClick={handleIgnore}>Ignore</Button>

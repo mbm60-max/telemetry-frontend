@@ -26,9 +26,10 @@ interface ActualWarningModalProps {
   activewarning: WarningInstance;
   handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
   handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+  isHigherWarning:boolean;
 }
 
-export default function ActualWarningModal({activewarning,handleActiveWarnings,handleAcknowledgedWarnings}: ActualWarningModalProps) {
+export default function ActualWarningModal({activewarning,handleActiveWarnings,handleAcknowledgedWarnings,isHigherWarning}: ActualWarningModalProps) {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
 
@@ -59,7 +60,7 @@ export default function ActualWarningModal({activewarning,handleActiveWarnings,h
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-         <ActualWarning onClose={closeFunction} activeWarning={activewarning} handleActiveWarnings={handleIgnore} handleAcknowledgedWarnings={handleAddToIgnoredWarnings}/>
+         <ActualWarning onClose={closeFunction} activeWarning={activewarning} handleActiveWarnings={handleIgnore} handleAcknowledgedWarnings={handleAddToIgnoredWarnings} isHigherWarning={isHigherWarning}/>
         </Box>
       </Modal>
     </>

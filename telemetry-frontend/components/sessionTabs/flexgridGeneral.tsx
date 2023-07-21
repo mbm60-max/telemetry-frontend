@@ -84,16 +84,24 @@ interface GeneralGridProps{
   handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
   activeWarnings:WarningInstance[];
   acknowledgedWarnings:WarningInstance[];
+  handleActiveWarningsLower:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
+  handleAcknowledgedWarningsLower:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void
+  activeWarningsLower:WarningInstance[];
+  acknowledgedWarningLower:WarningInstance[];
   valuesOfInterest:string[];
   valueOfInterestUnits:string[];
   valuesOfInterestData:number[];
   valuesOfInterestDefaultLimits:number[];
   valuesOfInterestCurrentLimits:{ [key: string]: number; }
+  valuesOfInterestCurrentLimitsLower:{ [key: string]: number; }
+  valuesOfInterestGreaterThanWarning:boolean[];
   setValuesOfInterest:(newValue: string[], dashNumber: number) => void
   setValuesOfInterestData:(newValue: number[], dashNumber: number) => void
   setValuesOfInterestDefualtLimits:(newValue: number[], dashNumber: number) => void
   setValuesOfInterestUnits:(newValue: string[], dashNumber: number) => void
   setValuesOfInterestCurrentLimits:(newDict: { [key: string]: number; }, dashNumber: number) => void
+  setValuesOfInterestCurrentLimitsLower:(newDict: { [key: string]: number; }, dashNumber: number) => void
+  packetFlag:boolean;
 }
 
 function checkTrackStatus(track:string| string[] | undefined){
@@ -107,7 +115,7 @@ function getTrackPath(track:string| string[] | undefined){
   }return "/images/noTrack.svg";
 }
 
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestData,valuesOfInterestDefaultLimits}:GeneralGridProps) {
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestData,valuesOfInterestDefaultLimits,packetFlag,valuesOfInterestGreaterThanWarning,setValuesOfInterestCurrentLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,activeWarningsLower,acknowledgedWarningLower,valuesOfInterestCurrentLimitsLower}:GeneralGridProps) {
  
   const handleSetNewWarning=(updatedValuesOfInterest:string[],updatedValuesOfInterestData:number[],updatedValuesOfInterestUnits:string[],updatedValuesOfInterestDefualtLimits:number[])=>{
     setValuesOfInterest(updatedValuesOfInterest,1);
@@ -118,12 +126,32 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
   const handleSetLimits=(newDict:{[key: string]: number;})=>{
     setValuesOfInterestCurrentLimits(newDict,1);
   }
+  const handleSetLimitsLower=(newDict:{[key: string]: number;})=>{
+    setValuesOfInterestCurrentLimitsLower(newDict,1);
+  }
+
+
+
+  const possibleWarnings=[throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp]
   useEffect(() => {
   }, [valuesOfInterestCurrentLimits]);
 
+
+  useEffect(() => {
+    const handleValuesOfInterestFetch=(valuesToCheck:string[],valuesToUpdate:number[],dashboardNumber:number, newValue:number|string,newValueName:string)=>{
+      for(let i =0; i<valuesToCheck.length;i++){
+        if(valuesToCheck[i]==newValueName){
+          valuesToUpdate[i]=(newValue)as number;
+          handleSetValuesOfInterestData(valuesToUpdate,dashboardNumber);
+          return;
+        }
+      }
+    }
+  }, [packetFlag]);
+
   useEffect(() => {
     for(let i=0; i<valuesOfInterest.length;i++){
-      console.log(valuesOfInterestCurrentLimits[`limit${i}`]);
+
       if((valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
         const warningExists = activeWarnings.some(
           (warning) => warning.newWarning === valuesOfInterest[i]
@@ -150,12 +178,38 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
             handleIsWarning();
           }
       }
+      if((valuesOfInterestData[i]<=valuesOfInterestCurrentLimitsLower[`limitLower${i}`])&&(activeWarningsLower!==undefined)){
+        const warningExists = activeWarningsLower.some(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        )//;
+        const warningIsIgnored = acknowledgedWarningLower.some(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        )
+        if ((!warningExists)&&(!warningIsIgnored)) {
+        handleActiveWarningsLower(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+        handleIsWarning();
+        }
+      }else if((valuesOfInterestData[i]>valuesOfInterestCurrentLimitsLower[`limitlower${i}`])&&(activeWarningsLower!==undefined)){
+        const warningExists = activeWarningsLower.some(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        )
+        const warningIsIgnored = acknowledgedWarningLower.some(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        )
+        if (warningExists) {
+          handleActiveWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+          handleIsWarning();
+          }else if(warningIsIgnored){
+            handleAcknowledgedWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+            handleIsWarning();
+          }
+      }
     }
-  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits]);
+  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits,valuesOfInterestGreaterThanWarning]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings}/></Box></Grid>
+      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={[]}/></Box></Grid>
         <Grid item xs={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
         </Grid>

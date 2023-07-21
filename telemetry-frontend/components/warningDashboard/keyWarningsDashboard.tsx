@@ -16,9 +16,13 @@ interface WarningsDashboardProps {
   valuesOfInterestDefaultLimits: number[];
 handleSetWarning:(updatedValuesOfInterest: string[], updatedValuesOfInterestData: number[], updatedValuesOfInterestUnits: string[], updatedValuesOfInterestDefualtLimits: number[]) => void
 handleSetLimits:(newDict: { [key: string]: number; }) => void;
+handleSetLimitsLower:(newDict: { [key: string]: number; }) => void;
 handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
 handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+handleActiveWarningsLower:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
+handleAcknowledgedWarningsLower:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
 acknowledgedWarnings:WarningInstance[];
+acknowledgedWarningsLower:WarningInstance[];
 }
 export default function WarningsDashboard({
   valuesOfInterest,
@@ -28,7 +32,7 @@ export default function WarningsDashboard({
   handleSetWarning,handleSetLimits,
   handleAcknowledgedWarnings,
   handleActiveWarnings,
-  acknowledgedWarnings
+  acknowledgedWarnings,handleSetLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,acknowledgedWarningsLower
 }: WarningsDashboardProps) {
   const calcColor = (
     colorScale: string[],
@@ -55,13 +59,12 @@ export default function WarningsDashboard({
     let colorScale = [""];
     let color = "";
     if (temp > targetTemp) {
-      colorScale = chroma.scale([color2, color1]).mode("lch").colors(steps);
-      return calcColor(colorScale, targetTemp, temp);
+      return (color = "#ff0000");
     } else if (temp < targetTemp) {
-      colorScale = chroma.scale([color2, color3]).mode("lch").colors(steps);
+      colorScale = chroma.scale([color1, color2]).mode("lch").colors(steps);
       return calcColor(colorScale, temp, targetTemp);
     } else {
-      return (color = "#00ff00");
+      return (color = "#ff0000");
     }
   };
 
@@ -69,7 +72,7 @@ export default function WarningsDashboard({
   const Red = "#ff0000";
   const Green = "#00ff00";
   const Blue = "#0000ff";
-  const numberOfSteps = 20;
+  const numberOfSteps = 10;
 
   const [selectedLimits, setSelectedLimits] = React.useState<{
     [key: string]: number;
@@ -82,15 +85,44 @@ export default function WarningsDashboard({
       {}
     )
   );
+  const [selectedLimitsLower, setSelectedLimitsLower] = React.useState<{
+    [key: string]: number;
+  }>(
+    valuesOfInterest.reduce(
+      (limits: { [key: string]: number }, value: string, index: number) => {
+        limits[`limitLower${index}`] = valuesOfInterestDefaultLimits[index];
+        return limits;
+      },
+      {}
+    )
+  );
 
-  const handleLimitSelection = (limit: number, index: string) => {
+  const handleLimitSelection = (limit: number,limitLower:number, index: string) => {
+    if(limit==-1){
+      setSelectedLimitsLower((prevFields) => ({
+        ...prevFields,
+        [`limitLower${index}`]: limitLower,
+      }));
+    }
+    if(limitLower==-1){
+      setSelectedLimits((prevFields) => ({
+        ...prevFields,
+        [`limit${index}`]: limit,
+      }));
+    }
+    if((limitLower!=-1)&&(limit!=-1)){
+    setSelectedLimitsLower((prevFields) => ({
+      ...prevFields,
+      [`limitLower${index}`]: limitLower,
+    }));
     setSelectedLimits((prevFields) => ({
       ...prevFields,
       [`limit${index}`]: limit,
     }));
-    
+  }
   };
   const prevSelectedLimits = useRef(selectedLimits);
+  const prevSelectedLimitsLower = useRef(selectedLimitsLower);
   const handleDeleteWarning = (LimitsIndex:number,valuesIndex:number)=>{
     const updatedValuesOfInterest = [...valuesOfInterest];
     const updatedValuesOfInterestData = [...valuesOfInterestData];
@@ -99,6 +131,8 @@ export default function WarningsDashboard({
   
     handleActiveWarnings(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
     handleAcknowledgedWarnings(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
+    handleActiveWarningsLower(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
+    handleAcknowledgedWarningsLower(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
     // Remove value of interest at index
     updatedValuesOfInterest.splice(valuesIndex, 1);
     updatedValuesOfInterestData.splice(valuesIndex, 1);
@@ -106,6 +140,7 @@ export default function WarningsDashboard({
     updatedValuesOfInterestDefualtLimits.splice(valuesIndex, 1);
     // Remove selected limit that matches the index
     const updatedSelectedLimits:{ [key: string]: number }  =  {};
+    const updatedSelectedLimitsLower:{ [key: string]: number }  =  {};
     Object.keys(selectedLimits).forEach((key) => {
       const currentLimitsIndex = parseInt(key.slice(5)); // Extract the index from the key (e.g., "limit0" -> 0)
       if (currentLimitsIndex !== LimitsIndex) {
@@ -114,13 +149,24 @@ export default function WarningsDashboard({
         updatedSelectedLimits[`limit${newLimitsIndex}`] = selectedLimits[key];
       }
     }); 
+    Object.keys(selectedLimitsLower).forEach((key) => {
+      const currentLimitsIndex = parseInt(key.slice(10)); // Extract the index from the key (e.g., "limit0" -> 0)
+      console.log(key.slice(10))
+      if (currentLimitsIndex !== LimitsIndex) {
+        // Skip the entry with the index that matches LimitsIndex
+        const newLimitsIndex = currentLimitsIndex > LimitsIndex ? currentLimitsIndex - 1 : currentLimitsIndex;
+        updatedSelectedLimitsLower[`limitLower${newLimitsIndex}`] = selectedLimitsLower[key];
+      }
+    }); 
     handleSetWarning(updatedValuesOfInterest,updatedValuesOfInterestData,updatedValuesOfInterestUnits,updatedValuesOfInterestDefualtLimits);
     setSelectedLimits(updatedSelectedLimits);
+    setSelectedLimitsLower(updatedSelectedLimitsLower);
   }
-  const handleAddWarning = (newLimit:number,newUnits:string,newWarning:string)=>{
+  const handleAddWarning = (newLimit:number,newLimitLower:number,newUnits:string,newWarning:string)=>{
 //adds value to end of values of interest and adds new limit to selected limit with value newLimit
 const updatedValuesOfInterest = [...valuesOfInterest];
 const updatedSelectedLimits = { ...selectedLimits };
+const updatedSelectedLimitsLower = { ...selectedLimitsLower };
 const updatedValuesOfInterestData = [...valuesOfInterestData];
 const updatedValuesOfInterestUnits = [...valuesOfInterestUnits];
 const updatedValuesOfInterestDefualtLimits = [...valuesOfInterestDefaultLimits];
@@ -134,10 +180,13 @@ updatedValuesOfInterestDefualtLimits.push(0);
 // Add new limit to selected limits with value newLimit
 const newLimitIndex = Object.keys(selectedLimits).length;
 updatedSelectedLimits[`limit${newLimitIndex}`] = newLimit;
+const newLimitIndexLower = Object.keys(selectedLimitsLower).length;
+updatedSelectedLimitsLower[`limitLower${newLimitIndexLower}`] = newLimitLower;
 
 // Update state
 handleSetWarning(updatedValuesOfInterest,updatedValuesOfInterestData,updatedValuesOfInterestUnits,updatedValuesOfInterestDefualtLimits);
 setSelectedLimits(updatedSelectedLimits);
+setSelectedLimitsLower(updatedSelectedLimitsLower);
   }
   useEffect(() => {
     // Compare selectedLimits with the previous value
@@ -170,12 +219,43 @@ setSelectedLimits(updatedSelectedLimits);
     handleSetLimits(selectedLimits);
   }, [selectedLimits]);
 
+  useEffect(() => {
+    // Compare selectedLimits with the previous value
+    Object.keys(selectedLimitsLower).forEach((key) => {
+      const limitIndex = parseInt(key.slice(5)); // Extract the index from the key (e.g., "limit0" -> 0)
+      if (selectedLimitsLower[key] !== prevSelectedLimitsLower.current[key]) {
+        // Limit has changed, call handleActiveWarnings and handleAcknowledgedWarnings with the index
+        handleActiveWarningsLower(
+          false,
+          valuesOfInterest[limitIndex],
+          valuesOfInterestData[limitIndex],
+          valuesOfInterestUnits[limitIndex],
+          valuesOfInterestDefaultLimits[limitIndex]
+        );
+
+        handleAcknowledgedWarningsLower(
+          false,
+          valuesOfInterest[limitIndex],
+          valuesOfInterestData[limitIndex],
+          valuesOfInterestUnits[limitIndex],
+          valuesOfInterestDefaultLimits[limitIndex]
+        );
+      }
+    });
+
+    // Update the previous value with the current selectedLimits
+    prevSelectedLimitsLower.current = selectedLimitsLower;
+
+    // Rest of the useEffect code...
+    handleSetLimitsLower(selectedLimitsLower);
+  }, [selectedLimitsLower]);
+
   // ... rest of the component ...
   
 return(
 
     <Grid container spacing={2} columns={valuesOfInterest.length}>
-      <Grid item xs={12} sx={{ height: "10px", justifyContent: "end", display: "flex" }}><KeyWarningsIgnoredModal ignoredWarnings={acknowledgedWarnings}/><KeyWarningsAddModal  handleAddWarning={handleAddWarning} allWarnings={valuesOfInterest}/><KeyWarningsDeleteModal  handleDeleteWarning={handleDeleteWarning} allWarnings={valuesOfInterest}/></Grid>
+      <Grid item xs={12} sx={{ height: "10px", justifyContent: "end", display: "flex" }}><KeyWarningsIgnoredModal ignoredWarnings={acknowledgedWarnings}ignoredWarningsLower={acknowledgedWarningsLower}/><KeyWarningsAddModal  handleAddWarning={handleAddWarning} allWarnings={valuesOfInterest}/><KeyWarningsDeleteModal  handleDeleteWarning={handleDeleteWarning} allWarnings={valuesOfInterest}/></Grid>
       {valuesOfInterest.map((value, index) => (
         <Grid
           item
@@ -233,7 +313,7 @@ return(
                 }}
               >
                 <Typography id="input-slider" gutterBottom>
-                  {valuesOfInterestData[index]} {valuesOfInterestUnits[index]} Current Limit: {selectedLimits[`limit${index}`]}
+                  {valuesOfInterestData[index]} {valuesOfInterestUnits[index]} Current Limit: {selectedLimits[`limit${index}`]}Current lower Limit: {selectedLimitsLower[`limitLower${index}`]}
                 </Typography>
               </Grid>
             </Grid>

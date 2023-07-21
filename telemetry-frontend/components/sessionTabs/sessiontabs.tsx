@@ -146,6 +146,8 @@ export default function BasicTabs() {
    const[activeWarnings,setActiveWarnings] = useState<WarningInstance[]>([]);
    const[suppressedWarnings,setSuppressedWarnings] = useState<WarningInstance[]>([]);
    const[acknowledgedWarnings,setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
+   const[activeWarningsLower,setActiveWarningsLower] = useState<WarningInstance[]>([]);
+   const[acknowledgedWarningsLower,setAcknowledgedWarningsLower] = useState<WarningInstance[]>([]);
    
    const [valuesOfInterest,setValuesOfInterest]=useState(['test', 'test2', 'test3', 'brah']);  
   const [valueOfInterestUnits,setValuesOfInterestUnits]=useState(['KPH', 'RPM', 'M/S', 'KG']); 
@@ -184,6 +186,12 @@ export default function BasicTabs() {
     dashboard3: {"":0},
     dashboard4: {"":0},
   });
+  const [dashboardWarningsCurrentLimitsLower, setDashboardWarningsCurrentLimitsLower] = React.useState<{ [key: string]: {[key: string]: number;} }>({
+    dashboard1: {},
+    dashboard2: {"":0},
+    dashboard3: {"":0},
+    dashboard4: {"":0},
+  });
   const handleSetValuesOfInterest = (newValue:string[],dashNumber: number)=>{
     setDashboardWarnings((prevDashboardWarnings) => ({
        ...prevDashboardWarnings,
@@ -208,6 +216,12 @@ const handleSetValuesOfInterestCurrentLimits = (newDict:{[key: string]: number;}
    [`dashboard${dashNumber}`]: newDict,
  }));
 };
+const handleSetValuesOfInterestCurrentLimitsLower = (newDict:{[key: string]: number;},dashNumber:number)=>{
+  setDashboardWarningsCurrentLimitsLower((prevDashboardWarnings) => ({
+    ...prevDashboardWarnings,
+   [`dashboard${dashNumber}`]: newDict,
+ }));
+};
 const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
   setDashboardWarningsUnits((prevDashboardWarnings) => ({
     ...prevDashboardWarnings,
@@ -215,6 +229,7 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
  }));
 };
   
+
    function handlePacket (receivedExtendedPacket: ExtendedPacket){
     console.log('Received FullPacketMessage:', receivedExtendedPacket);
       //console.log(JSON.stringify(receivedExtendedPacket, null, 2));
@@ -227,7 +242,7 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
       for(const attribute in attributes){
         var attributeValue = parsedObject[attributes[attribute]];
         if (attributeValue !== undefined && typeof attributeValue == "string") {
-          appendStringData(attributes[attribute],attributeValue); 
+          appendStringData(attributes[attribute],attributeValue);
         }else if(attributeValue !== undefined && typeof attributeValue != "string"){
           switch(attributes[attribute]){
             case 'minAlertRPM':
@@ -412,15 +427,6 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
         };
         return [...prevWarnings, warningInstance];
       } else {
-        console.log("previois")
-        console.log(newWarning)
-        console.log(prevWarnings.filter(
-          (warning) =>
-            warning.newWarning !== newWarning ||
-            warning.newWarningValue !== newWarningValue ||
-            warning.newWarningUnits !== newWarningUnits ||
-            warning.newWarningLimit !== newWarningLimit 
-        ));
 
         return prevWarnings.filter(
           (warning) =>
@@ -432,6 +438,7 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
     });
   };
   
+  
   const handleActiveWarnings = (
     add: boolean,
     newWarning: string,
@@ -441,6 +448,25 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
   ) => {
     updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,setActiveWarnings);
   };
+  const handleActiveWarningsLower = (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number
+  ) => {
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,setActiveWarningsLower);
+  };
+  const handleAcknowledgedWarningsLower = (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number,
+  ) => {
+    updateWarningsArray(add, newWarning, newWarningValue, newWarningUnits, newWarningLimit,setAcknowledgedWarningsLower);
+  };
+
 
   const handleSuppressedWarnings = (
     add: boolean,
@@ -478,12 +504,36 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
     // Clean up the interval when the component unmounts to avoid memory leaks
     return () => clearInterval(rerenderInterval);
   }, [activeWarnings]);
+  useEffect(() => {
+    // Set the initial active warnings data
+
+    // Set up an interval to trigger re-render every 5 seconds
+    const rerenderInterval = setInterval(() => {
+      // Create a new array by adding a unique identifier to each warning
+      const updatedWarnings = activeWarningsLower.map((warning, index) => ({
+        ...warning,
+        id: `${warning.newWarning}-${index}-${Date.now()}`,
+      }));
+      setActiveWarningsLower(updatedWarnings);
+    }, 5000); // 5000 milliseconds (5 seconds)
+
+    // Clean up the interval when the component unmounts to avoid memory leaks
+    return () => clearInterval(rerenderInterval);
+  }, [activeWarningsLower]);
   return (
     <> {activeWarnings.length > 0 ? (
-      console.log(activeWarnings),
       activeWarnings.map((value, index) => (
         <>
-        <ActualWarningModal key={value.id} activewarning={value} handleActiveWarnings={handleActiveWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings}/>
+        <ActualWarningModal key={value.id} activewarning={value} handleActiveWarnings={handleActiveWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} isHigherWarning={true}/>
+        </>
+      ))
+    ) : (
+      <p>No active warnings.</p>
+    )}
+    {activeWarningsLower.length > 0 ? (
+      activeWarningsLower.map((value, index) => (
+        <>
+        <ActualWarningModal key={value.id} activewarning={value} handleActiveWarnings={handleActiveWarningsLower} handleAcknowledgedWarnings={handleAcknowledgedWarningsLower} isHigherWarning={false}/>
         </>
       ))
     ) : (
@@ -505,7 +555,7 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
         </ThemeProvider>
       </Box>
       <TabPanel value={value} index={0} >
-      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track, distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${1}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${1}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${1}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${1}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${1}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits}/>
+      <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track, distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${1}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${1}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${1}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${1}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${1}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${1}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={false}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
       <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost}/>

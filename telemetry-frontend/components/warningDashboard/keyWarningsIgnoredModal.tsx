@@ -23,9 +23,10 @@ const style = {
 
 interface KeyWarningsIgnoredModalProps {
     ignoredWarnings:WarningInstance[];
+    ignoredWarningsLower:WarningInstance[];
 }
 
-export default function KeyWarningsIgnoredModal({ignoredWarnings }: KeyWarningsIgnoredModalProps) {
+export default function KeyWarningsIgnoredModal({ignoredWarnings,ignoredWarningsLower }: KeyWarningsIgnoredModalProps) {
   const [open, setOpen] = useState(false);
   
   const handleOpen = () => setOpen(true);
@@ -46,7 +47,7 @@ export default function KeyWarningsIgnoredModal({ignoredWarnings }: KeyWarningsI
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <KeyWarningsSettingsIgnored onClose={closeFunction} ignoredWarnings={ignoredWarnings} />
+          <KeyWarningsSettingsIgnored onClose={closeFunction} ignoredWarnings={ignoredWarnings} ignoredWarningsLower={ignoredWarningsLower} />
         </Box>
       </Modal>
     </>

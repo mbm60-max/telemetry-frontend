@@ -21,7 +21,7 @@ const style = {
 };
 
 interface KeyWarningsAddModalProps {
-  handleAddWarning:(newLimit: number, newUnits: string, newWaring: string) => void;
+  handleAddWarning:(newLimit: number, newLimitLower: number, newUnits: string, newWarning: string) => void
   allWarnings:string[];
 }
 
@@ -30,12 +30,13 @@ export default function KeyWarningsAddModal({ handleAddWarning,allWarnings }: Ke
   const [newUnits, setNewUnits] = useState("");
   const [newWarning, setNewWarning] = useState("");
   const [newLimit, setNewLimit] = useState(0);
+  const [newLimitLower, setNewLimitLower] = useState(0);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleAddition = () => {
-    handleAddWarning(newLimit,newUnits,newWarning);
+    handleAddWarning(newLimit,newLimitLower,newUnits,newWarning);
     handleClose();
   };
 
@@ -44,6 +45,9 @@ export default function KeyWarningsAddModal({ handleAddWarning,allWarnings }: Ke
   }
   const newLimitChange = (newLimit:number)=>{
     setNewLimit(newLimit)
+  }
+  const newLimitChangeLower = (newLimitLower:number)=>{
+    setNewLimitLower(newLimitLower)
   }
   const newUnitsChange = (newUnits:string)=>{
     setNewUnits(newUnits)
@@ -61,7 +65,7 @@ export default function KeyWarningsAddModal({ handleAddWarning,allWarnings }: Ke
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <KeyWarningsSettingsAdd handleAddition={handleAddition}newUnitsChange={newUnitsChange} newWarningChange={newWarningChange} newLimitChange={newLimitChange} onClose={closeFunction} allWarnings={allWarnings} />
+          <KeyWarningsSettingsAdd handleAddition={handleAddition}newUnitsChange={newUnitsChange} newWarningChange={newWarningChange} newLimitChange={newLimitChange} onClose={closeFunction} allWarnings={allWarnings} newLimitChangeLower={newLimitChangeLower}/>
         </Box>
       </Modal>
     </>

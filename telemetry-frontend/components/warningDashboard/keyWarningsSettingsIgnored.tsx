@@ -5,9 +5,10 @@ import WarningInstance from "../../interfaces/warningInterface";
 interface KeyWarningsSettingsIgnoredProps {
   onClose:()=>void;
   ignoredWarnings:WarningInstance[];
+  ignoredWarningsLower:WarningInstance[];
 }
 
-const KeyWarningsSettingsIgnored = ({onClose,ignoredWarnings}: KeyWarningsSettingsIgnoredProps) => {
+const KeyWarningsSettingsIgnored = ({onClose,ignoredWarnings,ignoredWarningsLower}: KeyWarningsSettingsIgnoredProps) => {
   
 
   const handleClose=()=>{
@@ -49,6 +50,15 @@ const KeyWarningsSettingsIgnored = ({onClose,ignoredWarnings}: KeyWarningsSettin
         </TableHead>
         <TableBody>
         {ignoredWarnings.map((value, index) => (
+              <StyledTableRow key={index}>
+                <StyledTableCell component="th" scope="row">
+                  {value.newWarning}
+                  </StyledTableCell>
+              </StyledTableRow>
+            ))}
+        </TableBody>
+        <TableBody>
+        {ignoredWarningsLower.map((value, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell component="th" scope="row">
                   {value.newWarning}

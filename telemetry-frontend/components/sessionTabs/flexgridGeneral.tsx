@@ -132,21 +132,38 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
 
 
 
-  const possibleWarnings=[throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp]
+  const possibleWarningsValues=[throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp]
+  const possibleWarningsNames=["Throttle","Brake","Velocity","Suggested Gear","Current Gear","Front Left Temp","Front Right Temp","Rear Left Temp","Rear Right Temp"]
   useEffect(() => {
   }, [valuesOfInterestCurrentLimits]);
 
-
+  function parseNumberStream(stream: { x: number; y: number; }[]) {
+    if (stream.length === 0) {
+      return -1;
+    }
+    
+    const lastItem = stream[stream.length - 1];
+    return lastItem.y;
+  }
+  
   useEffect(() => {
-    const handleValuesOfInterestFetch=(valuesToCheck:string[],valuesToUpdate:number[],dashboardNumber:number, newValue:number|string,newValueName:string)=>{
+    const handleValuesOfInterestFetch=(valuesToCheck:string[],valuesToUpdate:number[],dashboardNumber:number,possibleWarningsNames:string[])=>{
       for(let i =0; i<valuesToCheck.length;i++){
-        if(valuesToCheck[i]==newValueName){
-          valuesToUpdate[i]=(newValue)as number;
-          handleSetValuesOfInterestData(valuesToUpdate,dashboardNumber);
-          return;
+        for(let j =0; j<possibleWarningsNames.length;j++){
+        if(valuesToCheck[i]==possibleWarningsNames[j]){
+            const value=possibleWarningsValues[j];
+            if(typeof value !== "number"){
+              const lastItem = value[value.length-1]
+              valuesToUpdate[i]= lastItem.y;
+            }else{
+              valuesToUpdate[i]= value;
+            }
         }
       }
+      }setValuesOfInterestData(valuesToUpdate,dashboardNumber);
+      return;
     }
+    handleValuesOfInterestFetch(valuesOfInterest,valuesOfInterestData,1,possibleWarningsNames)
   }, [packetFlag]);
 
   useEffect(() => {

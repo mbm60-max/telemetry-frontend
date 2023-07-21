@@ -23,6 +23,7 @@ import ActualWarningModal from '../warningDashboard/actualWarningModal';
 import WarningInstance from '../../interfaces/warningInterface';
 import { WarningContext } from '../authProviderWarnings';
 
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -157,13 +158,13 @@ export default function BasicTabs() {
     [key: string]: number;
   }>({});
   const [dashboardWarnings, setDashboardWarnings] = React.useState<{ [key: string]: string[] }>({
-    dashboard1: ['test', 'test2', 'test3', 'brah'],
+    dashboard1: ['Front Left Temp', 'Front Right Temp', 'Rear Left Temp', 'Rear Right Temp'],
     dashboard2: [],
     dashboard3: [],
     dashboard4: [],
   });
   const [dashboardWarningsUnits, setDashboardWarningsUnits] = React.useState<{ [key: string]: string[] }>({
-    dashboard1: ['KPH', 'RPM', 'M/S', 'KG'],
+    dashboard1: ['C', 'C', 'C', 'C'],
     dashboard2: [],
     dashboard3: [],
     dashboard4: [],
@@ -175,7 +176,7 @@ export default function BasicTabs() {
     dashboard4: [],
   });
   const [dashboardWarningsDefaultLimits, setDashboardWarningsDefaultLimits] = React.useState<{ [key: string]: number[] }>({
-    dashboard1: [0, 105, 0, 100],
+    dashboard1: [105, 105, 105, 105],
     dashboard2: [],
     dashboard3: [],
     dashboard4: [],
@@ -522,6 +523,8 @@ const [packetFlag,setPacketFlag] = useState(false);
     // Clean up the interval when the component unmounts to avoid memory leaks
     return () => clearInterval(rerenderInterval);
   }, [activeWarningsLower]);
+
+
   return (
     <> {activeWarnings.length > 0 ? (
       activeWarnings.map((value, index) => (

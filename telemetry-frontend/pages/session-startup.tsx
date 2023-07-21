@@ -27,6 +27,7 @@ import SetupTable from "../components/sessionStartupComponents/setupComponents/s
 import BasicCard from "../components/card";
 import Homepage from "../components/background/background";
 import "../calltoaction.css";
+import InfoToolTip from "../components/helperTooltip.tsx/infoTooltip";
 const SessionStartup: React.FC = () => {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -99,6 +100,11 @@ const SessionStartup: React.FC = () => {
     router.push("/");
   }
 
+  const tooltipInfo = (
+    <>
+      <em>{'A session requires a track,car and tyre compound in order to be started.'}</em> <b>{'You can optionally also add a setup.'}</b> <u>{'This information is then used during and after the session.'}</u>{"hmm"}
+    </>
+  );
   return (
     <>
       <Box className="header">
@@ -287,7 +293,7 @@ const SessionStartup: React.FC = () => {
                           sx={{  width: "50%" }}
                         >
                           Submit
-                        </Button>
+                        </Button><InfoToolTip name={"Sessions"} info={tooltipInfo}/>
                       </Grid>
                     </Grid>{" "}
                   </ItemCentered>

@@ -14,6 +14,7 @@ import ArraySlider from "./setupSliderArray";
 import ArraySliderText from "./textFieldArray";
 import { Chip, Divider, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
+import InfoToolTip from "../../helperTooltip.tsx/infoTooltip";
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -210,6 +211,11 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
       const { value } = event.target;
       setValue(value);
     };
+    const tooltipInfo = (
+      <>
+        <em>{'Setups contain various segments.'}</em> <b>{'Each can be customised, but if left untouched no value will be taken, despite the value appearing on the slider/selection.'}</b> <u>{'If you do alter any values they will be stored for later use.'}</u>{"You will be able to acces any setup for any car once it is created"}
+      </>
+    );
   return (
     <>
       <Button onClick={handleOpen}>Add Setup</Button>
@@ -234,6 +240,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                     sx={{ mr: 2, width: "167px" }}
                   >Submit</Button>
                   <Button onClick={handleClose}>Clear<ClearIcon/></Button>
+                  <InfoToolTip name={"Setup"} info={tooltipInfo}/>
                   <Divider sx={{}}>
         <Chip label="General" />
       </Divider>
@@ -248,6 +255,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 minValue={1}
                 maxValue={5}
                 step={1}
+                toolTipContent={"Upgraded Power"}
               /></Grid>
               <Grid item xs={6}>
               <InputSlider
@@ -259,6 +267,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 minValue={1}
                 maxValue={5}
                 step={1}
+                toolTipContent={"Upgraded Power"}
               /></Grid>
               <Grid item xs={6}>
               <InputSlider
@@ -270,6 +279,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 minValue={0}
                 maxValue={200}
                 step={1}
+                toolTipContent={"Upgraded Power"}
               />
               </Grid>
               <Grid item xs={6}>
@@ -282,6 +292,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 minValue={0}
                 maxValue={200}
                 step={1}
+                toolTipContent={"Upgraded Power"}
               /></Grid>
               <Grid item xs={6}>
               <InputSlider
@@ -293,6 +304,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 minValue={1}
                 maxValue={5}
                 step={1}
+                toolTipContent={"Upgraded Power"}
               /></Grid>
               <Grid item xs={6}>
               <InputSlider
@@ -304,6 +316,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 minValue={"-5"}
                 maxValue={5}
                 step={1}
+                toolTipContent={"Upgraded Power"}
               /></Grid></Grid>
                           <Divider>
         <Chip label="Transmission" />
@@ -319,6 +332,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 minValue={0}
                 maxValue={500}
                 step={1}
+                toolTipContent={"Upgraded Power"}
               /></Grid>
               <Grid item xs={6}>
               <InputSlider
@@ -330,6 +344,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 minValue={1}
                 maxValue={5}
                 step={0.001}///might need changing
+                toolTipContent={"Upgraded Power"}
               /></Grid>
               <Grid item xs={6}>
               <Box sx={{ width: '85%',backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>

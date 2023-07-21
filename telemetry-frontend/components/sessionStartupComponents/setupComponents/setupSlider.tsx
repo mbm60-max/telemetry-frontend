@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
 import VolumeUp from '@mui/icons-material/VolumeUp';
+import InfoToolTip from '../../helperTooltip.tsx/infoTooltip';
 
 
 const Input = styled(MuiInput)`
@@ -19,8 +20,9 @@ onValueChange: (value:string ) => void;
 minValue:number|string;
 maxValue:number;
 step:number;
+toolTipContent:string;
 }
-export default function InputSlider({width,targetAttribute,onValueChange,minValue,maxValue,step}:InputSliderProps) {
+export default function InputSlider({width,targetAttribute,onValueChange,minValue,maxValue,step,toolTipContent}:InputSliderProps) {
   const convertMinValue = (minValue:string|number)=>{
     if(typeof minValue =="string"){
       return parseFloat(minValue);
@@ -35,6 +37,11 @@ export default function InputSlider({width,targetAttribute,onValueChange,minValu
     onValueChange(newValue.toString());
   };
  
+  const tooltipInfo = (
+    <>
+     <em>{toolTipContent}</em>
+    </>
+  );
   return (
     <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
       <Typography id="input-slider" gutterBottom>
@@ -51,7 +58,7 @@ export default function InputSlider({width,targetAttribute,onValueChange,minValu
             max={maxValue}
             step={step}
           />
-        </Grid>
+        </Grid> <InfoToolTip name={targetAttribute} info={tooltipInfo}/>
       </Grid>
     </Box>
   );

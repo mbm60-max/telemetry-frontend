@@ -17,10 +17,12 @@ interface MultiDisplayChartProps {
   dataStream2: { x: number; y: number; }[];
   dataStream3: { x: number; y: number; }[];
   dataStream4: { x: number; y: number; }[];
+  units:string;
   height:number;
+  labelXaxis:string;
 }
 
-export default function MultiDisplayChart({ label, expectedMaxValue, expectedMinValue, dataStream1,dataStream2,dataStream3,dataStream4,height }: MultiDisplayChartProps) {
+export default function MultiDisplayChart({ label, expectedMaxValue, expectedMinValue, dataStream1,dataStream2,dataStream3,dataStream4,height,units,labelXaxis }: MultiDisplayChartProps) {
   const series = [{
     name: 'FL'+label,
     data: dataStream1
@@ -38,11 +40,26 @@ export default function MultiDisplayChart({ label, expectedMaxValue, expectedMin
   const basicYAxis =[{
     min: expectedMinValue,
     max: expectedMaxValue,
+    seriesName: 'Column A',
+    axisTicks: {
+      show: true,
+      color: '#F6F6F6', // Set the font color to blue
+    },
+    axisBorder: {
+      show: true,
+      color: '#F6F6F6', // Set the font color to blue
+    },
+    title: {
+      text: label +" "+ units,
+      style: {
+          color: '#F6F6F6' // Set the font color to blue
+        }
+    },
     labels: {
       style: {
         colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
-      }
-    }
+      }},
+  
   }]
   const extraStreamOne = [
     {
@@ -65,7 +82,7 @@ export default function MultiDisplayChart({ label, expectedMaxValue, expectedMin
         }
       },
       toolbar: {
-        show: true
+        show: false
       }
     },
     dataLabels: {
@@ -82,7 +99,7 @@ export default function MultiDisplayChart({ label, expectedMaxValue, expectedMin
       }
     },
     markers: {
-      size: 0
+      size: 6
     },
     xaxis: {
       range: 30,
@@ -93,7 +110,12 @@ export default function MultiDisplayChart({ label, expectedMaxValue, expectedMin
         style: {
           colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
         }
-      }
+      },title: {
+        text: labelXaxis,
+        style: {
+            color: '#F6F6F6' // Set the font color to blue
+          }
+      },
     },
     yaxis: [...basicYAxis,...extraStreamOne]
   };

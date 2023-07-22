@@ -71,25 +71,25 @@ export default function GearboxGrid({currentGearStream,suggestedGearStream,rpmSt
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={rpmStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={rpmStream} units={'RPM'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={6}>
-          <Item><DynamicBasicChart label={'RPM Clutch To Gearbox '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={rpmClutchToGearboxStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'RPM Clutch To Gearbox '} expectedMaxValue={255} expectedMinValue={-1} dataStream={rpmClutchToGearboxStream} units={'RPM'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={3}>
-          <Item><DynamicBasicChart label={'Suggested Gear'} expectedMaxValue={255} expectedMinValue={-1}  dataStream={suggestedGearStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Suggested Gear'} expectedMaxValue={255} expectedMinValue={-1} dataStream={suggestedGearStream} units={''} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={6}>
-          <Item><DynamicBasicChart label={'Current Gear'} expectedMaxValue={255} expectedMinValue={-1}  dataStream={currentGearStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Current Gear'} expectedMaxValue={255} expectedMinValue={-1} dataStream={currentGearStream} units={''} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={3}>
           <Item><TwoValueDisplay dataValueOne={inLapShifts} dataValueTwo={0} nameOne={'Total Shifts In Lap'} nameTwo={'?'}/></Item>
         </Grid>
         <Grid item xs={4}>
-          <Item><DynamicBasicChart label={'Clutch Pedal Input Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={clutchPedalStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Clutch Pedal Input Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={clutchPedalStream} units={'%'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={4}>
-          <Item>{lapTimer}<DynamicBasicChart label={'Clutch Engagement Trace'} expectedMaxValue={255} expectedMinValue={-1}  dataStream={clutchEngagementStream}></DynamicBasicChart></Item>
+          <Item>{lapTimer}<DynamicBasicChart label={'Clutch Engagement Trace'} expectedMaxValue={255} expectedMinValue={-1} dataStream={clutchEngagementStream} units={'%'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={4}>
           <Item>hi</Item>

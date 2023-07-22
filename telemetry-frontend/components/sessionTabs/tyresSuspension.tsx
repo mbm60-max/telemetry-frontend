@@ -85,19 +85,19 @@ export default function TyresSuspensionGrid({tireFL_SurfaceTemperature,tireFR_Su
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={8}>
-          <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={tireFL_SurfaceTemperature} dataStream2={tireFR_SurfaceTemperature} dataStream3={tireRL_SurfaceTemperature} dataStream4={tireRR_SurfaceTemperature} height={400} label={"Tyre Temps"}/></Item>
+          <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={tireFL_SurfaceTemperature} dataStream2={tireFR_SurfaceTemperature} dataStream3={tireRL_SurfaceTemperature} dataStream4={tireRR_SurfaceTemperature} height={400} label={"Tyre Temps"} units={'°C'} labelXaxis={'Distance Into Lap M'}/></Item>
         </Grid>
         <Grid item xs={4}>
           <Item><TyreTemps frontLeftTemp={frontLeftTemp} frontRightTemp={frontRightTemp} rearLeftTemp={rearLeftTemp} rearRightTemp={rearRightTemp}/></Item>
         </Grid>
         <Grid item xs={12}>
-          <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={wheelFL_RevPerSecond} dataStream2={wheelFR_RevPerSecond} dataStream3={wheelRL_RevPerSecond} dataStream4={wheelRR_RevPerSecond} height={400} label={"Wheel RPS"}/></Item>
+          <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={wheelFL_RevPerSecond} dataStream2={wheelFR_RevPerSecond} dataStream3={wheelRL_RevPerSecond} dataStream4={wheelRR_RevPerSecond} height={400} label={"Wheel Revs Per Second"} units={'RPS'} labelXaxis={'Distance Into Lap M'}/></Item>
         </Grid>
         <Grid item xs={4}>
-          <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={tireFL_TireRadius} dataStream2={tireFR_TireRadius} dataStream3={tireRL_TireRadius} dataStream4={tireRR_TireRadius} height={400} label={"Wheel Radius"}/></Item>
+          <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={tireFL_TireRadius} dataStream2={tireFR_TireRadius} dataStream3={tireRL_TireRadius} dataStream4={tireRR_TireRadius} height={400} label={"Wheel Radius"} units={'Radians'} labelXaxis={'Distance Into Lap M'}/></Item>
         </Grid>
         <Grid item xs={8}>
-          <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={tireFL_SusHeight} dataStream2={tireFR_SusHeight} dataStream3={tireRL_SusHeight} dataStream4={tireRR_SusHeight} height={400} label={"Suspension Height"}/></Item>
+          <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={tireFL_SusHeight} dataStream2={tireFR_SusHeight} dataStream3={tireRL_SusHeight} dataStream4={tireRR_SusHeight} height={400} label={"Suspension Height"} units={'mm'} labelXaxis={'Distance Into Lap M'}/></Item>
         </Grid>
       </Grid>
     </Box>

@@ -17,12 +17,12 @@ interface BasicChartProps {
   expectedMinValue: number;
   expectedMaxValue: number;
   dataStream: { x: number; y: number; }[];
+  units:string;
+  labelXaxis:string;
 }
 
-export default function BasicChart({ label, expectedMaxValue, expectedMinValue, dataStream }: BasicChartProps) {
- // const signalRService = new SignalRService();
+export default function BasicChart({ label, expectedMaxValue, expectedMinValue, dataStream,units,labelXaxis }: BasicChartProps) {
 
-  
   const series = [{
     name: 'Throttle',
     data: dataStream
@@ -40,8 +40,8 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
         }
       },
       toolbar: {
-        show: true
-      }
+        show: false,
+      },
     },
     dataLabels: {
       enabled: false
@@ -68,19 +68,37 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
         style: {
           colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
         }
-      }
+      },title: {
+        text: labelXaxis,
+        style: {
+            color: '#F6F6F6' // Set the font color to blue
+          }
+      },
     },
     yaxis: {
+      seriesName: 'Column A',
       min: expectedMinValue,
       max: expectedMaxValue,
+      axisTicks: {
+        show: true,
+        color: '#F6F6F6', // Set the font color to blue
+      },
+      axisBorder: {
+        show: true,
+        color: '#F6F6F6', // Set the font color to blue
+      },
+      title: {
+        text: label +" "+ units,
+        style: {
+            color: '#F6F6F6' // Set the font color to blue
+          }
+      },
       labels: {
         style: {
           colors: ['#F6F6F6'] // Set the font color of x-axis labels to blue
-        }
-      }
-    }
+        }},
+    },
   };
-  
 
   return (
     <>

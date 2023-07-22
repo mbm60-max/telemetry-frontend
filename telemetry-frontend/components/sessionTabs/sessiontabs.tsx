@@ -159,37 +159,37 @@ export default function BasicTabs() {
   }>({});
   const [dashboardWarnings, setDashboardWarnings] = React.useState<{ [key: string]: string[] }>({
     dashboard1: ['Front Left Temp', 'Front Right Temp', 'Rear Left Temp', 'Rear Right Temp'],
-    dashboard2: [],
+    dashboard2: ["Oil Temperature","RPM","Turbo Boost Pressure","Oil Pressure","Fuel Level","Water Temperature"],
     dashboard3: [],
     dashboard4: [],
   });
   const [dashboardWarningsUnits, setDashboardWarningsUnits] = React.useState<{ [key: string]: string[] }>({
     dashboard1: ['C', 'C', 'C', 'C'],
-    dashboard2: [],
+    dashboard2: ['°C','RPM','bar','bar','%','°C'],
     dashboard3: [],
     dashboard4: [],
   });
   const [dashboardWarningsData, setDashboardWarningsData] = React.useState<{ [key: string]: number[] }>({
     dashboard1: [1, 5, 3, 4],
-    dashboard2: [],
+    dashboard2: [0,0,0,0,0,0],
     dashboard3: [],
     dashboard4: [],
   });
   const [dashboardWarningsDefaultLimits, setDashboardWarningsDefaultLimits] = React.useState<{ [key: string]: number[] }>({
     dashboard1: [105, 105, 105, 105],
-    dashboard2: [],
+    dashboard2: [0,0,0,0,0,0],
     dashboard3: [],
     dashboard4: [],
   });
   const [dashboardWarningsCurrentLimits, setDashboardWarningsCurrentLimits] = React.useState<{ [key: string]: {[key: string]: number;} }>({
     dashboard1: {},
-    dashboard2: {"":0},
+    dashboard2: {},
     dashboard3: {"":0},
     dashboard4: {"":0},
   });
   const [dashboardWarningsCurrentLimitsLower, setDashboardWarningsCurrentLimitsLower] = React.useState<{ [key: string]: {[key: string]: number;} }>({
     dashboard1: {},
-    dashboard2: {"":0},
+    dashboard2: {},
     dashboard3: {"":0},
     dashboard4: {"":0},
   });
@@ -240,7 +240,7 @@ const [packetFlag,setPacketFlag] = useState(false);
       var parsedObject = JSON.parse(jsonString);
       const attributes=['throttle','brake','metersPerSecond','suggestedGear','currentGear','tireFL_SurfaceTemperature','tireFR_SurfaceTemperature','tireRL_SurfaceTemperature','tireRR_SurfaceTemperature','lastLapTime','bestLapTime','engineRPM','oilTemperature','minAlertRPM','maxAlertRPM','transmissionTopSpeed','calculatedMaxSpeed','oilPressure','waterTemperature','gasLevel','gasCapacity','turboBoost','rpmFromClutchToGearbox','clutchEngagement','clutchPedal','InLapShifts','distanceFromStart','tireFL_SusHeight','tireFR_SusHeight','tireRL_SusHeight','tireRR_SusHeight','tireFL_TireRadius','tireFR_TireRadius','tireRL_TireRadius','tireRR_TireRadius','wheelFL_RevPerSecond','wheelFR_RevPerSecond','wheelRL_RevPerSecond','wheelRR_RevPerSecond'];
       var timerValue = parsedObject['lapTiming'];
-  
+      
       setLapTimer(timerValue);
       for(const attribute in attributes){
         var attributeValue = parsedObject[attributes[attribute]];
@@ -332,7 +332,7 @@ const [packetFlag,setPacketFlag] = useState(false);
     if(stateSetter == setSpeedStream){
       stateSetter((oldArray) => {
         const prev = oldArray[oldArray.length - 1];
-        const newArray = [...oldArray, { x: prev.x + 1, y: convertMpsToMph(dataPoint) }];
+        const newArray = [...oldArray, { x: distanceFromStart, y: convertMpsToMph(dataPoint) }];
         if (newArray.length > 30) {
           return newArray.slice(1);
         }
@@ -342,7 +342,7 @@ const [packetFlag,setPacketFlag] = useState(false);
     else if (stateSetter) {
       stateSetter((oldArray) => {
         const prev = oldArray[oldArray.length - 1];
-        const newArray = [...oldArray, { x: prev.x + 1, y: dataPoint }];
+        const newArray = [...oldArray, { x: distanceFromStart, y: dataPoint }];
         if (newArray.length > 30) {
           return newArray.slice(1);
         }
@@ -563,7 +563,7 @@ const [packetFlag,setPacketFlag] = useState(false);
       <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track, distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${1}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${1}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${1}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${1}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${1}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${1}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost}/>
+      <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${2}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${2}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${2}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${2}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${2}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${2}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
       <GearboxGrid currentGearStream={currentGear} rpmClutchToGearboxStream={rpmClutchToGearboxStream} rpmStream={rpmStream} clutchEngagementStream={clutchEngagementStream} clutchPedalStream={clutchPedalStream} suggestedGearStream={suggestedGear} lapTimer={lapTimer} inLapShifts={inLapShifts}/>

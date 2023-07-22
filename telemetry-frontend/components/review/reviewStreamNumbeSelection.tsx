@@ -26,7 +26,6 @@ export default function ReviewStreamNumberSelection({label,onSelectNumber}:Revie
       >
         <FormControlLabel value={1} control={<Radio />} label="One" />
         <FormControlLabel value={2} control={<Radio />} label="Two" />
-        <FormControlLabel value={3} control={<Radio />} label="Three" />
       </RadioGroup>
     </FormControl>
   );

@@ -228,7 +228,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
       <Grid container spacing={2}>
       <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={[]}/></Box></Grid>
         <Grid item xs={8}>
-          <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={throttleStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={throttleStream} units={'%'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={4}>
           <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps frontLeftTemp={frontLeftTemp} frontRightTemp={frontRightTemp} rearLeftTemp={rearLeftTemp} rearRightTemp={rearRightTemp} ></TyreTemps></Box></ItemCentered>
@@ -237,7 +237,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
           <Item><Box sx={{backgroundColor:'black'}}>{lapTimer}<Test testOffset={distanceInLap}targetSrc={getTrackPath(track)} trackName={checkTrackStatus(track)} /></Box></Item>
         </Grid>
         <Grid item xs={6}>
-          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={speedStream}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={speedStream} units={'%'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={3}>
           <Item><TwoValueDisplay dataValueOne={currentGear} dataValueTwo={suggestedGear} nameOne={"Current Gear"} nameTwo={"Suggested Gear"}></TwoValueDisplay></Item>
@@ -246,7 +246,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
           <Item><SmallLapTable lastLapTime={lastLapTime} bestLapTime={bestLapTime}></SmallLapTable></Item>
         </Grid>
         <Grid item xs={8}>
-          <Item><DynamicBasicChart label={'Brake Trace '} expectedMaxValue={255} expectedMinValue={-1}  dataStream={brakeStream} ></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Brake Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={brakeStream} units={'%'} labelXaxis={'Distance Into Lap M'} ></DynamicBasicChart></Item>
         </Grid>
       </Grid>
     </Box>

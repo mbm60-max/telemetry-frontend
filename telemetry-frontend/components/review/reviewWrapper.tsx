@@ -14,6 +14,7 @@ import axios, { AxiosResponse } from 'axios';
 import { AuthContext } from '../authProvider';
 import ReviewLapSelection from './reviewLapSelection';
 import TuneIcon from '@mui/icons-material/Tune';
+import InfoToolTip from '../helperTooltip.tsx/infoTooltip';
 
 
 const style = {
@@ -56,10 +57,12 @@ const BlackBox = styled(Box)(({ theme }) => ({
   paddingBottom:15,
 }));
 
+interface ReviewWrapperProps {
+  viewNumber:string;
+}
 
 
-
-export default function ReviewWrapper() {
+export default function ReviewWrapper({viewNumber}:ReviewWrapperProps) {
   const [controllerOpen, setControllerOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -320,6 +323,26 @@ export default function ReviewWrapper() {
       fetchData(i,selectedLaps[`lap${i}`]);
     }
   }, [username, selectedLaps, selectedStreams, selectedNumber.length, selectedNumberLaps.length, selectedSpecialStream]);
+  const tooltipInfo = (
+    <>
+      <em>{'Review chart allows you to see how you to compare any two of up to ten laps.'}</em> <b>{'Each lap view can be tailored to show one or two streams of data, this is presented as the whole lap data stream against the distance into the lap at the point of recording'}</b> <u>{'You are able to have up to two of these views at once'}</u>
+    </>
+  );
+  const tooltipInfoController = (
+    <>
+      <em>{'This controller only adjusts settings for the named view'}</em>
+    </>
+  );
+  const tooltipInfoLap = (
+    <>
+      <em>{'This sets the lap to view, this is a list of laps by lap time. If you see no laps found it means you are not logged in'}</em>
+    </>
+  );
+  const tooltipInfoStreams = (
+    <>
+      <em>{'Field selects the grouping from which to select the data stream you wish to view, while stream sets the actual stream, changing the field will alter the available streams'}</em>
+    </>
+  );
   return (
 
     <>
@@ -329,7 +352,7 @@ export default function ReviewWrapper() {
       <Grid item xs={12}>
 
         <Item>
-          {!controllerOpen && <Button onClick={handleOpen}>Edit Graph Settings  <TuneIcon/></Button> }
+          {!controllerOpen && <Button onClick={handleOpen}> {viewNumber} Edit Graph Settings  <TuneIcon/><InfoToolTip name={"Review Charts"} info={tooltipInfo}/></Button> }
           
           <Modal
   open={open}
@@ -340,13 +363,17 @@ export default function ReviewWrapper() {
   <Box sx={style}>
     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       <div style={{ display: 'grid', gridGap: '16px', gridTemplateColumns: '1fr' }}>
-        <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>Primary View Controller select lap{userName}</Typography>
+        <Grid container spacing={2}>
+      <Grid item xs>
+        <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>{viewNumber} Controller </Typography></Grid><InfoToolTip name={"Review Chart Controller"} info={tooltipInfoController}/></Grid>
         <Grid container spacing={2}>
       <Grid item xs={6}>
         <ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"} />
         {selectedNumberLaps.map((item) => (
           <>
-            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Lap {item}</Typography>
+           <Grid container spacing={2}>
+      <Grid item xs>
+            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Lap {item}</Typography></Grid><InfoToolTip name={"Laps"} info={tooltipInfoLap}/></Grid>
             <ReviewLapSelection onSelectLap={handleLapsSelection} lapNumber={item.toString()} availableLaps={availableLaps} />
             {selectedLaps[`lap${item}`]}{selectedStreamsDataLap1[`stream1DataLap${item}`]}{selectedStreamsDataLap2[`stream2DataLap${item}`]}
           </>
@@ -356,7 +383,9 @@ export default function ReviewWrapper() {
         <ReviewStreamNumberSelection onSelectNumber={handleNumberSelection} label={"Number Of Streams"} />
         {selectedNumber.map((item) => (
           <>
-            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography>
+           <Grid container spacing={2}>
+      <Grid item xs>
+            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid><InfoToolTip name={"Streams"} info={tooltipInfoStreams}/></Grid>
             <ReviewFieldSelection onSelectField={handleFieldSelection} fieldNumber={item.toString()} />
             <ReviewGrouping
               Field={selectedFields[`field${item}`]}

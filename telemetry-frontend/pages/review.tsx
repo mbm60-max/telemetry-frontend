@@ -17,7 +17,7 @@ export default function Review(){
     <>
     <Box className='header'><Button onClick={handleExitReview}>Exit Review</Button></Box>
     <Box sx={{ width: '100%' }}>
-    <Homepage style={'homepage'}><ReviewWrapper/><ReviewWrapper/></Homepage></Box>
+    <Homepage style={'homepage'}><ReviewWrapper viewNumber={'Primary View'}/><ReviewWrapper viewNumber={'Secondary View'}/></Homepage></Box>
     </>
        
   );

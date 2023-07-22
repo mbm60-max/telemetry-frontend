@@ -4,18 +4,25 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
+import InfoToolTip from '../../helperTooltip.tsx/infoTooltip';
 
 interface ArraySliderTextProps {
   width: number|string;
   targetAttribute: string;
   onValueChange: (value: string[]) => void;
+  toolTipContent:string;
 }
 
 export default function ArraySliderText({
   width,
   targetAttribute,
-  onValueChange,
+  onValueChange,toolTipContent,
 }: ArraySliderTextProps) {
+  const tooltipInfo = (
+    <>
+     <em>{"Sets Front Values:"+toolTipContent}</em>
+    </>
+  );
   const [sliderValue, setSliderValue] = useState(1);
   const [textValues, setTextValues] = useState<string[]>(['']);
 
@@ -46,6 +53,8 @@ export default function ArraySliderText({
           <Typography id="input-slider" gutterBottom>
             {targetAttribute}: {sliderValue}
           </Typography>
+          <Grid container spacing={2} alignItems="center">
+        <Grid item xs>
           <Slider
             value={sliderValue}
             min={1}
@@ -53,7 +62,7 @@ export default function ArraySliderText({
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
             valueLabelDisplay="auto"
-          /></Box>
+          /></Grid><InfoToolTip name={targetAttribute} info={tooltipInfo}/></Grid></Box>
         </Grid>
         {textValues.map((textValue, index) => (
           <Grid item xs={3} key={index}>

@@ -16,7 +16,7 @@ const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
   const getCarClass = () => `car car-${trackName}`;
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div style={{ position: 'relative', width: '100%', height: '430px' }}>
       <img src={targetSrc} alt="Fuel" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
 
       <svg

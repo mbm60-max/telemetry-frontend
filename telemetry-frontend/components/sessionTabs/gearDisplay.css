@@ -1,0 +1,11 @@
+@media (min-width: 900px) {
+    .custom-container .css-sj8k89-MuiGrid-root {
+      max-width: 100% !important;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .custom-container .itemWrapper {
+      max-width: 100% !important;
+    }
+  }

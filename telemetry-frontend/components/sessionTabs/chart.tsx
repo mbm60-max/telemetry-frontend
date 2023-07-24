@@ -57,7 +57,7 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
       }
     },
     markers: {
-      size: 0
+      size: 6
     },
     xaxis: {
       range: 30,
@@ -104,7 +104,7 @@ export default function BasicChart({ label, expectedMaxValue, expectedMinValue, 
     <>
     <Box sx={{ backgroundColor: 'black' }}>
       <Box sx={{ p: 1 }}>
-        <DynamicChart series={series} options={options} height={400} label={label} />
+        <DynamicChart series={series} options={options} height={'400px'} label={label} />
       </Box>
     </Box>
     </>

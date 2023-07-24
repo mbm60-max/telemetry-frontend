@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -6,56 +6,64 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import SignalRService from '../../utils/signalrEndpoint';
-import { useEffect, useState } from 'react';
-import ExtendedPacket from '../../interfaces/extendedPacketInterface';
 
-interface twoValueProps {
-  dataValueOne:number;//current
-  dataValueTwo:number;
-  nameOne:string;//current
-  nameTwo:string
+interface TwoValueProps {
+  dataValueOne: number; // current
+  dataValueTwo: number;
+  nameOne: string; // current
+  nameTwo: string;
 }
+
+const ItemContainer = styled('div')({
+  padding: '0px',
+  border: '1px solid #ccc',
+  overflow: 'hidden',
+  wordWrap: 'break-word', // Use word-wrap to handle long texts
+  textAlign: 'center',
+  height: '100%',
+});
+
+const CustomContainer = styled('div')({
+  height: '100%', // Set the container's height to 100%
+  display: 'flex',
+  flexDirection: 'column',
+});
 
 const Item = styled(Paper)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
+  padding: theme.spacing(2),
   color: theme.palette.text.secondary,
+  height: '100%',
+  boxSizing: 'border-box',
+  width: '100%',
 }));
 
-export default function TwoValueDisplay({dataValueOne,dataValueTwo,nameOne,nameTwo}:twoValueProps) {
+const WrappedTypography = styled(Typography)(({ theme }) => ({
+  overflow: 'hidden',
+  wordWrap: 'break-word', // Use word-wrap to handle long texts
+  textAlign: 'center',
+}));
+
+export default function TwoValueDisplay({ dataValueOne, dataValueTwo, nameOne, nameTwo }: TwoValueProps) {
   return (
-    <Box sx={{ width: '100%' }}>
-      <Grid container rowSpacing={6.35} columns={1} >
-        <Grid item xs={6}>
-          <Item>
-      <CardContent>
-        <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>
-          {nameOne}
-        </Typography>
-        <Typography variant="h2" component="div" color="text.primary">
-         {dataValueOne}
-        </Typography>
-      </CardContent>
-    </Item>
-        </Grid>
-        <Grid><Item>something else ?</Item></Grid>
-        <Grid item xs={6}>
-          <Item>
-      <CardContent>
-      <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>
-        {nameTwo}
-      </Typography>
-      <Typography variant="h2" component="div" color="text.primary">
-       {dataValueTwo}
-      </Typography>
-    </CardContent>
-  </Item>
-        </Grid>
-       
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={12}>
+      <ItemContainer>
+          <Typography sx={{fontSize:24}}variant="body1">{nameOne}</Typography>
+          <Typography sx={{fontSize:24}}variant="body1">{dataValueOne}</Typography>
+        </ItemContainer>
       </Grid>
-    </Box>
+      <Grid item xs={12} sm={12}>
+      <ItemContainer>
+          <Typography sx={{fontSize:24}}variant="body1">{nameTwo}</Typography>
+          <Typography sx={{fontSize:24}}variant="body1">{dataValueTwo}</Typography>
+        </ItemContainer>
+      </Grid>
+    </Grid>
   );
-}
+};

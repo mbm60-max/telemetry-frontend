@@ -112,34 +112,57 @@ export default function SmallLapTable({lastLapTime,bestLapTime}:smallLapTablePro
       }
       
 
-
-
   return (
-    <Box sx={{padding:0.5}}>
-    <TableContainer sx={{ maxHeight: 423 }} component={Paper}>
-      <Table sx={{ minWidth: 700, maxHeight:200 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Lap Time</StyledTableCell>
-            <StyledTableCell align="right">Delta</StyledTableCell>
-            <StyledTableCell align="right">Compound</StyledTableCell>
-            <StyledTableCell align="right">Setup</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row, index) => (
-            <StyledTableRow key={index}>
-              <StyledTableCell component="th" scope="row">
-                {row.lapTime}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.delta}</StyledTableCell>
-              <StyledTableCell align="right">{row.compound}</StyledTableCell>
-              <StyledTableCell align="right">{row.setup}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box sx={{ padding: 0.5 }}>
+      <TableContainer sx={{ maxHeight: 423 }} component={Paper}>
+        <Table sx={{ minWidth: 700, maxHeight: 200 }} aria-label="customized table">
+          {rows.length > 0 ? (
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Lap Time</StyledTableCell>
+                <StyledTableCell align="right">Delta</StyledTableCell>
+                <StyledTableCell align="right">Compound</StyledTableCell>
+                <StyledTableCell align="right">Setup</StyledTableCell>
+              </TableRow>
+            </TableHead>
+          ) : (
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Lap Time</StyledTableCell>
+              </TableRow>
+            </TableHead>
+          )}
+          <TableBody>
+            {rows.length > 0 ? (
+              rows.map((row, index) => (
+                <StyledTableRow key={index}>
+                  <StyledTableCell component="th" scope="row">
+                    {row.lapTime}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{row.delta}</StyledTableCell>
+                  <StyledTableCell align="right">{row.compound}</StyledTableCell>
+                  <StyledTableCell align="right">{row.setup}</StyledTableCell>
+                </StyledTableRow>
+              ))
+            ) : (
+              <StyledTableRow>
+                <StyledTableCell
+                  style={{
+                    height: 'calc(100vh)',
+                    fontSize: '18px',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'normal',
+                    justifyContent: 'left',
+                  }}
+                >
+                  No data available
+                </StyledTableCell>
+              </StyledTableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };

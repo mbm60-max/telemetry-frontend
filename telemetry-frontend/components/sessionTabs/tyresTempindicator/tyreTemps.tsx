@@ -51,20 +51,24 @@ const numberOfSteps = 20;
 
 const TyreTemps = ({frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp}:tyreTempKeys) => {
  
-    return (
-      <div style={{ height: "100%", width:"100%"}}>
-      <Grid container spacing={1} columns={6}>
-  <Grid item xs={2}> <Box sx={{ width: 120, height: 230, backgroundColor: "white" ,border: "3px solid black"}} ><StatusBar tyre={"FL"} temp={frontLeftTemp} color={colorInterpolation(Red, Green,Blue, numberOfSteps,frontLeftTemp,85)}/><StatusBar tyre={"RL"} temp={frontRightTemp} color={colorInterpolation(Red, Green,Blue, numberOfSteps,frontRightTemp,85)}/></Box>
- 
-  </Grid>
-  <Grid item xs={2}><Box sx={{width:120}}>Some info</Box>
- 
-  </Grid>
-  <Grid item xs={2}>
-  <Box sx={{ width: 120, height: 230, backgroundColor: "white",border: "3px solid black" }} ><StatusBar tyre={"FR"} temp={rearLeftTemp} color={colorInterpolation(Red, Green,Blue, numberOfSteps,rearLeftTemp,85)} /><StatusBar tyre={"RR"} temp={rearRightTemp} color={colorInterpolation(Red, Green,Blue, numberOfSteps,rearRightTemp,85)}/></Box>
-  </Grid>
-</Grid>
+  return (
+    <div style={{ height: "100%", width: "100%" }}>
+      <Grid container spacing={2} columns={12}>
+        <Grid item xs={12} sm={6}>
+          <Box sx={{ height: 230, backgroundColor: "white", border: "3px solid black", minWidth: "100px" }}>
+            <StatusBar tyre={"FL"} temp={frontLeftTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, frontLeftTemp, 85)} />
+            <StatusBar tyre={"RL"} temp={frontRightTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, frontRightTemp, 85)} />
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Box sx={{ height: 230, backgroundColor: "white", border: "3px solid black", minWidth: "100px" }}>
+            <StatusBar tyre={"FR"} temp={rearLeftTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, rearLeftTemp, 85)} />
+            <StatusBar tyre={"RR"} temp={rearRightTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, rearRightTemp, 85)} />
+          </Box>
+        </Grid>
+      </Grid>
     </div>
-    );
-  };
+  );
+};
+
 export default TyreTemps;

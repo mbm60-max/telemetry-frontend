@@ -164,7 +164,7 @@ export default function BasicTabs() {
     dashboard4: [],
   });
   const [dashboardWarningsUnits, setDashboardWarningsUnits] = React.useState<{ [key: string]: string[] }>({
-    dashboard1: ['C', 'C', 'C', 'C'],
+    dashboard1: ['°C', '°C', '°C', '°C'],
     dashboard2: ['°C','RPM','bar','bar','%','°C'],
     dashboard3: [],
     dashboard4: [],

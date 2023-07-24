@@ -1,7 +1,9 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
 import { Box} from "@mui/system";
 import React, { ReactNode, useState } from "react";
 import TextField from '@mui/material/TextField';
+import TextWarningOverlay from "../textWarningOverlay";
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 interface KeyWarningsSettingsAddProps {
   handleAddition:() => void;
   newUnitsChange: (newUnits: string) => void;
@@ -23,6 +25,10 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
     const [unitsError, setUnitsError] = useState("");
 
   const handleAdd = () => {
+    setUnitsError("")
+    setWarningError("")
+    setLimitError("")
+    setLimitLowerError("")
     if(newUnits===""){
         setUnitsError("You must provide units")
     }
@@ -67,23 +73,15 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
   }
 
   return (
-    <Box sx={{ width: '100%', height: '50%'}}>
-        <Typography id="input-slider" gutterBottom>
-                  You are changing 
-                </Typography>
-    <TextField
-        id="outlined-basic"
-        label="Set Limit"
-        variant="outlined"
-        type="number" // Set input type to 'number'
-        inputProps={{
-          min: 0, // Set minimum value to 0
-        }}
-        value={newLimit}
-        onChange={handleNewLimitChange}
-        error={Boolean(limitError)}
-      />
-      <TextField
+   
+    <Box sx={{ width: '50vh', height: '50%'}}>
+    <Grid container spacing={2}><Grid item xs={12}> <Typography id="input-slider" gutterBottom sx={{fontSize:20}}>
+                  You are adding a new warning 
+                </Typography></Grid><Grid item xs={12}><Typography id="input-slider" gutterBottom sx={{fontSize:15}} >
+ Only limits that are not -1 will be submitted.
+                </Typography></Grid>
+              <Grid item xs={12} sx={{height:'100%'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={"Adding a new warning will alter when you see warnings"}/></Grid>
+              <Grid item xs={6}><TextField
         id="outlined-basic"
         label="Set Lower Limit"
         variant="outlined"
@@ -94,26 +92,42 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
         value={newLimitLower}
         onChange={handleNewLimitChangeLower}
         error={Boolean(limitLowerError)}
-      />
-      <TextField
+        helperText={limitLowerError}
+      /></Grid>
+              <Grid item xs={6}><TextField
+      id="outlined-basic"
+      label="Set Upper Limit"
+      variant="outlined"
+      type="number" // Set input type to 'number'
+      inputProps={{
+        min: 0, // Set minimum value to 0
+      }}
+      value={newLimit}
+      onChange={handleNewLimitChange}
+        error={Boolean(limitError)}
+        helperText={limitError}
+    /></Grid>
+    <Grid item xs={6}><TextField
         id="outlined-basic"
         label="Set Units"
         variant="outlined"
         value={newUnits}
         onChange={handleNewUnitsChange}
         error={Boolean(unitsError)}
-      />
-      <TextField
+        helperText={unitsError}
+      /></Grid>
+              <Grid item xs={6}><TextField
         id="outlined-basic"
         label="Set Warning"
         variant="outlined"
         value={newWarning}
         onChange={handleNewWarningChange}
         error={Boolean(warningError)}
-      />
-    <Button onClick={handleAdd}>ADD</Button>
-    <Button onClick={handleClose}>Exit</Button>
-    </Box>
+        helperText={warningError}
+      /></Grid>
+              <Grid item xs={6}><Button onClick={handleAdd}>ADD</Button></Grid>
+              <Grid item xs={6}><Button onClick={handleClose}>Exit</Button></Grid></Grid>
+  </Box>
   );
 };
 

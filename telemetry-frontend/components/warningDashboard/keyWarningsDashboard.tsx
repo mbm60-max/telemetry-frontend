@@ -23,6 +23,8 @@ handleActiveWarningsLower:(add: boolean, newWarning: string, newWarningValue: nu
 handleAcknowledgedWarningsLower:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
 acknowledgedWarnings:WarningInstance[];
 acknowledgedWarningsLower:WarningInstance[];
+valuesOfInterestCurrentLimits: {[key: string]: number;};
+valuesOfInterestCurrentLimitsLower: {[key: string]: number;};
 }
 export default function WarningsDashboard({
   valuesOfInterest,
@@ -32,7 +34,7 @@ export default function WarningsDashboard({
   handleSetWarning,handleSetLimits,
   handleAcknowledgedWarnings,
   handleActiveWarnings,
-  acknowledgedWarnings,handleSetLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,acknowledgedWarningsLower
+  acknowledgedWarnings,handleSetLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,acknowledgedWarningsLower,valuesOfInterestCurrentLimits,valuesOfInterestCurrentLimitsLower
 }: WarningsDashboardProps) {
   const calcColor = (
     colorScale: string[],
@@ -73,24 +75,25 @@ export default function WarningsDashboard({
   const Green = "#00ff00";
   const Blue = "#0000ff";
   const numberOfSteps = 10;
-
+  console.log(valuesOfInterestCurrentLimits)
   const [selectedLimits, setSelectedLimits] = React.useState<{
     [key: string]: number;
   }>(
     valuesOfInterest.reduce(
       (limits: { [key: string]: number }, value: string, index: number) => {
-        limits[`limit${index}`] = valuesOfInterestDefaultLimits[index];
+        limits[`limit${index}`] = valuesOfInterestCurrentLimits[`limit${index}`];
         return limits;
       },
       {}
     )
   );
+
   const [selectedLimitsLower, setSelectedLimitsLower] = React.useState<{
     [key: string]: number;
   }>(
     valuesOfInterest.reduce(
       (limits: { [key: string]: number }, value: string, index: number) => {
-        limits[`limitLower${index}`] = valuesOfInterestDefaultLimits[index];
+        limits[`limitLower${index}`] = valuesOfInterestCurrentLimitsLower[`limitLower${index}`];
         return limits;
       },
       {}

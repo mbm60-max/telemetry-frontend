@@ -63,6 +63,22 @@ export default function BasicTabs() {
   const router = useRouter();
   const { car, compound, track } = router.query;
   const { isLoggedIn, userName } = useContext(AuthContext);
+  const warningContext = useContext(WarningContext);
+  const {
+    dashboardWarningsCurrentLimits,
+    setDashboardWarningsCurrentLimits,
+    dashboardWarningsCurrentLimitsLower,
+    setDashboardWarningsCurrentLimitsLower,
+    activeWarnings,
+    activeWarningsLower,
+    acknowledgedWarnings,
+    acknowledgedWarningsLower,
+    updateWarningsArray,
+    setAcknowledgedWarnings,
+    setAcknowledgedWarningsLower,
+    setActiveWarnings,
+    setActiveWarningsLower
+  } = warningContext;
   const DynamicChart = dynamic(() => import('./chart'), { 
     loader: () => import('./chart'),
     ssr: false 
@@ -144,19 +160,9 @@ export default function BasicTabs() {
       };
    }, []);
    const[isWarning,setIsWarning] = useState(false);
-   const[activeWarnings,setActiveWarnings] = useState<WarningInstance[]>([]);
    const[suppressedWarnings,setSuppressedWarnings] = useState<WarningInstance[]>([]);
-   const[acknowledgedWarnings,setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
-   const[activeWarningsLower,setActiveWarningsLower] = useState<WarningInstance[]>([]);
-   const[acknowledgedWarningsLower,setAcknowledgedWarningsLower] = useState<WarningInstance[]>([]);
-   
-   const [valuesOfInterest,setValuesOfInterest]=useState(['test', 'test2', 'test3', 'brah']);  
-  const [valueOfInterestUnits,setValuesOfInterestUnits]=useState(['KPH', 'RPM', 'M/S', 'KG']); 
-  const [valuesOfInterestData,setValuesOfInterestData]=useState([1, 5, 3, 4]);
-  const [valuesOfInterestDefaultLimits,setValuesOfInterestDefaultLimits]=useState([0, 105, 0, 100]);
-  const [valuesOfInterestCurrentLimits, setValuesOfInterestCurrentLimits] = React.useState<{
-    [key: string]: number;
-  }>({});
+ 
+
   const [dashboardWarnings, setDashboardWarnings] = React.useState<{ [key: string]: string[] }>({
     dashboard1: ['Front Left Temp', 'Front Right Temp', 'Rear Left Temp', 'Rear Right Temp'],
     dashboard2: ["Oil Temperature","RPM","Turbo Boost Pressure","Oil Pressure","Fuel Level","Water Temperature"],
@@ -181,18 +187,7 @@ export default function BasicTabs() {
     dashboard3: [],
     dashboard4: [],
   });
-  const [dashboardWarningsCurrentLimits, setDashboardWarningsCurrentLimits] = React.useState<{ [key: string]: {[key: string]: number;} }>({
-    dashboard1: {},
-    dashboard2: {},
-    dashboard3: {"":0},
-    dashboard4: {"":0},
-  });
-  const [dashboardWarningsCurrentLimitsLower, setDashboardWarningsCurrentLimitsLower] = React.useState<{ [key: string]: {[key: string]: number;} }>({
-    dashboard1: {},
-    dashboard2: {},
-    dashboard3: {"":0},
-    dashboard4: {"":0},
-  });
+
   const handleSetValuesOfInterest = (newValue:string[],dashNumber: number)=>{
     setDashboardWarnings((prevDashboardWarnings) => ({
        ...prevDashboardWarnings,
@@ -211,18 +206,33 @@ const handleSetValuesOfInterestDefaultLimits = (newValue:number[],dashNumber:num
    [`dashboard${dashNumber}`]: newValue,
  }));
 };
-const handleSetValuesOfInterestCurrentLimits = (newDict:{[key: string]: number;},dashNumber:number)=>{
-  setDashboardWarningsCurrentLimits((prevDashboardWarnings) => ({
-    ...prevDashboardWarnings,
-   [`dashboard${dashNumber}`]: newDict,
- }));
+const handleSetValuesOfInterestCurrentLimits = (
+  newDict: { [key: string]: number },
+  dashNumber: number
+) => {
+  // Get the current dashboard warnings
+  const currentDashboardWarnings = warningContext.dashboardWarningsCurrentLimits;
+
+  // Update the specific dashboard with the newDict
+  currentDashboardWarnings[`dashboard${dashNumber}`] = newDict;
+
+  // Set the updated dashboard warnings using the setter function
+  warningContext.setDashboardWarningsCurrentLimits(currentDashboardWarnings);
 };
-const handleSetValuesOfInterestCurrentLimitsLower = (newDict:{[key: string]: number;},dashNumber:number)=>{
-  setDashboardWarningsCurrentLimitsLower((prevDashboardWarnings) => ({
-    ...prevDashboardWarnings,
-   [`dashboard${dashNumber}`]: newDict,
- }));
+const handleSetValuesOfInterestCurrentLimitsLower = (
+  newDict: { [key: string]: number },
+  dashNumber: number
+) => {
+  // Get the current dashboard warnings
+  const currentDashboardWarningsLower = warningContext.dashboardWarningsCurrentLimitsLower;
+
+  // Update the specific dashboard with the newDict
+  currentDashboardWarningsLower[`dashboard${dashNumber}`] = newDict;
+
+  // Set the updated dashboard warnings using the setter function
+  warningContext.setDashboardWarningsCurrentLimitsLower(currentDashboardWarningsLower);
 };
+
 const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
   setDashboardWarningsUnits((prevDashboardWarnings) => ({
     ...prevDashboardWarnings,
@@ -412,36 +422,7 @@ const [packetFlag,setPacketFlag] = useState(false);
       return;
     }setIsWarning(true);
   }
-  const updateWarningsArray = (
-    add: boolean,
-    newWarning: string,
-    newWarningValue: number,
-    newWarningUnits: string,
-    newWarningLimit: number,
-    setWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>
-  ) => {
-    setWarnings((prevWarnings) => {
-      if (add) {
-        const warningInstance: WarningInstance = {
-          newWarning,
-          newWarningValue,
-          newWarningUnits,
-          newWarningLimit,
-        };
-        return [...prevWarnings, warningInstance];
-      } else {
 
-        return prevWarnings.filter(
-          (warning) =>
-            warning.newWarning !== newWarning ||
-            warning.newWarningValue !== newWarningValue ||
-            warning.newWarningUnits !== newWarningUnits
-        );
-      }
-    });
-  };
-  
-  
   const handleActiveWarnings = (
     add: boolean,
     newWarning: string,

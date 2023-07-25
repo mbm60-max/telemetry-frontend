@@ -1,81 +1,129 @@
-import React, { createContext, ReactNode, useState } from "react";
-import WarningInstance from "../interfaces/warningInterface";
+import React, { useState } from 'react';
+import { createContext, ReactNode } from 'react';
+import WarningInstance from '../interfaces/warningInterface';
 
-export const WarningContext = createContext({
-  valuesOfInterest: ["test", "test2", "test3", "brah"],
-  setValuesOfInterest: (value: string[]) => {},
-  valueOfInterestUnits: ["KPH", "RPM", "M/S", "KG"],
-  setValuesOfInterestUnits: (value: string[]) => {},
-  valuesOfInterestData: [1, 5, 3, 4],
-  setValuesOfInterestData: (value: number[]) => {},
-  valuesOfInterestDefaultLimits: [0, 105, 0, 100],
-  setValuesOfInterestDefaultLimits: (value: number[]) => {},
-  valuesOfInterestCurrentLimits: {},
-  setValuesOfInterestCurrentLimits: (value: { [key: string]: number }) => {},
-  isWarning: false,
-  setIsWarning: (value: boolean) => {},
-  activeWarnings: [] as WarningInstance[],
-  setActiveWarnings: (warnings: WarningInstance[]) => {},
-  suppressedWarnings: [] as WarningInstance[],
-  setSuppressedWarnings: (warnings: WarningInstance[]) => {},
-  acknowledgedWarnings: [] as WarningInstance[],
-  setAcknowledgedWarnings: (warnings: WarningInstance[]) => {},
+interface WarningContextType {
+  dashboardWarningsCurrentLimits: { [key: string]: { [key: string]: number } };
+  setDashboardWarningsCurrentLimits: (
+    value: { [key: string]: { [key: string]: number } }
+  ) => void;
+  dashboardWarningsCurrentLimitsLower: { [key: string]: { [key: string]: number } };
+  setDashboardWarningsCurrentLimitsLower: (
+    value: { [key: string]: { [key: string]: number } }
+  ) => void;
+  activeWarnings: WarningInstance[];
+  setActiveWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>;
+  acknowledgedWarnings: WarningInstance[];
+  setAcknowledgedWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>;
+  activeWarningsLower: WarningInstance[];
+  setActiveWarningsLower: React.Dispatch<React.SetStateAction<WarningInstance[]>>;
+  acknowledgedWarningsLower: WarningInstance[];
+  setAcknowledgedWarningsLower: React.Dispatch<React.SetStateAction<WarningInstance[]>>;
+  updateWarningsArray: (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number,
+    setWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>,
+  ) => void;
+}
+
+export const WarningContext = createContext<WarningContextType>({
+  dashboardWarningsCurrentLimits: {},
+  setDashboardWarningsCurrentLimits: () => {},
+  dashboardWarningsCurrentLimitsLower: {},
+  setDashboardWarningsCurrentLimitsLower: () => {},
+  activeWarnings: [],
+  setActiveWarnings: () => {},
+  acknowledgedWarnings: [],
+  setAcknowledgedWarnings: () => {},
+  activeWarningsLower: [],
+  setActiveWarningsLower: () => {},
+  acknowledgedWarningsLower: [],
+  setAcknowledgedWarningsLower: () => {},
+  updateWarningsArray: () => {},
 });
+
+
+
+
 interface WarningProviderProps {
   children: ReactNode;
 }
+
+interface WarningState {
+  activeWarnings: WarningInstance[];
+  acknowledgedWarnings: WarningInstance[];
+  activeWarningsLower: WarningInstance[];
+  acknowledgedWarningsLower: WarningInstance[];
+}
+
 export const WarningProvider = ({ children }: WarningProviderProps) => {
-  const [valuesOfInterest, setValuesOfInterest] = useState([
-    "test",
-    "test2",
-    "test3",
-    "brah",
-  ]);
-  const [valueOfInterestUnits, setValuesOfInterestUnits] = useState([
-    "KPH",
-    "RPM",
-    "M/S",
-    "KG",
-  ]);
-  const [valuesOfInterestData, setValuesOfInterestData] = useState([
-    1, 5, 3, 4,
-  ]);
-  const [valuesOfInterestDefaultLimits, setValuesOfInterestDefaultLimits] =
-    useState([0, 105, 0, 100]);
-  const [valuesOfInterestCurrentLimits, setValuesOfInterestCurrentLimits] =
-    React.useState<{
-      [key: string]: number;
-    }>({});
-  const [isWarning, setIsWarning] = useState(false);
-  const [activeWarnings, setActiveWarnings] = useState<WarningInstance[]>([]);
-  const [suppressedWarnings, setSuppressedWarnings] = useState<
-    WarningInstance[]
-  >([]);
-  const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<
-    WarningInstance[]
-  >([]);
+  const [dashboardWarningsCurrentLimits, setDashboardWarningsCurrentLimits] =
+    React.useState<{ [key: string]: { [key: string]: number } }>({
+      dashboard1: { limit0: 105, limit1: 105, limit2: 105, limit3: 105 },
+      dashboard2: { limit0: 0, limit1: 0, limit2: 0, limit3: 0, limit4: 0, limit5: 0, limit6: 0 },
+      dashboard3: { '': 0 },
+      dashboard4: { '': 0 },
+    });
+
+  const [dashboardWarningsCurrentLimitsLower, setDashboardWarningsCurrentLimitsLower] =
+    React.useState<{ [key: string]: { [key: string]: number } }>({
+      dashboard1: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0 },
+      dashboard2: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0, limitLower4: 0, limitLower5: 0, limitLower6: 0 },
+      dashboard3: { '': 0 },
+      dashboard4: { '': 0 },
+    });
+    const [activeWarnings, setActiveWarnings] = useState<WarningInstance[]>([]);
+    const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
+    const [activeWarningsLower, setActiveWarningsLower] = useState<WarningInstance[]>([]);
+    const [acknowledgedWarningsLower, setAcknowledgedWarningsLower] = useState<WarningInstance[]>([]);
+  
+    const updateWarningsArray = (
+      add: boolean,
+      newWarning: string,
+      newWarningValue: number,
+      newWarningUnits: string,
+      newWarningLimit: number,
+      setWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>
+    ) => {
+      setWarnings((prevWarnings) => {
+        if (add) {
+          const warningInstance: WarningInstance = {
+            newWarning,
+            newWarningValue,
+            newWarningUnits,
+            newWarningLimit,
+          };
+          return [...prevWarnings, warningInstance];
+        } else {
+          return prevWarnings.filter(
+            (warning) =>
+              warning.newWarning !== newWarning ||
+              warning.newWarningValue !== newWarningValue ||
+              warning.newWarningUnits !== newWarningUnits
+          );
+        }
+      });
+    };
 
   return (
     <WarningContext.Provider
       value={{
-        valuesOfInterest,
-        setValuesOfInterest,
-        valueOfInterestUnits,
-        setValuesOfInterestUnits,
-        valuesOfInterestData,
-        setValuesOfInterestData,
-        valuesOfInterestDefaultLimits,
-        setValuesOfInterestDefaultLimits,
-        valuesOfInterestCurrentLimits,
-        setValuesOfInterestCurrentLimits,
-        isWarning,
-        setIsWarning,
-        activeWarnings,
+        dashboardWarningsCurrentLimits,
+        setDashboardWarningsCurrentLimits,
+        dashboardWarningsCurrentLimitsLower,
+        setDashboardWarningsCurrentLimitsLower,
         setActiveWarnings,
-        suppressedWarnings,
-        setSuppressedWarnings,
-        acknowledgedWarnings,
+        setActiveWarningsLower,
+        setAcknowledgedWarningsLower,
         setAcknowledgedWarnings,
+        activeWarnings,
+        acknowledgedWarnings,
+        activeWarningsLower,
+        acknowledgedWarningsLower,
+        updateWarningsArray,
       }}
     >
       {children}

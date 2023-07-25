@@ -5,16 +5,19 @@ import InfoToolTip from "../helperTooltip.tsx/infoTooltip";
 import SetupFeedbackSlider from "./setupFeedbackSlider";
 import SetupField from "./setupField";
 
-interface SetupController {}
+interface SetupController {
+    setupName:string;
+    onClick:(field:string)=>void;
+}
 
-const SetupController = ({}: SetupController) => {
-  const [value, setValue] = React.useState(0);
+const SetupController = ({setupName,onClick}: SetupController) => {
+  const [selectedField, setSelectedField] = React.useState('');
 
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
-    if (typeof newValue == "number") {
-      setValue(newValue);
-    }
-  };
+
+  const handleSelectedFieldChange=(fieldName:string)=>{
+    onClick(fieldName);
+    setSelectedField(fieldName);
+  }
   const tooltipInfo = (
     <>
       <em>
@@ -28,7 +31,7 @@ const SetupController = ({}: SetupController) => {
     <Box
       sx={{
         width: "100%",
-        height: "800px",
+        height: "100%",
         position: "relative",
         backgroundColor: "#F6F6F6",
         minHeight: "500px",
@@ -50,7 +53,7 @@ const SetupController = ({}: SetupController) => {
                   sx={{ fontSize: 30 }}
                   fontWeight="bold"
                 >
-                  Setup Name
+                  {setupName}
                 </Typography>
               </Grid>
               <Grid item xs={8}>
@@ -59,7 +62,7 @@ const SetupController = ({}: SetupController) => {
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="body2" sx={{ fontSize: 20 }}>
-                  Selected Field
+                  {Boolean(selectedField) ? selectedField : 'No field selected'}
                 </Typography>
               </Grid>
           </Grid>
@@ -70,19 +73,20 @@ const SetupController = ({}: SetupController) => {
               alignItems="center"
             >
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-                <SetupField name={"General"} tooltipInfo={tooltipInfo} />
+                <SetupField name={"General"} tooltipInfo={tooltipInfo} onClick={handleSelectedFieldChange} />
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-                <SetupField name={"Transmission"} tooltipInfo={tooltipInfo} />
+                <SetupField name={"Transmission"} tooltipInfo={tooltipInfo} onClick={handleSelectedFieldChange} />
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
                 <SetupField
                   name={"Suspension/Aerodynamics"}
                   tooltipInfo={tooltipInfo}
+                  onClick={handleSelectedFieldChange}
                 />
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-                <SetupField name={"Differential"} tooltipInfo={tooltipInfo} />
+                <SetupField name={"Differential"} tooltipInfo={tooltipInfo} onClick={handleSelectedFieldChange}/>
               </Grid>
             </Grid>
           </Grid>

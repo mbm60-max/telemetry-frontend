@@ -66,7 +66,7 @@ const SessionStartup: React.FC = () => {
       selectedCompound.trim() !== "" &&
       selectedTrack != "noTrack"
     ) {
-      const queryParams = `car=${selectedCar}&compound=${selectedCompound}&track=${selectedTrack}`;
+      const queryParams = `car=${selectedCar}&compound=${selectedCompound}&track=${selectedTrack}&setup=${selectedSetup === '' ? "No Field Selected" : selectedSetup}`;
       router.push(`/session?${queryParams}`);
     }setCarError("You must select a car to contiue")
     setCompoundError("You must select a compound to contiue")

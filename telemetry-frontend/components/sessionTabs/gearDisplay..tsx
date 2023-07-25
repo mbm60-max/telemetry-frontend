@@ -14,6 +14,7 @@ interface TwoValueProps {
   nameTwo: string;
 }
 
+
 const ItemContainer = styled('div')({
   padding: '0px',
   border: '1px solid #ccc',

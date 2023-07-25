@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './liveTrack.css';
+import trackPropsDict from '../data/trackSvgFormatting';
 
 interface TestProps {
   targetSrc: string;
@@ -7,8 +8,10 @@ interface TestProps {
   testOffset:number;
 }
 
-const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
 
+
+const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
+  const { imageProps, trackProps } = trackPropsDict[trackName];
   const carStyle = {
     offsetDistance: `${testOffset}%`,
   };
@@ -17,35 +20,38 @@ const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '430px' }}>
-      <img src={targetSrc} alt="Fuel" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <img src={targetSrc} alt="Fuel" style={{ width: trackProps.width, height: trackProps.height, objectFit: 'fill',position: 'absolute',
+          top: trackProps.top,
+          left: trackProps.left,
+          transform: trackProps.transform,
+          transformOrigin: trackProps.transformOrigin,
+           }} />
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 200 200"
+        viewBox="0 0 400 430"
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-60%, -50%)',
-          transformOrigin: 'center',
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          zIndex: 1,
+          position: imageProps.position,
+          top: imageProps.top,
+          left: imageProps.left,
+          transform: imageProps.transform,
+          transformOrigin: imageProps.transformOrigin,
+          width: imageProps.width,
+          height: imageProps.height,
+          objectFit: imageProps.objectFit,
+          zIndex: imageProps.zIndex,
         }}
       >
-        <g className="path" fill="none" stroke="#fff" strokeWidth="2">
+        <g className="path" fill="none" stroke="#fff" strokeWidth="1">
           <path id="car-path" d={getPathByTrackName(trackName)} stroke="#FF0707" />
         </g>
         <g className={getCarClass()} style={carStyle}>
-        <circle cx="11" cy="11" r="11" fill="#DA2E22"/>
+        <circle cx="1" cy="1" r="9" fill="#DA2E22"/>
         </g>
       </svg>
 
       
-    </div>
-  );
-};
+    </div>)}
 
 const getPathByTrackName = (trackName: string) => {
   switch (trackName) {

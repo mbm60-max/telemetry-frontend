@@ -22,7 +22,7 @@ import TyresSuspensionGrid from './tyresSuspension';
 import ActualWarningModal from '../warningDashboard/actualWarningModal';
 import WarningInstance from '../../interfaces/warningInterface';
 import { WarningContext } from '../authProviderWarnings';
-
+import SetupWrapper from '../setupTab.tsx/setupWrapper';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -553,7 +553,7 @@ const [packetFlag,setPacketFlag] = useState(false);
       <TyresSuspensionGrid tireFL_SurfaceTemperature={frontLeftTemp} tireRL_SurfaceTemperature={rearLeftTemp} tireFR_SurfaceTemperature={frontRightTemp} tireRR_SurfaceTemperature={rearRightTemp} tireFL_SusHeight={tireFL_SusHeight} tireFR_SusHeight={tireFR_SusHeight} tireRL_SusHeight={tireRL_SusHeight} tireRR_SusHeight={tireRR_SusHeight} tireFL_TireRadius={tireFL_TireRadiu} tireFR_TireRadius={tireFR_TireRadius} tireRL_TireRadius={tireRL_TireRadius} tireRR_TireRadius={tireRR_TireRadius} wheelFL_RevPerSecond={wheelFL_RevPerSecond} wheelFR_RevPerSecond={wheelFR_RevPerSecond} wheelRL_RevPerSecond={wheelRL_RevPerSecond} wheelRR_RevPerSecond={wheelRR_RevPerSecond} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Setup
+        <SetupWrapper name={'No value'}/>
       </TabPanel>
       <TabPanel value={value} index={5}>
         {"Mongo Write Status" + mongoDbStatus};

@@ -22,7 +22,7 @@ const SetupSelectedFieldDisplay= ({ conditions,fieldData,setupName,selectedField
          <em>{"This feature is under construction, based on responses and setup info ML will be used to recommend setups"}</em>
         </>
       );
-      console.log(fieldData)
+
   return (
     <Box sx={{ width: '100%', height: '50%',position:'relative', backgroundColor:'#F6F6F6',
     borderRadius: 1.5,

@@ -32,7 +32,7 @@ const SetupWrapper = ({setupData}: SetupWrapperProps) => {
   const Suspension_AerodynamicsItems =["Ride Height","Natural Frequency","Anti Roll Bar","Damping Ratio Compression","Damping Ratio Rebound","Camber Angle", "Toe Angle","Downforce"]
   const TransmissionItems=["Transmission Type","Max Speed (Auto Set)","Gear Ratios","Final Gear Ratio"]
   const DifferentialItems=["Differntial Gear","LSD Initial Torque","LSD Acceleration Sensitivity","LSD Braking Sensitivity","Front Rear Torque Distribution"]
-console.log(setupData)
+
 
 type SetupObject = {
   [key: string]: any;
@@ -62,7 +62,6 @@ useEffect(() => {
 
 
 
-console.log("Selected Field" + selectedField);
 
   const handleSelectedFieldChange=(fieldName:string)=>{
     setSelectedField(fieldName);

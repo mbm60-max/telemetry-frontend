@@ -124,9 +124,6 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
     setValuesOfInterestUnits(updatedValuesOfInterestUnits,1);
   }
   const handleSetLimits=(newDict:{[key: string]: number;})=>{
-    console.log("attack")
-  console.log(newDict)
-  console.log("defend")
     setValuesOfInterestCurrentLimits(newDict,1);
   }
   const handleSetLimitsLower=(newDict:{[key: string]: number;})=>{

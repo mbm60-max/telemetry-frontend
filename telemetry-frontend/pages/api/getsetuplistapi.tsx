@@ -15,23 +15,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Access the database and collection
       const db = client.db('Data');
-      const collection = db.collection('Setups');
+      const setupsCollection = db.collection('setups');
+      // Find the document with the matching username
+      const userDocument = await setupsCollection.findOne({ username });
 
-      // Search for documents with the matching username
-      const usernameQuery = { username };
-      const setupNames = await collection
-        .find(usernameQuery)
-        .project({ name: 1 })
-        .toArray();
-
-      if (setupNames.length > 0) {
-        // User with the matching username found
+      if (userDocument && userDocument.setups.length > 0) {
+        // User with the matching username found and setups array exists
         console.log('User found');
-        res.status(200).json({ setupNames });
+        res.status(200).json({ setups: userDocument.setups });
       } else {
-        // User with the matching username not found
-        console.error('User not found');
-        res.status(200).json({ setupNames: []  });
+        // User with the matching username not found or setups array is empty
+        console.error('User not found or setups array is empty');
+        res.status(200).json({ setups: [] });
       }
 
       // Close the database connection

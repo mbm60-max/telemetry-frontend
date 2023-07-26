@@ -11,7 +11,16 @@ interface TestProps {
 
 
 const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
-  const { imageProps, trackProps } = trackPropsDict[trackName];
+  let imageProps;
+  let trackProps;
+
+  if (typeof trackPropsDict[trackName] !== 'undefined') {
+    ({ imageProps, trackProps } = trackPropsDict[trackName]);
+  } else {
+    // Set default values or leave them undefined based on your requirement
+    imageProps = undefined;
+    trackProps = undefined;
+  }
   const carStyle = {
     offsetDistance: `${testOffset}%`,
   };
@@ -20,13 +29,15 @@ const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '430px' }}>
+      {trackProps && (
       <img src={targetSrc} alt="Fuel" style={{ width: trackProps.width, height: trackProps.height, objectFit: 'fill',position: 'absolute',
           top: trackProps.top,
           left: trackProps.left,
           transform: trackProps.transform,
           transformOrigin: trackProps.transformOrigin,
            }} />
-
+           )}
+           {imageProps && (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 400 430"
@@ -50,7 +61,7 @@ const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
         </g>
       </svg>
 
-      
+)}
     </div>)}
 
 const getPathByTrackName = (trackName: string) => {

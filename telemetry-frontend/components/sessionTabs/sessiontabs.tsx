@@ -23,6 +23,10 @@ import ActualWarningModal from '../warningDashboard/actualWarningModal';
 import WarningInstance from '../../interfaces/warningInterface';
 import { WarningContext } from '../authProviderWarnings';
 import SetupWrapper from '../setupTab.tsx/setupWrapper';
+import axios, { AxiosResponse } from 'axios';
+import SetupObject from '../../interfaces/setupDataInterface';
+import SetupDataInterface from '../../interfaces/setupDataInterface';
+import emptySetupObject from '../../data/emptySetupObject';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -111,6 +115,102 @@ export default function BasicTabs() {
   function handleExitSession(){
     router.push('/')
   }
+  const getEmptySetupObject = (): SetupDataInterface => {
+    return {
+      "Power Level": {
+        Value: "",
+        Units: "",
+      },
+      "Weight Reduction Level": {
+        Value: "",
+        Units: "",
+      },
+      "Power Ratio": {
+        Value:"",
+        Units: "%",
+      },
+      "Weight Reduction Ratio": {
+        Value: "",
+        Units: "%",
+      },
+      "Traction Control": {
+        Value:"",
+        Units: "",
+      },
+      "Brake Balance": {
+        Value: "",
+        Units: "",
+      },
+      "Ride Height": {
+        Value:["", ""],
+        Units: "mm",
+      },
+      "Natural Frequency": {
+        Value: ["", ""],
+        Units: "Hz",
+      },
+      "Anti Roll Bar": {
+        Value: ["", ""],
+        Units: "",
+      },
+      "Damping Ratio Compression": {
+        Value: ["", ""],
+        Units: "%",
+      },
+      "Damping Ratio Rebound": {
+        Value: ["", ""],
+        Units: "",
+      },
+      "Camber Angle": {
+        Value: ["", ""],
+        Units: "degrees",
+      },
+      "Toe Angle": {
+        Value:["", ""],
+        Units: "degrees",
+      },
+      "Downforce": {
+        Value:["", ""],
+        Units: "Nm",
+      },
+      "Differntial Gear": {
+        Value: "",
+        Units: "",
+      },
+      "LSD Initial Torque": {
+        Value: ["", ""],
+        Units: "?",
+      },
+      "LSD Acceleration Sensitivity": {
+        Value: ["", ""],
+        Units: "?",
+      },
+      "LSD Braking Sensitivity": {
+        Value: ["", ""],
+        Units: "?",
+      },
+      "Front Rear Torque Distribution": {
+        Value: "",
+        Units: "?",
+      },
+      "Transmission Type": {
+        Value: "",
+        Units: "",
+      },
+      "Max Speed (Auto Set)": {
+        Value: "",
+        Units: "mph",
+      },
+      "Gear Ratios": {
+        Value:["", ""],
+        Units: "ratio/max speed",
+      },
+      "Final Gear Ratio": {
+        Value: "",
+        Units: "",
+      },
+    };
+  };
     const [throttleStream, setThrottleStream] = useState([{ x: 0, y: 0 }]);
     const [brakeStream, setBrakeStream] = useState([{ x: 0, y: 0 }]);
     const [speedStream, setSpeedStream] = useState([{ x: 0, y: 0 }]);
@@ -151,6 +251,7 @@ export default function BasicTabs() {
     const [clutchPedalStream,setClutchPedalStream]= useState([{ x: 0, y: 0 }]);
     const [rpmClutchToGearboxStream,setRpmFromClutchToGearbox]= useState([{ x: 0, y: 0 }]);
     const [distanceFromStart, setDistanceFromStart] = useState(0);
+    const [setupData, setSetupData] = useState<SetupDataInterface>(getEmptySetupObject());
     const signalRService = new SignalRService();
     useEffect(() => {
      signalRService.startConnection();
@@ -506,6 +607,28 @@ const [packetFlag,setPacketFlag] = useState(false);
   }, [activeWarningsLower]);
 
 
+  const setupValue = router.query.setup;
+  const handleGetSetup = async () => {
+    console.log(userName)
+    const username=userName
+    const setupname=setupValue
+    try {
+      const setupResponse: AxiosResponse = await axios.get('/api/retrieveSetupInfo', {
+        params: { username, setupname },
+      });
+      
+      console.log('Setup response:', setupResponse.data);
+      const setupContainer= setupResponse.data
+      setSetupData(setupContainer.setupData.setupObject)
+    } catch (error) {
+      console.error('Error fetching setup:', error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetSetup();
+  }, []);
+
   return (
     <> {activeWarnings.length > 0 ? (
       activeWarnings.map((value, index) => (
@@ -553,7 +676,7 @@ const [packetFlag,setPacketFlag] = useState(false);
       <TyresSuspensionGrid tireFL_SurfaceTemperature={frontLeftTemp} tireRL_SurfaceTemperature={rearLeftTemp} tireFR_SurfaceTemperature={frontRightTemp} tireRR_SurfaceTemperature={rearRightTemp} tireFL_SusHeight={tireFL_SusHeight} tireFR_SusHeight={tireFR_SusHeight} tireRL_SusHeight={tireRL_SusHeight} tireRR_SusHeight={tireRR_SusHeight} tireFL_TireRadius={tireFL_TireRadiu} tireFR_TireRadius={tireFR_TireRadius} tireRL_TireRadius={tireRL_TireRadius} tireRR_TireRadius={tireRR_TireRadius} wheelFL_RevPerSecond={wheelFL_RevPerSecond} wheelFR_RevPerSecond={wheelFR_RevPerSecond} wheelRL_RevPerSecond={wheelRL_RevPerSecond} wheelRR_RevPerSecond={wheelRR_RevPerSecond} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <SetupWrapper />
+        <SetupWrapper setupData={setupData} />
       </TabPanel>
       <TabPanel value={value} index={5}>
         {"Mongo Write Status" + mongoDbStatus};

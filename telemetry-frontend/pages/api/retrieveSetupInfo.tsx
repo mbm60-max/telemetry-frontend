@@ -5,7 +5,7 @@ const MONGODB_URI = 'mongodb+srv://MaxByng-Maddick:Kismetuni66@cluster0.a31ajbo.
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    const { username, setup } = req.query;
+    const { username, setupname } = req.query;
 
 
     try {
@@ -14,25 +14,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         useUnifiedTopology: true,
       } as MongoClientOptions);
 
-      // Access the database and collection
       const db = client.db('Data');
-      const collection = db.collection('Setups');
+      const collection = db.collection('setups');
 
       // Search for documents with the matching username
-      const query = { username, name: setup };
-      const setupNames = await collection
-        .find(query)
-        .project({ name: 1 })
-        .toArray();
+      const query = { username };
+      const userDocument = await collection.findOne(query);
 
-      if (setupNames.length > 0) {
-         // User with the matching username and setup found
-        console.log('User and setup found');
-        res.status(200).json({ setupNames });
+      if (userDocument) {
+        // Find the matching setup item in the setups array
+        const matchingSetup = userDocument.setups.find((s: { setupname: string }) => s.setupname === setupname);
+
+        if (matchingSetup) {
+          // Matching setup found
+          console.log('User and setup found');
+          res.status(200).json({ setupData: matchingSetup });
+        } else {
+          // Matching setup not found
+          console.error('Matching setup not found');
+          res.status(404).json({ message: 'Setup not found for the user' });
+        }
       } else {
-         // User with the matching username and setup not found
-        console.error('User and setup not found');
-        res.status(200).json({ setupNames: []  });
+        // User with the matching username not found
+        console.error('User not found');
+        res.status(404).json({ message: 'User not found'+username });
       }
 
       // Close the database connection

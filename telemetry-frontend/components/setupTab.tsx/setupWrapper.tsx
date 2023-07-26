@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
+import SetupObject from "../../interfaces/setupDataInterface";
 import { AuthContext } from "../authProvider";
 import SetupCarDisplay from "./setupCarDisplay";
 import SetupController from "./setupController";
@@ -9,7 +10,7 @@ import SetupFeedback from "./setupFeedback";
 import SetupSelectedFieldDisplay from "./setupSelectedFieldDisplay";
 
 interface SetupWrapperProps {
- 
+ setupData:SetupObject;
 }
 const setupFeedbackConditions = [
   "Oversteer",
@@ -19,14 +20,50 @@ const setupFeedbackConditions = [
   "Throttle Response",
 ];
 
-const SetupWrapper = ({ }: SetupWrapperProps) => {
+const SetupWrapper = ({setupData}: SetupWrapperProps) => {
   const router = useRouter();
   const compoundValue = router.query.compound;
   const setupValue = router.query.setup;
   const carValue = router.query.car;
   const [selectedField, setSelectedField] = React.useState('');
-  
-  
+
+ 
+  const GeneralItems = ["Power Level","Weight Reduction Level","Power Ratio","Weight Reduction Ratio","Traction Control","Brake Balance"]
+  const Suspension_AerodynamicsItems =["Ride Height","Natural Frequency","Anti Roll Bar","Damping Ratio Compression","Damping Ratio Rebound","Camber Angle", "Toe Angle","Downforce"]
+  const TransmissionItems=["Transmission Type","Max Speed (Auto Set)","Gear Ratios","Final Gear Ratio"]
+  const DifferentialItems=["Differntial Gear","LSD Initial Torque","LSD Acceleration Sensitivity","LSD Braking Sensitivity","Front Rear Torque Distribution"]
+console.log(setupData)
+
+type SetupObject = {
+  [key: string]: any;
+};
+const extractData=(sourceObject:SetupObject,itemsArray:string[])=>{
+  let itemDict: SetupObject = {};
+  for (const item of itemsArray) {
+    itemDict[item] = sourceObject[item];
+  }
+  return itemDict;
+}
+const [setupDataDict, setSetupDataDict] = useState<Record<string, SetupObject>>({});
+
+
+useEffect(() => {
+  const generatedSetupDataDict ={
+    "General":extractData(setupData,GeneralItems),
+    "Suspension_Aerodynamics":extractData(setupData,Suspension_AerodynamicsItems),
+    "Transmission":extractData(setupData,TransmissionItems),
+    "Differential":extractData(setupData,DifferentialItems),
+  } 
+  setSetupDataDict(generatedSetupDataDict);
+}, [setupData]);
+
+
+useEffect(() => {
+  console.log(setupDataDict)
+}, [setupDataDict]);
+
+
+
 
 
 

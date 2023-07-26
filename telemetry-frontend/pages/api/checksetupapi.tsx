@@ -5,7 +5,7 @@ const MONGODB_URI = 'mongodb+srv://MaxByng-Maddick:Kismetuni66@cluster0.a31ajbo.
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
-    const { name } = req.query;
+    const { username, setupname } = req.query;
 
     try {
       // Connect to the MongoDB cluster
@@ -15,18 +15,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       // Access the database and collection
       const db = client.db('Data');
-      const collection = db.collection('Setups');
+      const collection = db.collection('setups');
 
       // Search for a document with the matching username
-      const nameQuery = { name };
-      const nameResult = await collection.findOne(nameQuery);
+      const userQuery = { username };
+      const userResult = await collection.findOne(userQuery);
 
-      if (nameResult) {
+      if (userResult) {
         // User with the matching username found
-        // Now check if the password matches
-        console.log('User found');
-        res.status(200).json({ message: 'Success' });
-        
+        // Now check if the setupname exists in the setups array
+        const setupFound = userResult.setups.some((setup: { setupname: string}) => setup.setupname === setupname);
+        if (setupFound) {
+          console.log('Setup found');
+          res.status(200).json({ message: 'Success' });
+        } else {
+          console.log(userResult.setups)
+          console.error('Setup not found');
+          res.status(200).json({ message: 'Setup not found'});
+        }
       } else {
         // User with the matching username not found
         console.error('User not found');

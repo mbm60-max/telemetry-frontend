@@ -19,13 +19,13 @@ interface SetupTableProps {
 export default function SetupTable({onSelectSetup}:SetupTableProps) {
   const { isLoggedIn,userName} = useContext(AuthContext);
   const username = userName;
-  const [setupData, setSetupData] = React.useState<{ id: number; name: string }[]>([]);
+  const [setupData, setSetupData] = React.useState<{ id: number; setupname: string }[]>([]);
   const newIdRef = React.useRef(setupData.length + 1);
 
   // Otherwise filter will be applied on fields such as the hidden column id
   const columns = React.useMemo(
     () => [
-      { field: 'name', headerName: 'Name', flex: 1, headerClassName: 'custom-header' },
+      { field: 'setupname', headerName: 'Name', flex: 1, headerClassName: 'custom-header' },
       {
         flex: 1,
         headerClassName: 'removed',
@@ -38,18 +38,17 @@ export default function SetupTable({onSelectSetup}:SetupTableProps) {
   );
 
   const rows = React.useMemo(() => setupData, [setupData]);
-
+console.log(rows)
   const handleSelectionChange = (selectionModel: any) => {
     if (selectionModel.length > 0 && rows.length > 0) {
       const selectedRow = rows.find((row) => row.id === selectionModel[0]);
       if (selectedRow) {
-        const setup = selectedRow.name;
+        const setup = selectedRow.setupname;
         onSelectSetup(setup);
       }
     }
   };
   const forceFetchData = () => {
-    console.log('no')
     fetchData();
   };
 
@@ -60,7 +59,9 @@ export default function SetupTable({onSelectSetup}:SetupTableProps) {
         params: { username },
       });
       const data = setupResponse.data;
-      const rowsWithId = data.setupNames.map((row: any, index: number) => ({ ...row, id: index + 1 }));
+      
+      const rowsWithId = data.setups.map((setup: any, index: number) => (console.log(setup.setupname),{ setupname: setup.setupname, id: index + 1 }));
+      console.log(rowsWithId)
       setSetupData(rowsWithId);
     } catch (error) {
       console.error('Error fetching setup data:', error);

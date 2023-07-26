@@ -43,7 +43,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
   };
   const { isLoggedIn, userName } = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState("");
+  const [setupname, setSetupName] = React.useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [powerLevel, setPowerLevel] = useState("");
@@ -82,7 +82,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
   const handleSetupSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const nameResponse: AxiosResponse = await axios.get('/api/checksetupapi', {
-      params: { name },
+      params: { username,setupname },
     });
     const setupObject = {
       "Power Level": {
@@ -178,15 +178,16 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
         Units: "",
       },};
     setNameError("");
-    if(name != ''){
+    if(setupname != ''){
       try{
         if (nameResponse.data.message === 'Success') {
           setNameError("This name is already taken") // currently checking all files should only be user specific
           return
         }
         if(userName != ''){
-          await axios.post("/api/createsetupapi", { username, name, setupObject });
-          setName('');
+          console.log(nameResponse.data.message)
+          await axios.post("/api/createsetupapi", { username, setupname, setupObject });
+          setSetupName('');
           onSetupAddition();
           handleClose();
 
@@ -239,7 +240,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             id="name"
             label="Name"
             variant="outlined"
-            onChange={(value) => handleInputText(setName)(value)}
+            onChange={(value) => handleInputText(setSetupName)(value)}
             error={Boolean(nameError)}
                       helperText={nameError}
           />

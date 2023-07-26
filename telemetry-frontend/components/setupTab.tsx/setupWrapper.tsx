@@ -50,7 +50,7 @@ const [setupDataDict, setSetupDataDict] = useState<Record<string, SetupObject>>(
 useEffect(() => {
   const generatedSetupDataDict ={
     "General":extractData(setupData,GeneralItems),
-    "Suspension_Aerodynamics":extractData(setupData,Suspension_AerodynamicsItems),
+    "Suspension/Aerodynamics":extractData(setupData,Suspension_AerodynamicsItems),
     "Transmission":extractData(setupData,TransmissionItems),
     "Differential":extractData(setupData,DifferentialItems),
   } 
@@ -58,14 +58,11 @@ useEffect(() => {
 }, [setupData]);
 
 
-useEffect(() => {
-  console.log(setupDataDict)
-}, [setupDataDict]);
 
 
 
 
-
+console.log("Selected Field" + selectedField);
 
   const handleSelectedFieldChange=(fieldName:string)=>{
     setSelectedField(fieldName);
@@ -79,7 +76,7 @@ useEffect(() => {
         <Grid item xs={12} sm={9}>
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12}>
-              <SetupSelectedFieldDisplay conditions={[]} field={"Suspension"} setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} selectedField={ selectedField === '' ? "No Field Selected" : selectedField}/>
+              <SetupSelectedFieldDisplay conditions={[]} fieldData={setupDataDict[selectedField]} setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} selectedField={ selectedField === '' ? "No Field Selected" : selectedField}/>
             </Grid>
             <Grid item xs={12}>
               <SetupCarDisplay carName={typeof carValue === 'string' ? carValue : "No Car Selected"} setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} />

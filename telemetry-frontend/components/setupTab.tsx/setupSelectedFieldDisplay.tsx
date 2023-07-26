@@ -33,7 +33,7 @@ const SetupSelectedFieldDisplay= ({ conditions,fieldData,setupName,selectedField
           {fieldData && Object.keys(fieldData).map((fieldName, index) => (
             <React.Fragment key={index}>
               <Grid item xs={4}>
-                <SetupDataDisplay name={fieldName} value={fieldData[fieldName]} />
+                <SetupDataDisplay name={fieldName} value={fieldData[fieldName].Value} units={fieldData[fieldName].Units} />
               </Grid>
             </React.Fragment>
           ))}

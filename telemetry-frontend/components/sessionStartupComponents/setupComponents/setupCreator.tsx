@@ -46,9 +46,11 @@ export default function SetupTable({onSelectSetup,selectedRowId,onRowSelectionMo
 
 
   const handleSelectionChange = (selectionModel: any) => {
+    onRowSelectionModelChange(selectionModel);
     if (selectionModel.length > 0 && rows.length > 0) {
       const selectedRow = rows.find((row) => row.id === selectionModel[0]);
       if (selectedRow) {
+        //onSelectedRowIdChange(selectedRow.id);
         const setup = selectedRow.setupname;
         onSelectSetup(setup);
       }
@@ -106,7 +108,7 @@ export default function SetupTable({onSelectSetup,selectedRowId,onRowSelectionMo
         disableColumnSelector
         disableDensitySelector
         rowSelectionModel={selectedRowId? [selectedRowId] : []}
-        onRowSelectionModelChange={onRowSelectionModelChange} // Use the prop for handling row selection change
+        onRowSelectionModelChange={handleSelectionChange} // Use the prop for handling row selection change
         getRowClassName={(params) => (params.id === selectedRowId? 'MuiDataGrid-row.Mui-selected' : '')}
       />
     </Box>

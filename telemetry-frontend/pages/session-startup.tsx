@@ -36,6 +36,7 @@ import { AuthContext } from "../components/authProvider";
 const SessionStartup: React.FC = () => {
   const [selectedRowId, setSelectedRowId] = useState<GridRowId | null>(null); // Manage selectedRowId in the parent component
   const selectedRowIdSetupGridRef = useRef<GridRowId | null>(null);
+  console.log(selectedRowIdSetupGridRef.current)
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -65,7 +66,7 @@ const SessionStartup: React.FC = () => {
   const [trackError, setTrackError] = useState("");
    const [compoundError, setCompoundError] = useState("");
   const router = useRouter();
-  const [setupData, setSetupData] = React.useState<{ id: number; setupname: string }[]>([]);
+  const setupData = useRef<{ id: number; setupname: string }[]>([]);
   const rows = React.useMemo(() => carData, []);
   const rowsSetupGrid = React.useMemo(() => setupData, [setupData]);
   const { isLoggedIn,userName} = useContext(AuthContext);
@@ -94,7 +95,8 @@ const SessionStartup: React.FC = () => {
     (selectionModel: any) => {
       // Update the selectedRowId when the row selection changes
       if (selectionModel.length > 0) {
-        const selectedRow = rowsSetupGrid.find((row) => row.id === selectionModel[0]);
+        
+        const selectedRow = rowsSetupGrid.current.find((row) => row.id === selectionModel[0]);
         if (selectedRow) {
           selectedRowIdSetupGridRef.current = selectionModel[0];
         const name = selectedRow.setupname;
@@ -102,6 +104,9 @@ const SessionStartup: React.FC = () => {
         // Rest of the code for handling the selected row
       }
     } else {
+      console.log("got you")
+      console.log(selectedRowIdSetupGridRef.current)
+      console.log("here")
       selectedRowIdSetupGridRef.current = null
     }
     },
@@ -121,7 +126,7 @@ const SessionStartup: React.FC = () => {
       
       const rowsWithId = data.setups.map((setup: any, index: number) => ({ setupname: setup.setupname, id: index + 1 }));
 
-      setSetupData(rowsWithId);
+      setupData.current=rowsWithId;
     } catch (error) {
       console.error('Error fetching setup data:', error);
     }
@@ -180,12 +185,6 @@ const SessionStartup: React.FC = () => {
       <em>{'A session requires a track,car and tyre compound in order to be started.'}</em> <b>{'You can optionally also add a setup.'}</b> <u>{'This information is then used during and after the session.'}</u>{"hmm"}
     </>
   );
-  useEffect(() => {
-    console.log(selectedRowIdSetupGridRef.current);
-  }, [selectedRowIdSetupGridRef]);
-  useEffect(() => {
-    console.log(selectedRowId);
-  }, [selectedRowId]);
   return (
     <>
       <Box className="header">

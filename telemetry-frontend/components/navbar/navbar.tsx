@@ -17,7 +17,7 @@ const NavBar = () => {
                 <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Recomended</Link></Button>
                 <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/review"}>Review</Link></Button>
                 <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/login"}>Login</Link></Button>
-                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Account</Link><div className="triangle"></div></Button>
+                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/settings"}>settings</Link></Button>
                 
             </Box>
         </div>

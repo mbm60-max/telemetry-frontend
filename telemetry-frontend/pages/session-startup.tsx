@@ -28,7 +28,11 @@ import BasicCard from "../components/card";
 import Homepage from "../components/background/background";
 import "../calltoaction.css";
 import InfoToolTip from "../components/helperTooltip.tsx/infoTooltip";
+import { GridRowId } from "@mui/x-data-grid";
+import { carData } from "../data/gtCarList";
+
 const SessionStartup: React.FC = () => {
+  const [selectedRowId, setSelectedRowId] = useState<GridRowId | null>(null); // Manage selectedRowId in the parent component
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -58,7 +62,29 @@ const SessionStartup: React.FC = () => {
   const [trackError, setTrackError] = useState("");
    const [compoundError, setCompoundError] = useState("");
   const router = useRouter();
-  
+  const rows = React.useMemo(() => carData, []);
+  const handleRowSelectionChange = React.useCallback(
+    (selectionModel: any) => {
+      // Update the selectedRowId when the row selection changes
+      if (selectionModel.length > 0) {
+        const selectedRow = rows.find((row) => row.id === selectionModel[0]);
+        if (selectedRow) {
+        setSelectedRowId(selectionModel[0]);
+        const brand = selectedRow.brand;
+        const name = selectedRow.name;
+        const car = brand + ' ' + name;
+        handleCarSelection(car);
+        // Rest of the code for handling the selected row
+      }
+    } else {
+      setSelectedRowId(null);
+    }
+    },
+    [],
+  );
+  const handleSetSelectedRowId=(id:GridRowId| null)=>{
+    setSelectedRowId(id);
+  }
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
@@ -99,12 +125,12 @@ const SessionStartup: React.FC = () => {
   function handleExit() {
     router.push("/");
   }
-
   const tooltipInfo = (
     <>
       <em>{'A session requires a track,car and tyre compound in order to be started.'}</em> <b>{'You can optionally also add a setup.'}</b> <u>{'This information is then used during and after the session.'}</u>{"hmm"}
     </>
   );
+  console.log("render")
   return (
     <>
       <Box className="header">
@@ -135,7 +161,7 @@ const SessionStartup: React.FC = () => {
               <Grid container spacing={2}>
                 <Grid item xs={6} sx={{ height: "100%" }}>
                   <Item>
-                    <QuickFilteringGrid onSelectCar={handleCarSelection} />
+                    <QuickFilteringGrid onSelectCar={handleCarSelection} selectedRowId={selectedRowId} onRowSelectionModelChange={handleRowSelectionChange} onSelectedRowIdChange={handleSetSelectedRowId} />
                   </Item>
                 </Grid>
                 <Grid item xs={6} sx={{ height: "100%" }}>

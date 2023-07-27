@@ -1,22 +1,4 @@
-.custom-header {
-    background-color: #f5f5f5; /* Set the background color of the header */
-    color: #333; /* Set the text color of the header */
-    /* Add any other styles you want for the header cells */
-  }
-  .even-row {
-    background-color: #f5f5f5; /* Set the background color of even rows */
-    /* Add any other styles you want for even rows */
-  }
-  
-  .odd-row {
-    background-color: #ffffff; /* Set the background color of odd rows */
-    /* Add any other styles you want for odd rows */
-  }
-  .header-cell {
-    background-color: #f5f5f5; /* Set the background color of the header */
-    color: #333; /* Set the text color of the header */
-    /* Add any other styles you want for the header cells */
-  }
-  .header-cell .MuiDataGrid-sortIcon {
-    display: none;
-  }
+.my-grid-container .MuiDataGrid-row.Mui-selected {
+  background-color: blue !important; /* Your selected row background color */
+  color: #ffffff !important; /* Your selected row text color (e.g., white) */
+}

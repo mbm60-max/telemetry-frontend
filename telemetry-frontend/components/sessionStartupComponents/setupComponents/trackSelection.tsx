@@ -9,9 +9,10 @@ import { itemData } from "../../../data/imageData";
 
 interface TrackSelectionProps {
   onSelectTrack: (track: string) => void;
+  onExit: () => void; 
 }
 
-const TrackSelection = ({ onSelectTrack }: TrackSelectionProps) => {
+const TrackSelection = ({ onSelectTrack,onExit }: TrackSelectionProps) => {
 
   const handleClick = (item: { img: string; title: string }) => {
     onSelectTrack(item.title);
@@ -22,9 +23,13 @@ const TrackSelection = ({ onSelectTrack }: TrackSelectionProps) => {
       handleClick(item);
     };
   };
+  const handleExit=()=>{
+    onExit();
+  }
 
   return (
     <Box sx={{ width: '100%', height: '700px', overflow: 'auto' }}>
+      <Button onClick={handleExit}>Exit</Button>
       <ImageList sx={{ width: '100%', height: '100%' }} cols={3} gap={10} rowHeight={250}>
         {itemData.map((item) => (
           <ImageListItem key={item.img}>

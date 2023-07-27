@@ -12,11 +12,15 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 1000,
+  width: '75%',
+  height:'75%',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  overflowY: 'auto', // Add this to enable vertical scrolling when content overflows
+  display: 'flex',
+ justifyContent:'center'
 };
 
 interface TrackSelectionModalProps {
@@ -34,17 +38,20 @@ export default function TrackSelectionModal({ onSelectTrack }: TrackSelectionMod
     handleClose();
   };
 
+  const handleExit=()=>{
+    handleClose();
+  }
+
   return (
     <>
       <Button onClick={handleOpen}>Select Track</Button>
       <Modal
         open={open}
-        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <TrackSelection onSelectTrack={handleTrackSelection} />
+          <TrackSelection onSelectTrack={handleTrackSelection} onExit={handleExit} />
         </Box>
       </Modal>
     </>

@@ -1,40 +1,76 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Grid, Typography } from "@mui/material";
 import chroma from "chroma-js";
-import React, { useEffect,useRef  } from "react";
+import React, { useEffect, useRef } from "react";
 import WarningDashboardSettingsModal from "./warningDashboardSettingsModal";
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
 import KeyWarningsAddModal from "./keyWarningsModal";
 import KeyWarningsDeleteModal from "./keyWarningsDeleteModal";
 import KeyWarningsIgnoredModal from "./keyWarningsIgnoredModal";
 import WarningInstance from "../../interfaces/warningInterface";
-
+import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
 
 interface WarningsDashboardProps {
   valuesOfInterest: string[];
   valuesOfInterestData: number[];
   valuesOfInterestUnits: string[];
   valuesOfInterestDefaultLimits: number[];
-handleSetWarning:(updatedValuesOfInterest: string[], updatedValuesOfInterestData: number[], updatedValuesOfInterestUnits: string[], updatedValuesOfInterestDefualtLimits: number[]) => void
-handleSetLimits:(newDict: { [key: string]: number; }) => void;
-handleSetLimitsLower:(newDict: { [key: string]: number; }) => void;
-handleActiveWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
-handleAcknowledgedWarnings:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
-handleActiveWarningsLower:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
-handleAcknowledgedWarningsLower:(add: boolean, newWarning: string, newWarningValue: number, newWarningUnits: string, newWarningLimit: number) => void;
-acknowledgedWarnings:WarningInstance[];
-acknowledgedWarningsLower:WarningInstance[];
-valuesOfInterestCurrentLimits: {[key: string]: number;};
-valuesOfInterestCurrentLimitsLower: {[key: string]: number;};
+  handleSetWarning: (
+    updatedValuesOfInterest: string[],
+    updatedValuesOfInterestData: number[],
+    updatedValuesOfInterestUnits: string[],
+    updatedValuesOfInterestDefualtLimits: number[]
+  ) => void;
+  handleSetLimits: (newDict: { [key: string]: number }) => void;
+  handleSetLimitsLower: (newDict: { [key: string]: number }) => void;
+  handleActiveWarnings: (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number
+  ) => void;
+  handleAcknowledgedWarnings: (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number
+  ) => void;
+  handleActiveWarningsLower: (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number
+  ) => void;
+  handleAcknowledgedWarningsLower: (
+    add: boolean,
+    newWarning: string,
+    newWarningValue: number,
+    newWarningUnits: string,
+    newWarningLimit: number
+  ) => void;
+  acknowledgedWarnings: WarningInstance[];
+  acknowledgedWarningsLower: WarningInstance[];
+  valuesOfInterestCurrentLimits: { [key: string]: number };
+  valuesOfInterestCurrentLimitsLower: { [key: string]: number };
 }
 export default function WarningsDashboard({
   valuesOfInterest,
   valuesOfInterestData,
   valuesOfInterestUnits,
   valuesOfInterestDefaultLimits,
-  handleSetWarning,handleSetLimits,
+  handleSetWarning,
+  handleSetLimits,
   handleAcknowledgedWarnings,
   handleActiveWarnings,
-  acknowledgedWarnings,handleSetLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,acknowledgedWarningsLower,valuesOfInterestCurrentLimits,valuesOfInterestCurrentLimitsLower
+  acknowledgedWarnings,
+  handleSetLimitsLower,
+  handleAcknowledgedWarningsLower,
+  handleActiveWarningsLower,
+  acknowledgedWarningsLower,
+  valuesOfInterestCurrentLimits,
+  valuesOfInterestCurrentLimitsLower,
 }: WarningsDashboardProps) {
   const calcColor = (
     colorScale: string[],
@@ -75,13 +111,14 @@ export default function WarningsDashboard({
   const Green = "#00ff00";
   const Blue = "#0000ff";
   const numberOfSteps = 10;
-  console.log(valuesOfInterestCurrentLimits)
+  console.log(valuesOfInterestCurrentLimits);
   const [selectedLimits, setSelectedLimits] = React.useState<{
     [key: string]: number;
   }>(
     valuesOfInterest.reduce(
       (limits: { [key: string]: number }, value: string, index: number) => {
-        limits[`limit${index}`] = valuesOfInterestCurrentLimits[`limit${index}`];
+        limits[`limit${index}`] =
+          valuesOfInterestCurrentLimits[`limit${index}`];
         return limits;
       },
       {}
@@ -93,104 +130,160 @@ export default function WarningsDashboard({
   }>(
     valuesOfInterest.reduce(
       (limits: { [key: string]: number }, value: string, index: number) => {
-        limits[`limitLower${index}`] = valuesOfInterestCurrentLimitsLower[`limitLower${index}`];
+        limits[`limitLower${index}`] =
+          valuesOfInterestCurrentLimitsLower[`limitLower${index}`];
         return limits;
       },
       {}
     )
   );
 
-  const handleLimitSelection = (limit: number,limitLower:number, index: string) => {
-    if(limit==-1){
+  const handleLimitSelection = (
+    limit: number,
+    limitLower: number,
+    index: string
+  ) => {
+    if (limit == -1) {
       setSelectedLimitsLower((prevFields) => ({
         ...prevFields,
         [`limitLower${index}`]: limitLower,
       }));
     }
-    if(limitLower==-1){
+    if (limitLower == -1) {
       setSelectedLimits((prevFields) => ({
         ...prevFields,
         [`limit${index}`]: limit,
       }));
     }
-    if((limitLower!=-1)&&(limit!=-1)){
-    setSelectedLimitsLower((prevFields) => ({
-      ...prevFields,
-      [`limitLower${index}`]: limitLower,
-    }));
-    setSelectedLimits((prevFields) => ({
-      ...prevFields,
-      [`limit${index}`]: limit,
-    }));
-  }
+    if (limitLower != -1 && limit != -1) {
+      setSelectedLimitsLower((prevFields) => ({
+        ...prevFields,
+        [`limitLower${index}`]: limitLower,
+      }));
+      setSelectedLimits((prevFields) => ({
+        ...prevFields,
+        [`limit${index}`]: limit,
+      }));
+    }
   };
   const prevSelectedLimits = useRef(selectedLimits);
   const prevSelectedLimitsLower = useRef(selectedLimitsLower);
-  const handleDeleteWarning = (LimitsIndex:number,valuesIndex:number)=>{
+  const handleDeleteWarning = (LimitsIndex: number, valuesIndex: number) => {
     const updatedValuesOfInterest = [...valuesOfInterest];
     const updatedValuesOfInterestData = [...valuesOfInterestData];
     const updatedValuesOfInterestUnits = [...valuesOfInterestUnits];
-    const updatedValuesOfInterestDefualtLimits = [...valuesOfInterestDefaultLimits];
-  
-    handleActiveWarnings(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
-    handleAcknowledgedWarnings(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
-    handleActiveWarningsLower(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
-    handleAcknowledgedWarningsLower(false,updatedValuesOfInterest[valuesIndex],updatedValuesOfInterestData[valuesIndex],updatedValuesOfInterestUnits[valuesIndex],updatedValuesOfInterestDefualtLimits[valuesIndex]);
+    const updatedValuesOfInterestDefualtLimits = [
+      ...valuesOfInterestDefaultLimits,
+    ];
+
+    handleActiveWarnings(
+      false,
+      updatedValuesOfInterest[valuesIndex],
+      updatedValuesOfInterestData[valuesIndex],
+      updatedValuesOfInterestUnits[valuesIndex],
+      updatedValuesOfInterestDefualtLimits[valuesIndex]
+    );
+    handleAcknowledgedWarnings(
+      false,
+      updatedValuesOfInterest[valuesIndex],
+      updatedValuesOfInterestData[valuesIndex],
+      updatedValuesOfInterestUnits[valuesIndex],
+      updatedValuesOfInterestDefualtLimits[valuesIndex]
+    );
+    handleActiveWarningsLower(
+      false,
+      updatedValuesOfInterest[valuesIndex],
+      updatedValuesOfInterestData[valuesIndex],
+      updatedValuesOfInterestUnits[valuesIndex],
+      updatedValuesOfInterestDefualtLimits[valuesIndex]
+    );
+    handleAcknowledgedWarningsLower(
+      false,
+      updatedValuesOfInterest[valuesIndex],
+      updatedValuesOfInterestData[valuesIndex],
+      updatedValuesOfInterestUnits[valuesIndex],
+      updatedValuesOfInterestDefualtLimits[valuesIndex]
+    );
     // Remove value of interest at index
     updatedValuesOfInterest.splice(valuesIndex, 1);
     updatedValuesOfInterestData.splice(valuesIndex, 1);
     updatedValuesOfInterestUnits.splice(valuesIndex, 1);
     updatedValuesOfInterestDefualtLimits.splice(valuesIndex, 1);
     // Remove selected limit that matches the index
-    const updatedSelectedLimits:{ [key: string]: number }  =  {};
-    const updatedSelectedLimitsLower:{ [key: string]: number }  =  {};
+    const updatedSelectedLimits: { [key: string]: number } = {};
+    const updatedSelectedLimitsLower: { [key: string]: number } = {};
     Object.keys(selectedLimits).forEach((key) => {
       const currentLimitsIndex = parseInt(key.slice(5)); // Extract the index from the key (e.g., "limit0" -> 0)
       if (currentLimitsIndex !== LimitsIndex) {
         // Skip the entry with the index that matches LimitsIndex
-        const newLimitsIndex = currentLimitsIndex > LimitsIndex ? currentLimitsIndex - 1 : currentLimitsIndex;
+        const newLimitsIndex =
+          currentLimitsIndex > LimitsIndex
+            ? currentLimitsIndex - 1
+            : currentLimitsIndex;
         updatedSelectedLimits[`limit${newLimitsIndex}`] = selectedLimits[key];
       }
-    }); 
+    });
     Object.keys(selectedLimitsLower).forEach((key) => {
       const currentLimitsIndex = parseInt(key.slice(10)); // Extract the index from the key (e.g., "limit0" -> 0)
-      console.log(key.slice(10))
+      console.log(key.slice(10));
       if (currentLimitsIndex !== LimitsIndex) {
         // Skip the entry with the index that matches LimitsIndex
-        const newLimitsIndex = currentLimitsIndex > LimitsIndex ? currentLimitsIndex - 1 : currentLimitsIndex;
-        updatedSelectedLimitsLower[`limitLower${newLimitsIndex}`] = selectedLimitsLower[key];
+        const newLimitsIndex =
+          currentLimitsIndex > LimitsIndex
+            ? currentLimitsIndex - 1
+            : currentLimitsIndex;
+        updatedSelectedLimitsLower[`limitLower${newLimitsIndex}`] =
+          selectedLimitsLower[key];
       }
-    }); 
-    handleSetWarning(updatedValuesOfInterest,updatedValuesOfInterestData,updatedValuesOfInterestUnits,updatedValuesOfInterestDefualtLimits);
+    });
+    handleSetWarning(
+      updatedValuesOfInterest,
+      updatedValuesOfInterestData,
+      updatedValuesOfInterestUnits,
+      updatedValuesOfInterestDefualtLimits
+    );
     setSelectedLimits(updatedSelectedLimits);
     setSelectedLimitsLower(updatedSelectedLimitsLower);
-  }
-  const handleAddWarning = (newLimit:number,newLimitLower:number,newUnits:string,newWarning:string)=>{
-//adds value to end of values of interest and adds new limit to selected limit with value newLimit
-const updatedValuesOfInterest = [...valuesOfInterest];
-const updatedSelectedLimits = { ...selectedLimits };
-const updatedSelectedLimitsLower = { ...selectedLimitsLower };
-const updatedValuesOfInterestData = [...valuesOfInterestData];
-const updatedValuesOfInterestUnits = [...valuesOfInterestUnits];
-const updatedValuesOfInterestDefualtLimits = [...valuesOfInterestDefaultLimits];
+  };
+  const handleAddWarning = (
+    newLimit: number,
+    newLimitLower: number,
+    newUnits: string,
+    newWarning: string
+  ) => {
+    //adds value to end of values of interest and adds new limit to selected limit with value newLimit
+    const updatedValuesOfInterest = [...valuesOfInterest];
+    const updatedSelectedLimits = { ...selectedLimits };
+    const updatedSelectedLimitsLower = { ...selectedLimitsLower };
+    const updatedValuesOfInterestData = [...valuesOfInterestData];
+    const updatedValuesOfInterestUnits = [...valuesOfInterestUnits];
+    const updatedValuesOfInterestDefualtLimits = [
+      ...valuesOfInterestDefaultLimits,
+    ];
 
-// Add value to end of values of interest
-updatedValuesOfInterest.push(newWarning);
-updatedValuesOfInterestData.push(0);
-updatedValuesOfInterestUnits.push(newUnits);
-updatedValuesOfInterestDefualtLimits.push(0);
+    // Add value to end of values of interest
+    updatedValuesOfInterest.push(newWarning);
+    updatedValuesOfInterestData.push(0);
+    updatedValuesOfInterestUnits.push(newUnits);
+    updatedValuesOfInterestDefualtLimits.push(0);
 
-// Add new limit to selected limits with value newLimit
-const newLimitIndex = Object.keys(selectedLimits).length;
-updatedSelectedLimits[`limit${newLimitIndex}`] = newLimit;
-const newLimitIndexLower = Object.keys(selectedLimitsLower).length;
-updatedSelectedLimitsLower[`limitLower${newLimitIndexLower}`] = newLimitLower;
+    // Add new limit to selected limits with value newLimit
+    const newLimitIndex = Object.keys(selectedLimits).length;
+    updatedSelectedLimits[`limit${newLimitIndex}`] = newLimit;
+    const newLimitIndexLower = Object.keys(selectedLimitsLower).length;
+    updatedSelectedLimitsLower[`limitLower${newLimitIndexLower}`] =
+      newLimitLower;
 
-// Update state
-handleSetWarning(updatedValuesOfInterest,updatedValuesOfInterestData,updatedValuesOfInterestUnits,updatedValuesOfInterestDefualtLimits);
-setSelectedLimits(updatedSelectedLimits);
-setSelectedLimitsLower(updatedSelectedLimitsLower);
-  }
+    // Update state
+    handleSetWarning(
+      updatedValuesOfInterest,
+      updatedValuesOfInterestData,
+      updatedValuesOfInterestUnits,
+      updatedValuesOfInterestDefualtLimits
+    );
+    setSelectedLimits(updatedSelectedLimits);
+    setSelectedLimitsLower(updatedSelectedLimitsLower);
+  };
   useEffect(() => {
     // Compare selectedLimits with the previous value
     Object.keys(selectedLimits).forEach((key) => {
@@ -254,16 +347,38 @@ setSelectedLimitsLower(updatedSelectedLimitsLower);
   }, [selectedLimitsLower]);
 
   // ... rest of the component ...
-  
-return(
 
+  return (
     <Grid container spacing={2} columns={valuesOfInterest.length}>
-      <Grid item xs={12} sx={{ height: "10px", justifyContent: "end", display: "flex" }}><KeyWarningsIgnoredModal ignoredWarnings={acknowledgedWarnings}ignoredWarningsLower={acknowledgedWarningsLower}/><KeyWarningsAddModal  handleAddWarning={handleAddWarning} allWarnings={valuesOfInterest}/><KeyWarningsDeleteModal  handleDeleteWarning={handleDeleteWarning} allWarnings={valuesOfInterest}/></Grid>
+      <Grid
+        item
+        xs={12}
+        sx={{ height: "10px", justifyContent: "end", display: "flex" }}
+      >
+        <KeyWarningsIgnoredModal
+          ignoredWarnings={acknowledgedWarnings}
+          ignoredWarningsLower={acknowledgedWarningsLower}
+        />
+        <KeyWarningsAddModal
+          handleAddWarning={handleAddWarning}
+          allWarnings={valuesOfInterest}
+        />
+        <KeyWarningsDeleteModal
+          handleDeleteWarning={handleDeleteWarning}
+          allWarnings={valuesOfInterest}
+        />
+      </Grid>
       {valuesOfInterest.map((value, index) => (
         <Grid
           item
-          xs={valuesOfInterest.length * (1 / valuesOfInterest.length)}
+          sm={valuesOfInterest.length * (1 / valuesOfInterest.length)}
+          xs={valuesOfInterest.length/2}
           key={index}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
           <Box
             sx={{
@@ -285,41 +400,91 @@ return(
               alignItems: "center",
               display: "flex",
             }}
-          >
-            <Grid container spacing={2}>
-              <Grid
-                item
-                xs={12}
-                sx={{ height: "10px", justifyContent: "end", display: "flex" }}
-              >
-                <WarningDashboardSettingsModal
-                  onSelectLimit={handleLimitSelection} index={index} valueOfInterest={valuesOfInterest[index]} valueOfInterestUnits={valuesOfInterestUnits[index]}                />
+          ><Grid container spacing={2} >
+            <Grid
+              item
+              xs={12} sx={{height:'100%',display:'flex',justifyContent:'right'}}>
+<WarningDashboardSettingsModal
+              onSelectLimit={handleLimitSelection}
+              index={index}
+              valueOfInterest={valuesOfInterest[index]}
+              valueOfInterestUnits={valuesOfInterestUnits[index]}
+            />
               </Grid>
               <Grid
-                item
-                xs={12}
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
-                }}
-              >
-                {value}
+              item
+              xs={12} sx={{height:'100%',display:'flex',justifyContent:'center'}}>
+<Typography sx={{ fontSize: 18, overflow: "scroll", textAlign:'center' }} fontWeight="bold">
+              {value}
+            </Typography>
               </Grid>
               <Grid
-                item
-                xs={12}
-                sx={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
-                }}
-              >
-                <Typography id="input-slider" gutterBottom>
-                  {valuesOfInterestData[index]} {valuesOfInterestUnits[index]} Current Limit: {selectedLimits[`limit${index}`]}Current lower Limit: {selectedLimitsLower[`limitLower${index}`]}
-                </Typography>
+              item
+              xs={12}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography sx={{ fontSize: 16, overflow: "scroll", textAlign:'center' }} fontWeight="bold">
+              {valuesOfInterestData[index]} {valuesOfInterestUnits[index]}
+            </Typography>
+             
+            </Grid><Grid
+              item
+              xs={12} sx={{height:'100%',display:'flex',justifyContent:'center'}}>
+<Divider >
+        <Chip label={<Typography fontWeight={'bold'}>Limits</Typography>} />     </Divider>
               </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            ><Grid
+          item
+          xs={12}
+          sm={12}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        ><Typography
+        sx={{ fontSize: 17, wrap: "wrap", overflow: "scroll" }}
+      >
+        {" "}
+        Upper: {selectedLimits[`limit${index}`]}
+      </Typography></Grid>
+              
+            </Grid><Grid
+              item
+              xs={12}
+              sm={6}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{ fontSize: 17, wrap: "wrap", overflow: "scroll" }}
+              >
+                {" "}
+                Lower : {selectedLimitsLower[`limitLower${index}`]}
+              </Typography>
             </Grid>
+          </Grid>
+            
+            
+
+            
+            
           </Box>
         </Grid>
       ))}

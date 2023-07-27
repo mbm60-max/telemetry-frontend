@@ -6,13 +6,14 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Image from "next/image";
 import { itemData } from "../../../data/imageData";
+import { GridRowId } from "@mui/x-data-grid";
 
 interface TrackSelectionProps {
   onSelectTrack: (track: string) => void;
   onExit: () => void; 
 }
 
-const TrackSelection = ({ onSelectTrack,onExit }: TrackSelectionProps) => {
+const TrackSelection = ({ onSelectTrack,onExit}: TrackSelectionProps) => {
 
   const handleClick = (item: { img: string; title: string }) => {
     onSelectTrack(item.title);
@@ -28,7 +29,7 @@ const TrackSelection = ({ onSelectTrack,onExit }: TrackSelectionProps) => {
   }
 
   return (
-    <Box sx={{ width: '100%', height: '700px', overflow: 'auto' }}>
+    <Box  sx={{ width: '100%', height: '700px', overflow: 'auto' }}>
       <Button onClick={handleExit}>Exit</Button>
       <ImageList sx={{ width: '100%', height: '100%' }} cols={3} gap={10} rowHeight={250}>
         {itemData.map((item) => (

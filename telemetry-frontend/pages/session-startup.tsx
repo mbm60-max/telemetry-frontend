@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
   TextField,
   Button,
@@ -30,9 +30,12 @@ import "../calltoaction.css";
 import InfoToolTip from "../components/helperTooltip.tsx/infoTooltip";
 import { GridRowId } from "@mui/x-data-grid";
 import { carData } from "../data/gtCarList";
+import axios, { AxiosResponse } from "axios";
+import { AuthContext } from "../components/authProvider";
 
 const SessionStartup: React.FC = () => {
   const [selectedRowId, setSelectedRowId] = useState<GridRowId | null>(null); // Manage selectedRowId in the parent component
+  const selectedRowIdSetupGridRef = useRef<GridRowId | null>(null);
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -62,7 +65,12 @@ const SessionStartup: React.FC = () => {
   const [trackError, setTrackError] = useState("");
    const [compoundError, setCompoundError] = useState("");
   const router = useRouter();
+  const [setupData, setSetupData] = React.useState<{ id: number; setupname: string }[]>([]);
   const rows = React.useMemo(() => carData, []);
+  const rowsSetupGrid = React.useMemo(() => setupData, [setupData]);
+  const { isLoggedIn,userName} = useContext(AuthContext);
+  const username = userName;
+
   const handleRowSelectionChange = React.useCallback(
     (selectionModel: any) => {
       // Update the selectedRowId when the row selection changes
@@ -82,8 +90,52 @@ const SessionStartup: React.FC = () => {
     },
     [],
   );
+  const handleRowSelectionChangeSetupGrid = React.useCallback(
+    (selectionModel: any) => {
+      // Update the selectedRowId when the row selection changes
+      if (selectionModel.length > 0) {
+        const selectedRow = rowsSetupGrid.find((row) => row.id === selectionModel[0]);
+        if (selectedRow) {
+          selectedRowIdSetupGridRef.current = selectionModel[0];
+        const name = selectedRow.setupname;
+        handlesetupSelection(name);
+        // Rest of the code for handling the selected row
+      }
+    } else {
+      selectedRowIdSetupGridRef.current = null
+    }
+    },
+    [],
+  );
+  const forceFetchData = () => {
+    fetchData();
+  };
+
+  
+  const fetchData = React.useCallback(async () => {
+    try {
+      const setupResponse: AxiosResponse = await axios.get('/api/getsetuplistapi', {
+        params: { username },
+      });
+      const data = setupResponse.data;
+      
+      const rowsWithId = data.setups.map((setup: any, index: number) => ({ setupname: setup.setupname, id: index + 1 }));
+
+      setSetupData(rowsWithId);
+    } catch (error) {
+      console.error('Error fetching setup data:', error);
+    }
+  }, [username]);
+
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   const handleSetSelectedRowId=(id:GridRowId| null)=>{
     setSelectedRowId(id);
+  }
+  const handleSetSelectedRowIdSetupGrid=(id:GridRowId| null)=>{
+    selectedRowIdSetupGridRef.current = id
   }
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -98,11 +150,9 @@ const SessionStartup: React.FC = () => {
     setCompoundError("You must select a compound to contiue")
     setTrackError("You must select a track to contiue")
     if(selectedCar.trim() !== ""){
-      console.log("hi")
       setCarError("")
     }
    if(selectedCompound.trim() !== ""){
-      console.log("me")
       setCompoundError("")
     }
     if(selectedTrack !== "noTrack"){
@@ -130,7 +180,12 @@ const SessionStartup: React.FC = () => {
       <em>{'A session requires a track,car and tyre compound in order to be started.'}</em> <b>{'You can optionally also add a setup.'}</b> <u>{'This information is then used during and after the session.'}</u>{"hmm"}
     </>
   );
-  console.log("render")
+  useEffect(() => {
+    console.log(selectedRowIdSetupGridRef.current);
+  }, [selectedRowIdSetupGridRef]);
+  useEffect(() => {
+    console.log(selectedRowId);
+  }, [selectedRowId]);
   return (
     <>
       <Box className="header">
@@ -166,7 +221,7 @@ const SessionStartup: React.FC = () => {
                 </Grid>
                 <Grid item xs={6} sx={{ height: "100%" }}>
                   <Item>
-                    <SetupTable onSelectSetup={handlesetupSelection} />
+                    <SetupTable onSelectSetup={handlesetupSelection} selectedRowId={selectedRowIdSetupGridRef.current} onRowSelectionModelChange={handleRowSelectionChangeSetupGrid} onSelectedRowIdChange={handleSetSelectedRowIdSetupGrid} fetchDataCallback={forceFetchData} />
                   </Item>
                 </Grid>
                 <Grid item xs={6} sx={{ height: "100%" }}>

@@ -1,12 +1,14 @@
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   Grid,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
+  styled,
   TextField,
   Typography,
 } from "@mui/material";
@@ -19,9 +21,16 @@ interface SettingsTextDisplayProps {
   targetSetting: string;
   hasDivider: boolean;
   settingsProp:string;
+  validateInput:(value:string|number)=>{isValid:boolean,errorMessage:string};
   currentSettingsData:AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings;
   handleUpdateSettings:(updatedValue: AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings) => void
+  tooltipText:string;
 }
+const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
+    borderWidth: "1px", // Adjust the thickness of the line here
+    borderColor: "#EBF2E8", // You can change the color to any valid CSS color value
+  width:'99%',
+  }));
 
 const SettingsTextDisplay = ({
   currentValue,
@@ -30,26 +39,40 @@ const SettingsTextDisplay = ({
   currentSettingsData,
   settingsProp,
   handleUpdateSettings,
+  validateInput,
+  tooltipText,
 }: SettingsTextDisplayProps) => {
     const [inputValue,setInputValue]=useState<string|number>();
-  const tooltipInfoTransmission = (
+    const [errorValue,setErrorValue]=useState("");
+    const [canSubmit,setCanSubmit]=useState(false);
+  const tooltipInfo = (
     <>
       <em>
-        {
-          "Select the transmission. The types of transmission that can be selected will depend on the car. The selected transmission will affect the speed of gear changes and will determine whether or not a steering wheel controller's clutch pedal can be used. Selecting a 'Fully Customised' option allows individual gear ratios to be adjusted."
-        }
+          {tooltipText}
       </em>
     </>
   );
   const handleUpdate=()=>{
-    const updatedValue = {
-        ...currentSettingsData,
-        [settingsProp]: inputValue,
-      };
-    handleUpdateSettings(updatedValue);
+        const updatedValue = {
+            ...currentSettingsData,
+            [settingsProp]: inputValue,
+          };
+        handleUpdateSettings(updatedValue);
   }
+  const handleValidation=(value:string|number)=>{
+    const {isValid,errorMessage} = validateInput(value);
+    if(!isValid){
+        setErrorValue(errorMessage);
+        setCanSubmit(false);
+        return
+    }
+        setErrorValue("");
+        setCanSubmit(true);
+        return
+    }
   
   const handleChange=(event: React.ChangeEvent<{ value: string|number }>)=>{
+    handleValidation(event.target.value);
     setInputValue(event.target.value)
   }
 
@@ -90,20 +113,26 @@ const SettingsTextDisplay = ({
                     value={inputValue}
                     label="New Value"
                     onChange={handleChange}
+                    error={Boolean(errorValue)}
+                    helperText={errorValue}
                   >
                   </TextField>
                 </FormControl>
               </Grid>
               <InfoToolTip
-                name={"Transmission Type"}
-                info={tooltipInfoTransmission}
+                name={targetSetting}
+                info={tooltipInfo}
               />
             </Grid>
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Button variant="contained" sx={{ml:5}} onClick={handleUpdate}>Submit</Button>
+          <Button variant="contained" sx={{ml:5}} onClick={handleUpdate} disabled={!canSubmit}>Submit</Button>
         </Grid>
+        {hasDivider && <Grid item xs={12}>
+         <StyledHorizontalDivider/>
+         </Grid>}
+       
       </Grid>
     </Box>
   );

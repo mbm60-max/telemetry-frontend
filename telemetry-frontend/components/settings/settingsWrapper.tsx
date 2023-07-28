@@ -1,8 +1,9 @@
 import { Button, Divider, Grid, styled } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { JsxElement } from "typescript";
+import SettingsDisplay from "./settingsDisplay";
 import SettingsController from "./settingsFieldSelection";
 import SettingsTitle from "./settingsTitle";
 interface SettingsWrapperProps {}
@@ -12,6 +13,15 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
     borderColor: "#EBF2E8", // You can change the color to any valid CSS color value
     height: "100%",
   }));
+  const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
+    borderWidth: "2px", // Adjust the thickness of the line here
+    borderColor: "#EBF2E8", // You can change the color to any valid CSS color value
+  width:'90%',
+  }));
+  const [field, setField] = useState("");
+  const handleFieldSelection = (field: string) => {
+    setField(field);
+  };
   return (
     <div
       style={{
@@ -44,11 +54,7 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
                     alignItems: "center",
                   }}
                 >
-                  <SettingsController
-                    onClick={function (field: string): void {
-                      throw new Error("Function not implemented.");
-                    }}
-                  />
+                  <SettingsController onClick={handleFieldSelection} />
                 </Box>
               </Grid>
             </Grid>
@@ -68,44 +74,18 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
           <Grid item xs={5.5}>
             <Grid container spacing={0} direction="row">
               <Grid item xs={12}>
-                <SettingsTitle title={"Account Settings"} fontSize={30} />
+                <Grid container spacing={0} direction="row">
+                  <Grid item xs={12}>
+                    <SettingsTitle title={field+" "+"Settings"} fontSize={30} />
+                  </Grid>
+                  <Grid item xs={12}>
+                  <StyledHorizontalDivider />
+                  </Grid>
+                </Grid>
               </Grid>
-              <Button variant="contained" disabled>
-                Change Username
-              </Button>
-              <Button variant="contained" disabled>
-                Change Password
-              </Button>
-              <Button variant="contained" disabled>
-                Light Mode vs Dark Mode
-              </Button>
-              <Button variant="contained" disabled>
-                Delete Account
-              </Button>
-              <Button variant="contained" disabled>
-                Reset Account Data
-              </Button>
-              <Button variant="contained" disabled>
-                Opt ouf of lap data pusing
-              </Button>
-              <Button variant="contained" disabled>
-                Alter review lap limit 10-100
-              </Button>
-              <Button variant="contained" disabled>
-                set defualt units imperial vs metric
-              </Button>
-              <Button variant="contained" disabled>
-                opt in to ml and stategy
-              </Button>
-              <Button variant="contained" disabled>
-                Alter Default IP
-              </Button>
-              <Button variant="contained" disabled>
-                Alter Default warnings
-              </Button>
-              <Button variant="contained" disabled>
-                Alter warning interval
-              </Button>
+              <Grid item xs={12}>
+                <SettingsDisplay field={field} />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

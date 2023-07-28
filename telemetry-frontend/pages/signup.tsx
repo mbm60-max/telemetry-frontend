@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-import { TextField, Button, Typography } from "@mui/material";
+import { TextField, Button, Typography, styled } from "@mui/material";
 import Link from "next/link";
 import "../pagesCss/signup.css";
 import Grid from "@mui/material/Grid";
@@ -10,18 +10,26 @@ import IconBox from "../components/iconBox";
 import BadgeIcon from "@mui/icons-material/Badge";
 import Divider from "@mui/material/Divider";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import SettingsObject from "../interfaces/defaultSettingsInterface";
 
 const SignUpForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [IPAddress, setIPAddress] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [ipAddressError,setIPAddressError]= useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const router = useRouter();
 
+  const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
+    borderWidth: "1px", // Adjust the thickness of the line here
+    borderColor: "grey", // You can change the color to any valid CSS color value
+  width:'99%',
+  }));
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
    
@@ -61,15 +69,42 @@ const SignUpForm: React.FC = () => {
         setPasswordError("Password Required")
         Failed = true;
       }
+      if(validateIP(IPAddress)==false){
+        setIPAddressError("Valid IP Address Required");
+        Failed = true;
+      }
       if(Failed==true){
         return
       }
       await axios.post("/api/registerapi", { username, email, password });
+      const settingsname = "Default Settings"
+      const settingsObject: SettingsObject = {
+        data: {
+            allowML: false,
+            reviewLapLimit: 10,
+            optInToDataPushing:false,
+        },
+        appearance: {
+            lightModeEnabled:true,
+            language:"en",
+        },
+        alerts: {
+            alertDefaultWarnings:["Alert 1","Alert 2"],
+            alertWarningInterval:5000,
+        },
+        defaults: {
+            defaultUnitsMetric:true,
+            defualtIPAddress:IPAddress,
+        },
+      
+      };
+      await axios.post("/api/editusersettingsapi", { username,settingsname , settingsObject });
       // Clear the form
       setUsername("");
       setPassword("");
       setEmail("");
       setConfirmPassword("");
+      setIPAddress("");
 
       // Redirect to the login page
       router.push("/login");
@@ -100,10 +135,21 @@ const SignUpForm: React.FC = () => {
   
     return true;
   };
+
+  const validateIP = (ip: string) => {
+    const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    // The IP regex checks for the following pattern:
+    // - Four parts separated by periods (e.g., 192.168.0.1)
+    // - Each part can have values from 0 to 255
+  
+    return ipRegex.test(ip);
+  };
+
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
     setUsernameError(""); // Clear username error on change
   };
+
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -126,6 +172,10 @@ const SignUpForm: React.FC = () => {
     }
   };
 
+  const handleIPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIPAddress(e.target.value);
+    setIPAddressError(""); // Clear username error on change
+  };
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -159,7 +209,7 @@ const SignUpForm: React.FC = () => {
                 height: "610px",
               }}
             >
-              <div style={{ marginTop: 150 }}>
+              <div style={{ marginTop: 100 }}>
                 <form onSubmit={handleSubmit}>
                   <div style={{ position: "relative", marginBottom: 24 }}>
                     <IconBox icon={BadgeIcon}></IconBox>
@@ -232,22 +282,43 @@ const SignUpForm: React.FC = () => {
                       }}
                     />
                   </div>
-
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{ mr: 2, width: "167px" }}
-                  >
-                    Submit
-                  </Button>
-                  <Button variant="contained" sx={{ width: "167px" }}>
-                    <Link
-                      style={{ color: "#F6F6F6", textDecoration: "none" }}
-                      href={"/login"}
-                    >
-                      Login
-                    </Link>
-                  </Button>
+                  <Grid
+            container
+            rowSpacing={2}
+          > <Grid item xs={12} ><StyledHorizontalDivider/></Grid><Grid item xs={12} ><div style={{ position: "relative" }}>
+          <IconBox icon={VpnKeyIcon}></IconBox>
+          <TextField
+            label="IP Address"
+            variant="outlined"
+            type="IP Address"
+            value={IPAddress}
+            onChange={handleIPChange}
+            error={Boolean(ipAddressError)}
+            helperText={ipAddressError}
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: "43px",
+              width: "310px",
+            }}
+          />
+        </div></Grid><Grid item xs={12} ><StyledHorizontalDivider/></Grid><Grid item xs={12} ><Button
+          type="submit"
+          variant="contained"
+          sx={{ mr: 2, width: "167px" }}
+        >
+          Submit
+        </Button>
+        <Button variant="contained" sx={{ width: "167px" }}>
+          <Link
+            style={{ color: "#F6F6F6", textDecoration: "none" }}
+            href={"/login"}
+          >
+            Login
+          </Link>
+        </Button></Grid></Grid>
+                  
+                  
                 </form>
                 <Typography sx={{ fontSize: 12, mt: 2, color: "#AFAFAF" }}>
                   Image Credit: Max Böttinger

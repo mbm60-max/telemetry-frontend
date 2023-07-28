@@ -1,5 +1,6 @@
 import {  Button, Divider,  Grid,  styled, Typography } from "@mui/material";
 import React from "react";
+import SettingsTextDisplay from "./settingsTextDisplay";
 interface SettingsDisplayProps {
     field:string;
 }
@@ -31,7 +32,7 @@ const SettingsDisplay = ({field}: SettingsDisplayProps) => {
               </Button></Grid><Grid item xs={12}><Button variant="contained" disabled>
               Alter review lap limit 10-100
               </Button></Grid><Grid item xs={12}><Button variant="contained" disabled>
-              opt in to ml and stategy
+              Opt in to ml and strategy
               </Button></Grid></Grid>}
       {field=="Alerts" &&<Grid container spacing={2} alignItems="center"><Grid item xs={12}><Button variant="contained" disabled>
       Alter Default warnings
@@ -42,10 +43,10 @@ const SettingsDisplay = ({field}: SettingsDisplayProps) => {
       Light Mode vs Dark Mode
               </Button></Grid></Grid>}
       {field=="Defaults" &&<Grid container spacing={2} alignItems="center"><Grid item xs={12}><Button variant="contained" disabled>
-      set defualt units imperial vs metric
+      Set defualt units imperial vs metric
               </Button></Grid><Grid item xs={12}><Button variant="contained" disabled>
               Alter Default IP
-              </Button></Grid></Grid>}
+              </Button></Grid><Grid item xs={12}><SettingsTextDisplay currentValue={"212.132.163.178"} targetSetting={"IP Address"}/></Grid></Grid>}
     </div>
   );
 };

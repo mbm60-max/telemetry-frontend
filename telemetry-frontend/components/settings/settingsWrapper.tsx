@@ -9,14 +9,14 @@ import SettingsTitle from "./settingsTitle";
 interface SettingsWrapperProps {}
 const SettingsWrapper = ({}: SettingsWrapperProps) => {
   const StyledVerticalDivider = styled(Divider)(({ theme }) => ({
-    borderWidth: "2px", // Adjust the thickness of the line here
+    borderWidth: "1px", // Adjust the thickness of the line here
     borderColor: "#EBF2E8", // You can change the color to any valid CSS color value
     height: "100%",
   }));
   const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
-    borderWidth: "2px", // Adjust the thickness of the line here
+    borderWidth: "1px", // Adjust the thickness of the line here
     borderColor: "#EBF2E8", // You can change the color to any valid CSS color value
-  width:'90%',
+  width:'99%',
   }));
   const [field, setField] = useState("");
   const handleFieldSelection = (field: string) => {
@@ -75,7 +75,7 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
             <Grid container spacing={0} direction="row">
               <Grid item xs={12}>
                 <Grid container spacing={0} direction="row">
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sx={{height:'15vh'}}>
                     <SettingsTitle title={field+" "+"Settings"} fontSize={30} />
                   </Grid>
                   <Grid item xs={12}>

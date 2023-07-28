@@ -83,18 +83,22 @@ const SignUpForm: React.FC = () => {
             allowML: false,
             reviewLapLimit: 10,
             optInToDataPushing:false,
+            type: "DataSettings"
         },
         appearance: {
             lightModeEnabled:true,
             language:"en",
+            type: "AppearanceSettings"
         },
         alerts: {
             alertDefaultWarnings:["Alert 1","Alert 2"],
             alertWarningInterval:5000,
+            type: "AlertSettings"
         },
         defaults: {
             defaultUnitsMetric:true,
             defualtIPAddress:IPAddress,
+            type: "DefaultSettings"
         },
       
       };

@@ -6,25 +6,32 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SvgIconTypeMap,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
 import InfoToolTip from "../helperTooltip.tsx/infoTooltip";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { AlertSettings, AppearanceSettings, DataSettings, DefaultsSettings } from "../../interfaces/defaultSettingsInterface";
+import { ReactNode, useState } from "react";
 
 interface SettingsTextDisplayProps {
-  currentValue: string | number | boolean;
+  currentValue: string | number;
   targetSetting: string;
   hasDivider: boolean;
+  settingsProp:string;
+  currentSettingsData:AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings;
+  handleUpdateSettings:(updatedValue: AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings) => void
 }
 
 const SettingsTextDisplay = ({
   currentValue,
   targetSetting,
   hasDivider,
+  currentSettingsData,
+  settingsProp,
+  handleUpdateSettings,
 }: SettingsTextDisplayProps) => {
+    const [inputValue,setInputValue]=useState<string|number>();
   const tooltipInfoTransmission = (
     <>
       <em>
@@ -34,6 +41,17 @@ const SettingsTextDisplay = ({
       </em>
     </>
   );
+  const handleUpdate=()=>{
+    const updatedValue = {
+        ...currentSettingsData,
+        [settingsProp]: inputValue,
+      };
+    handleUpdateSettings(updatedValue);
+  }
+  
+  const handleChange=(event: React.ChangeEvent<{ value: string|number }>)=>{
+    setInputValue(event.target.value)
+  }
 
   return (
     <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
@@ -67,21 +85,13 @@ const SettingsTextDisplay = ({
             <Grid container spacing={2} alignItems="center">
               <Grid item xs>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    New Value
-                  </InputLabel>
-                  <Select
-                    labelId="simple-select-label"
+                  <TextField
                     id="Transmission-Type-Select"
-                    value={0}
+                    value={inputValue}
                     label="New Value"
-                    //onChange={handleChange}
+                    onChange={handleChange}
                   >
-                    <MenuItem value={"Default"}>Default</MenuItem>
-                    <MenuItem value={"Fully Customised"}>
-                      Fully Customised
-                    </MenuItem>
-                  </Select>
+                  </TextField>
                 </FormControl>
               </Grid>
               <InfoToolTip
@@ -92,7 +102,7 @@ const SettingsTextDisplay = ({
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Button variant="contained" sx={{ml:5}}>Submit</Button>
+          <Button variant="contained" sx={{ml:5}} onClick={handleUpdate}>Submit</Button>
         </Grid>
       </Grid>
     </Box>

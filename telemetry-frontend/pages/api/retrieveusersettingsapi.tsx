@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (matchingSettings) {
           // Matching setup found
           console.log('User and settings found');
-          res.status(200).json({ setupData: matchingSettings});
+          res.status(200).json({ settingsData: matchingSettings});
         } else {
           // Matching setup not found
           console.error('Matching settings not found');

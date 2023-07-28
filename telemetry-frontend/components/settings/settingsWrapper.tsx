@@ -1,13 +1,23 @@
 import { Button, Divider, Grid, styled } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { JsxElement } from "typescript";
+import SettingsObject from "../../interfaces/defaultSettingsInterface";
+import { SettingsContext } from "../authProviderSettings";
 import SettingsDisplay from "./settingsDisplay";
 import SettingsController from "./settingsFieldSelection";
 import SettingsTitle from "./settingsTitle";
 interface SettingsWrapperProps {}
 const SettingsWrapper = ({}: SettingsWrapperProps) => {
+  const { alerts,setAlerts,data,setData,appearance,setAppearance,defaults,setDefaults} = useContext(SettingsContext);
+ const userSettings:SettingsObject={
+   data: data,
+   alerts: alerts,
+   appearance: appearance,
+   defaults: defaults
+ }
+  
   const StyledVerticalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
     borderColor: "#EBF2E8", // You can change the color to any valid CSS color value
@@ -81,10 +91,10 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
                   <Grid item xs={12}>
                   <StyledHorizontalDivider />
                   </Grid>
-                </Grid>
+                </Grid> 
               </Grid>
               <Grid item xs={12}>
-                <SettingsDisplay field={field} />
+                <SettingsDisplay field={field} userSettings={userSettings} setAlerts={setAlerts} setDefaults={setDefaults} setAppearance={setAppearance} setData={setData}/>
               </Grid>
             </Grid>
           </Grid>

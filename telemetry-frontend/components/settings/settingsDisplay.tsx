@@ -1,13 +1,34 @@
 import {  Button, Divider,  Grid,  styled, Typography } from "@mui/material";
 import React from "react";
+import SettingsObject, { AlertSettings, AppearanceSettings, DataSettings, DefaultsSettings } from "../../interfaces/defaultSettingsInterface";
 import SettingsTextDisplay from "./settingsTextDisplay";
 interface SettingsDisplayProps {
     field:string;
+     userSettings: SettingsObject;
+    setAlerts:(alertsValue: AlertSettings) => void
+    setDefaults:(defaultValue: DefaultsSettings) => void
+    setAppearance:(appearanceValue: AppearanceSettings) => void
+    setData:(dataValue: DataSettings) => void
 }
 
 
-const SettingsDisplay = ({field}: SettingsDisplayProps) => {
+const SettingsDisplay = ({field,userSettings,setAlerts,setAppearance,setData,setDefaults}: SettingsDisplayProps) => {
 
+    const handleUpdateSettings = (updatedValue: AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings) => {
+        // Identify the type of updatedValue and call the corresponding setter
+        if (updatedValue.type === "AlertSettings") {
+          setAlerts(updatedValue as AlertSettings);
+        } else if (updatedValue.type === "AppearanceSettings") {
+          setAppearance(updatedValue as AppearanceSettings);
+        } else if (updatedValue.type === "DataSettings") {
+          setData(updatedValue as DataSettings);
+        } else if (updatedValue.type === "DefaultSettings") {
+           
+          setDefaults(updatedValue as DefaultsSettings);
+        }else{
+            console.log(updatedValue.type )
+        }
+      };
   return (
     <div
       style={{
@@ -46,7 +67,7 @@ const SettingsDisplay = ({field}: SettingsDisplayProps) => {
       Set defualt units imperial vs metric
               </Button></Grid><Grid item xs={12}><Button variant="contained" disabled>
               Alter Default IP
-              </Button></Grid><Grid item xs={12}><SettingsTextDisplay currentValue={"212.132.163.178"} targetSetting={"IP Address"}/></Grid></Grid>}
+              </Button></Grid><Grid item xs={12}><SettingsTextDisplay currentValue={userSettings.defaults.defualtIPAddress} targetSetting={"IP Address"} hasDivider={true} handleUpdateSettings={handleUpdateSettings} currentSettingsData={userSettings.defaults} settingsProp={"defualtIPAddress"}/></Grid></Grid>}
     </div>
   );
 };

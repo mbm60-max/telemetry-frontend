@@ -27,6 +27,7 @@ import axios, { AxiosResponse } from 'axios';
 import SetupObject from '../../interfaces/setupDataInterface';
 import SetupDataInterface from '../../interfaces/setupDataInterface';
 import emptySetupObject from '../../data/emptySetupObject';
+import { SettingsContext } from '../authProviderSettings';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -67,6 +68,7 @@ export default function BasicTabs() {
   const router = useRouter();
   const { car, compound, track } = router.query;
   const { isLoggedIn, userName } = useContext(AuthContext);
+  const {defaults} = useContext(SettingsContext);
   const warningContext = useContext(WarningContext);
   const {
     dashboardWarningsCurrentLimits,
@@ -252,7 +254,7 @@ export default function BasicTabs() {
     const [rpmClutchToGearboxStream,setRpmFromClutchToGearbox]= useState([{ x: 0, y: 0 }]);
     const [distanceFromStart, setDistanceFromStart] = useState(0);
     const [setupData, setSetupData] = useState<SetupDataInterface>(getEmptySetupObject());
-    const signalRService = new SignalRService();
+    const signalRService = new SignalRService(userName,defaults.defualtIPAddress,"sport");
     useEffect(() => {
      signalRService.startConnection();
   

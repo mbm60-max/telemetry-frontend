@@ -30,11 +30,59 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
     private handleFullPacketCallback: ((receivedExtendedPacket: ExtendedPacket) => void) | null = null; // Callback function for handleFullPacket
     private isFirstTimeFullPacket: boolean = false;
     private mongoWriteFailed: boolean = false;
+    private userName: string; // Add userName property
+    private ipAddress: string;
+    private gameType: string;
+
+    constructor(userName: string,ipAddress:string,gameType:string) {
+      this.userName = userName;
+      this.ipAddress = ipAddress;
+      this.gameType= gameType;
+    }
+    public sendUserName= async (userName: string) => {
+      try {
+        if (this.connection) {
+          // Send the connection established message to the server
+          await this.connection.invoke("ConnectionUserName", userName);
+          console.log("Username message sent.");
+        } else {
+          console.error("SignalR connection is null.");
+        }
+      } catch (error) {
+        console.error("Error sending connection established message:", error);
+      }
+    };
+    public sendIPAddress = async (ipAddress: string) => {
+      try {
+        if (this.connection) {
+          // Send the connection established message to the server
+          await this.connection.invoke("ConnectionIPAddress", ipAddress);
+          console.log("IP Address message sent.");
+        } else {
+          console.error("SignalR connection is null.");
+        }
+      } catch (error) {
+        console.error("Error sending connection established message:", error);
+      }
+    };
+    public sendGameType= async (gameType: string) => {
+      try {
+        if (this.connection) {
+          // Send the connection established message to the server
+          await this.connection.invoke("ConnectionGameType", gameType);
+          console.log("Game Type message sent.");
+        } else {
+          console.error("SignalR connection is null.");
+        }
+      } catch (error) {
+        console.error("Error sending connection established message:", error);
+      }
+    };
 
     public  startConnection = async () => {
       try {
         this.connection = new signalR.HubConnectionBuilder()
-          .withUrl("http://localhost:5000/server")
+          .withUrl("http://localhost:5000/server", { withCredentials: true })
           .configureLogging(signalR.LogLevel.Information)
           .withAutomaticReconnect()
           .build();
@@ -44,6 +92,9 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
         
 
         await this.connection.start();
+        await this.sendUserName(this.userName);
+        await this.sendIPAddress(this.ipAddress);
+        await this.sendGameType(this.gameType);
         console.log("SignalR connection established.");
       } catch (error) {
         console.error("Error establishing SignalR connection: ", error);

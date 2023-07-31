@@ -47,6 +47,7 @@ export default function TrackSelectionModal({ onSelectTrack }: TrackSelectionMod
       <Button onClick={handleOpen}>Select Track</Button>
       <Modal
         open={open}
+        onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

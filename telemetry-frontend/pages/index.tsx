@@ -8,7 +8,6 @@ import TyreTemps from '../components/sessionTabs/tyresTempindicator/tyreTemps';
 import { Card, Container,Button  } from '@mui/material';
 import ThrottleComponent from '../components/bin/throttle';
 import Homepage from '../components/background/background';
-import ImageBox from '../components/homepageTrack';
 import BasicCard from '../components/card';
 import '../calltoaction.css';
 import Link from "next/link";
@@ -20,7 +19,8 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import trackData from '../data/trackData'
+import HomepageTrack from '../components/homepageTrackDispaly';
+
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -59,58 +59,8 @@ const Home = () => {
   const router = useRouter();
   const Card1Fonts=[32,24,17]
   const Card1Colors=["#F6F6F6","#F6F6F6","#F6F6F6"]
-  const Card1Content=["Boost Your Learning","Real Time insights, Fully rigged","Sign-up to start a session and begin gaining every tenth"]
-  const Card2Fonts=[32,17]
-  const Card2Colors=["#F6F6F6","#F6F6F6"]
-  type TrackData = {
-    distance: number;
-    title: string;
-    elevationChange: number|string;
-    corners: number|string;
-    longestStraight: number|string;
-  };
-  function getRandomNumber(min:number, max:number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  function splitAndCapitalise(input: string): string {
-    const words = input.split(/(?=[A-Z])/); // Split at capital letters
-    const capitalizedWords = words.map((word) => {
-      const firstLetter = word.charAt(0).toUpperCase();
-      const restOfWord = word.slice(1);
-      return firstLetter + restOfWord;
-    });
-    return capitalizedWords.join(' ');
-  }
-  const checkForNaValues = (data:string|number) =>{
-    if(typeof data == "string"){
-      return "N/A"
-    }
-    return data + " m"
-  }
-  const [randomTrackData, setRandomTrackData] = useState(["null"]);
-  const [trackSvgPath, setTrackSvgPath] = useState('');
-  const removeReverseFromString = (pathString:string) =>{
-    return pathString.replace(/Reverse$/, '');
-  }
-  useEffect(() => {
-    const randomIndex = getRandomNumber(0, trackData.length - 1);
-    const { distance, title, elevationChange, corners, longestStraight } = trackData[randomIndex];
-    
-    // Assign values to string array
-    const trackInfo = [
-      `${splitAndCapitalise(title)}`,
-      `Distance: ${checkForNaValues(distance)}`,
-      `Elevation Change: ${checkForNaValues(elevationChange)}`,
-      `Corners: ${corners}`,
-      `Longest Straight: ${checkForNaValues(longestStraight)} `,
-    ];
-    setRandomTrackData(trackInfo);
-    
-    // Assign track SVG path
-    const path = `/images/${removeReverseFromString(title)}.svg`;
-    setTrackSvgPath(path);
-  }, []);
-  
+  const Card1Content=["BOOST YOUR LEARNING","REAL TIME INSIGHTS - FULLY RIGGED","SIGN UP TO GET STARTED AND START GAINING EVERY TENTH"]
+
 
   console.log(isLoggedIn);
   useEffect(() => {
@@ -121,7 +71,7 @@ const Home = () => {
   }, [isLoggedIn, router]);
   return (
     <>
-    <Grid container spacing={1}>
+    <Grid container spacing={0}>
     <Grid item xs={12}>
     <Grid container spacing={1}>
         <Grid item xs={12}>
@@ -133,25 +83,13 @@ const Home = () => {
      
       <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={1}>
-        <Grid item xs={5}>
-          <Item><div style={{ display: 'flex', flexDirection:'column'}}><BasicCard ml={0} mt={0} mr={0} width={200} noOfLines={3} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard><div ><Button className="action-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></div><div style={{  position: 'absolute', zIndex: 1}}></div></Item>
+      <Grid item xs={12}><Box sx={{height:'100px'}}></Box></Grid>
+        <Grid item xs={12} sm={5}>
+        <Item><div style={{ display: 'flex', flexDirection:'column'}}><Grid container spacing={1}>
+        <Grid item xs={12}><BasicCard ml={0} mt={0} mr={0} noOfLines={3} lineTextAlign={'left'} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard></Grid><Grid item xs={12} ><div ><Button className="parallelogram-buttonCTA-XLG" sx={{left:30}}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></Grid></Grid></div></Item>
         </Grid>
-        <Grid item xs={3}>
-          <Item><BasicCard ml={0} mt={0} mr={0} width={350} noOfLines={5} lineFontSizes={Card2Fonts}lineFontColors={Card2Colors} lineContent={randomTrackData} lineML={[]} lineMR={[]} lineMT={[]}lineWhiteSpace={['initial',
-'pre-line']}></BasicCard></Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item><ImageBox
-      Width={'400px'}
-      Height={'400px'}
-      MarginRight={'0px'}
-      MarginLeft={'0px'}
-      MarginTop={'0px'}
-      imageSrc={trackSvgPath}
-    /></Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item></Item>
+        <Grid item xs={12} sm={7} sx={{display:'flex',justifyContent:'right',alignItems:'center'}}>
+          <Item><HomepageTrack/></Item>
         </Grid>
         <Grid item xs={8}>
           <Item></Item>

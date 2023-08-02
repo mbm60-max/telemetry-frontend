@@ -9,36 +9,52 @@ interface BasicCardProps{
   ml:number
   mt:number
   mr:number
-  width:number
   noOfLines:number
   lineFontSizes:number[]
   lineFontColors:string[]
-  lineContent:string[]
+  lineContent:string[]|string;
   lineMR:number[]
   lineML:number[]
   lineMT:number[]
   lineWhiteSpace: string[];
+  lineTextAlign: 'left' | 'center' | 'right'; 
 
 }
-export default function BasicCard({ml,mt,mr,width,noOfLines,lineFontSizes,lineFontColors,lineContent,lineML,lineMR,lineMT,lineWhiteSpace}:BasicCardProps) {
+export default function BasicCard({ml,mt,mr,noOfLines,lineFontSizes,lineFontColors,lineContent,lineML,lineMR,lineMT,lineWhiteSpace,  lineTextAlign,}:BasicCardProps) {
   return (
-    <Card sx={{ ml:ml, mt:mt, mr:mr,width: '100%', borderRadius:0,backgroundColor:'rgba(132, 126, 126, 0)',boxShadow: 'none'  }}>
-      <CardContent>
-      {Array.from({ length: noOfLines }, (_, index) => (
-  <Typography
-    key={index}
-    sx={{
-      fontSize: lineFontSizes[index] || 16, // Default font size: 16 if not provided
-      color: lineFontColors[index] || '#F6F6F6', // Default color: black if not provided
-      ml: lineML[index] || 0, // Default margin-left: 0 if not provided
-      mr: lineMR[index] || 0, // Default margin-right: 0 if not provided
-      mt: lineMT[index] || 0, // Default margin-top: 0 if not provided
-      whiteSpace: lineWhiteSpace[index] || 'initial',// Use lineWhiteSpace prop or default to 'initial'
-    }}
-  >
-    {lineContent[index] || ''} {/* Empty string if content is not provided */}
-  </Typography>
-))} 
+    <Card sx={{ ml:ml, mt:mt, mr:mr,width: '100%', borderRadius:0,backgroundColor:'rgba(132, 126, 126, 0)',boxShadow: 'none', display:'flex',justifyContent:'right',alignItems:'center' }}>
+      <CardContent sx={{ overflow: 'scroll' }}>
+        {noOfLines === 1 ? (
+          <Typography fontWeight={'bold'}
+            sx={{
+              fontSize: lineFontSizes[0] || 16,
+              color: lineFontColors[0] || '#F6F6F6',
+              ml: lineML[0] || 0,
+              mr: lineMR[0] || 0,
+              mt: lineMT[0] || 0,
+              whiteSpace: lineWhiteSpace[0] || 'initial',
+            }}
+          >
+            {Array.isArray(lineContent) ? lineContent.join(' ') : lineContent}
+          </Typography>
+        ) : (
+          Array.from({ length: noOfLines }, (_, index) => (
+            <Typography
+              key={index}
+              sx={{
+                fontSize: lineFontSizes[index] || 16,
+                color: lineFontColors[index] || '#F6F6F6',
+                ml: lineML[index] || 0,
+                mr: lineMR[index] || 0,
+                mt: lineMT[index] || 0,
+                whiteSpace: lineWhiteSpace[index] || 'initial',
+                textAlign: lineTextAlign,
+              }}
+            >
+              {Array.isArray(lineContent) ? lineContent[index] || '' : lineContent}
+            </Typography>
+          ))
+        )}
       </CardContent>
     </Card>
   );

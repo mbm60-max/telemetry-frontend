@@ -1,26 +1,33 @@
-import { Button } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import Link from "next/link";
 import ImageBox from "../homepageTrack";
 import './navbar.css';
+import '../../fonts/fonts.css';
 
 const NavBar = () => {
     return (
         <div >
-            
-            <Box className="parallelogramContainer">
-          
 
-            <ImageBox Width={'300px'} Height={'100px'} MarginRight={'180px'} MarginLeft={'20px'} MarginTop={'20px'} imageSrc="/images/Screenshot 2023-06-25 at 11.19 1.svg"></ImageBox>
-                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Home</Link></Button>
-                <Button className="parallelogram-button" ><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/session-startup"}>Start Session</Link></Button>
-                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/"}>Recomended</Link></Button>
-                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/review"}>Review</Link></Button>
-                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/login"}>Login</Link></Button>
-                <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href={"/settings"}>settings</Link></Button>
-                
+            <Box className="parallelogramContainer">
+                <Grid container spacing={2}>
+                <Grid item xs={12} sm={4} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}} >
+                        <Button ><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/"}>
+                            <Typography fontSize={30} fontFamily={'TestFont'} sx={{ color: '#F6F6F6' }}>GTeam</Typography></Link></Button>
+                    </Grid>
+                     <Grid item xs={12} sm={8} sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/"}>Home</Link></Button>
+                        <Button className="parallelogram-button" ><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/session-startup"}>Start Session</Link></Button>
+                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/"}>Recomended</Link></Button>
+                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/review"}>Review</Link></Button>
+                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/settings"}>settings</Link></Button>
+                        <Button className="parallelogram-buttonCTA"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/login"}>Login</Link></Button>
+
+
+                    </Grid>
+                </Grid>
             </Box>
         </div>
-      );
+    );
 };
 export default NavBar

@@ -29,7 +29,7 @@ const Item = styled(Paper)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   color: theme.palette.text.secondary,
-  backgroundColor: '#847E7E',
+  backgroundColor: 'rgba(132, 126, 126, 0)',
   boxShadow: 'none', // Override the shadow effect
 }));
 const ItemBlack = styled(Paper)(({ theme }) => ({
@@ -120,13 +120,19 @@ const Home = () => {
     }
   }, [isLoggedIn, router]);
   return (
+    <>
+    <Grid container spacing={1}>
+    <Grid item xs={12}>
+    <Grid container spacing={1}>
+        <Grid item xs={12}>
+        <Homepage style={'navbar-container'}>
+          <Item><NavBar/></Item>
+          </Homepage>
+        </Grid></Grid></Grid> <Grid item xs={12}>
       <Homepage style={'homepage-container'}><div style={{ display: 'flex' }}>
      
       <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={1}>
-        <Grid item xs={12}>
-          <Item><NavBar/></Item>
-        </Grid>
         <Grid item xs={5}>
           <Item><div style={{ display: 'flex', flexDirection:'column'}}><BasicCard ml={0} mt={0} mr={0} width={200} noOfLines={3} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard><div ><Button className="action-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></div><div style={{  position: 'absolute', zIndex: 1}}></div></Item>
         </Grid>
@@ -153,6 +159,8 @@ const Home = () => {
       </Grid>
     </Box>
     </div>{isLoggedIn && <h1>Hello, {userName}!</h1>}</Homepage>
+    </Grid></Grid>
+    </>
   );
 };
 

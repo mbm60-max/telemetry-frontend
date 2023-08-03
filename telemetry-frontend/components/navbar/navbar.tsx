@@ -16,12 +16,12 @@ const NavBar = () => {
                             <Typography fontSize={30} fontFamily={'TestFont'} sx={{ color: '#F6F6F6' }}>GTeam</Typography></Link></Button>
                     </Grid>
                      <Grid item xs={12} sm={8} sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
-                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/"}>Home</Link></Button>
-                        <Button className="parallelogram-button" ><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/session-startup"}>Start Session</Link></Button>
-                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/"}>Recomended</Link></Button>
-                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/review"}>Review</Link></Button>
-                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/settings"}>settings</Link></Button>
-                        <Button className="parallelogram-buttonCTA"><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href={"/login"}>Login</Link></Button>
+                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}  href={"/"}>Home</Link></Button>
+                        <Button className="parallelogram-button" ><Link style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }} href={"/session-startup"}>Start Session</Link></Button>
+                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' ,fontFamily:'Satoshi'}} href={"/"}>Recomended</Link></Button>
+                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }} href={"/review"}>Review</Link></Button>
+                        <Button className="parallelogram-button"><Link style={{ color: '#F6F6F6', textDecoration: 'none' ,fontFamily:'Satoshi'}} href={"/settings"}>settings</Link></Button>
+                        <Button className="parallelogram-buttonCTA"><Link style={{ color: '#F6F6F6', textDecoration: 'none' ,fontFamily:'Satoshi'}} href={"/login"}>Login</Link></Button>
 
 
                     </Grid>

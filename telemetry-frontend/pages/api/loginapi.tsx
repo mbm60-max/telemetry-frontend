@@ -42,6 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       client.close();
     } catch (error) {
       console.error('Error searching for user:', error);
+      //res.status(200).json({ message: 'Success' });
       res.status(500).json({ message: 'An error occurred' });
     }
   } else {

@@ -2,3 +2,15 @@
     font-family: 'Testfont';
     src: url('./Womby-Font/Womby-Regular.ttf') format('truetype');
   }
+  @font-face {
+    font-family: 'Yapari';
+    src: url('./Yapari-Variable-Trial/Yapari-Variable-Trial-VF.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'SatoshiBold';
+    src: url('./Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Bold.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Satoshi';
+    src: url('./Satoshi_Complete/Fonts/WEB/fonts/Satoshi-Black.ttf') format('truetype');
+  }

@@ -105,7 +105,7 @@ function HomepageTrack({ }: HomePageTrackProps) {
                         <Grid container spacing={0}  >
                         <Grid item xs={12} >
                            
-                            <BasicCard ml={0} mt={0} mr={1} noOfLines={1} lineFontSizes={Card1Fonts} lineFontColors={Card2Colors} lineContent={trackTitle} lineML={[]} lineMR={[]} lineMT={[]}  lineTextAlign={'center'} lineWhiteSpace={['initial',
+                            <BasicCard ml={0} mt={0} mr={1} fontWeights={['Bold','Regular']} noOfLines={1} lineFontSizes={Card1Fonts} lineFontColors={Card2Colors} lineFonts={["Yapari"]} lineContent={trackTitle} lineML={[]} lineMR={[]} lineMT={[]}  lineTextAlign={'center'} lineWhiteSpace={['initial',
                         'pre-line']}></BasicCard></Grid>
                             <Grid item xs={6}>
                                 <ImageBox
@@ -119,9 +119,9 @@ function HomepageTrack({ }: HomePageTrackProps) {
                                 /> 
                             </Grid>
                             <Grid item xs={6}>
-                    <ItemInner><BasicCard ml={0} mt={0} mr={0} noOfLines={8} lineFontSizes={Card2Fonts} lineFontColors={Card2Colors} lineContent={randomTrackData} lineML={[]} lineMR={[]} lineMT={[]} lineTextAlign={'right'} lineWhiteSpace={['initial',
-                        'pre-line']}></BasicCard></ItemInner>
-                </Grid><Grid item xs={12} > <ItemInnerTopAligned><div style={{ display: 'flex', justifyContent:'right' }}><div  ><Button className="parallelogram-buttonCTA-LG" sx={{positon:'absolute', top:-100}}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></div></ItemInnerTopAligned></Grid>
+                    <ItemInner><BasicCard ml={0} mt={0} mr={0}  fontWeights={['Regular','Regular']}  noOfLines={8} lineFontSizes={Card2Fonts} lineFontColors={Card2Colors} lineContent={randomTrackData} lineML={[]} lineMR={[]} lineMT={[]} lineTextAlign={'right'} lineWhiteSpace={['initial',
+                                        'pre-line']} lineFonts={["Yapari","Yapari","Yapari","Yapari"]}></BasicCard></ItemInner>
+                </Grid><Grid item xs={12} > <ItemInnerTopAligned><div style={{ display: 'flex', justifyContent:'right' }}><div  ><Button className="parallelogram-buttonCTA-LG" sx={{positon:'absolute', top:-80}}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></div></ItemInnerTopAligned></Grid>
                         </Grid>
                     </Item>
                 </Grid>

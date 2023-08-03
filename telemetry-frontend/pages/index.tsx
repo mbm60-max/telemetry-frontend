@@ -57,18 +57,18 @@ const BlackBox = styled(Box)(({ theme }) => ({
 const Home = () => {
   const { isLoggedIn, userName } = useContext(AuthContext);
   const router = useRouter();
-  const Card1Fonts=[32,24,17]
+  const Card1Fonts=[29,22,21]
   const Card1Colors=["#F6F6F6","#F6F6F6","#F6F6F6"]
   const Card1Content=["BOOST YOUR LEARNING","REAL TIME INSIGHTS - FULLY RIGGED","SIGN UP TO GET STARTED AND START GAINING EVERY TENTH"]
 
 
   console.log(isLoggedIn);
-  useEffect(() => {
-    console.log(isLoggedIn);
-    if (!isLoggedIn) {
-      router.push('/login');
-    }
-  }, [isLoggedIn, router]);
+  //useEffect(() => {
+    //console.log(isLoggedIn);
+    //if (!isLoggedIn) {
+     // router.push('/login');
+    //}
+  //}, [isLoggedIn, router]);
   return (
     <>
     <Grid container spacing={0}>
@@ -86,7 +86,7 @@ const Home = () => {
       <Grid item xs={12}><Box sx={{height:'100px'}}></Box></Grid>
         <Grid item xs={12} sm={5}>
         <Item><div style={{ display: 'flex', flexDirection:'column'}}><Grid container spacing={1}>
-        <Grid item xs={12}><BasicCard ml={0} mt={0} mr={0} noOfLines={3} lineTextAlign={'left'} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard></Grid><Grid item xs={12} ><div ><Button className="parallelogram-buttonCTA-XLG" sx={{left:30}}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></Grid></Grid></div></Item>
+        <Grid item xs={12}><BasicCard ml={0} mt={0} mr={0}  fontWeights={['Bold','Regular','Regular']}  noOfLines={3} lineTextAlign={'left'} lineFontSizes={Card1Fonts}lineFontColors={Card1Colors} lineContent={Card1Content} lineFonts={["Yapari","Yapari","Satoshi","Satoshi"]} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]}></BasicCard></Grid><Grid item xs={12} ><div ><Button className="parallelogram-buttonCTA-XLG" sx={{left:30,fontWeight:'bold', fontFamily:"Satoshi"}}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></Grid></Grid></div></Item>
         </Grid>
         <Grid item xs={12} sm={7} sx={{display:'flex',justifyContent:'right',alignItems:'center'}}>
           <Item><HomepageTrack/></Item>
@@ -97,6 +97,7 @@ const Home = () => {
       </Grid>
     </Box>
     </div>{isLoggedIn && <h1>Hello, {userName}!</h1>}</Homepage>
+    <Homepage style='homepage-containerExtended'></Homepage>
     </Grid></Grid>
     </>
   );

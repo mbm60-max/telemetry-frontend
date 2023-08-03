@@ -18,14 +18,15 @@ interface BasicCardProps{
   lineMT:number[]
   lineWhiteSpace: string[];
   lineTextAlign: 'left' | 'center' | 'right'; 
-
+  lineFonts:string[];
+  fontWeights:string[];
 }
-export default function BasicCard({ml,mt,mr,noOfLines,lineFontSizes,lineFontColors,lineContent,lineML,lineMR,lineMT,lineWhiteSpace,  lineTextAlign,}:BasicCardProps) {
+export default function BasicCard({ml,mt,mr,noOfLines,lineFontSizes,lineFontColors,lineContent,lineML,lineMR,lineMT,lineWhiteSpace,  lineTextAlign,lineFonts,fontWeights}:BasicCardProps) {
   return (
     <Card sx={{ ml:ml, mt:mt, mr:mr,width: '100%', borderRadius:0,backgroundColor:'rgba(132, 126, 126, 0)',boxShadow: 'none', display:'flex',justifyContent:'right',alignItems:'center' }}>
       <CardContent sx={{ overflow: 'scroll' }}>
         {noOfLines === 1 ? (
-          <Typography fontWeight={'bold'}
+          <Typography fontWeight={'bold'} fontFamily={lineFonts[0]}
             sx={{
               fontSize: lineFontSizes[0] || 16,
               color: lineFontColors[0] || '#F6F6F6',
@@ -41,6 +42,8 @@ export default function BasicCard({ml,mt,mr,noOfLines,lineFontSizes,lineFontColo
           Array.from({ length: noOfLines }, (_, index) => (
             <Typography
               key={index}
+              fontFamily={lineFonts[index]}
+              fontWeight={fontWeights[index]}
               sx={{
                 fontSize: lineFontSizes[index] || 16,
                 color: lineFontColors[index] || '#F6F6F6',

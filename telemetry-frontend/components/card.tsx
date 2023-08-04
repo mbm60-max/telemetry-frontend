@@ -20,10 +20,11 @@ interface BasicCardProps{
   lineTextAlign: 'left' | 'center' | 'right'; 
   lineFonts:string[];
   fontWeights:string[];
+  justifyContent:string;
 }
-export default function BasicCard({ml,mt,mr,noOfLines,lineFontSizes,lineFontColors,lineContent,lineML,lineMR,lineMT,lineWhiteSpace,  lineTextAlign,lineFonts,fontWeights}:BasicCardProps) {
+export default function BasicCard({ml,mt,mr,noOfLines,lineFontSizes,lineFontColors,lineContent,lineML,lineMR,lineMT,lineWhiteSpace,  lineTextAlign,lineFonts,fontWeights,justifyContent}:BasicCardProps) {
   return (
-    <Card sx={{ ml:ml, mt:mt, mr:mr,width: '100%', borderRadius:0,backgroundColor:'rgba(132, 126, 126, 0)',boxShadow: 'none', display:'flex',justifyContent:'right',alignItems:'center' }}>
+    <Card sx={{ ml:ml, mt:mt, mr:mr,width: '100%', borderRadius:0,backgroundColor:'rgba(132, 126, 126, 0)',boxShadow: 'none', display:'flex',justifyContent:justifyContent,alignItems:'center' }}>
       <CardContent sx={{ overflow: 'scroll' }}>
         {noOfLines === 1 ? (
           <Typography fontWeight={'bold'} fontFamily={lineFonts[0]}
@@ -34,6 +35,7 @@ export default function BasicCard({ml,mt,mr,noOfLines,lineFontSizes,lineFontColo
               mr: lineMR[0] || 0,
               mt: lineMT[0] || 0,
               whiteSpace: lineWhiteSpace[0] || 'initial',
+              textAlign: lineTextAlign,
             }}
           >
             {Array.isArray(lineContent) ? lineContent.join(' ') : lineContent}

@@ -21,6 +21,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import HomepageTrack from '../components/homepageTrackDispaly';
 import LeftContentBox from '../components/leftHomePageContent';
+import HorizontalBanner from '../components/horizontalBanner/horizontalBanner';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -59,7 +60,7 @@ const Home = () => {
   const Card1Colors = ["#F6F6F6", "#F6F6F6", "#F6F6F6"]
   const Card2Colors = ["#000000","#000000","#000000"]
   const Card1Content = ["BOOST YOUR LEARNING", "REAL TIME INSIGHTS - FULLY RIGGED", "SIGN UP TO GET STARTED AND START GAINING EVERY TENTH"]
-
+  const Card2Content = ["NOT SURE WHERE TO START","BROWSE HUNDREDS OF PREPLANNED SESSIONS","CURATED BY EXPERTS FOR YOU"]
 
   console.log(isLoggedIn);
   //useEffect(() => {
@@ -99,12 +100,14 @@ const Home = () => {
           <Homepage style='homepage-containerExtended'><Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={1}>
               <Grid item xs={12}><Box sx={{ height: '100px' }}></Box></Grid>
+              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["OUR PARTNERS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]}/></Grid>
+              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["COMPANY A", "COMPANY B", "COMPANY C", "COMPANY D", "COMPANY E", "COMPANY F"]} needsBackground={true} fontSizes={[22,22,22,22,22,22]} fontFamilies={["Satoshi","Satoshi","Satoshi","Satoshi","Satoshi","Satoshi"]} fontWeights={[]} fontColour={["White","White","White","White","White","White"]}/></Grid>
               <Grid item xs={12} sm={7} sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
                 <Item><LeftContentBox/></Item>
               </Grid>
               <Grid item xs={12} sm={5}>
                 <Item><div style={{ display: 'flex', flexDirection: 'column' }}><Grid container spacing={1}>
-                  <Grid item xs={12}><BasicCard ml={0} mt={0} mr={0} fontWeights={['Bold', 'Regular', 'Regular']} noOfLines={3} lineTextAlign={'left'} lineFontSizes={Card1Fonts} lineFontColors={Card2Colors} lineContent={Card1Content} lineFonts={["Yapari", "Yapari", "Satoshi", "Satoshi"]} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]} justifyContent={'right'}></BasicCard></Grid><Grid item xs={12} ><div ><Button className="parallelogram-buttonCTA-XLG" sx={{ left: 30, fontWeight: 'bold', fontFamily: "Satoshi" }}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/session-startup">Start Session</Link></Button></div></Grid></Grid></div></Item>
+                  <Grid item xs={12}><BasicCard ml={0} mt={0} mr={0} fontWeights={['Bold', 'Regular', 'Regular']} noOfLines={3} lineTextAlign={'left'} lineFontSizes={Card1Fonts} lineFontColors={Card2Colors} lineContent={Card2Content} lineFonts={["Yapari", "Yapari", "Satoshi", "Satoshi"]} lineML={[]} lineMR={[]} lineMT={[]} lineWhiteSpace={[]} justifyContent={'right'}></BasicCard></Grid><Grid item xs={12} ><div ><Button className="parallelogram-buttonCTA-XLG" sx={{ left: 30, fontWeight: 'bold', fontFamily: "Satoshi" }}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/recomended">Recomended</Link></Button></div></Grid></Grid></div></Item>
               </Grid>
               <Grid item xs={8}>
                 <Item></Item>

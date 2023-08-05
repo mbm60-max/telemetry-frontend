@@ -13,7 +13,7 @@ export default function CarouselRightArrow({onClick}: CarouseltArrowProps) {
         onClick(false);
     }
     return (
-    <Button  sx={{ color: "white",fontSize:22 }} onClick={handleLeftClick}><ArrowForwardIosIcon></ArrowForwardIosIcon></Button>           
+    <Button  sx={{ color: "white",fontSize:22,height:"100px"}} onClick={handleLeftClick}><ArrowForwardIosIcon></ArrowForwardIosIcon></Button>           
     );
 }
 export function CarouselLeftArrow({onClick}: CarouseltArrowProps) {
@@ -21,6 +21,6 @@ export function CarouselLeftArrow({onClick}: CarouseltArrowProps) {
         onClick(true);
     }
     return (
-    <Button  sx={{ color: "white",fontSize:22 }} onClick={handleRightClick}><ArrowBackIosIcon></ArrowBackIosIcon></Button>           
+    <Button  sx={{ color: "white",fontSize:22,height:"100px"}} onClick={handleRightClick}><ArrowBackIosIcon></ArrowBackIosIcon></Button>           
     );
 }

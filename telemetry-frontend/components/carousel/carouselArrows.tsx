@@ -5,17 +5,22 @@ import Button from '@mui/material/Button';
 
 
 interface CarouseltArrowProps {
-onClick?:string[];
+onClick:(isBackClick: boolean) => void;
 }
 export default function CarouselRightArrow({onClick}: CarouseltArrowProps) {
 
+   const  handleLeftClick=()=>{
+        onClick(false);
+    }
     return (
-    <Button  sx={{ color: "white",fontSize:22 }}><ArrowForwardIosIcon></ArrowForwardIosIcon></Button>           
+    <Button  sx={{ color: "white",fontSize:22 }} onClick={handleLeftClick}><ArrowForwardIosIcon></ArrowForwardIosIcon></Button>           
     );
 }
 export function CarouselLeftArrow({onClick}: CarouseltArrowProps) {
-
+    const handleRightClick=()=>{
+        onClick(true);
+    }
     return (
-    <Button  sx={{ color: "white",fontSize:22 }}><ArrowBackIosIcon></ArrowBackIosIcon></Button>           
+    <Button  sx={{ color: "white",fontSize:22 }} onClick={handleRightClick}><ArrowBackIosIcon></ArrowBackIosIcon></Button>           
     );
 }

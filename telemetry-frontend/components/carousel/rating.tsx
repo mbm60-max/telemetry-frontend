@@ -27,10 +27,9 @@ export default function CarouselRating({rating}: CarouselRatingProps) {
       };
     
       return (
-        <div>
+        <>
           {renderStars()}
-          <ArrowForwardIosIcon />
-        </div>
+        </>
       );
     };
 

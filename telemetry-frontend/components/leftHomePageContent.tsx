@@ -52,11 +52,11 @@ function LeftContentBox({ }: LeftContentBoxProps) {
                         <Grid item xs={12} >
                             <BasicCard ml={0} mt={0} mr={0} fontWeights={['Bold']} noOfLines={1} lineFontSizes={Card1Fonts} lineFontColors={Card2Colors} lineFonts={["Yapari"]} lineContent={"OUR COMMUNITY"} lineML={[]} lineMR={[]} lineMT={[]} lineTextAlign={'left'} lineWhiteSpace={['initial',
                                         'pre-line']} justifyContent={"left"}></BasicCard></Grid>
-                            <Grid item xs={6}>
-                                <BasicCarousel/>
+                            <Grid item xs={8}>
+                                <BasicCarousel CarouselHeader={["WOW","AMAZING","THE BEST YET","MUST HAVE"]} BodyContent={["This has really helped me to develop my skills i am so happy i tried this","This has really helped me to develop my skills i am so happy i tried this","This has really helped me to develop my skills i am so happy i tried this","This has really helped me to develop my skills i am so happy i tried this"]} Ratings={[1,3.5,2,5]}/>
                             </Grid>
-                            <Grid item xs={6}>
-                    <ItemInner><BasicCard ml={0} mt={0} mr={0} fontWeights={['Regular', 'Regular']} noOfLines={8} lineFontSizes={Card2Fonts} lineFontColors={Card2Colors} lineContent={'HI'} lineML={[]} lineMR={[]} lineMT={[]} lineTextAlign={'right'} lineWhiteSpace={['initial',
+                            <Grid item xs={4}>
+                    <ItemInner><BasicCard ml={0} mt={0} mr={0} fontWeights={['Regular', 'Regular']} noOfLines={8} lineFontSizes={Card2Fonts} lineFontColors={Card2Colors} lineContent={''} lineML={[]} lineMR={[]} lineMT={[]} lineTextAlign={'right'} lineWhiteSpace={['initial',
                                         'pre-line']} lineFonts={["Yapari", "Yapari", "Yapari", "Yapari"]} justifyContent={"left"}></BasicCard></ItemInner>
                 </Grid><Grid item xs={12} > <ItemInnerTopAligned><div style={{ display: 'flex', justifyContent:'right' }}><div  ><Button className="parallelogram-buttonCTA-LG" sx={{positon:'absolute', top:-80}}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/session-startup">Start Session</Link></Button></div></div></ItemInnerTopAligned></Grid>
                         </Grid>

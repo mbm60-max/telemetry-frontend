@@ -22,8 +22,11 @@ import Grid from '@mui/material/Grid';
 import HomepageTrack from '../components/homepageTrackDispaly';
 import LeftContentBox from '../components/leftHomePageContent';
 import HorizontalBanner from '../components/horizontalBanner/horizontalBanner';
-
-
+import BannerInterface from '../interfaces/bannerContent';
+import SportsScoreIcon from '@mui/icons-material/SportsScore';
+import { Sports } from '@mui/icons-material';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import LabelIcon from '@mui/icons-material/Label';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -34,23 +37,7 @@ const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: 'rgba(132, 126, 126, 0)',
   boxShadow: 'none', // Override the shadow effect
 }));
-const ItemBlack = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  backGroundColor: theme.palette.text.primary,
-}));
-const ItemCentered = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center'
-}));
+
 
 
 const Home = () => {
@@ -69,6 +56,49 @@ const Home = () => {
   // router.push('/login');
   //}
   //}, [isLoggedIn, router]);
+
+  const bannerItems: BannerInterface[] = [
+    {
+      title: 'Sessions',
+      titleSize: 29,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      body: ['Sessions allow for real time data streaming directly from your console.','Real Time Data','Customisable Warnings','Data Recording','Access to Setups'],
+      bodySize: [22,17,17,17,17],
+      bodyFontStyle: 'Satoshi',
+      bodyFontWeight: 'normal',
+      customIcon: ArrowRightIcon, // Replace with your custom icon component
+      ctaButton: <Button variant="contained" color="primary">Start Session</Button>,
+      ctaTarget: '/session',
+    },
+    {
+      title: 'Sessions',
+      titleSize: 29,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      body: ['Sessions allow for real time data streaming directly from your console.','Real Time Data','Customisable Warnings','Data Recording','Access to Setups'],
+      bodySize: [22,17,17,17,17],
+      bodyFontStyle: 'Satoshi',
+      bodyFontWeight: 'normal',
+      customIcon: LabelIcon, // Replace with your custom icon component
+      ctaButton: <Button variant="contained" color="primary">Start Session</Button>,
+      ctaTarget: '/session',
+    },
+    {
+      title: 'Sessions',
+      titleSize: 29,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      body: ['Sessions allow for real time data streaming directly from your console.','Real Time Data','Customisable Warnings','Data Recording','Access to Setups'],
+      bodySize: [22,17,17,17,17],
+      bodyFontStyle: 'Satoshi',
+      bodyFontWeight: 'normal',
+      customIcon: SportsScoreIcon, // Replace with your custom icon component
+      ctaButton: <Button variant="contained" color="primary">Start Session</Button>,
+      ctaTarget: '/session',
+    },
+  ];
+
   return (
     <>
       <Grid container spacing={0}>
@@ -99,9 +129,11 @@ const Home = () => {
           </div>{isLoggedIn && <h1>Hello, {userName}!</h1>}</Homepage>
           <Homepage style='homepage-containerExtended'><Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={1}>
-              <Grid item xs={12}><Box sx={{ height: '100px' }}></Box></Grid>
-              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["OUR PARTNERS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]}/></Grid>
-              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["COMPANY A", "COMPANY B", "COMPANY C", "COMPANY D", "COMPANY E", "COMPANY F"]} needsBackground={true} fontSizes={[22,22,22,22,22,22]} fontFamilies={["Satoshi","Satoshi","Satoshi","Satoshi","Satoshi","Satoshi"]} fontWeights={[]} fontColour={["White","White","White","White","White","White"]}/></Grid>
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={bannerItems} fontSizes={[0]} needsBackground={true} fontFamilies={["N/A"]} fontWeights={["N/A"]} fontColour={["N/A"]} isMutliStage={true}/></Grid>
+                 <Grid item xs={12}><Box sx={{ height: '100px', backgroundColor:'red' }}>Photos or videos</Box></Grid>
+                   <Grid item xs={12}><Box sx={{ height: '100px', backgroundColor:'red' }}>review page </Box></Grid>
+              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["OUR PARTNERS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false}/></Grid>
+              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["COMPANY A", "COMPANY B", "COMPANY C", "COMPANY D", "COMPANY E", "COMPANY F"]} needsBackground={true} fontSizes={[22, 22, 22, 22, 22, 22]} fontFamilies={["Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi"]} fontWeights={[]} fontColour={["White", "White", "White", "White", "White", "White"]} isMutliStage={false}/></Grid>
               <Grid item xs={12} sm={7} sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
                 <Item><LeftContentBox/></Item>
               </Grid>

@@ -27,6 +27,7 @@ import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import { Sports } from '@mui/icons-material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import LabelIcon from '@mui/icons-material/Label';
+import ImageBanner from '../components/splitImageBanner';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -67,7 +68,7 @@ const Home = () => {
       bodySize: [22,17,17,17,17],
       bodyFontStyle: 'Satoshi',
       bodyFontWeight: 'normal',
-      customIcon: ArrowRightIcon, // Replace with your custom icon component
+      customIcon: LabelIcon, // Replace with your custom icon component
       ctaButton: <Button variant="contained" color="primary">Start Session</Button>,
       ctaTarget: '/session',
     },
@@ -93,7 +94,20 @@ const Home = () => {
       bodySize: [22,17,17,17,17],
       bodyFontStyle: 'Satoshi',
       bodyFontWeight: 'normal',
-      customIcon: SportsScoreIcon, // Replace with your custom icon component
+      customIcon: LabelIcon,// Replace with your custom icon component
+      ctaButton: <Button variant="contained" color="primary">Start Session</Button>,
+      ctaTarget: '/session',
+    },
+    {
+      title: 'Sessions',
+      titleSize: 29,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      body: ['Sessions allow for real time data streaming directly from your console.','Real Time Data','Customisable Warnings','Data Recording','Access to Setups'],
+      bodySize: [22,17,17,17,17],
+      bodyFontStyle: 'Satoshi',
+      bodyFontWeight: 'normal',
+      customIcon: LabelIcon,// Replace with your custom icon component
       ctaButton: <Button variant="contained" color="primary">Start Session</Button>,
       ctaTarget: '/session',
     },
@@ -129,11 +143,12 @@ const Home = () => {
           </div>{isLoggedIn && <h1>Hello, {userName}!</h1>}</Homepage>
           <Homepage style='homepage-containerExtended'><Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={1}>
-            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={bannerItems} fontSizes={[0]} needsBackground={true} fontFamilies={["N/A"]} fontWeights={["N/A"]} fontColour={["N/A"]} isMutliStage={true}/></Grid>
-                 <Grid item xs={12}><Box sx={{ height: '100px', backgroundColor:'red' }}>Photos or videos</Box></Grid>
-                   <Grid item xs={12}><Box sx={{ height: '100px', backgroundColor:'red' }}>review page </Box></Grid>
-              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["OUR PARTNERS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false}/></Grid>
-              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["COMPANY A", "COMPANY B", "COMPANY C", "COMPANY D", "COMPANY E", "COMPANY F"]} needsBackground={true} fontSizes={[22, 22, 22, 22, 22, 22]} fontFamilies={["Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi"]} fontWeights={[]} fontColour={["White", "White", "White", "White", "White", "White"]} isMutliStage={false}/></Grid>
+            <Grid item xs={12}><ImageBanner imageSrc={"/images/test2.jpg"}  ><Box sx={{height:"90%",width:'100%',overflow:'auto',mt:'5%'}}> <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["WHAT WE OFFER"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false}/></Grid>
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><HorizontalBanner GridContent={bannerItems} fontSizes={[0]} needsBackground={true} fontFamilies={["N/A"]} fontWeights={["N/A"]} fontColour={["N/A"]} isMutliStage={true}/></Grid></Box></ImageBanner></Grid>
+           
+                 <Grid item xs={12}><ImageBanner imageSrc={"/images/test1.jpg"} ><Box sx={{height:"90%",width:'100%',overflow:'auto'}}> <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["OUR PARTNERS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false}/></Grid>
+              <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><HorizontalBanner GridContent={["COMPANY A", "COMPANY B", "COMPANY C", "COMPANY D", "COMPANY E", "COMPANY F"]} needsBackground={true} fontSizes={[22, 22, 22, 22, 22, 22]} fontFamilies={["Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi"]} fontWeights={[]} fontColour={["White", "White", "White", "White", "White", "White"]} isMutliStage={false}/></Grid></Box></ImageBanner></Grid>
+             
               <Grid item xs={12} sm={7} sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
                 <Item><LeftContentBox/></Item>
               </Grid>

@@ -183,7 +183,8 @@ const LoginForm: React.FC = () => {
                 MarginTop={"0px"}
                 objectFit={"cover"}
                 imageSrc="/images/max-bottinger-0k_dCKxyIHc-unsplash.jpg"
-              />
+                borderRadius={0}
+                ><></></ImageBox>
             </Grid>
           </Grid>
         </div>

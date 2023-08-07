@@ -4,23 +4,31 @@ import Button from '@mui/material/Button';
 import { Box, Grid, Paper, styled, Typography } from '@mui/material';
 import BannerInterface from '../../interfaces/bannerContent';
 import IconBox from '../iconBox';
+import InfoToolTip from '../helperTooltip.tsx/infoTooltip';
 
 
 interface ServiceDisplayProps {
 componentSetup:BannerInterface;
 }
 export default function  ServiceDisplay({componentSetup}:  ServiceDisplayProps) {
-
+    const tooltipInfo = (
+        <>
+         <em>{ <Typography fontWeight={componentSetup.bodyFontWeight} fontFamily={componentSetup.bodyFontStyle} fontSize={componentSetup.bodySize[0]} sx={{color:'white'}}>{componentSetup.body[0]}</Typography>}</em>
+        </>
+      );
     return (
 <Box sx={{width:'100%',height:'100%'}}>
-<Grid container spacing={4} >
+<Grid container spacing={0} >
 
           <Grid item xs={12}    sm={12} sx={{display:'flex',justifyContent:'center'}}>
-             <Typography fontWeight={componentSetup.titleFontWeight} fontFamily={componentSetup.titleFontStyle} fontSize={componentSetup.titleSize} sx={{color:'white'}}>{componentSetup.title}</Typography> 
+          <Grid container spacing={0} >
+          <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography fontWeight={componentSetup.titleFontWeight} fontFamily={componentSetup.titleFontStyle} fontSize={componentSetup.titleSize} sx={{color:'white'}}>{componentSetup.title}</Typography> </Grid>
+          <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <InfoToolTip name={'max'} info={tooltipInfo}/></Grid>
+             
           </Grid>
-          <Grid item xs={12}    sm={12} sx={{display:'flex',justifyContent:'center'}}>
-             <Typography fontWeight={componentSetup.bodyFontWeight} fontFamily={componentSetup.bodyFontStyle} fontSize={componentSetup.bodySize[0]} sx={{color:'white'}}>{componentSetup.body[0]}</Typography>
+          
           </Grid>
+         
           <Grid item xs={12} sm={12} sx={{ display: 'flex', justifyContent: 'center' }}>
           <Grid container spacing={1} >
           {componentSetup.body.map((content, index) => {
@@ -61,10 +69,11 @@ const IconBoxCustom: React.FC<IconBoxInputProps> = ({ icon: Icon}) => {
       <Box
         display="flex"
         alignItems="center"
-        padding="8px"
+        padding="0px"
         width="10px"
         height="50px"
         justifyContent='center'
+
       >
             <Icon fontSize="medium" sx={{color:'white'}}/>
          

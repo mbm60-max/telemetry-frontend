@@ -116,7 +116,8 @@ function HomepageTrack({ }: HomePageTrackProps) {
                                 MarginTop={'0px'}
                                 imageSrc={trackSvgPath}
                                 objectFit={'fill'}
-                                /> 
+                                borderRadius={0}
+                                ><></></ImageBox>
                             </Grid>
                             <Grid item xs={6}>
                     <ItemInner><BasicCard ml={0} mt={0} mr={0} fontWeights={['Regular', 'Regular']} noOfLines={8} lineFontSizes={Card2Fonts} lineFontColors={Card2Colors} lineContent={randomTrackData} lineML={[]} lineMR={[]} lineMT={[]} lineTextAlign={'right'} lineWhiteSpace={['initial',

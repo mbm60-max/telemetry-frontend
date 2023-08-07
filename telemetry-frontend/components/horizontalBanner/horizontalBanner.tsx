@@ -55,7 +55,7 @@ export default function HorizontalBanner({GridContent,needsBackground,fontColour
 <Box sx={{width:'75%',height:'100%'}}>
 <Grid container spacing={2} >
 {GridContent.map((content, index) => (
-          <Grid item xs={12} sm={ GridContent.length > 1 ? 4 : 12} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Grid item xs={12} sm={ GridContent.length > 1 ? 6 : 12} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
            {isMutliStage ? (
                             needsBackground ? (
                                 

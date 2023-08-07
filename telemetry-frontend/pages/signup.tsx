@@ -338,7 +338,8 @@ const SignUpForm: React.FC = () => {
                 MarginTop={"0px"}
                 objectFit={"cover"}
                 imageSrc="/images/Coffee.jpg"
-              />
+                borderRadius={0}
+                ><></></ImageBox>
             </Grid>
           </Grid>{" "}
         </div>

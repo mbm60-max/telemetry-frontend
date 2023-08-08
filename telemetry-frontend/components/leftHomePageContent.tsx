@@ -53,7 +53,7 @@ function LeftContentBox({ }: LeftContentBoxProps) {
                             <BasicCard ml={0} mt={0} mr={0} fontWeights={['Bold']} noOfLines={1} lineFontSizes={Card1Fonts} lineFontColors={Card2Colors} lineFonts={["Yapari"]} lineContent={"OUR COMMUNITY"} lineML={[]} lineMR={[]} lineMT={[]} lineTextAlign={'left'} lineWhiteSpace={['initial',
                                         'pre-line']} justifyContent={"left"}></BasicCard></Grid>
                             <Grid item xs={12} >
-                            <Box sx={{ height: '95%', width: '90%',minWidth:'375px', backgroundColor: 'rgba(9, 27, 119, 1)',borderRadius:10,padding:1}}>
+                            <Box sx={{ height: '95%', width: '90%',minWidth:'375px', backgroundColor: 'rgba(9, 27, 119, 0.5)',borderRadius:10,padding:1}}>
                                 <Grid container spacing={0}  >
                                     <Grid item xs={8} >
                                             <Box sx={{width:'350px',minWidth:'350px',height:'100%', overflow: 'hidden', display:'flex',justifyContent:'left'}}>

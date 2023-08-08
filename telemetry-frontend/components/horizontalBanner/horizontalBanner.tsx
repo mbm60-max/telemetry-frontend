@@ -52,8 +52,8 @@ isMutliStage:boolean;
 export default function HorizontalBanner({GridContent,needsBackground,fontColour,fontFamilies,fontSizes,fontWeights,isMutliStage}: HorizontalBannerProps) {
 
     return (
-<Box sx={{width:'75%',height:'100%'}}>
-<Grid container spacing={2} >
+<Box sx={{width:'90%',height:'100%'}}>
+<Grid container rowSpacing={2} columnSpacing={8} >
 {GridContent.map((content, index) => (
           <Grid item xs={12} sm={ GridContent.length > 1 ? 6 : 12} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
            {isMutliStage ? (

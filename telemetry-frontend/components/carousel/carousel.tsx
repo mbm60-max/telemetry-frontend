@@ -37,13 +37,13 @@ const handleExit = () => {
     setExitDirection(direction === 'left' ? 'right' : 'left');
   };
     return (
-        <Box sx={{ height: '100%', width: '350px', backgroundColor: '#FB9536',borderRadius:10}}>
-            <Grid container spacing={2} sx={{ width: '350px',height:'400px'}}>
+        <Box sx={{ height: '100%', width: '100%', backgroundColor: '#FB9536',borderRadius:10}}>
+            <Grid container spacing={2} sx={{ width: '100%',height:'400px'}}>
             <Grid item xs={2} sx={{ display: 'flex', justifyContent: 'center',alignItems:'center'  }}>
                      <CarouselLeftArrow onClick={handleClick}/>
 </Grid>
             <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Grid container spacing={2} sx={{ minWidth: '400px' }}>
+            <Grid container spacing={2} sx={{ minWidth: '100%' }}>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                 
                         {BodyContent.map((content, index) => (

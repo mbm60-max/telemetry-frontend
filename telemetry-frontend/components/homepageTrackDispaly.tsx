@@ -116,7 +116,7 @@ function HomepageTrack({ }: HomePageTrackProps) {
                                         MarginTop={'0px'}
                                         imageSrc={trackSvgPath}
                                         objectFit={'fill'}
-                                        borderRadius={0} 
+                                        borderRadius={0}
                                         hasOverlay={false}                                ><></></ImageBox>
                             </Grid>
                             <Grid item xs={6}>

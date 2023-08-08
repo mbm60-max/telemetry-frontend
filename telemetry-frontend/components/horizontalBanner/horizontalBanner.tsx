@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import { Box, Grid, Paper, styled, Typography } from '@mui/material';
 import BannerInterface from '../../interfaces/bannerContent';
 import ServiceDisplay from '../serviceDisplay/serviceDisplay';
+import ImageBox from '../homepageTrack';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -30,9 +31,9 @@ const ItemSquare = styled(Paper)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   color: theme.palette.text.secondary,
-  backgroundColor: '#FB9536',
+  backgroundColor: 'rgba(251, 149, 54, 0.95)',
   boxShadow: 'none', // Override the shadow effect
-  borderRadius:10,
+  borderRadius:50,
   minHeight:'350px',
   minWidth:'150px',
   width:'100%',
@@ -46,10 +47,11 @@ fontFamilies:string[];
 fontWeights:string[];
 fontColour:string[];
 isMutliStage:boolean;
+marginLeftValue:number[];
 }
 
 
-export default function HorizontalBanner({GridContent,needsBackground,fontColour,fontFamilies,fontSizes,fontWeights,isMutliStage}: HorizontalBannerProps) {
+export default function HorizontalBanner({GridContent,needsBackground,fontColour,fontFamilies,fontSizes,fontWeights,isMutliStage,marginLeftValue}: HorizontalBannerProps) {
 
     return (
 <Box sx={{width:'90%',height:'100%'}}>
@@ -82,9 +84,8 @@ export default function HorizontalBanner({GridContent,needsBackground,fontColour
                                 
                                 typeof content === 'string' ? (
                                   <Item>
-                                    <Typography fontWeight={fontWeights[index]} fontFamily={fontFamilies[index]} fontSize={fontSizes[index]} sx={{ color: fontColour[index] }}>
-                                        {content}
-                                    </Typography>
+                                    <ImageBox imageSrc={content} Width={'90%'} Height={'90%'} MarginRight={''} MarginLeft={marginLeftValue[index]} MarginTop={''} borderRadius={0} hasOverlay={false} >
+                                    </ImageBox>
                                 </Item>
                               ) : (
                                   null

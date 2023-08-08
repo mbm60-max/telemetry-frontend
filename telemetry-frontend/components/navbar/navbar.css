@@ -6,6 +6,22 @@
      border-radius: 20px 20px 20px 20px;
     padding: 0;
   }
+  .basic-button {
+    position: relative;
+    width: 100px;
+    height: 40px;
+     /* Hide any content that overflows the parallelogram shape */
+     border-radius: 20px 20px 20px 20px;
+    padding: 0;
+  }
+  .externalLink-button{
+    position: relative;
+    width: 120px;
+    height: 30px;
+     /* Hide any content that overflows the parallelogram shape */
+     border-radius: 20px 20px 20px 20px;
+    padding: 0;
+  }
   .parallelogram-buttonCTA {
     position: relative;
     width: 120px;
@@ -14,6 +30,16 @@
      border-radius: 20px 20px 20px 20px;
     padding: 0;
     background-color: #FB9536;
+  }
+  .parallelogram-buttonBlue {
+    position: relative;
+    width: 50%;
+    height: 50px;
+     /* Hide any content that overflows the parallelogram shape */
+     border-radius: 20px 20px 20px 20px;
+    padding: 0;
+    background-color: rgba(9, 27, 119, 0.9);
+    color: '#F6F6F6' !important ;
   }
   .parallelogram-buttonCTA-LG {
     position: relative;
@@ -60,8 +86,16 @@
   align-items: center;
   }
  
-
+  .externalLink-button:hover {
+    background-color: #FB9536;
+  }
+  .parallelogram-buttonBlue:hover {
+    background-color: grey;
+  }
   
+  .basic-button:hover {
+    background-color: #FB9536;
+  }
   .parallelogram-button:hover {
     background-color: #FB9536;
   }

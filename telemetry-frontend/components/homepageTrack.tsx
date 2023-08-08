@@ -4,9 +4,9 @@ interface ImageBoxProps{
   imageSrc:string
   Width:string
   Height:string
-  MarginRight:string
-  MarginLeft:string
-  MarginTop:string
+  MarginRight:string|number
+  MarginLeft:string|number
+  MarginTop:string|number
   objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
   borderRadius:number;
   children:React.ReactNode;

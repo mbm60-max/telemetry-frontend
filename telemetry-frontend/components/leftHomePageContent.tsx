@@ -55,14 +55,12 @@ function LeftContentBox({ }: LeftContentBoxProps) {
                             <Grid item xs={12} >
                             <Box sx={{ height: '95%', width: '90%',minWidth:'375px', backgroundColor: 'rgba(9, 27, 119, 0.5)',borderRadius:10,padding:1}}>
                                 <Grid container spacing={0}  >
-                                    <Grid item xs={8} >
-                                            <Box sx={{width:'350px',minWidth:'350px',height:'100%', overflow: 'hidden', display:'flex',justifyContent:'left'}}>
-                                                <BasicCarousel CarouselHeader={["WOW", "AMAZING", "THE BEST YET", "MUST HAVE"]} BodyContent={["This has really helped me to develop my skills i am so happy i tried this", "This has really helped me to develop my skills i am so happy i tried this", "This has really helped me to develop my skills i am so happy i tried this", "This has really helped me to develop my skills i am so happy i tried this"]} Ratings={[1, 3.5, 2, 5]} Names={["MaxBm","Alicia P","G","LiamBYNG123"]}/>
+                                    <Grid item xs={12} >
+                                            <Box sx={{width:'100%',minWidth:'350px',height:'100%', overflow: 'hidden', display:'flex',justifyContent:'left'}}>
+                                                <BasicCarousel CarouselHeader={["STUNNING", "AMAZING", "THE BEST YET", "MUST HAVE"]} BodyContent={["This site has really helped me hone my skills, I wiped 3 seconds of all my PB's", "The insight offered by GTEAM is unmatched I love being able to delve into every lap after a session", "Thanks to GTEAM I WON my first every online race, I couldn't be more happy", "As a small race team manager I can't get enough of this, #everyTenthCounts"]} Ratings={[4.5, 4, 5, 4.5]} Names={["MaxBm","Alicia P","G","LiamBYNG123"]}/>
                                             </Box>
                                     </Grid>
-                                <Grid item xs={4} >
-                                    <ItemInnerTopAligned><Button className="parallelogram-buttonCTA-LG" ><Link style={{ color: '#F6F6F6', textDecoration: 'none' }}href="/customer_review">LEAVE A REVIEW</Link></Button></ItemInnerTopAligned>
-                                </Grid>
+                               
                                 
                             </Grid>
                             </Box>

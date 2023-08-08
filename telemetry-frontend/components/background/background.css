@@ -24,6 +24,13 @@
     background: linear-gradient(to bottom, rgba(1, 4, 18, 1)
     0%, rgba(9, 27, 119, 1)100%);
 }
+.navbar-containe-reverse {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; 
+  background: linear-gradient(to bottom, rgba(9, 27, 119, 1)100%, rgba(1, 4, 18, 1)
+  0%);
+}
 .homepage-container-reverse {
   width: 100%;
   height: 900px;

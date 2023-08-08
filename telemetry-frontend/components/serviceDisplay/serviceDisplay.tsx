@@ -23,7 +23,7 @@ export default function  ServiceDisplay({componentSetup}:  ServiceDisplayProps) 
           <Grid item xs={12}    sm={12} sx={{display:'flex',justifyContent:'center'}}>
           <Grid container spacing={0} >
           <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography fontWeight={componentSetup.titleFontWeight} fontFamily={componentSetup.titleFontStyle} fontSize={componentSetup.titleSize} sx={{color:'white'}}>{componentSetup.title}</Typography> </Grid>
-          <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <InfoToolTip name={'max'} info={tooltipInfo}/></Grid>
+          <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> </Grid>
              
           </Grid>
           

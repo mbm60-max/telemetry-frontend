@@ -32,22 +32,30 @@ import { GridRowId } from "@mui/x-data-grid";
 import { carData } from "../data/gtCarList";
 import axios, { AxiosResponse } from "axios";
 import { AuthContext } from "../components/authProvider";
+import Footer from "../components/footer/footer";
+import NavBar from "../components/navbar/navbar";
+import '../components/navbar/navbar.css';
+import HorizontalBanner from "../components/horizontalBanner/horizontalBanner";
 
 const SessionStartup: React.FC = () => {
   const [selectedRowId, setSelectedRowId] = useState<GridRowId | null>(null); // Manage selectedRowId in the parent component
   const selectedRowIdSetupGridRef = useRef<GridRowId | null>(null);
-  console.log(selectedRowIdSetupGridRef.current)
+
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "rgba(132, 126, 126, 0)",
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",
     color: theme.palette.text.secondary,
-    height: "90%",
-    width: "95%",
+    height: "100%",
+    width: "90%",
+    borderRadius:55,
+    display:"flex",
+    justifyContent:'center',
+    alignItems:'center',
   }));
   const ItemCentered = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "rgba(132, 126, 126, 0)",
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",
@@ -58,6 +66,29 @@ const SessionStartup: React.FC = () => {
     height: "90%",
     width: "95%",
   }));
+
+  const ItemFooter = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'left',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.text.secondary,
+    backgroundColor: 'rgba(132, 126, 126, 0)',
+    boxShadow: 'none', // Override the shadow effect
+  }));
+
+  const ItemNav = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'left',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.text.secondary,
+    backgroundColor: 'rgba(132, 126, 126, 0)',
+    boxShadow: 'none', // Override the shadow effect
+  }));
+
   const [selectedCar, setSelectedCar] = useState("");
   const [selectedTrack, setSelectedTrack] = useState("noTrack");
   const [selectedCompound, setSelectedCompound] = React.useState("");
@@ -187,204 +218,233 @@ const SessionStartup: React.FC = () => {
   );
   return (
     <>
-      <Box className="header">
-        <Button onClick={handleExit}>Exit Session Startup</Button>
-      </Box>
-      <Homepage style={"homepage"}>
-        <div
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            display: "grid",
-            placeItems: "center",
-          }}
-        >
-          <Box
-            sx={{
-              width: "90%",
-              backgroundColor: "F6F6F6",
-              margin: 4,
-              padding: 2,
-              borderRadius: 1,
-              border: "1px solid grey",
-              boxShadow: 1,
-              height: "90%",
-            }}
-          >
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ height: "100%" }}>
-                  <Item>
-                    <QuickFilteringGrid onSelectCar={handleCarSelection} selectedRowId={selectedRowId} onRowSelectionModelChange={handleRowSelectionChange} onSelectedRowIdChange={handleSetSelectedRowId} />
-                  </Item>
-                </Grid>
-                <Grid item xs={6} sx={{ height: "100%" }}>
-                  <Item>
-                    <SetupTable onSelectSetup={handlesetupSelection} selectedRowId={selectedRowIdSetupGridRef.current} onRowSelectionModelChange={handleRowSelectionChangeSetupGrid} onSelectedRowIdChange={handleSetSelectedRowIdSetupGrid} fetchDataCallback={forceFetchData} />
-                  </Item>
-                </Grid>
-                <Grid item xs={6} sx={{ height: "100%" }}>
-                  <ItemCentered>
-                    <Grid container spacing={2} sx={{ height: "100%" }}>
-                      <Grid item xs={6}>
-                        <Box sx={{ minWidth: "100%" }}>
-                          <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                              Compound
-                            </InputLabel>
-                            <Select
-                              labelId="demo-simple-select-label"
-                              id="demo-simple-select"
-                              value={selectedCompound}
-                              label="Compound"
-                              onChange={handleCompoundSelection}
-                            >
-                              <MenuItem value={"Comfort: Hard (CH)"}>
-                                Comfort: Hard (CH)
-                              </MenuItem>
-                              <MenuItem value={"Comfort: Medium (CM)"}>
-                                Comfort: Medium (CM)
-                              </MenuItem>
-                              <MenuItem value={"Comfort: Soft (CS)"}>
-                                Comfort: Soft (CS)
-                              </MenuItem>
-                              <MenuItem value={"Sports: Hard (SH)"}>
-                                Sports: Hard (SH)
-                              </MenuItem>
-                              <MenuItem value={"Sports: Medium (SM)"}>
-                                Sports: Medium (SM)
-                              </MenuItem>
-                              <MenuItem value={"Sports: Soft (SS)"}>
-                                Sports: Soft (SS)
-                              </MenuItem>
-                              <MenuItem value={"Racing: Hard (RH)"}>
-                                Racing: Hard (RH)
-                              </MenuItem>
-                              <MenuItem value={"Racing: Medium (RM)"}>
-                                Racing: Medium (RM)
-                              </MenuItem>
-                              <MenuItem value={"Racing: Soft (RS)"}>
-                                Racing: Soft (RS)
-                              </MenuItem>
-                              <MenuItem value={"Racing: Super Soft (RSS)"}>
-                                Racing: Super Soft (RSS)
-                              </MenuItem>
-                              <MenuItem value={"Racing: Intermediate (RI)"}>
-                                Racing: Intermediate (RI)
-                              </MenuItem>
-                              <MenuItem value={"Racing: Heavy Wet (RH)"}>
-                                Racing: Heavy Wet (RH)
-                              </MenuItem>
-                              <MenuItem value={"Dirt Tires"}>
-                                Dirt Tires
-                              </MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Box>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Box
-                          sx={{
-                            width: "100%",
-                            backgroundColor: "F6F6F6",
-                            margin: 0,
-                            padding: 0,
-                            borderRadius: 1,
-                            border: "3px solid red",
-                            boxShadow: 1,
-                          }}
-                        >
-                          <TrackSelectionModal
-                            onSelectTrack={handleTrackSelection}
-                          />
-                          <ImageBox
-                            Width={"100%"}
-                            Height={"300px"}
-                            MarginRight={"0px"}
-                            MarginLeft={"0px"}
-                            MarginTop={"0px"}
-                            imageSrc={`/images/${selectedTrack}.svg`}
-                          />
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </ItemCentered>
-                </Grid>
-                <Grid item xs={6}>
-                  <ItemCentered>
-                    <Grid container spacing={2} sx={{ height: "100%" }}><Grid item xs={12}><Divider sx={{}}>
-        <Chip label="Current Setup" />
-      </Divider></Grid>
-                      <Grid item xs={6}>
-                      <Box sx={{ width: '90%', height:'75%',backgroundColor:'F6F6F6', margin:1, padding:1, borderRadius:1, border: '1px solid grey' ,boxShadow:1, justifyContent:'center',alignItems:'center',display:'flex'}}>
-                        <TextField
-                        disabled
-                          id="outlined-error"
-                          label="Selected Car"
-                          defaultValue="Selected Car"
-                          value={selectedCar}
-                          sx={{width: "90%"}}
-                          error={Boolean(carError)}
-                      helperText={carError}
-                        /></Box>
-                      </Grid>
-                      <Grid item xs={6}  >
-                      <Box sx={{ width: '90%',height:'75%',backgroundColor:'F6F6F6', margin:1, padding:1, borderRadius:1, border: '1px solid grey' ,boxShadow:1, justifyContent:'center',alignItems:'center',display:'flex'}}>
-                        <TextField
-                        disabled
-                          error={Boolean(trackError)}
-                          helperText={trackError}
-                          id="outlined-error"
-                          label="Selected Track"
-                          defaultValue="Selected Track"
-                          value={selectedTrack}
-                          sx={{width: "90%"}}
-                        /></Box>
-                      </Grid>
-                      <Grid item xs={6}>
-                      <Box sx={{ width: '90%',height:'75%',backgroundColor:'F6F6F6', margin:1, padding:1, borderRadius:1, border: '1px solid grey' ,boxShadow:1, justifyContent:'center',alignItems:'center',display:'flex'}}>
-                        <TextField
-                        disabled
-                          error={Boolean(compoundError)}
-                          helperText={compoundError}
-                          id="outlined-error"
-                          label="Selected Compound"
-                          defaultValue="Selected Compound"
-                          value={selectedCompound}
-                          sx={{width: "90%"}}
-                        /></Box>
-                      </Grid>
-                      <Grid item xs={6}>
-                      <Box sx={{ width: '90%',height:'75%',backgroundColor:'F6F6F6', margin:1, padding:1, borderRadius:1, border: '1px solid grey' ,boxShadow:1, justifyContent:'center',alignItems:'center',display:'flex'}}>
-                        <TextField
-                        disabled
-                          id="outlined-error"
-                          label="Selected Setup"
-                          defaultValue="Selected Setup"
-                          value={selectedSetup}
-                          sx={{width: "90%"}}
-                        /></Box>
-                      </Grid>
-                      <Grid item xs={12}>
-                        {" "}
-                        <Button
-                          type="submit"
-                          variant="contained"
-                          sx={{  width: "50%" }}
-                        >
-                          Submit
-                        </Button><InfoToolTip name={"Sessions"} info={tooltipInfo}/>
-                      </Grid>
-                    </Grid>{" "}
-                  </ItemCentered>
-                </Grid>
+    <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <Homepage style={'navbar-container'}>
+                <ItemNav><NavBar /></ItemNav>
+              </Homepage>
+            </Grid>
+          </Grid>
+        </Grid>
+        <Grid item xs={12}>
+          
+            <Homepage style={"setups-container"}>
+        
+        
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={4}>
+            <Grid item xs={12}><Box sx={{ height: '50px' }}></Box></Grid>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                          <HorizontalBanner GridContent={["SESSION STARTUP"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+                        </Grid>
+                        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                          <HorizontalBanner GridContent={["SELECT A CAR"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+                        </Grid>
+              <Grid item xs={12}  sx={{ height: "100%",display:'flex',justifyContent:'center'}}>
+                <Item>
+                  <QuickFilteringGrid onSelectCar={handleCarSelection} selectedRowId={selectedRowId} onRowSelectionModelChange={handleRowSelectionChange} onSelectedRowIdChange={handleSetSelectedRowId} />
+                </Item>
               </Grid>
-            </form>
-          </Box>
-        </div>
-      </Homepage>
+              <Grid item xs={12} sm={6} sx={{ height: "100%" }}>
+              <Grid container spacing={4}>
+              <Grid item xs={12}> <HorizontalBanner GridContent={["SELECT A SETUP"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+              <Grid item xs={12}> <Item>
+                  <SetupTable onSelectSetup={handlesetupSelection} selectedRowId={selectedRowIdSetupGridRef.current} onRowSelectionModelChange={handleRowSelectionChangeSetupGrid} onSelectedRowIdChange={handleSetSelectedRowIdSetupGrid} fetchDataCallback={forceFetchData} />
+                </Item></Grid>
+              </Grid>
+              </Grid>
+              <Grid item xs={12} sm={6} sx={{ height: "100%" }}>
+                <Item>
+                  <Grid container spacing={2} sx={{ height: "100%" }}>
+                    <Grid item xs={6}>
+                      <Box sx={{ minWidth: "100%" }}>
+                        <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">
+                            Compound
+                          </InputLabel>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectedCompound}
+                            label="Compound"
+                            onChange={handleCompoundSelection}
+                          >
+                            <MenuItem value={"Comfort: Hard (CH)"}>
+                              Comfort: Hard (CH)
+                            </MenuItem>
+                            <MenuItem value={"Comfort: Medium (CM)"}>
+                              Comfort: Medium (CM)
+                            </MenuItem>
+                            <MenuItem value={"Comfort: Soft (CS)"}>
+                              Comfort: Soft (CS)
+                            </MenuItem>
+                            <MenuItem value={"Sports: Hard (SH)"}>
+                              Sports: Hard (SH)
+                            </MenuItem>
+                            <MenuItem value={"Sports: Medium (SM)"}>
+                              Sports: Medium (SM)
+                            </MenuItem>
+                            <MenuItem value={"Sports: Soft (SS)"}>
+                              Sports: Soft (SS)
+                            </MenuItem>
+                            <MenuItem value={"Racing: Hard (RH)"}>
+                              Racing: Hard (RH)
+                            </MenuItem>
+                            <MenuItem value={"Racing: Medium (RM)"}>
+                              Racing: Medium (RM)
+                            </MenuItem>
+                            <MenuItem value={"Racing: Soft (RS)"}>
+                              Racing: Soft (RS)
+                            </MenuItem>
+                            <MenuItem value={"Racing: Super Soft (RSS)"}>
+                              Racing: Super Soft (RSS)
+                            </MenuItem>
+                            <MenuItem value={"Racing: Intermediate (RI)"}>
+                              Racing: Intermediate (RI)
+                            </MenuItem>
+                            <MenuItem value={"Racing: Heavy Wet (RH)"}>
+                              Racing: Heavy Wet (RH)
+                            </MenuItem>
+                            <MenuItem value={"Dirt Tires"}>
+                              Dirt Tires
+                            </MenuItem>
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Box
+                        sx={{
+                          width: "100%",
+                          backgroundColor: "F6F6F6",
+                          margin: 0,
+                          padding: 0,
+                          borderRadius: 1,
+                          border: "3px solid red",
+                          boxShadow: 1,
+                        }}
+                      >
+                        <TrackSelectionModal
+                          onSelectTrack={handleTrackSelection}
+                        />
+                        <ImageBox
+                          Width={"100%"}
+                          Height={"300px"}
+                          MarginRight={"0px"}
+                          MarginLeft={"0px"}
+                          MarginTop={"0px"}
+                          imageSrc={`/images/${selectedTrack}.svg`} borderRadius={0} 
+                          hasOverlay={false}                          >
+
+                          </ImageBox>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Item>
+              </Grid>
+              <Grid item xs={12} >
+                <ItemCentered>
+                  <Grid container spacing={2} sx={{ height: "100%" }}><Grid item xs={12}><Divider sx={{}}>
+      <Chip label="Current Setup" />
+    </Divider></Grid>
+                    <Grid item xs={6}>
+                    <Box sx={{ width: '90%', height:'75%',backgroundColor:'F6F6F6', margin:1, padding:1, borderRadius:1, border: '1px solid grey' ,boxShadow:1, justifyContent:'center',alignItems:'center',display:'flex'}}>
+                      <TextField
+                      disabled
+                        id="outlined-error"
+                        label="Selected Car"
+                        defaultValue="Selected Car"
+                        value={selectedCar}
+                        sx={{width: "90%"}}
+                        error={Boolean(carError)}
+                    helperText={carError}
+                      /></Box>
+                    </Grid>
+                    <Grid item xs={6}  >
+                    <Box sx={{ width: '90%',height:'75%',backgroundColor:'F6F6F6', margin:1, padding:1, borderRadius:1, border: '1px solid grey' ,boxShadow:1, justifyContent:'center',alignItems:'center',display:'flex'}}>
+                      <TextField
+                      disabled
+                        error={Boolean(trackError)}
+                        helperText={trackError}
+                        id="outlined-error"
+                        label="Selected Track"
+                        defaultValue="Selected Track"
+                        value={selectedTrack}
+                        sx={{width: "90%"}}
+                      /></Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Box sx={{ width: '90%',height:'75%',backgroundColor:'F6F6F6', margin:1, padding:1, borderRadius:1, border: '1px solid grey' ,boxShadow:1, justifyContent:'center',alignItems:'center',display:'flex'}}>
+                      <TextField
+                      disabled
+                        error={Boolean(compoundError)}
+                        helperText={compoundError}
+                        id="outlined-error"
+                        label="Selected Compound"
+                        defaultValue="Selected Compound"
+                        value={selectedCompound}
+                        sx={{width: "90%"}}
+                      /></Box>
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Box sx={{ width: '90%',height:'75%',backgroundColor:'F6F6F6', margin:1, padding:1, borderRadius:1, border: '1px solid grey' ,boxShadow:1, justifyContent:'center',alignItems:'center',display:'flex'}}>
+                      <TextField
+                      disabled
+                        id="outlined-error"
+                        label="Selected Setup"
+                        defaultValue="Selected Setup"
+                        value={selectedSetup}
+                        sx={{width: "90%"}}
+                      /></Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                      {" "}
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        sx={{  width: "50%" }}
+                      >
+                        Submit
+                      </Button><InfoToolTip name={"Sessions"} info={tooltipInfo}/>
+                    </Grid>
+                  </Grid>{" "}
+                </ItemCentered>
+                
+              </Grid> 
+    
+             
+            </Grid>
+          </form>
+       
+     <Grid item xs={12}>
+            <Homepage style={'navbar-containe-reverse'}>
+              <ItemFooter><Footer /></ItemFooter>
+            </Homepage>
+          </Grid>
+         
+    </Homepage>
+        </Grid>
+        </Grid>
+      
     </>
   );
 };
 
 export default SessionStartup;
+
+//<Box
+  // /       sx={{
+   //         width: "100px",
+    //        backgroundColor: "F6F6F6",
+     //       margin: 4,
+       //     padding: 2,
+         //   borderRadius: 1,
+           // border: "1px solid grey",
+            //boxShadow: 1,
+            //height: "90%",
+            //display:'inline',
+            //justifyContent:'center',alignItems:'center'
+          //}}
+        //></Box>

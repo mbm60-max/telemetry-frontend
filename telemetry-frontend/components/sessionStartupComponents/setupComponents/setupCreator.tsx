@@ -86,15 +86,17 @@ export default function SetupTable({onSelectSetup,selectedRowId,onRowSelectionMo
         height: 400,
         width: 1,
         '& .custom-header': {
-          backgroundColor: '#DA2E22',
+          backgroundColor: '#FB9536',
           color: '#F6F6F6',
+          borderTopLeftRadius:50,
         },
         '& .MuiSvgIcon-root': {
           fill: '#F6F6F6',
         },
         '& .removed': {
-          backgroundColor: '#DA2E22',
+          backgroundColor: '#FB9536',
           color: '#F6F6F6',
+          borderTopRightRadius:50,
         },
         '& .removed .MuiDataGrid-sortIcon': {
           display: 'none',

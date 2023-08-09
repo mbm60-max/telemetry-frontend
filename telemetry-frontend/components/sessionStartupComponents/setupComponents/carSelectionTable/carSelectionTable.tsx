@@ -45,7 +45,7 @@ export default function QuickFilteringGrid({onSelectCar,selectedRowId,onRowSelec
 
   return (
     <Box className="my-grid-container"  sx={{ height: 400, width: 1,'& .custom-header': {
-      backgroundColor: '#DA2E22',
+      backgroundColor: '#FB9536',
       color:'#F6F6F6'
     },'& .MuiSvgIcon-root': {
       fill: '#F6F6F6', // Change the fill color of the icons

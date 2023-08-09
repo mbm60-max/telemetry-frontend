@@ -54,12 +54,12 @@ const Home = () => {
   const Card2Content = ["NOT SURE WHERE TO START", "BROWSE HUNDREDS OF PREPLANNED SESSIONS", "CURATED BY EXPERTS FOR YOU"]
 
   console.log(isLoggedIn);
-  //useEffect(() => {
-  //console.log(isLoggedIn);
-  //if (!isLoggedIn) {
-  // router.push('/login');
-  //}
-  //}, [isLoggedIn, router]);
+  useEffect(() => {
+  console.log(isLoggedIn);
+  if (!isLoggedIn) {
+   router.push('/login');
+  }
+  }, [isLoggedIn, router]);
 
   const bannerItems: BannerInterface[] = [
     {
@@ -74,7 +74,7 @@ const Home = () => {
       customIcon: LabelIcon, // Replace with your custom icon component
       ctaButton: 
       <Button className="parallelogram-buttonBlue" sx={{fontWeight: 'bold', fontFamily: "Satoshi" }}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/session-startup">Start Sessions</Link></Button>,
-      ctaTarget: '/session',
+      ctaTarget: '',
     },
     {
       title: 'REVIEW',
@@ -86,8 +86,8 @@ const Home = () => {
       bodyFontStyle: 'Satoshi',
       bodyFontWeight: 'normal',
       customIcon: LabelIcon, // Replace with your custom icon component
-      ctaButton: <Button className="parallelogram-buttonBlue" sx={{fontWeight: 'bold', fontFamily: "Satoshi" }}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/session-startup">Review</Link></Button>,
-      ctaTarget: '/session',
+      ctaButton: <Button className="parallelogram-buttonBlue" sx={{fontWeight: 'bold', fontFamily: "Satoshi" }}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/review">Review</Link></Button>,
+      ctaTarget: '',
     },
     {
       title: 'RECOMMENDED',
@@ -99,8 +99,8 @@ const Home = () => {
       bodyFontStyle: 'Satoshi',
       bodyFontWeight: 'normal',
       customIcon: LabelIcon,// Replace with your custom icon component
-      ctaButton: <Button className="parallelogram-buttonBlue" sx={{ fontWeight: 'bold', fontFamily: "Satoshi" }}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/session-startup">Recommended</Link></Button>,
-      ctaTarget: '/session',
+      ctaButton: <Button className="parallelogram-buttonBlue" sx={{ fontWeight: 'bold', fontFamily: "Satoshi" }}><Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/recommended">Recommended</Link></Button>,
+      ctaTarget: '',
     },
     {
       title: 'COMING SOON',
@@ -113,7 +113,7 @@ const Home = () => {
       bodyFontWeight: 'normal',
       customIcon: LabelIcon,// Replace with your custom icon component
       ctaButton: <Button variant="contained" disabled color="primary">N/A</Button>,
-      ctaTarget: '/',
+      ctaTarget: '',
     },
   ];
 

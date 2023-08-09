@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
 import InfoToolTip from '../../helperTooltip.tsx/infoTooltip';
+import './setupStyles.css'
 
 interface ArraySliderTextProps {
   width: number|string;
@@ -49,8 +50,8 @@ export default function ArraySliderText({
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-        <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-          <Typography id="input-slider" gutterBottom>
+        <Box className={"slider"}sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"}>
             {targetAttribute}: {sliderValue}
           </Typography>
           <Grid container spacing={2} alignItems="center">
@@ -62,11 +63,12 @@ export default function ArraySliderText({
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
             valueLabelDisplay="auto"
-          /></Grid><InfoToolTip name={targetAttribute} info={tooltipInfo}/></Grid></Box>
+          /></Grid><InfoToolTip name={targetAttribute} info={tooltipInfo} iconColor={'white'}/></Grid></Box>
         </Grid>
         {textValues.map((textValue, index) => (
           <Grid item xs={3} key={index}>
             <TextField
+            className={"slider"}
               value={textValue}
               onChange={handleTextFieldChange(index)}
               label={`Gear ${index + 1}`}

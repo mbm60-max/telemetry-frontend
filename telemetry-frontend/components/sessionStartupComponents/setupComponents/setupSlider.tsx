@@ -7,7 +7,7 @@ import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 import InfoToolTip from '../../helperTooltip.tsx/infoTooltip';
-
+import './setupStyles.css'
 
 const Input = styled(MuiInput)`
   width: 42px;
@@ -43,8 +43,8 @@ export default function InputSlider({width,targetAttribute,onValueChange,minValu
     </>
   );
   return (
-    <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-      <Typography id="input-slider" gutterBottom>
+    <Box className={"slider"} sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+      <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"}>
         {targetAttribute} {value}
       </Typography>
       <Grid container spacing={2} alignItems="center">
@@ -58,7 +58,7 @@ export default function InputSlider({width,targetAttribute,onValueChange,minValu
             max={maxValue}
             step={step}
           />
-        </Grid> <InfoToolTip name={targetAttribute} info={tooltipInfo}/>
+        </Grid> <InfoToolTip name={targetAttribute} info={tooltipInfo} iconColor={'white'} />
       </Grid>
     </Box>
   );

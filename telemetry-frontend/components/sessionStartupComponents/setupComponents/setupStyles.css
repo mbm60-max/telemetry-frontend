@@ -1,0 +1,36 @@
+.slider {
+color: white !important;
+background-color: #FB9536;
+border-radius: 25px;
+}
+
+.slider .css-187mznn-MuiSlider-root{
+    color: white !important;
+   
+}
+
+.sliderArray {
+color: white !important;
+background-color: #FB9536;
+border-radius: 25px;
+}
+
+.sliderArray .css-gt9yhy-MuiSlider-root {
+color: white !important;
+}
+
+.textArray {
+color: white !important;
+}
+.divider {
+color: white !important;
+}
+.divider .css-11lfba4-MuiDivider-root::after,.css-11lfba4-MuiDivider-root::before{
+background-color: #FB9536;
+height:5px;
+}
+
+.divider .css-11lfba4-MuiDivider-root::before, .css-11lfba4-MuiDivider-root::after{
+    background-color: #FB9536;
+    height:5px;
+    }

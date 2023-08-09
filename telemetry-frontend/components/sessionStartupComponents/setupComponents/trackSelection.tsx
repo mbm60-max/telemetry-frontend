@@ -31,7 +31,7 @@ const TrackSelection = ({ onSelectTrack,onExit}: TrackSelectionProps) => {
 
   return (
     <Box  sx={{ width: '100%', height: '700px', overflow: 'auto' }}>
-      <Button className="parallelogram-buttonCTA-XLG" onClick={handleExit}>Exit</Button>
+      <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleExit} >EXIT</Box></Button>
       <ImageList sx={{ width: '100%', height: '100%' }} cols={2} gap={10} rowHeight={250}>
         {itemData.map((item) => (
           <ImageListItem key={item.img}>

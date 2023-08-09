@@ -12,23 +12,32 @@ import { AuthContext } from "../../authProvider";
 import InputSlider from "./setupSlider";
 import ArraySlider from "./setupSliderArray";
 import ArraySliderText from "./textFieldArray";
-import { Chip, Divider, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Chip, Divider, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, styled } from "@mui/material";
 import ClearIcon from '@mui/icons-material/Clear';
 import InfoToolTip from "../../helperTooltip.tsx/infoTooltip";
+import HorizontalBanner from "../../horizontalBanner/horizontalBanner";
+import './setupStyles.css'
+
 const style = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: '75%',
   height:'75%',
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  bgcolor: 'rgba(8, 13, 56, 0.5)',
+  border: '2px solid #FB9536',
+  borderRadius:15,
   boxShadow: 24,
   p: 4,
-  overflowY: "auto",
+  overflowY: 'auto', // Add this to enable vertical scrolling when content overflows
 };
 
+const StyledDivider = styled(Divider)(({ theme }) => ({
+  borderWidth: "1px", // Adjust the thickness of the line here
+  borderColor:"red" , // You can change the color to any valid CSS color value
+  border:10,
+}));
 
 interface SetupCreatorModalProps {
   onSetupAddition: () => void;
@@ -252,11 +261,13 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                     sx={{ mr: 2, width: "167px" }}
                   >Submit</Button>
                   <Button onClick={handleClose}>Clear<ClearIcon/></Button>
-                  <InfoToolTip name={"Setup"} info={tooltipInfo}/>
-                  <Divider sx={{}}>
-        <Chip label="General" />
-      </Divider>
-         <Grid container spacing={0} direction="row">
+                  <InfoToolTip name={"Setup"} info={tooltipInfo} iconColor={"white"}/>
+                  <StyledDivider className="divider">
+                  
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["GENRERAL"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  </StyledDivider>
+     
+         <Grid container spacing={4} direction="row">
         <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
@@ -330,10 +341,12 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 step={1}
                 toolTipContent={"Adjust the balance of the front and rear brakes in real time. Increasing effectiveness for the front wheels makes it easier to oversteer during braking while cornering, while increasing effectiveness for the rear wheels makes it easier to understeer."}
               /></Grid></Grid>
-                          <Divider>
-        <Chip label="Transmission" />
-      </Divider>
-      <Grid container spacing={0} direction="row">
+                        
+                          <StyledDivider className="divider">
+                  
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["Transmission"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  </StyledDivider>
+      <Grid container spacing={4} direction="row">
               <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
@@ -377,7 +390,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
           <MenuItem value={'Default'}>Default</MenuItem>
           <MenuItem value={'Fully Customised'}>Fully Customised</MenuItem>
         </Select>
-      </FormControl></Grid><InfoToolTip name={"Transmission Type"} info={tooltipInfoTransmission}/></Grid>
+      </FormControl></Grid><InfoToolTip name={"Transmission Type"} info={tooltipInfoTransmission} iconColor={"white"}/></Grid>
     </Box></Grid>
               <Grid item xs={6}>
               <ArraySliderText
@@ -387,9 +400,10 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 toolTipContent={"Number of gears, only available in non-electric drivetrains"}              
                 /></Grid>
             </Grid>
-            <Divider>
-        <Chip label="Suspension and Aerodynamics" />
-      </Divider>
+           
+            <StyledDivider className="divider">       
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["Suspension + Aerodynamics"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  </StyledDivider>
             <Grid item xs={12}>
               <Grid container spacing={0} direction="row">
               <Grid item xs={6}>
@@ -490,9 +504,10 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 toolTipContent={"Adjust the force with which the air currents produced by the speed of the car are used to push the car down towards the track. Increasing this value allows for more downforce, but will reduce the car's maximum speed."}    
               />
             </Grid>
-            <Divider>
-        <Chip label="Differential" />
-      </Divider>
+            <StyledDivider className="divider">       
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["Differential"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  </StyledDivider>
+
           <ArraySlider
             width={'85%'}
             targetAttribute={"LSD Initial Torque"}
@@ -559,7 +574,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
           <MenuItem value={'Default'}>Default</MenuItem>
           <MenuItem value={'Fully Customised'}>Fully Customised</MenuItem>
         </Select>
-      </FormControl></Grid><InfoToolTip name={"Differential Gear"} info={tooltipInfoDifGear}/></Grid>
+      </FormControl></Grid><InfoToolTip name={"Differential Gear"} info={tooltipInfoDifGear} iconColor={"white"}/></Grid>
           </Box>
           </Grid>
           </Grid>

@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import InfoToolTip from '../../helperTooltip.tsx/infoTooltip';
+import './setupStyles.css'
 
 
 interface ArraySliderProps {
@@ -47,11 +48,11 @@ export default function ArraySlider({
     onValueChange(newValues);
   };
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box  sx={{ flexGrow: 1 }}>
       <Grid container spacing={0} direction="row">
         <Grid item xs={6}>
-        <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-          <Typography id="input-slider" gutterBottom>
+        <Box className={"sliderArray"} sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"}>
              {targetAttribute} {values[0]}
           </Typography>
           <Grid container spacing={2} alignItems="center">
@@ -65,11 +66,11 @@ export default function ArraySlider({
             min={parseFloat(minValue)}
             max={parseFloat(maxValue)}
             step={step}
-          /></Grid><InfoToolTip name={"Front"+targetAttribute} info={tooltipInfoFront}/></Grid></Box>
+          /></Grid><InfoToolTip name={"Front" + targetAttribute} info={tooltipInfoFront} iconColor={'white'}/></Grid></Box>
         </Grid>
         <Grid item xs={6}>
-        <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-          <Typography id="input-slider" gutterBottom>
+        <Box className={"sliderArray"} sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"}>
             {targetAttribute} {values[1]}
           </Typography>
           <Grid container spacing={2} alignItems="center">
@@ -83,7 +84,7 @@ export default function ArraySlider({
             min={parseFloat(minValue)}
             max={parseFloat(maxValue)}
             step={step}
-          /></Grid><InfoToolTip name={"Rear"+targetAttribute} info={tooltipInfoRear}/></Grid></Box>
+          /></Grid><InfoToolTip name={"Rear" + targetAttribute} info={tooltipInfoRear} iconColor={'white'}/></Grid></Box>
         </Grid>
       </Grid>
     </Box>

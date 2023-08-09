@@ -9,6 +9,7 @@ import InfoIcon from '@mui/icons-material/Info';
 interface InfoToolTipProps{
     name:string;
     info:JSX.Element;
+    iconColor:string;
 }
 const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} placement="right" arrow classes={{ popper: className }} />
@@ -22,7 +23,7 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
-export default function InfoToolTip({name,info}:InfoToolTipProps) {
+export default function InfoToolTip({name,info,iconColor}:InfoToolTipProps) {
   return (
     <>
       <HtmlTooltip
@@ -33,7 +34,7 @@ export default function InfoToolTip({name,info}:InfoToolTipProps) {
           </React.Fragment>
         }
       >
-        <Button><InfoIcon/></Button>
+        <Button><InfoIcon sx={{color:iconColor}}/></Button>
       </HtmlTooltip>
     </>
   );

@@ -36,6 +36,9 @@ import Footer from "../components/footer/footer";
 import NavBar from "../components/navbar/navbar";
 import '../components/navbar/navbar.css';
 import HorizontalBanner from "../components/horizontalBanner/horizontalBanner";
+import trackData from "../data/trackData";
+import splitAndCapitalise from "../utils/splitAndCapitalise";
+import CompoundStatBars from "../components/sessionStartupComponents/compoundStats";
 
 const SessionStartup: React.FC = () => {
   const [selectedRowId, setSelectedRowId] = useState<GridRowId | null>(null); // Manage selectedRowId in the parent component
@@ -53,7 +56,9 @@ const SessionStartup: React.FC = () => {
     display:"flex",
     justifyContent:'center',
     alignItems:'center',
+
   }));
+
   const ItemCentered = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "rgba(132, 126, 126, 0)",
     ...theme.typography.body2,
@@ -135,9 +140,7 @@ const SessionStartup: React.FC = () => {
         // Rest of the code for handling the selected row
       }
     } else {
-      console.log("got you")
       console.log(selectedRowIdSetupGridRef.current)
-      console.log("here")
       selectedRowIdSetupGridRef.current = null
     }
     },
@@ -234,32 +237,81 @@ const SessionStartup: React.FC = () => {
         
         
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={4}>
+            <Grid container spacing={8}>
             <Grid item xs={12}><Box sx={{ height: '50px' }}></Box></Grid>
             <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                           <HorizontalBanner GridContent={["SESSION STARTUP"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
                         </Grid>
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <HorizontalBanner GridContent={["SELECT A CAR"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+                          <HorizontalBanner GridContent={["SELECT A CAR"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} />
                         </Grid>
               <Grid item xs={12}  sx={{ height: "100%",display:'flex',justifyContent:'center'}}>
                 <Item>
                   <QuickFilteringGrid onSelectCar={handleCarSelection} selectedRowId={selectedRowId} onRowSelectionModelChange={handleRowSelectionChange} onSelectedRowIdChange={handleSetSelectedRowId} />
                 </Item>
               </Grid>
+              <Grid item xs={12}><Box sx={{ height: '50px' }}></Box></Grid>
               <Grid item xs={12} sm={6} sx={{ height: "100%" }}>
               <Grid container spacing={4}>
-              <Grid item xs={12}> <HorizontalBanner GridContent={["SELECT A SETUP"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+              <Grid item xs={12}> <HorizontalBanner GridContent={["SELECT A SETUP"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
               <Grid item xs={12}> <Item>
                   <SetupTable onSelectSetup={handlesetupSelection} selectedRowId={selectedRowIdSetupGridRef.current} onRowSelectionModelChange={handleRowSelectionChangeSetupGrid} onSelectedRowIdChange={handleSetSelectedRowIdSetupGrid} fetchDataCallback={forceFetchData} />
                 </Item></Grid>
               </Grid>
               </Grid>
               <Grid item xs={12} sm={6} sx={{ height: "100%" }}>
-                <Item>
-                  <Grid container spacing={2} sx={{ height: "100%" }}>
-                    <Grid item xs={6}>
-                      <Box sx={{ minWidth: "100%" }}>
+              <Grid container spacing={4}>
+              <Grid item xs={12}> <HorizontalBanner GridContent={["SELECT A TRACK"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+              <Grid item xs={12}> <Item>
+              <Grid container spacing={2} sx={{ height: "100%" }}>
+                    
+                    <Grid item xs={12}>
+                    <Grid container spacing={2} >
+                    <Grid item xs={12} >  <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}> <HorizontalBanner GridContent={[splitAndCapitalise(selectedTrack)]} needsBackground={false} fontSizes={[22]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid> </Grid>
+                    <Grid item xs={12}>  <Box
+                        sx={{
+                          width: "100%",
+                          height:'290px',
+                          backgroundColor: "rgba(8, 13, 56, 0.5)",
+                          margin: 0,
+                          padding: 0,
+                          borderRadius:10,
+                          border: "3px solid #FB9536",
+                          boxShadow: 1,
+                        }}
+                      >
+                        
+                        <ImageBox
+                          Width={"100%"}
+                          Height={"290px"}
+                          MarginRight={"0px"}
+                          MarginLeft={"0px"}
+                          MarginTop={"0px"}
+                          imageSrc={`/images/${selectedTrack}.svg`} borderRadius={0} 
+                          hasOverlay={false}                          >
+
+                          </ImageBox>
+                      </Box></Grid>
+                    <Grid item xs={12}> <TrackSelectionModal
+                          onSelectTrack={handleTrackSelection}
+                        /> </Grid>
+                  </Grid>
+                    
+                    </Grid>
+                  </Grid>
+                </Item>
+               </Grid>
+              </Grid>
+                
+                 
+              </Grid>
+              <Grid item xs={12}><Box sx={{ height: '50px' }}></Box></Grid>
+              <Grid item xs={12} sx={{display:"flex",justifyContent:'center'}}>
+              <Grid container spacing={4}>
+              <Grid item xs={12} sx={{display:"flex",justifyContent:'center'}}> <HorizontalBanner GridContent={["SELECT A COMPOUND"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+              <Grid item xs={12}  sx={{display:"flex",justifyContent:'center'}}> <Item><Box sx={{ width: "100%",height:'100%'}}>
+              <Grid container spacing={4}>
+              <Grid item xs={12}sm={6}>
                         <FormControl fullWidth>
                           <InputLabel id="demo-simple-select-label">
                             Compound
@@ -270,6 +322,7 @@ const SessionStartup: React.FC = () => {
                             value={selectedCompound}
                             label="Compound"
                             onChange={handleCompoundSelection}
+                            sx={{height:'100px'}}
                           >
                             <MenuItem value={"Comfort: Hard (CH)"}>
                               Comfort: Hard (CH)
@@ -311,39 +364,15 @@ const SessionStartup: React.FC = () => {
                               Dirt Tires
                             </MenuItem>
                           </Select>
-                        </FormControl>
+                        </FormControl></Grid>
+                        <Grid item xs={12}sm={6} ><CompoundStatBars selectedCompound={selectedCompound}/></Grid>
+                        </Grid>
                       </Box>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Box
-                        sx={{
-                          width: "100%",
-                          backgroundColor: "F6F6F6",
-                          margin: 0,
-                          padding: 0,
-                          borderRadius: 1,
-                          border: "3px solid red",
-                          boxShadow: 1,
-                        }}
-                      >
-                        <TrackSelectionModal
-                          onSelectTrack={handleTrackSelection}
-                        />
-                        <ImageBox
-                          Width={"100%"}
-                          Height={"300px"}
-                          MarginRight={"0px"}
-                          MarginLeft={"0px"}
-                          MarginTop={"0px"}
-                          imageSrc={`/images/${selectedTrack}.svg`} borderRadius={0} 
-                          hasOverlay={false}                          >
-
-                          </ImageBox>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </Item>
+                      </Item> </Grid>
+                     
               </Grid>
+                
+                    </Grid>
               <Grid item xs={12} >
                 <ItemCentered>
                   <Grid container spacing={2} sx={{ height: "100%" }}><Grid item xs={12}><Divider sx={{}}>

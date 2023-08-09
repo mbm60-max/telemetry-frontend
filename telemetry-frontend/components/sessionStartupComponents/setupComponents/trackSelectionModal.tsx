@@ -6,6 +6,7 @@ import Modal from '@mui/material/Modal';
 import TrackSelection from './trackSelection';
 import ImageBox from '../../homepageTrack';
 import { useEffect, useState } from 'react';
+import '../../navbar/navbar.css';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -44,7 +45,7 @@ export default function TrackSelectionModal({ onSelectTrack }: TrackSelectionMod
 
   return (
     <>
-      <Button onClick={handleOpen}>Select Track</Button>
+      <Button  className="parallelogram-buttonCTA-XLG" onClick={handleOpen}>Select Track</Button>
       <Modal
         open={open}
         onClose={handleClose}

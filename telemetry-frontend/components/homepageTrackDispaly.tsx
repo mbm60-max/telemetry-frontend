@@ -6,7 +6,7 @@ import trackData from "../data/trackData";
 import BasicCard from "./card";
 import ImageBox from "./homepageTrack";
 import './navbar/navbar.css';
-
+import splitAndCapitalise from "../utils/splitAndCapitalise";
 interface HomePageTrackProps {
 
 }
@@ -49,15 +49,7 @@ function HomepageTrack({ }: HomePageTrackProps) {
     function getRandomNumber(min: number, max: number) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    function splitAndCapitalise(input: string): string {
-        const words = input.split(/(?=[A-Z])/); // Split at capital letters
-        const capitalizedWords = words.map((word) => {
-            const firstLetter = word.charAt(0).toUpperCase();
-            const restOfWord = word.slice(1).toUpperCase();
-            return firstLetter + restOfWord;
-        });
-        return capitalizedWords.join(' ');
-    }
+    
     const checkForNaValues = (data: string | number) => {
         if (typeof data == "string") {
             return "N/A"

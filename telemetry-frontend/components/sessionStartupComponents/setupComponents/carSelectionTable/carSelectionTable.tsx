@@ -4,6 +4,7 @@ import { DataGrid, GridRowId, GridToolbar } from '@mui/x-data-grid';
 import { useDemoData } from '@mui/x-data-grid-generator';
 import { carData } from '../../../../data/gtCarList';
 import './carSelectionTable.css'
+
 const VISIBLE_FIELDS = ['name', 'rating', 'country', 'dateCreated', 'isAdmin'];
 
 interface GridProps{

@@ -7,6 +7,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import Image from "next/image";
 import { itemData } from "../../../data/imageData";
 import { GridRowId } from "@mui/x-data-grid";
+import splitAndCapitalise from "../../../utils/splitAndCapitalise";
 
 interface TrackSelectionProps {
   onSelectTrack: (track: string) => void;
@@ -30,11 +31,11 @@ const TrackSelection = ({ onSelectTrack,onExit}: TrackSelectionProps) => {
 
   return (
     <Box  sx={{ width: '100%', height: '700px', overflow: 'auto' }}>
-      <Button onClick={handleExit}>Exit</Button>
-      <ImageList sx={{ width: '100%', height: '100%' }} cols={3} gap={10} rowHeight={250}>
+      <Button className="parallelogram-buttonCTA-XLG" onClick={handleExit}>Exit</Button>
+      <ImageList sx={{ width: '100%', height: '100%' }} cols={2} gap={10} rowHeight={250}>
         {itemData.map((item) => (
           <ImageListItem key={item.img}>
-            <div className="text-container">{item.title}</div>
+            <div className="text-container">{splitAndCapitalise(item.title)}</div>
             <div className="image-container">
               <Image
                 src={item.img}
@@ -58,14 +59,13 @@ const TrackSelection = ({ onSelectTrack,onExit}: TrackSelectionProps) => {
           overflow: hidden;
           margin-top: 0px;
           background-color: black; /* Set background color to red */
-          border: 3px solid black;
-          border-radius: 0px;
+          border-radius: 0px 0px 10px 10px; /* Rounded bottom corners */
           box-sizing: border-box;
+          border: 1px solid transparent;
         }
 
         .image-container:hover {
-          border: 3px solid red;
-          background-color:green;
+          background-color:rgba(251, 149, 54, 0.85);
         }
         .text-container {
           display: flex;
@@ -75,10 +75,11 @@ const TrackSelection = ({ onSelectTrack,onExit}: TrackSelectionProps) => {
           height: 30px;
           overflow: hidden;
           margin-top: 0px;
-          background-color: grey; /* Set background color to red */
-          border: 1px solid grey;
-          border-radius: 0px;
+          background-color: rgba(8, 13, 56, 0.5);
+  border: 1px solid transparent;
+  border-radius: 10px 10px 0px 0px; 
           box-sizing: border-box;
+          color:white;
         }
       `}</style>
     </Box>

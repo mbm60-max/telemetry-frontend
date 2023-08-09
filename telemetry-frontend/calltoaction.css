@@ -28,7 +28,41 @@
     display: flex;
   align-items: center;
   }
-  
+  .compoundSelect {
+    height: 200px !important;
+    background-color: rgba(8, 13, 56, 0.5) !important;
+    color: white !important;
+    border-radius: 100px;
+}
+
+/* Override label color within the .compoundSelect component */
+.compoundSelect .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root {
+    color: white !important;
+    margin-left: 80px;
+    font-size: 22px;
+}
+.textFields {
+  color: white !important;
+}
+.textFields .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-disabled {
+  color: white !important;
+}
+.textFields .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-disabled{
+  color: white !important;
+}
+.textFields .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled{
+  -webkit-text-fill-color: white !important;
+  background-color: #FB9536;
+  border-radius: 4px;
+}
+.textFields .css-1wc848c-MuiFormHelperText-root.Mui-error{
+  font-size:17px;
+  font-family:"Yapri";
+  font-weight: bold;
+  color: white;
+}
+
+
   .action-button:not(:last-child)::after {
     content: '';
     position: absolute;

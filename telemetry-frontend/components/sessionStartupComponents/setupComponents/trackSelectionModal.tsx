@@ -15,8 +15,9 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: '75%',
   height:'75%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: 'rgba(8, 13, 56, 0.5)',
+  border: '2px solid #FB9536',
+  borderRadius:15,
   boxShadow: 24,
   p: 4,
   overflowY: 'auto', // Add this to enable vertical scrolling when content overflows
@@ -45,7 +46,7 @@ export default function TrackSelectionModal({ onSelectTrack }: TrackSelectionMod
 
   return (
     <>
-      <Button  className="parallelogram-buttonCTA-XLG" onClick={handleOpen}>Select Track</Button>
+      <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleOpen} >Select Track</Box></Button>
       <Modal
         open={open}
         onClose={handleClose}

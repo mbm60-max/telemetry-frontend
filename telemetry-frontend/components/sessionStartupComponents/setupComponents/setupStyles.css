@@ -49,3 +49,39 @@ height:5px;
     .sliderInner .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input{
         color: white !important;
     }
+
+    .textBox{
+        color: white !important;
+background-color: #FB9536;
+
+border-radius: 25px;
+    }
+  
+    .textBox .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root{
+        color: white !important;
+        
+    }
+    
+    .textBox .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
+        color: white !important;
+        
+    }
+    .textBox .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+        color: white !important;
+        
+    }
+    .textBox .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
+        color: white !important;
+        
+    }
+    .textBox .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+        border-color: white !important;
+        border-radius:25px;
+    }
+     .textBox .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:-webkit-autofill{
+        border-color: white !important;
+        border-radius:25px;
+    }
+    .textBox .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:-internal-autofill-selected{
+        background-color: red !important;
+    }

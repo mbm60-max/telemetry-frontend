@@ -55,7 +55,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
   const [open, setOpen] = React.useState(false);
   const [setupname, setSetupName] = React.useState("");
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {setNameError(""),setOpen(false)};
   const [powerLevel, setPowerLevel] = useState("");
   const [weightReductionLevel, setWeightReductionLevel] = useState("");
   const [powerRatio, setPowerRatio] = useState("");
@@ -205,6 +205,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
       }catch{
       }
 
+    }else{setNameError("YOU MUST CHOOSE A NAME FOR THIS SETUP")
     }
   };
   const handleInputChange =
@@ -247,10 +248,10 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
       >
         <Box sx={style}>
         <Grid container spacing={12}  direction="row">
-        <Grid item xs={12}>
-        <HorizontalBanner GridContent={["SETUP CREATOR"]} needsBackground={false} fontSizes={[40]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
-        <Grid container spacing={4}  direction="row">
-        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <TextField className="slider"
+        <Grid item xs={12}> <Grid container spacing={8}  direction="row"><Grid item xs={12}><Box sx={{display:'flex',justifyContent:'center'}}>
+        <HorizontalBanner GridContent={["SETUP CREATOR"]} needsBackground={false} fontSizes={[40]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box></Grid>
+        <Grid item xs={12}><Grid container spacing={4}  direction="row">
+        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <TextField className="textBox"
             id="name"
             label="Name"
             variant="outlined"
@@ -259,18 +260,18 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                       helperText={nameError}
                       sx={{width:'100%'}}
           /></Grid>
-        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <Button   onClick={handleSetupSubmit}
+        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <Button  className="parallelogram-buttonBlueXG" onClick={handleSetupSubmit}
                     type="submit"
                     variant="contained"
                     sx={{ mr: 2, width: "100%" }}
-                  >Submit</Button><InfoToolTip name={"Setup"} info={tooltipInfo} iconColor={"white"}/></Grid>
+                  >CONFRIM SETUP</Button><InfoToolTip name={"Setup"} info={tooltipInfo} iconColor={"white"}/></Grid>
         </Grid>
          
           
          
-                  <Button onClick={handleClose} sx={{postion:'absolute',top:-240,left:'85%'}}>Clear<ClearIcon/></Button>
+                  <Button className="parallelogram-buttonBlueXS" onClick={handleClose} sx={{postion:'absolute',top:-175,left:'85%'}}>Clear<ClearIcon/></Button>
                   
-                  </Grid><Grid item xs={12}>
+                  </Grid></Grid></Grid><Grid item xs={12}>
                   <Grid container spacing={8}  direction="row">
         <Grid item xs={12}>
                   <StyledDivider className="divider">  
@@ -620,12 +621,13 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
       </FormControl></Grid><InfoToolTip name={"Differential Gear"} info={tooltipInfoDifGear} iconColor={"white"}/></Grid>
           </Box>
           </Grid>
-          </Grid></Grid></Grid>  </Grid> <Grid item xs={12}>
-          <StyledDivider className="divider"> 
-        <HorizontalBanner GridContent={["SUBMISSION"]} needsBackground={false} fontSizes={[40]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
-        </StyledDivider>
-        <Grid container spacing={4}  direction="row">
-        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <TextField className="slider"
+          </Grid></Grid></Grid>  </Grid> <Grid item xs={12}> <Grid container spacing={8}  direction="row">
+          <Grid item xs={12} >
+          <StyledDivider className="divider">       
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["SUBMISSION"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  </StyledDivider></Grid><Grid item xs={12} >
+        <Grid container spacing={8}  direction="row">
+        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <TextField className="textBox"
             id="name"
             label="Name"
             variant="outlined"
@@ -634,18 +636,18 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                       helperText={nameError}
                       sx={{width:'100%'}}
           /></Grid>
-        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <Button   onClick={handleSetupSubmit}
+        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <Button  className="parallelogram-buttonBlueXG" onClick={handleSetupSubmit}
                     type="submit"
                     variant="contained"
-                    sx={{ mr: 2, width: "100%" }}
-                  >Submit</Button><InfoToolTip name={"Setup"} info={tooltipInfo} iconColor={"white"}/></Grid>
+                    sx={{ width: "100%"}}
+                  >CONFIRM SETUP</Button><InfoToolTip name={"Setup"} info={tooltipInfo} iconColor={"white"}/></Grid>
         </Grid>
          
           
          
-                  <Button onClick={handleClose} sx={{postion:'absolute',top:-240,left:'85%'}}>Clear<ClearIcon/></Button>
+                  <Button  className="parallelogram-buttonBlueXS" onClick={handleClose} sx={{postion:'absolute',top:-175,left:'85%'}}>Clear<ClearIcon/></Button>
                   
-                  </Grid></Grid>
+                  </Grid></Grid></Grid></Grid>
         </Box>
       </Modal>
     </>

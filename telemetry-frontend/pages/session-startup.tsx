@@ -282,7 +282,7 @@ const SessionStartup: React.FC = () => {
 
                               <ImageBox
                                 Width={"100%"}
-                                Height={"290px"}
+                                Height={"300px"}
                                 MarginRight={"0px"}
                                 MarginLeft={"0px"}
                                 MarginTop={"0px"}

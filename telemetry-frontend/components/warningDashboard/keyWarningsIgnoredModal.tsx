@@ -44,7 +44,7 @@ export default function KeyWarningsIgnoredModal({ignoredWarnings,ignoredWarnings
 
   return (
     <>
-      <Button variant='contained' onClick={handleOpen}><WarningIcon/></Button>
+      <Button  className={"warningButton"} variant='contained' onClick={handleOpen} sx={{height:'40px'}}><WarningIcon/></Button>
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"

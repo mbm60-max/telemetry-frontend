@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Divider, Grid, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Grid, Typography, useMediaQuery } from "@mui/material";
 import chroma from "chroma-js";
 import React, { useEffect, useRef } from "react";
 import WarningDashboardSettingsModal from "./warningDashboardSettingsModal";
@@ -347,14 +347,23 @@ export default function WarningsDashboard({
   }, [selectedLimitsLower]);
 
   // ... rest of the component ...
-
+  const isMobile = useMediaQuery('(max-width:750px)')
   return (
-    <Grid container spacing={2} columns={valuesOfInterest.length}>
+    <Grid container spacing={20} >
       <Grid
         item
         xs={12}
-        sx={{ height: "10px", justifyContent: "end", display: "flex" }}
-      >
+        sx={{ height: "75px" }}
+      > <Grid container spacing={2} >
+        <Grid
+        item
+        xs={12} sm={10}>
+          <Box sx={{width:'90%',overflow:"auto"}}>
+          <Typography sx={{ justifyContent: "left", display: "flex",alignItems:'center',ml:1,color:"orange",whiteSpace: "nowrap"}} fontFamily={"Yapari"} fontWeight={"Bold"} fontSize={50}>ACTIVE WARNINGS</Typography>
+          </Box> </Grid> <Grid
+        item
+        xs={12} sm={2}>
+<Box sx={{ justifyContent: isMobile ? 'center' : 'end', display: "flex",alignItems:'center'}}>
         <KeyWarningsIgnoredModal
           ignoredWarnings={acknowledgedWarnings}
           ignoredWarningsLower={acknowledgedWarningsLower}
@@ -367,7 +376,15 @@ export default function WarningsDashboard({
           handleDeleteWarning={handleDeleteWarning}
           allWarnings={valuesOfInterest}
         />
+        </Box>
+        </Grid>
+        </Grid>
+              
       </Grid>
+      <Grid
+        item
+        xs={12}>
+           <Grid container spacing={2} columns={valuesOfInterest.length} >
       {valuesOfInterest.map((value, index) => (
         <Grid
           item
@@ -393,7 +410,7 @@ export default function WarningsDashboard({
               ),
               margin: 0,
               padding: 0,
-              borderRadius: 2,
+              borderRadius: '12px',
               border: "1px solid grey",
               boxShadow: 1,
               justifyContent: "center",
@@ -487,7 +504,7 @@ export default function WarningsDashboard({
             
           </Box>
         </Grid>
-      ))}
-    </Grid>
+      ))}</Grid>
+    </Grid></Grid>
   );
 }

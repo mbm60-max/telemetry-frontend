@@ -48,7 +48,7 @@ export default function WarningDashboardSettingsModal({ onSelectLimit,index,valu
 
   return (
     <>
-      <Button variant='contained'onClick={handleOpen}><SettingsIcon/></Button>
+      <Button className={"warningButton"} variant='contained' onClick={handleOpen} sx={{height:'40px'}}><SettingsIcon/></Button>
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"

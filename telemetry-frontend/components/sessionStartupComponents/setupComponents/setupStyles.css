@@ -3,10 +3,17 @@ color: white !important;
 background-color: #FB9536;
 border-radius: 25px;
 }
+.warningButton {
+    color: white !important;
+    background-color: #FB9536;
+    border-radius: 10px;
+    }
 
+    .warningButton  .css-187mznn-MuiSlider-root{
+        color: white !important;
+    }
 .slider .css-187mznn-MuiSlider-root{
     color: white !important;
-   
 }
 
 .sliderArray {

@@ -104,6 +104,13 @@ export default function BasicTabs() {
       color: '#F6F6F6',
     },
   });
+  const WhiteTextTabInner = styled(Tab)({
+    maxWidth:'80%',
+    '&:hover': {
+      backgroundColor: 'purple',
+      color: '#F6F6F6',
+    },
+  });
   const theme = createTheme({
     palette: {
       primary: {
@@ -658,7 +665,7 @@ const [packetFlag,setPacketFlag] = useState(false);
     <Box sx={{ width: '100%' }}>
     
       <ThemeProvider theme={theme}>
-        <Tabs value={value} textColor="primary" indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example" centered orientation={isMobile ? 'vertical' : 'horizontal'}>
+      <Tabs value={value} textColor="primary" indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example" centered orientation={isMobile ? 'vertical' : 'horizontal'}>
         <WhiteTextTab label="General" {...a11yProps(0)} />
         <WhiteTextTab label="Engine" {...a11yProps(1)} />
         <WhiteTextTab label="Gearbox" {...a11yProps(2)} />

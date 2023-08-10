@@ -54,7 +54,7 @@ export default function KeyWarningsAddModal({ handleDeleteWarning,allWarnings }:
 
   return (
     <>
-      <Button variant='contained' onClick={handleOpen}><RemoveIcon/></Button>
+      <Button  className={"warningButton"} variant='contained' onClick={handleOpen} sx={{height:'40px'}}><RemoveIcon/></Button>
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"

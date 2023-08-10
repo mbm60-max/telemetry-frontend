@@ -7,7 +7,7 @@ import { useState } from 'react';
 import WarningDashboardSettings from './warningDashSettings';
 import KeyWarningsSettingsAdd from './keyWarningsSettings';
 import AddIcon from '@mui/icons-material/Add';
-
+import '../sessionStartupComponents/setupComponents/setupStyles.css'
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -62,7 +62,7 @@ export default function KeyWarningsAddModal({ handleAddWarning,allWarnings }: Ke
 
   return (
     <>
-      <Button variant='contained' onClick={handleOpen}><AddIcon/></Button>
+      <Button className={"warningButton"} variant='contained' onClick={handleOpen} sx={{height:'40px'}}><AddIcon /></Button>
       <Modal
         open={open}
         aria-labelledby="modal-modal-title"

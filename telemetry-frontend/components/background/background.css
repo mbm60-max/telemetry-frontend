@@ -4,6 +4,12 @@
     overflow: hidden; 
     background: linear-gradient(to bottom, rgba(9, 27, 119, 1) 0%, rgba(9, 27, 119, 0) 100%);
 }
+.homepage-containerXG {
+  width: 100%;
+  height: 2500px;
+  overflow: hidden; 
+  background: linear-gradient(to bottom, rgba(9, 27, 119, 1) 0%, rgba(9, 27, 119, 0) 100%);
+}
 .setups-container{
   width: 100%;
   height: 3500px;

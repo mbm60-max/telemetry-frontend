@@ -7,7 +7,7 @@ import './sessiontab.css'
 import Homepage from '../background/background';
 import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Button } from '@mui/material';
+import { Button, useMediaQuery } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../authProvider';
@@ -28,6 +28,7 @@ import SetupObject from '../../interfaces/setupDataInterface';
 import SetupDataInterface from '../../interfaces/setupDataInterface';
 import emptySetupObject from '../../data/emptySetupObject';
 import { SettingsContext } from '../authProviderSettings';
+import { Theme } from '@mui/material/styles';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -96,20 +97,20 @@ export default function BasicTabs() {
   
   const WhiteTextTab = styled(Tab)({
     color: '#F6F6F6',
-    backgrounColor: '#847E7E',
+    backgrounColor: 'red',
+    maxWidth:'100%',
     '&:hover': {
-      backgroundColor: '#DA2E22',
+      backgroundColor: '#FB9536',
       color: '#F6F6F6',
     },
   });
-
   const theme = createTheme({
     palette: {
       primary: {
         main: '#F6F6F6', // Replace with your desired primary color
       },
       secondary: {
-        main: '#DA2E22', // Replace with your desired secondary color
+        main: '#FB9536', // Replace with your desired secondary color
       },
     },
   });
@@ -630,6 +631,8 @@ const [packetFlag,setPacketFlag] = useState(false);
   useEffect(() => {
     handleGetSetup();
   }, []);
+  
+  const isMobile = useMediaQuery('(max-width:750px)')
 
   return (
     <> {activeWarnings.length > 0 ? (
@@ -650,12 +653,12 @@ const [packetFlag,setPacketFlag] = useState(false);
     ) : (
       <p>No active warnings.</p>
     )}
-        <Homepage style={'homepage'}>
+        <Homepage style={'homepage-containerXG'}>
     <Box className='header'><Button onClick={handleExitSession}>Exit Session</Button></Box>
     <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    
       <ThemeProvider theme={theme}>
-        <Tabs value={value} textColor="primary" indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example" centered >
+        <Tabs value={value} textColor="primary" indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example" centered orientation={isMobile ? 'vertical' : 'horizontal'}>
         <WhiteTextTab label="General" {...a11yProps(0)} />
         <WhiteTextTab label="Engine" {...a11yProps(1)} />
         <WhiteTextTab label="Gearbox" {...a11yProps(2)} />
@@ -664,7 +667,7 @@ const [packetFlag,setPacketFlag] = useState(false);
         <WhiteTextTab label="Custom Graph" {...a11yProps(5)} />
         </Tabs>
         </ThemeProvider>
-      </Box>
+      
       <TabPanel value={value} index={0} >
       <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track, distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${1}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${1}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${1}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${1}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${1}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${1}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>
       </TabPanel>

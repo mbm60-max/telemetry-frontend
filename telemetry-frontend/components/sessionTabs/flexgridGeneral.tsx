@@ -23,21 +23,15 @@ const DynamicBasicChart = dynamic(() => import('./chart'), {
 });
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 235, 214, 0.5)' : 'rgba(255, 235, 214, 0.5)',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
-const ItemBlack = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  backGroundColor: theme.palette.text.primary,
-}));
+
 const ItemCentered = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 235, 214, 0.5)' : 'rgba(255, 235, 214, 0.5)',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -58,8 +52,8 @@ const WrappedImageBox = () => (
       MarginRight={'0px'}
       MarginLeft={'0px'}
       MarginTop={'0px'}
-      imageSrc="/images/spa.svg"
-    />
+      imageSrc="/images/spa.svg" borderRadius={0} hasOverlay={false}    > 
+      </ImageBox>
   </BlackBox>
 );
 

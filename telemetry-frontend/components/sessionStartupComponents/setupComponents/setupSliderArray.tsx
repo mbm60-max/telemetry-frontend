@@ -49,10 +49,10 @@ export default function ArraySlider({
   };
   return (
     <Box  sx={{ flexGrow: 1 }}>
-      <Grid container spacing={0} direction="row">
+      <Grid container rowSpacing={0} columnSpacing={6} direction="row">
         <Grid item xs={6}>
         <Box className={"sliderArray"} sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"}>
+          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"} sx={{overflow:'auto',whiteSpace: 'nowrap' }}>
              {targetAttribute} {values[0]}
           </Typography>
           <Grid container spacing={2} alignItems="center">
@@ -70,7 +70,7 @@ export default function ArraySlider({
         </Grid>
         <Grid item xs={6}>
         <Box className={"sliderArray"} sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"}>
+          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"} sx={{overflow:'auto',whiteSpace: 'nowrap' }}>
             {targetAttribute} {values[1]}
           </Typography>
           <Grid container spacing={2} alignItems="center">

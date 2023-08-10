@@ -44,7 +44,7 @@ export default function InputSlider({width,targetAttribute,onValueChange,minValu
   );
   return (
     <Box className={"slider"} sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-      <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"}>
+      <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"} sx={{overflow:'auto',whiteSpace: 'nowrap' }}>
         {targetAttribute} {value}
       </Typography>
       <Grid container spacing={2} alignItems="center">

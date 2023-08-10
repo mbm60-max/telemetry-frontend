@@ -51,7 +51,7 @@ export default function ArraySliderText({
       <Grid container spacing={2}>
         <Grid item xs={12}>
         <Box className={"slider"}sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"}>
+          <Typography id="input-slider" gutterBottom fontSize={22} fontFamily={"Satoshi"} sx={{overflow:'auto',whiteSpace: 'nowrap' }}>
             {targetAttribute}: {sliderValue}
           </Typography>
           <Grid container spacing={2} alignItems="center">

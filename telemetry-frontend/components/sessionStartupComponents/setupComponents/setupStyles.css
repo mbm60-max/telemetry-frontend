@@ -34,3 +34,18 @@ height:5px;
     background-color: #FB9536;
     height:5px;
     }
+
+.sliderInner{
+    color: white !important;
+    background-color: #FB9536;
+    border-radius: 25px;
+    }
+
+
+    .sliderInner .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
+        color: white !important;
+    }
+
+    .sliderInner .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input{
+        color: white !important;
+    }

@@ -246,28 +246,39 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <TextField
+        <Grid container spacing={12}  direction="row">
+        <Grid item xs={12}>
+        <HorizontalBanner GridContent={["SETUP CREATOR"]} needsBackground={false} fontSizes={[40]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+        <Grid container spacing={4}  direction="row">
+        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <TextField className="slider"
             id="name"
             label="Name"
             variant="outlined"
             onChange={(value) => handleInputText(setSetupName)(value)}
             error={Boolean(nameError)}
                       helperText={nameError}
-          />
-          
-          <Button   onClick={handleSetupSubmit}
+                      sx={{width:'100%'}}
+          /></Grid>
+        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <Button   onClick={handleSetupSubmit}
                     type="submit"
                     variant="contained"
-                    sx={{ mr: 2, width: "167px" }}
-                  >Submit</Button>
-                  <Button onClick={handleClose}>Clear<ClearIcon/></Button>
-                  <InfoToolTip name={"Setup"} info={tooltipInfo} iconColor={"white"}/>
-                  <StyledDivider className="divider">
+                    sx={{ mr: 2, width: "100%" }}
+                  >Submit</Button><InfoToolTip name={"Setup"} info={tooltipInfo} iconColor={"white"}/></Grid>
+        </Grid>
+         
+          
+         
+                  <Button onClick={handleClose} sx={{postion:'absolute',top:-240,left:'85%'}}>Clear<ClearIcon/></Button>
                   
+                  </Grid><Grid item xs={12}>
+                  <Grid container spacing={8}  direction="row">
+        <Grid item xs={12}>
+                  <StyledDivider className="divider">  
                   <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["GENRERAL"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
                   </StyledDivider>
-     
-         <Grid container spacing={4} direction="row">
+                  </Grid>
+                  <Grid item xs={12}>
+         <Grid container  rowSpacing={4}  columnSpacing={6} direction="row">
         <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
@@ -341,12 +352,15 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 step={1}
                 toolTipContent={"Adjust the balance of the front and rear brakes in real time. Increasing effectiveness for the front wheels makes it easier to oversteer during braking while cornering, while increasing effectiveness for the rear wheels makes it easier to understeer."}
               /></Grid></Grid>
-                        
+                        </Grid></Grid>  </Grid><Grid item xs={12}>
+                        <Grid container spacing={8}  direction="row">
+        <Grid item xs={12}>
                           <StyledDivider className="divider">
                   
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["Transmission"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
-                  </StyledDivider>
-      <Grid container spacing={4} direction="row">
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["TRANSMISSION"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  </StyledDivider></Grid>
+                  <Grid item xs={12}>
+      <Grid container rowSpacing={4}  columnSpacing={6}  direction="row">
               <Grid item xs={6}>
               <InputSlider
                 onValueChange={(value) =>
@@ -371,14 +385,14 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 step={0.001}///might need changing
                 toolTipContent={"Adjust the final gear ratio. In general, increasing the value results in quicker acceleration, while reducing the value helps improve maximum speed."}
               /></Grid>
-              <Grid item xs={6}>
-              <Box sx={{ width: '85%',backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-              <Typography id="input-slider" gutterBottom>
+              <Grid item xs={6} >
+              <Box className={"slider"} sx={{ width: '85%',backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+              <Typography id="input-slider" gutterBottom fontFamily={"Satoshi"} fontSize={22}  sx={{overflow:'auto',whiteSpace: 'nowrap'}}> 
              Transmission Type
           </Typography>  
           <Grid container spacing={2} alignItems="center">
         <Grid item xs>
-      <FormControl fullWidth>
+      <FormControl fullWidth className={"sliderInner"} >
         <InputLabel id="demo-simple-select-label">Selected Value</InputLabel>
         <Select
           labelId="simple-select-label"
@@ -399,24 +413,28 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 onValueChange={setGearRatios} 
                 toolTipContent={"Number of gears, only available in non-electric drivetrains"}              
                 /></Grid>
-            </Grid>
-           
+           </Grid></Grid></Grid>  </Grid><Grid item xs={12}>
+           <Grid container spacing={8}  direction="row">
+        <Grid item xs={12}>
             <StyledDivider className="divider">       
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["Suspension + Aerodynamics"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["SUSPENSION AND AERO"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
                   </StyledDivider>
+                  </Grid>
+                  <Grid item xs={12}>
             <Grid item xs={12}>
-              <Grid container spacing={0} direction="row">
-              <Grid item xs={6}>
-              <Typography id="input-slider" gutterBottom>
-                Front 
+              <Grid container rowSpacing={4}  columnSpacing={6}   >
+              <Grid item xs={6} sx={{display:'flex', justifyContent:'center'}}>
+              <Typography id="input-slider" gutterBottom fontFamily={'Yapari'} fontSize={22} fontWeight={"Bold"} sx={{color:'white'}}>
+                FRONT
               </Typography>
               </Grid>
-              <Grid item xs={6}>
-              <Typography id="input-slider" gutterBottom>
-                Rear
+              <Grid item xs={6} sx={{display:'flex', justifyContent:'center'}}>
+              <Typography id="input-slider" gutterBottom fontFamily={'Yapari'} fontSize={22} fontWeight={"Bold"} sx={{color:'white'}}>
+               REAR
               </Typography>
               </Grid>
-              </Grid>
+              
+              <Grid item xs={12}>
               <ArraySlider
                 width={"85%"}
                 targetAttribute={"Ride Height"}
@@ -427,7 +445,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 maxValue={'300'}
                 step={1}
                 toolTipContent={"Tweak the suspension to adjust the distance between the car and the ground. In general, it is better for the car to be lower, and closer to the ground. However, if the car's ride height is too low, it increases the risk of the kerb or other objects damaging the car's body. The car's front and rear ride heights can be adjusted independently, allowing you to alter the weight distribution between the front and rear wheels."}    
-              />
+              /></Grid>
+              <Grid item xs={12}>
               <ArraySlider
               width={'85%'}
               targetAttribute={"Natural Frequency"}
@@ -436,7 +455,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
               maxValue={'5'}
               step={0.1} 
               toolTipContent={"The effective spring rate value changes depending on the suspension type and lever ratio. The natural frequency is a representation of how the ride feels as a result of this. The higher the value, the stiffer the feeling of the ride. The lower the value, the more gentle the ride feels. Matching the natural frequency of the front and back wheels makes for a smoother ride."}              
-              />
+              /></Grid>
+              <Grid item xs={12}>
               <ArraySlider
                 width={'85%'}
                 targetAttribute={"Anti Roll Bar"}
@@ -447,7 +467,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 maxValue={'10'}
                 step={1}
                 toolTipContent={"Adjust the stiffness of the anti-roll bar, which connects the left and right sides of the car. The higher the value, the stiffer the bar, meaning that horizontal rolling (e.g. from centrifugal force) is restricted. Making the front anti-roll bar stiffer will make it easier to understeer, while making the rear anti-roll bar stiffer will make it easier to oversteer."}    
-              />
+              /></Grid>
+              <Grid item xs={12}>
               <ArraySlider
                 width={'85%'}
                 targetAttribute={"Damping Ratio Compression"}
@@ -458,7 +479,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 maxValue={'85'}
                 step={1}
                 toolTipContent={"The damping ratio is the proportion of damping force when no-oscillation is set at 100%. You can set the compression-side ratio here. Higher values correspond to greater damping force, making the springs compress more slowly. Conversely, lower values will cause the springs to compress more quickly."}    
-              />
+              /></Grid>
+              <Grid item xs={12}>
               <ArraySlider
                 width={'85%'}
                 targetAttribute={"Damping Ratio Rebound"}
@@ -469,7 +491,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 maxValue={'85'}
                 step={1}
                 toolTipContent={"The damping ratio is the proportion of damping force when no-oscillation is set at 100%. You can set the rebound-side ratio here. Higher values correspond to greater damping force, making the springs rebound more slowly. Conversely, lower values will cause the springs to rebound more quickly."}    
-              />
+              /></Grid>
+              <Grid item xs={12}>
               <ArraySlider
                 width={'85%'}
                 targetAttribute={"Camber Angle"}
@@ -480,7 +503,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 maxValue={'10'}
                 step={1}
                 toolTipContent={"Adjust the angle of the car's tyres relative to the ground. At the lowest value (0), the wheels are perpendicular to the ground. The higher the value, the greater the extent to which the bottom of the wheels are wider apart than the top. With a negative camber angle, the tyres will have more grip while cornering. An excessively negative angle will impede your driving, however."}    
-              />
+              /></Grid>
+              <Grid item xs={12}>
               <ArraySlider
                 width={'85%'}
                 targetAttribute={"Toe Angle"}
@@ -491,7 +515,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 maxValue={'1'}
                 step={0.01}
                 toolTipContent={"Adjust the angle of the car's front tyres as looked at from above. Move the slider to the right to cause a toe-in angle, where the wheels point in towards the centreline of the car. Move the slider to the left to provide a toe-out angle, where the wheels point out away from the centreline of the car. A toe-in angle provides more stability when driving in a straight line, though it also increases the risk of understeering. A toe-out angle has the opposite effect."}    
-              />
+              /></Grid>
+              <Grid item xs={12}>
               <ArraySlider
                 width={'85%'}
                 targetAttribute={"Downforce"}
@@ -502,12 +527,29 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                 maxValue={'5000'}
                 step={10}//adjust this
                 toolTipContent={"Adjust the force with which the air currents produced by the speed of the car are used to push the car down towards the track. Increasing this value allows for more downforce, but will reduce the car's maximum speed."}    
-              />
-            </Grid>
+              /></Grid>
+              </Grid>
+            </Grid></Grid></Grid>  </Grid><Grid item xs={12}>
+            <Grid container spacing={8}  direction="row">
+        <Grid item xs={12}>
             <StyledDivider className="divider">       
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["Differential"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["DIFFERENTIAL"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
                   </StyledDivider>
-
+                  </Grid>
+                  <Grid item xs={12}>
+                  <Grid container rowSpacing={4}  columnSpacing={6}  >
+           
+                  <Grid item xs={6} sx={{display:'flex', justifyContent:'center'}}>
+              <Typography id="input-slider" gutterBottom fontFamily={'Yapari'} fontSize={22} fontWeight={"Bold"} sx={{color:'white'}}>
+                FRONT
+              </Typography>
+              </Grid>
+              <Grid item xs={6} sx={{display:'flex', justifyContent:'center'}}>
+              <Typography id="input-slider" gutterBottom fontFamily={'Yapari'} fontSize={22} fontWeight={"Bold"} sx={{color:'white'}}>
+               REAR
+              </Typography>
+              </Grid>
+              <Grid item xs={12}>
           <ArraySlider
             width={'85%'}
             targetAttribute={"LSD Initial Torque"}
@@ -518,7 +560,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             maxValue={'85'}
             step={1}
             toolTipContent={"Adjust the initial torque level of the LSD, before the car starts running. Increasing this value will increase the torque and will make the LSD more responsive, though it may also hinder the car's ability to turn."}    
-          />
+          />  </Grid>
+          <Grid item xs={12}>
           <ArraySlider
             width={'85%'}
             targetAttribute={"LSD Acceleration Sensitivity"}
@@ -529,7 +572,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             maxValue={'85'}
             step={1}
             toolTipContent={"Adjust the effectiveness of the LSD when accelerating. Increasing this value will make the LSD more effective, but can make the car unstable when the accelerator is released."}    
-          />
+          />  </Grid>
+          <Grid item xs={12}>
           <ArraySlider
             width={'85%'}
             targetAttribute={"LSD Braking Sensitivity"}
@@ -540,9 +584,8 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             maxValue={'85'}
             step={1}
             toolTipContent={"Adjust the effectiveness of the LSD when decelerating or not accelerating. Increasing this value will make the LSD more effective, but will increase the risk of understeering."}    
-          />
-          <Grid container spacing={0} direction="row">
-        <Grid item xs={6}>
+          />  </Grid>
+          <Grid item xs={6}>
           <InputSlider
             width={'85%'}
             targetAttribute={"Front Rear Torque Distribution"}
@@ -556,13 +599,13 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
           />
           </Grid>
           <Grid item xs={6}>
-          <Box sx={{ width: '85%',backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-          <Typography id="input-slider" gutterBottom>
+          <Box className={"slider"} sx={{ width: '85%',backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+          <Typography id="input-slider" gutterBottom fontFamily={"Satoshi"} fontSize={22}  sx={{overflow:'auto',whiteSpace: 'nowrap'}}>
           Differential Gear
           </Typography>  
           <Grid container spacing={2} alignItems="center">
         <Grid item xs>
-          <FormControl fullWidth>
+          <FormControl fullWidth className={"sliderInner"} >
         <InputLabel id="demo-simple-select-label">Selected Value</InputLabel>
         <Select
           labelId="simple-select-label"
@@ -577,7 +620,32 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
       </FormControl></Grid><InfoToolTip name={"Differential Gear"} info={tooltipInfoDifGear} iconColor={"white"}/></Grid>
           </Box>
           </Grid>
-          </Grid>
+          </Grid></Grid></Grid>  </Grid> <Grid item xs={12}>
+          <StyledDivider className="divider"> 
+        <HorizontalBanner GridContent={["SUBMISSION"]} needsBackground={false} fontSizes={[40]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+        </StyledDivider>
+        <Grid container spacing={4}  direction="row">
+        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <TextField className="slider"
+            id="name"
+            label="Name"
+            variant="outlined"
+            onChange={(value) => handleInputText(setSetupName)(value)}
+            error={Boolean(nameError)}
+                      helperText={nameError}
+                      sx={{width:'100%'}}
+          /></Grid>
+        <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <Button   onClick={handleSetupSubmit}
+                    type="submit"
+                    variant="contained"
+                    sx={{ mr: 2, width: "100%" }}
+                  >Submit</Button><InfoToolTip name={"Setup"} info={tooltipInfo} iconColor={"white"}/></Grid>
+        </Grid>
+         
+          
+         
+                  <Button onClick={handleClose} sx={{postion:'absolute',top:-240,left:'85%'}}>Clear<ClearIcon/></Button>
+                  
+                  </Grid></Grid>
         </Box>
       </Modal>
     </>

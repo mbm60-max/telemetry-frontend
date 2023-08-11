@@ -61,7 +61,7 @@ const TrackSelection = ({ onSelectTrack,onExit}: TrackSelectionProps) => {
           background-color: black; /* Set background color to red */
           border-radius: 0px 0px 10px 10px; /* Rounded bottom corners */
           box-sizing: border-box;
-          border: 1px solid transparent;
+          border: 1px solid white;
         }
 
         .image-container:hover {
@@ -76,9 +76,10 @@ const TrackSelection = ({ onSelectTrack,onExit}: TrackSelectionProps) => {
           overflow: hidden;
           margin-top: 0px;
           background-color: rgba(8, 13, 56, 0.5);
-  border: 1px solid transparent;
+  border: 1px solid white;
   border-radius: 10px 10px 0px 0px; 
           box-sizing: border-box;
+          border-bottom: none;
           color:white;
         }
       `}</style>

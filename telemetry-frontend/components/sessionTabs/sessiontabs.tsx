@@ -7,7 +7,7 @@ import './sessiontab.css'
 import Homepage from '../background/background';
 import { styled } from '@mui/material/styles';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Button, useMediaQuery } from '@mui/material';
+import { Button, Grid, Paper, useMediaQuery } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../authProvider';
@@ -29,6 +29,18 @@ import SetupDataInterface from '../../interfaces/setupDataInterface';
 import emptySetupObject from '../../data/emptySetupObject';
 import { SettingsContext } from '../authProviderSettings';
 import { Theme } from '@mui/material/styles';
+import NavBar from '../navbar/navbar';
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'left',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.secondary,
+  backgroundColor: 'rgba(132, 126, 126, 0)',
+  boxShadow: 'none', // Override the shadow effect
+}));
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -661,7 +673,10 @@ const [packetFlag,setPacketFlag] = useState(false);
       <p>No active warnings.</p>
     )}
         <Homepage style={'homepage-containerXG'}>
-    <Box className='header'><Button onClick={handleExitSession}>Exit Session</Button></Box>
+    <Grid item xs={12}>
+              <Homepage style={'navbar-container'}>
+                <Item><NavBar /></Item>
+              </Homepage></Grid>
     <Box sx={{ width: '100%' }}>
     
       <ThemeProvider theme={theme}>

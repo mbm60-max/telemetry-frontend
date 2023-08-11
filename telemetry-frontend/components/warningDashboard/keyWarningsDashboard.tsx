@@ -97,18 +97,18 @@ export default function WarningsDashboard({
     let colorScale = [""];
     let color = "";
     if (temp > targetTemp) {
-      return (color = "#ff0000");
+      return (color = "#e02d00");
     } else if (temp < targetTemp) {
       colorScale = chroma.scale([color1, color2]).mode("lch").colors(steps);
       return calcColor(colorScale, temp, targetTemp);
     } else {
-      return (color = "#ff0000");
+      return (color = "#e02d00");
     }
   };
 
   // Usage
-  const Red = "#ff0000";
-  const Green = "#00ff00";
+  const Red = "#e02d00";
+  const Green = "#90cc8e";
   const Blue = "#0000ff";
   const numberOfSteps = 10;
   console.log(valuesOfInterestCurrentLimits);
@@ -411,7 +411,7 @@ export default function WarningsDashboard({
               margin: 0,
               padding: 0,
               borderRadius: '12px',
-              border: "1px solid grey",
+              border: "3px solid white",
               boxShadow: 1,
               justifyContent: "center",
               alignItems: "center",

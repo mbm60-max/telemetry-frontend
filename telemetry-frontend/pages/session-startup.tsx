@@ -239,7 +239,7 @@ const SessionStartup: React.FC = () => {
               <Grid container spacing={8}>
                 <Grid item xs={12}><Box sx={{ height: '50px' }}></Box></Grid>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <HorizontalBanner GridContent={["SESSION STARTUP"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+                  <HorizontalBanner GridContent={["SESSION STARTUP"]} needsBackground={false} fontSizes={[45]} fontFamilies={["SatoshiBold"]} fontWeights={["normal"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                   <HorizontalBanner GridContent={["SELECT A CAR"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} />
@@ -275,7 +275,7 @@ const SessionStartup: React.FC = () => {
                                 margin: 0,
                                 padding: 0,
                                 borderRadius: 10,
-                                border: "3px solid #FB9536",
+                                border: "3px solid white",
                                 boxShadow: 1,
                               }}
                             >
@@ -387,7 +387,7 @@ const SessionStartup: React.FC = () => {
                   <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["CURRENT SETUP"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
                     </Divider></Grid>
                       <Grid item xs={6}>
-                      <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid #FB9536",
+                      <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid white",
                                 }}>
                           <TextField
                             disabled
@@ -401,7 +401,7 @@ const SessionStartup: React.FC = () => {
                           /></Box>
                       </Grid>
                       <Grid item xs={6}  >
-                      <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid #FB9536",
+                      <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid white",
                                 }}>
                           <TextField
                             disabled
@@ -415,7 +415,7 @@ const SessionStartup: React.FC = () => {
                           /></Box>
                       </Grid>
                       <Grid item xs={6}>
-                      <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid #FB9536",
+                      <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid white",
                                 }}>
                           <TextField
                             disabled
@@ -429,7 +429,7 @@ const SessionStartup: React.FC = () => {
                           /></Box>
                       </Grid>
                       <Grid item xs={6}>
-                      <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid #FB9536",
+                      <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid white",
                                 }}>
                           <TextField
                             disabled

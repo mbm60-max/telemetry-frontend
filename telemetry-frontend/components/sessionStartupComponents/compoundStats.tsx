@@ -33,7 +33,7 @@ export default function CompoundStatBars({selectedCompound}:CompoundStatBarsProp
 
   return (
     <Box sx={{ width: '100%', height: '100%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:10,
-    border: "3px solid #FB9536",
+    border: "3px solid white",
     boxShadow: 1, }}>
       <Grid container spacing={2}>
       <Grid item xs={12}  >

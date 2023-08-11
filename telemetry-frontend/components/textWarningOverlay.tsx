@@ -37,20 +37,19 @@ const TextWarningOverlay = ({
         borderRadius: 1.5,
         boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.5)",
         height:"100%",
-        minHeight:'200px'
+       
       }}
     >
-      <Grid container spacing={0}sx={{height:'100%'}}>
+      <Grid container spacing={0}>
         <Grid item xs={1}>
           <div
             style={{
               background: color,
               width: "100%",
               height: "100%",
-              minHeight:'200px',
+             minHeight:'200px',
               borderTopLeftRadius: 5,
               borderBottomLeftRadius: 5,
-              padding:0.1
             }}
           >
             

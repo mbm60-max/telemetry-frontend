@@ -1,9 +1,28 @@
-import { Button, Grid, Typography} from "@mui/material";
+import { Button, Grid, Paper, styled, Typography} from "@mui/material";
 import { Box} from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 import TextField from '@mui/material/TextField';
 import TextWarningOverlay from "../textWarningOverlay";
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import HorizontalBanner from "../horizontalBanner/horizontalBanner";
+import ClearIcon from '@mui/icons-material/Clear';
+import '../navbar/navbar.css'
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  alignText:'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.secondary,
+  backgroundColor: '#FB9536',
+  boxShadow: 'none', // Override the shadow effect
+  borderRadius:20,
+  maxWidth:'900px',
+  minWidth:'150px',
+  width:'100%',
+  display:'flex',
+}));
 interface WarningDashboardSettingsProps {
   onSelectLimit: (limit: number,limitLower: number, index:number) => void;
   index:number
@@ -54,14 +73,15 @@ const handleClose=()=>{
 }
 
   return (
-    <Box sx={{ width: '50vh', height: '50%'}}>
-      <Grid container spacing={2}><Grid item xs={12}><Typography id="input-slider" gutterBottom sx={{fontSize:20}} fontWeight="bold">
-                  You are changing the limit for {valueOfInterest} !
-                </Typography></Grid><Grid item xs={12}><Typography id="input-slider" gutterBottom sx={{fontSize:15}} >
- Only limits that are not -1 will be submitted.
-                </Typography></Grid>
-                <Grid item xs={12} sx={{height:'100%'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={"By changing these limits previosuly set limits are removed, this will alter when you see warnings"}/></Grid>
-                <Grid item xs={6}><TextField
+    <Box sx={{ width: '100vw', height: '100%'}}>
+       <Button className="parallelogram-buttonBlueXS" onClick={handleClose} sx={{postion:'absolute',top:0,left:'90%'}}>Clear<ClearIcon/></Button>
+      <Grid container spacing={6}><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>  <Item><HorizontalBanner GridContent={[`Changing limit for ${valueOfInterest} !`]} fontSizes={[35]} needsBackground={false} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Item></Grid>
+      <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
+                <Grid item xs={12} sx={{height:'100%'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={"By changing these limits previosuly set limits are removed, this will alter when you see warnings"} textColour={"white"} textSize={29} fontFamily={"Satoshi"} fontWeight={"Bold"}/></Grid>
+               
+                <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["UPPER LIMIT"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+                <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["LOWER LIMIT"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+                <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
         id="outlined-basic"
         label="Upper Limit"
         variant="outlined"
@@ -74,7 +94,7 @@ const handleClose=()=>{
         error={Boolean(upperLimitError)}
         helperText={upperLimitError}
       /></Grid>
-                <Grid item xs={6}><TextField
+                <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
         id="outlined-basic"
         label="Lower Limit"
         variant="outlined"
@@ -86,16 +106,10 @@ const handleClose=()=>{
         onChange={handleTextFieldChangeLower}
         error={Boolean(lowerLimitError)}
         helperText={lowerLimitError}
-      /></Grid>
-                <Grid item xs={6}><Button onClick={handleClick}>Submit New Limits</Button></Grid>
-                <Grid item xs={6}><Button onClick={handleClose}>Exit</Button></Grid></Grid>
-        
-                
-                
-    
-       
-    
-
+      /></Grid><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
+ Only limits that are not -1 will be put in place.
+                </Typography></Grid>
+                <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleClick} >CONFIRM NEW LIMITS</Box></Button></Grid></Grid>
     </Box>
   );
 };

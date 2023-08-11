@@ -431,7 +431,7 @@ export default function WarningsDashboard({
               <Grid
               item
               xs={12} sx={{height:'100%',display:'flex',justifyContent:'center'}}>
-<Typography sx={{ fontSize: 18, overflow: "scroll", textAlign:'center' }} fontWeight="bold">
+<Typography sx={{  overflow: "scroll", textAlign:'center',whiteSpace:'nowrap',overflowY:'auto',color:"black" }} fontFamily={"Yapari"} fontSize={29}fontWeight="bold">
               {value}
             </Typography>
               </Grid>
@@ -443,16 +443,16 @@ export default function WarningsDashboard({
                 justifyContent: "center",
                 alignItems: "center",
               }}
-            >
-              <Typography sx={{ fontSize: 16, overflow: "scroll", textAlign:'center' }} fontWeight="bold">
+            ><Box sx={{backgroundColor:'#FB9536',color:'white',width:'50%',borderRadius:'30px'}}>
+              <Typography sx={{ overflow: "scroll", textAlign:'center' }}fontFamily={"Satoshi"} fontSize={29}fontWeight="bold">
               {valuesOfInterestData[index]} {valuesOfInterestUnits[index]}
             </Typography>
-             
+            </Box>
             </Grid><Grid
               item
               xs={12} sx={{height:'100%',display:'flex',justifyContent:'center'}}>
 <Divider >
-        <Chip label={<Typography fontWeight={'bold'}>Limits</Typography>} />     </Divider>
+        <Chip sx={{}}label={<Typography fontFamily={"Satoshi"} fontSize={22}fontWeight="bold">Limits</Typography>} />     </Divider>
               </Grid>
             <Grid
               item
@@ -473,7 +473,7 @@ export default function WarningsDashboard({
             alignItems: "center",
           }}
         ><Typography
-        sx={{ fontSize: 17, wrap: "wrap", overflow: "scroll" }}
+        sx={{  whiteSpace: "nowrap", overflow: "scroll" }}fontFamily={"Satoshi"} fontSize={22}fontWeight="bold"
       >
         {" "}
         Upper: {selectedLimits[`limit${index}`]}
@@ -490,7 +490,7 @@ export default function WarningsDashboard({
               }}
             >
               <Typography
-                sx={{ fontSize: 17, wrap: "wrap", overflow: "scroll" }}
+                sx={{ whiteSpace: "nowrap", overflow: "scroll" }}fontFamily={"Satoshi"} fontSize={22}fontWeight="bold"
               >
                 {" "}
                 Lower : {selectedLimitsLower[`limitLower${index}`]}

@@ -11,6 +11,10 @@ interface CustomBoxProps {
   colorLight: string;
   headerText: string;
   text: string;
+  textColour:string,
+  textSize:number,
+  fontFamily:string,
+  fontWeight:string,
 }
 
 const TextWarningOverlay = ({
@@ -21,6 +25,10 @@ const TextWarningOverlay = ({
   headerText,
   text,
   colorLight,
+  textColour,
+  textSize,
+  fontFamily,
+  fontWeight,
 }: CustomBoxProps) => {
   return (
     <Box
@@ -28,7 +36,8 @@ const TextWarningOverlay = ({
         border: "1px solid black",
         borderRadius: 1.5,
         boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.5)",
-        height:"100%"
+        height:"100%",
+        minHeight:'200px'
       }}
     >
       <Grid container spacing={0}sx={{height:'100%'}}>
@@ -38,6 +47,7 @@ const TextWarningOverlay = ({
               background: color,
               width: "100%",
               height: "100%",
+              minHeight:'200px',
               borderTopLeftRadius: 5,
               borderBottomLeftRadius: 5,
               padding:0.1
@@ -53,6 +63,7 @@ const TextWarningOverlay = ({
                 borderTopRightRadius: 5,
                 borderBottomRightRadius: 5,
                 height:'100%',
+                minHeight:'200px',
                 padding:2
               }}
             >
@@ -60,12 +71,12 @@ const TextWarningOverlay = ({
            
               <Grid item xs={1}>
                 <IconComponent
-                 sx={{mt:1}}
+                 sx={{mt:1,color:textColour,fontSize:textSize}} 
                 />
               </Grid>
               <Grid item xs={11}>
-                <Typography variant="h5" sx={{ flex: 1,mt:1 }}>
-                  {headerText} <Typography variant="body1" sx={{fontSize:14}}>{text}</Typography>
+                <Typography variant="h5" sx={{ flex: 1,mt:1,color:textColour }} fontSize={textSize} fontFamily={fontFamily} fontWeight={fontWeight}>
+                  {headerText} <Typography variant="body1" sx={{fontSize:(textSize-10)}}>{text}</Typography>
                 </Typography>
               </Grid>
           </Grid>

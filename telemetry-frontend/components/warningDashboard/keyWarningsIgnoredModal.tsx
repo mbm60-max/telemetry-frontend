@@ -14,15 +14,17 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50%',
-  height:'50%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  width: '75%',
+  height:'75%',
+  bgcolor: 'rgba(8, 13, 56, 0.5)',
+  border: '2px solid white',
+  borderRadius:15,
   boxShadow: 24,
   p: 4,
   overflowY: 'auto', // Add this to enable vertical scrolling when content overflows
-  display: 'flex',
- justifyContent:'center'
+      display: 'flex',
+     justifyContent:'center'  // Add this to make sure the children are wrapped and the container becomes scrollable
+       // Set the direction to 'column' to wrap the children vertically
 };
 
 interface KeyWarningsIgnoredModalProps {

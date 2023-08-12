@@ -1,9 +1,28 @@
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, styled, Typography} from "@mui/material";
 import { Box} from "@mui/system";
 import React, { ReactNode, useState } from "react";
 import TextField from '@mui/material/TextField';
 import TextWarningOverlay from "../textWarningOverlay";
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import HorizontalBanner from "../horizontalBanner/horizontalBanner";
+import ClearIcon from '@mui/icons-material/Clear';
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  alignText:'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.secondary,
+  backgroundColor: '#FB9536',
+  boxShadow: 'none', // Override the shadow effect
+  borderRadius:20,
+  maxWidth:'900px',
+  minWidth:'150px',
+  width:'100%',
+  display:'flex',
+}));
 interface KeyWarningsSettingsAddProps {
   handleAddition:() => void;
   newUnitsChange: (newUnits: string) => void;
@@ -73,15 +92,16 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
   }
 
   return (
-   
-    <Box sx={{ width: '50vh', height: '50%'}}>
-    <Grid container spacing={2}><Grid item xs={12}> <Typography id="input-slider" gutterBottom sx={{fontSize:20}}>
-                  You are adding a new warning 
-                </Typography></Grid><Grid item xs={12}><Typography id="input-slider" gutterBottom sx={{fontSize:15}} >
- Only limits that are not -1 will be submitted.
-                </Typography></Grid>
-              <Grid item xs={12} sx={{height:'100%'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={"Adding a new warning will alter when you see warnings"}/></Grid>
-              <Grid item xs={6}><TextField
+
+  <Box sx={{ width: '100vw', height: '100%'}}>
+  <Button className="parallelogram-buttonBlueXS" onClick={handleClose} sx={{postion:'absolute',top:0,left:'90%'}}>Clear<ClearIcon/></Button>
+ <Grid container spacing={6}><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>  <Item><HorizontalBanner GridContent={[` You are adding a new warning !`]} fontSizes={[35]} needsBackground={false} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Item></Grid>
+ <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
+           <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',maxWidth:'920px'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={"Adding a new warning will alter when you see warnings"} textColour={"white"} textSize={29} fontFamily={"Satoshi"} fontWeight={"Bold"}/></Box></Grid>
+          
+           <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["UPPER LIMIT"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+           <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["LOWER LIMIT"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+           <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
         id="outlined-basic"
         label="Set Lower Limit"
         variant="outlined"
@@ -94,7 +114,7 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
         error={Boolean(limitLowerError)}
         helperText={limitLowerError}
       /></Grid>
-              <Grid item xs={6}><TextField
+           <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
       id="outlined-basic"
       label="Set Upper Limit"
       variant="outlined"
@@ -106,8 +126,12 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
       onChange={handleNewLimitChange}
         error={Boolean(limitError)}
         helperText={limitError}
-    /></Grid>
-    <Grid item xs={6}><TextField
+    /></Grid><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
+Only limits that are not -1 will be put in place.
+           </Typography></Grid>
+           <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["NAME"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+           <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["UNITS"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+           <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
         id="outlined-basic"
         label="Set Units"
         variant="outlined"
@@ -116,7 +140,7 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
         error={Boolean(unitsError)}
         helperText={unitsError}
       /></Grid>
-              <Grid item xs={6}><TextField
+              <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
         id="outlined-basic"
         label="Set Warning"
         variant="outlined"
@@ -125,9 +149,11 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
         error={Boolean(warningError)}
         helperText={warningError}
       /></Grid>
-              <Grid item xs={6}><Button onClick={handleAdd}>ADD</Button></Grid>
-              <Grid item xs={6}><Button onClick={handleClose}>Exit</Button></Grid></Grid>
-  </Box>
+       <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleAdd} >CONFIRM NEW WARNING</Box></Button></Grid>
+           <Grid item xs={12}><Box sx={{height:'25px'}}></Box></Grid>
+           
+           </Grid>
+</Box>
   );
 };
 

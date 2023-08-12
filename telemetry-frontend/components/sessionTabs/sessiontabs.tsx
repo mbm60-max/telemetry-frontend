@@ -672,13 +672,13 @@ const [packetFlag,setPacketFlag] = useState(false);
     ) : (
       <p>No active warnings.</p>
     )}
-        <Homepage style={'homepage-containerXG'}>
+        
     <Grid item xs={12}>
               <Homepage style={'navbar-container'}>
                 <Item><NavBar /></Item>
               </Homepage></Grid>
     <Box sx={{ width: '100%' }}>
-    
+    <Homepage style={isMobile ? 'homepage-container300' : 'homepage-container100'}>
       <ThemeProvider theme={theme}>
       <Tabs value={value} textColor="primary" indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example" centered orientation={isMobile ? 'vertical' : 'horizontal'}>
         <WhiteTextTab label="General" {...a11yProps(0)} />
@@ -689,7 +689,8 @@ const [packetFlag,setPacketFlag] = useState(false);
         <WhiteTextTab label="Custom Graph" {...a11yProps(5)} />
         </Tabs>
         </ThemeProvider>
-      
+        </Homepage>
+        <Homepage style={'homepage-specail'}>
       <TabPanel value={value} index={0} >
       <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track, distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${1}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${1}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${1}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${1}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${1}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${1}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>
       </TabPanel>
@@ -709,8 +710,9 @@ const [packetFlag,setPacketFlag] = useState(false);
         {"Mongo Write Status" + mongoDbStatus};
 
       </TabPanel>
+      </Homepage>
     </Box>
-    </Homepage>
+   
     </>
   );
 }

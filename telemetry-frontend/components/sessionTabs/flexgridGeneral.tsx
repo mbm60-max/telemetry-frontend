@@ -17,13 +17,14 @@ import Test from '../liveTrack';
 import WarningsDashboard from '../warningDashboard/keyWarningsDashboard';
 import ActualWarningModal from '../warningDashboard/actualWarningModal';
 import WarningInstance from '../../interfaces/warningInterface';
+import Homepage from '../background/background';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
 });
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 247, 235, 0)' : 'rgba(255, 247, 235, 0)',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(8, 13, 56, 0.5)' : 'rgba(8, 13, 56, 0.5)',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -31,7 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const ItemCentered = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 247, 235, 0)' : 'rgba(255, 247, 235, 0',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(8, 13, 56, 0.5)' : 'rgba(8, 13, 56, 0.5)',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -218,6 +219,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
     }
   }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits,valuesOfInterestGreaterThanWarning]);
   return (
+    
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
       <Grid item xs={12}><Item><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Item></Grid>
@@ -244,5 +246,6 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
         </Grid>
       </Grid>
     </Box>
+
   );
 }

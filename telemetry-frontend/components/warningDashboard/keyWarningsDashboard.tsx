@@ -349,7 +349,7 @@ export default function WarningsDashboard({
   // ... rest of the component ...
   const isMobile = useMediaQuery('(max-width:750px)')
   return (
-    <Grid container spacing={20} >
+    <Grid container spacing={ isMobile ? 20:4} >
       <Grid
         item
         xs={12}
@@ -359,7 +359,7 @@ export default function WarningsDashboard({
         item
         xs={12} sm={10}>
           <Box sx={{width:'90%',overflow:"auto"}}>
-          <Typography sx={{ justifyContent: "left", display: "flex",alignItems:'center',ml:1,color:"orange",whiteSpace: "nowrap"}} fontFamily={"Yapari"} fontWeight={"Bold"} fontSize={50}>ACTIVE WARNINGS</Typography>
+          <Typography sx={{ justifyContent: "left", display: "flex",alignItems:'center',ml:1,color:"orange",whiteSpace: "nowrap",overflow:"auto"}} fontFamily={"Yapari"} fontWeight={"Bold"} fontSize={50}>ACTIVE WARNINGS</Typography>
           </Box> </Grid> <Grid
         item
         xs={12} sm={2}>

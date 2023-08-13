@@ -34,7 +34,7 @@ const SetupController = ({setupName,onClick}: SetupController) => {
         height: "100%",
         position: "relative",
         backgroundColor: "#F6F6F6",
-        minHeight: "500px",
+        minHeight: "100%",
         borderRadius: 1.5,
         boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.5)",
       }}

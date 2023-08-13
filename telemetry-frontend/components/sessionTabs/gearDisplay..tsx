@@ -55,14 +55,26 @@ export default function TwoValueDisplay({ dataValueOne, dataValueTwo, nameOne, n
     <Grid container spacing={2}>
       <Grid item xs={12} sm={12}>
       <ItemContainer>
-          <Typography sx={{fontSize:24}}variant="body1">{nameOne}</Typography>
-          <Typography sx={{fontSize:24}}variant="body1">{dataValueOne}</Typography>
+      <Grid container spacing={0}>
+      <Grid item xs={12} sm={12}> <Typography sx={{fontSize:35}}variant="body1" fontFamily={"Yapari"}>{nameOne}</Typography></Grid>
+      <Grid item xs={12} sm={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor:'#FB9536',color:'white',width:'50%',borderRadius:'30px'}}>
+              <Typography sx={{ overflow: "scroll", textAlign:'center' }}fontFamily={"Satoshi"} fontSize={29}fontWeight="bold">
+              {dataValueOne}
+            </Typography>
+            </Box></Grid>
+      </Grid>
         </ItemContainer>
       </Grid>
       <Grid item xs={12} sm={12}>
       <ItemContainer>
-          <Typography sx={{fontSize:24}}variant="body1">{nameTwo}</Typography>
-          <Typography sx={{fontSize:24}}variant="body1">{dataValueTwo}</Typography>
+      <Grid container spacing={0}>
+      <Grid item xs={12} sm={12}> <Typography sx={{fontSize:35}}variant="body1" fontFamily={"Yapari"}>{nameTwo}</Typography></Grid>
+      <Grid item xs={12} sm={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor:'#FB9536',color:'white',width:'50%',borderRadius:'30px'}}>
+              <Typography sx={{ overflow: "scroll", textAlign:'center' }}fontFamily={"Satoshi"} fontSize={29}fontWeight="bold">
+              {dataValueTwo}
+            </Typography>
+            </Box></Grid>
+      </Grid>
         </ItemContainer>
       </Grid>
     </Grid>

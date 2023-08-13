@@ -24,14 +24,14 @@ const DynamicBasicChart = dynamic(() => import('./chart'), {
 });
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(8, 13, 56, 0)' : 'rgba(8, 13, 56, 0)',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
 const ItemCentered = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(8, 13, 56, 0)' : 'rgba(8, 13, 56, 0)',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -53,7 +53,7 @@ const WrappedImageBox = () => (
       MarginLeft={'0px'}
       MarginTop={'0px'}
       imageSrc="/images/spa.svg" borderRadius={0} hasOverlay={false}    >
-        
+
       </ImageBox>
   </BlackBox>
 );
@@ -135,7 +135,7 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
       }setValuesOfInterestData(valuesToUpdate,dashboardNumber);
       return;
     }
-    handleValuesOfInterestFetch(valuesOfInterest,valuesOfInterestData,1,possibleWarningsNames)
+    handleValuesOfInterestFetch(valuesOfInterest,valuesOfInterestData,2,possibleWarningsNames)
   }, [packetFlag]);
 
   useEffect(() => {
@@ -198,30 +198,32 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-      <Grid item xs={12}><Box sx={{ width: '98%',backgroundColor:'#F6F6F6', margin:1, padding:1, borderRadius:2, border: '1px solid grey' ,boxShadow:1}}><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Box></Grid>
-        <Grid item xs={8}>
+      <Grid item xs={12}><Item><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Item></Grid>
+        <Grid item xs={12} sm={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={throttleStream} units={'%'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
-        <Grid item xs={4}>
-          <Item><DynamicBasicChart label={'Water Temperature '} expectedMaxValue={255} expectedMinValue={-1} dataStream={waterTempStream} units={'°C'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
-        </Grid>
-        <Grid item xs={3}>
-          <Item><TwoValueDisplay nameOne='Minimum Alert RPM' nameTwo='Maximum Alert RPM' dataValueOne={minAlertRPM} dataValueTwo={maxAlertRPM}/></Item>
-        </Grid>
-        <Grid item xs={6}>
-          <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={rpmStream} units={'RPM'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
-        </Grid>
-        <Grid item xs={3}>
-          <Item><TwoValueDisplay nameOne='Calculated Max Speed' nameTwo='Transmission Max Speed' dataValueOne={calculatedMaxSpeed} dataValueTwo={transmissionTopSpeed}/></Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item><Grid container spacing={1}><Grid item xs={6}> Fuel Level: {gasLevel}%<Gauge gasCapacity={gasCapacity} gasLevel={gasLevel} targetSrc={"/images/fuel.svg"}/></Grid><Grid item xs={6}> Turbo Pressure: {turboBoost*100} kPa<Gauge gasCapacity={100} gasLevel={turboBoost} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
-        </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={6} sm={4}>
           <Item>{lapTimer}<DynamicBasicChart label={'Oil Pressure'} expectedMaxValue={255} expectedMinValue={-1} dataStream={oilPressureStream} units={'bar'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={6} sm={4}>
           <Item><DynamicBasicChart label={'Oil Temperature '} expectedMaxValue={255} expectedMinValue={-1} dataStream={oilTempStream} units={'°C'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
+        </Grid>
+        <Grid item xs={12} sm={8}>
+          <Item><DynamicBasicChart label={'Water Temperature '} expectedMaxValue={255} expectedMinValue={-1} dataStream={waterTempStream} units={'°C'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
+        </Grid>
+        <Grid item xs={12}>
+          <Item><TwoValueDisplay nameOne='Minimum Alert RPM' nameTwo='Maximum Alert RPM' dataValueOne={minAlertRPM} dataValueTwo={maxAlertRPM}/></Item>
+        </Grid>
+        
+        
+        <Grid item xs={12} sm={8}>
+          <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={rpmStream} units={'RPM'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Item><Grid container spacing={1}><Grid item xs={6}> Fuel Level: {gasLevel}%<Gauge gasCapacity={gasCapacity} gasLevel={gasLevel} targetSrc={"/images/fuel.svg"}/></Grid><Grid item xs={6}> Turbo Pressure: {turboBoost*100} kPa<Gauge gasCapacity={100} gasLevel={turboBoost} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
+        </Grid>
+        <Grid item xs={12}>
+          <Item><TwoValueDisplay nameOne='Calculated Max Speed' nameTwo='Transmission Max Speed' dataValueOne={calculatedMaxSpeed} dataValueTwo={transmissionTopSpeed}/></Item>
         </Grid>
       </Grid>
     </Box>

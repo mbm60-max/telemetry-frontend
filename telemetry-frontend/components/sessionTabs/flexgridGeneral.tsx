@@ -24,7 +24,7 @@ const DynamicBasicChart = dynamic(() => import('./chart'), {
 });
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(8, 13, 56, 0.5)' : 'rgba(8, 13, 56, 0.5)',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(8, 13, 56, 0)' : 'rgba(8, 13, 56, 0)',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -32,7 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const ItemCentered = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(8, 13, 56, 0.5)' : 'rgba(8, 13, 56, 0.5)',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(8, 13, 56, 0)' : 'rgba(8, 13, 56, 0)',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -132,15 +132,6 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
   useEffect(() => {
   }, [valuesOfInterestCurrentLimits]);
 
-  function parseNumberStream(stream: { x: number; y: number; }[]) {
-    if (stream.length === 0) {
-      return -1;
-    }
-    
-    const lastItem = stream[stream.length - 1];
-    return lastItem.y;
-  }
-  
   useEffect(() => {
     const handleValuesOfInterestFetch=(valuesToCheck:string[],valuesToUpdate:number[],dashboardNumber:number,possibleWarningsNames:string[])=>{
       for(let i =0; i<valuesToCheck.length;i++){
@@ -223,25 +214,25 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
       <Grid item xs={12}><Item><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Item></Grid>
-        <Grid item xs={8}>
+        <Grid item xs={12} sm={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={throttleStream} units={'%'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <ItemCentered> <Box sx={{ display:'flex',justifyContent:'center',alignItems:'center'}}><TyreTemps frontLeftTemp={frontLeftTemp} frontRightTemp={frontRightTemp} rearLeftTemp={rearLeftTemp} rearRightTemp={rearRightTemp} ></TyreTemps></Box></ItemCentered>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={6}>
           <Item><Box sx={{backgroundColor:'black'}}>{lapTimer}<Test testOffset={distanceInLap}targetSrc={getTrackPath(track)} trackName={checkTrackStatus(track)} /></Box></Item>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={speedStream} units={'%'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12}>
           <Item><TwoValueDisplay dataValueOne={currentGear} dataValueTwo={suggestedGear} nameOne={"Current Gear"} nameTwo={"Suggested Gear"}></TwoValueDisplay></Item>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <Item><SmallLapTable lastLapTime={lastLapTime} bestLapTime={bestLapTime}></SmallLapTable></Item>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={12} sm={8}>
           <Item><DynamicBasicChart label={'Brake Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={brakeStream} units={'%'} labelXaxis={'Distance Into Lap M'} ></DynamicBasicChart></Item>
         </Grid>
       </Grid>

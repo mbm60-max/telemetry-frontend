@@ -133,15 +133,6 @@ Only limits that are not -1 will be put in place.
            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["UNITS"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
            <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
         id="outlined-basic"
-        label="Set Units"
-        variant="outlined"
-        value={newUnits}
-        onChange={handleNewUnitsChange}
-        error={Boolean(unitsError)}
-        helperText={unitsError}
-      /></Grid>
-              <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
-        id="outlined-basic"
         label="Set Warning"
         variant="outlined"
         value={newWarning}
@@ -149,6 +140,15 @@ Only limits that are not -1 will be put in place.
         error={Boolean(warningError)}
         helperText={warningError}
       /></Grid>
+              <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
+      id="outlined-basic"
+      label="Set Units"
+      variant="outlined"
+      value={newUnits}
+      onChange={handleNewUnitsChange}
+      error={Boolean(unitsError)}
+      helperText={unitsError}
+    /></Grid>
        <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleAdd} >CONFIRM NEW WARNING</Box></Button></Grid>
            <Grid item xs={12}><Box sx={{height:'25px'}}></Box></Grid>
            

@@ -11,6 +11,7 @@ import { Box } from '@mui/material';
 import SignalRService from '../../utils/signalrEndpoint';
 import { useEffect, useState } from 'react';
 import ExtendedPacket from '../../interfaces/extendedPacketInterface';
+import MergeSort from '../../utils/mergeSort';
 
 
 interface smallLapTableProps{
@@ -65,51 +66,7 @@ export default function SmallLapTable({lastLapTime,bestLapTime}:smallLapTablePro
         }
       }, [lastLapTime, bestLapTime, prevLap, rows, MergeSort]);
 
-      function MergeSort(array: Array<any>): Array<any> {
-        let length = array.length;
-        if (length <= 1) {
-          return array;
-        }
-        let halfway = Math.floor(array.length / 2);
-        let arrayLeft = array.slice(0, halfway);
-        let arrayRight = array.slice(halfway, array.length);
-        console.log(arrayLeft);
-        console.log(arrayRight);
-        arrayLeft = MergeSort(arrayLeft); // Recursive call to sort the left subarray
-        arrayRight = MergeSort(arrayRight); // Recursive call to sort the right subarray
       
-        return Merge(arrayLeft, arrayRight);
-      }
-      
-      function Merge(leftArray: Array<any>, rightArray: Array<any>): Array<any> {
-        let mergedArray: Array<any> = [];
-        let l = 0;
-        let r = 0;
-      
-        while (l < leftArray.length && r < rightArray.length) {
-          if (leftArray[l].lapTime.localeCompare(rightArray[r].lapTime) <= 0) {
-            mergedArray.push(leftArray[l]);
-            l++;
-          } else {
-            mergedArray.push(rightArray[r]);
-            r++;
-          }
-        }
-      
-        // Append any remaining elements from leftArray
-        while (l < leftArray.length) {
-          mergedArray.push(leftArray[l]);
-          l++;
-        }
-      
-        // Append any remaining elements from rightArray
-        while (r < rightArray.length) {
-          mergedArray.push(rightArray[r]);
-          r++;
-        }
-      
-        return mergedArray;
-      }
       
 
   return (

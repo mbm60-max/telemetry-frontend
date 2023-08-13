@@ -1,11 +1,31 @@
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, styled, Typography} from "@mui/material";
 import { Box} from "@mui/system";
 import React, { ReactNode, useState } from "react";
 import TextField from '@mui/material/TextField';
 import TextWarningOverlay from "../textWarningOverlay";
 import WarningIcon from '@mui/icons-material/Warning';
 import FormHelperText from '@mui/material/FormHelperText';
-import './keyWarningsDelete.css'
+import './keyWarningsDelete.css';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import HorizontalBanner from "../horizontalBanner/horizontalBanner";
+import ClearIcon from '@mui/icons-material/Clear';
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  alignText:'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.secondary,
+  backgroundColor: '#FB9536',
+  boxShadow: 'none', // Override the shadow effect
+  borderRadius:20,
+  maxWidth:'900px',
+  minWidth:'150px',
+  width:'100%',
+  display:'flex',
+}));
 interface KeyWarningsSettingsDeleteProps {
   handleDeletion:() => void;
   valuesIndexChange:(valuesIndex: number) => void;
@@ -48,16 +68,15 @@ const KeyWarningsSettingsDelete = ({handleDeletion,valuesIndexChange,limitsIndex
   }
 
   return (
-    <>
-     <Box sx={{ width: '50vh', height: '50%'}}>
-     <Grid container spacing={2}><Grid item xs={12}><Typography id="input-slider" gutterBottom sx={{fontSize:20}}>
-     {(allWarnings[selectedWarning as unknown as number]===undefined) ? "You are about to delete an item" : "You are about to delete " + allWarnings[selectedWarning as unknown as number]}
-
-                </Typography></Grid><Grid item xs={12}><Typography id="input-slider" gutterBottom sx={{fontSize:15}} >
-This action cannot be directly undone
-               </Typography></Grid>
-               <Grid item xs={12} sx={{height:'100%'}}><TextWarningOverlay height={100} width={100} icon={WarningIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Warning"} text={"Once deleted you will no longer recieve warnings for this property"} textColour={""} textSize={0} fontFamily={""} fontWeight={""}/></Grid>
-               <Grid item xs={12}><FormControl fullWidth>
+   <Box sx={{ width: '100vw', height: '100%'}}>
+   <Button className="parallelogram-buttonBlueXS" onClick={handleClose} sx={{postion:'absolute',top:0,left:'90%'}}>Clear<ClearIcon/></Button>
+  <Grid container spacing={6}><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>  <Item><HorizontalBanner GridContent={[`${(allWarnings[selectedWarning as unknown as number]===undefined) ? "You are about to delete an item" : "You are about to delete " + allWarnings[selectedWarning as unknown as number]}`]} fontSizes={[35]} needsBackground={false} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Item></Grid>
+  <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',maxWidth:'920px'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={"Once deleted you will no longer recieve warnings for this property"} textColour={"white"} textSize={29} fontFamily={"Satoshi"} fontWeight={"Bold"}/></Box></Grid>
+           
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={[`${(selectedWarning === "")?"SELECTED WARNING":allWarnings[selectedWarning as unknown as number]}`]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+            
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'50%'}}><FormControl fullWidth className="textBoxXG">
         <InputLabel id="demo-simple-select-label">Delete Warning</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -72,51 +91,14 @@ This action cannot be directly undone
                     {warning}
                   </MenuItem>))}
         </Select><FormHelperText className="red-text">{deleteError}</FormHelperText>
-      </FormControl></Grid>
-               <Grid item xs={6}><Button onClick={handleDelete}>Delete</Button></Grid>
-               <Grid item xs={6}><Button onClick={handleClose}>Exit</Button></Grid></Grid>
-   </Box>
-   <Box sx={{ width: '100vw', height: '100%'}}>
-   <Button className="parallelogram-buttonBlueXS" onClick={handleClose} sx={{postion:'absolute',top:0,left:'90%'}}>Clear<ClearIcon/></Button>
-  <Grid container spacing={6}><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>  <Item><HorizontalBanner GridContent={[`Changing limit for ${valueOfInterest} !`]} fontSizes={[35]} needsBackground={false} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Item></Grid>
-  <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
-            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',maxWidth:'920px'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={"By changing these limits previosuly set limits are removed, this will alter when you see warnings"} textColour={"white"} textSize={29} fontFamily={"Satoshi"} fontWeight={"Bold"}/></Box></Grid>
-           
-            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["UPPER LIMIT"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
-            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["LOWER LIMIT"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
-            <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
-    id="outlined-basic"
-    label="Upper Limit"
-    variant="outlined"
-    type="number" // Set input type to 'number'
-    inputProps={{
-      min: 0, // Set minimum value to 0
-    }}
-    value={limitValue}
-    onChange={handleTextFieldChange}
-    error={Boolean(upperLimitError)}
-    helperText={upperLimitError}
-  /></Grid>
-            <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
-    id="outlined-basic"
-    label="Lower Limit"
-    variant="outlined"
-    type="number" // Set input type to 'number'
-    inputProps={{
-      min: 0, // Set minimum value to 0
-    }}
-    value={limitValueLower}
-    onChange={handleTextFieldChangeLower}
-    error={Boolean(lowerLimitError)}
-    helperText={lowerLimitError}
-  /></Grid><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
-Only limits that are not -1 will be put in place.
+      </FormControl></Box></Grid>
+            <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}></Grid><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
+This action cannot be directly undone
             </Typography></Grid>
-            <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleClick} >CONFIRM NEW LIMITS</Box></Button></Grid>
+            <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleDelete} >Remove Selected Warning</Box></Button></Grid>
             <Grid item xs={12}><Box sx={{height:'25px'}}></Box></Grid>
             </Grid>
 </Box>
-</>
   );
 };
 

@@ -1,4 +1,4 @@
-import { Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, styled, Typography} from "@mui/material";
 import { Box} from "@mui/system";
 import React, { ReactNode, useState } from "react";
 import TextField from '@mui/material/TextField';
@@ -6,6 +6,26 @@ import WarningInstance from "../../interfaces/warningInterface";
 import TextWarningOverlay from "../textWarningOverlay";
 import WarningIcon from '@mui/icons-material/Warning';
 import BoxedNumber from "../boxedNumber";
+import HorizontalBanner from "../horizontalBanner/horizontalBanner";
+import ClearIcon from '@mui/icons-material/Clear';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  alignText:'center',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.secondary,
+  backgroundColor: '#FB9536',
+  boxShadow: 'none', // Override the shadow effect
+  borderRadius:20,
+  maxWidth:'900px',
+  minWidth:'150px',
+  width:'100%',
+  display:'flex',
+}));
 interface ActualWarningProps {
   onClose:()=>void;
   activeWarning: WarningInstance;
@@ -27,41 +47,39 @@ const ActualWarning = ({onClose,activeWarning,handleActiveWarnings,handleAcknowl
   }
 
   return (
-     <Box sx={{ width: '50vh', height: '50%'}}>
-     <Grid container spacing={2}><Grid item xs={12}>  <Typography id="input-slider" gutterBottom>
-        {isHigherWarning && (
-          <>
-        <Typography id="input-slider" gutterBottom sx={{fontSize:20}}>
-          Limit exceeded !
-        </Typography>
-        <Typography id="input-slider" gutterBottom sx={{fontSize:15}}>
-        {activeWarning.newWarning} is above the limit you set.
-      </Typography>
-      </>)}
-      {!isHigherWarning && (
-        <>
-        <Typography id="input-slider" gutterBottom sx={{fontSize:20}}>
-          Limit exceeded !
-        </Typography>
-        <Typography id="input-slider" gutterBottom sx={{fontSize:15}}>
-        {activeWarning.newWarning} is below the limit you set.
-      </Typography>
-      </>
-      )}
-                </Typography></Grid>
-               
-               <Grid item xs={12} sx={{height:'100%'}}><TextWarningOverlay height={100} width={100} icon={WarningIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Warning"} text={"This value has breached a limit you put in place, there may be an issue with your car, it is recommended to investigate."}/></Grid>
-               <Grid item xs={12}><Grid container spacing={2}><Grid item xs={6}><BoxedNumber width={"80%"} targetAttribute={"Limit:"} targetAttributeValue={activeWarning.newWarningLimit} toolTipContent={"The current limit for the attribute"} stringValue={activeWarning.newWarningUnits}/></Grid><Grid item xs={6}><BoxedNumber width={"80%"} targetAttribute={"Current:"} toolTipContent={"The most recently recieved value for the attribute"}  targetAttributeValue={activeWarning.newWarningValue} stringValue={activeWarning.newWarningUnits}/></Grid></Grid></Grid>
-               <Grid item xs={6}><Button onClick={handleSupress}>Supress</Button></Grid>
-               <Grid item xs={6}> <Button onClick={handleIgnore}>Ignore</Button></Grid></Grid>
-       
-               
+    
+   <Box sx={{ width: '100vw', height: '100%'}}>
+       <Button className="parallelogram-buttonBlueXS" onClick={handleIgnore} sx={{postion:'absolute',top:0,left:'80%'}}>Ignore<ClearIcon/></Button>
+   <Button className="parallelogram-buttonBlueXS" onClick={handleSupress} sx={{postion:'absolute',top:0,left:'80%'}}>Clear<ClearIcon/></Button>
+  <Grid container spacing={6}><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>  <Item><HorizontalBanner
+      GridContent={
+        isHigherWarning ? (
+          [`Limit exceeded ! ${activeWarning.newWarning} is above the limit you set.`]
+        ) : (
+          [`Limit exceeded ! ${activeWarning.newWarning} is below the limit you set.`]
+        )
+      }
+    
       
-   
-      
-   
-
-   </Box>
+      fontSizes={[35]} needsBackground={false} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Item></Grid>
+  <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',maxWidth:'920px'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={"This value has breached a limit you put in place, there may be an issue with your car, it is recommended to investigate."} textColour={"white"} textSize={29} fontFamily={"Satoshi"} fontWeight={"Bold"}/></Box></Grid>
+           
+            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["LIMIT"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["CURRENT"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+            <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}} className="textBoxXG"><BoxedNumber  width={"80%"} targetAttribute={"Limit:"} targetAttributeValue={activeWarning.newWarningLimit} toolTipContent={"The current limit for the attribute"} stringValue={activeWarning.newWarningUnits}/></Grid>
+               <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}} className="textBoxXG"><BoxedNumber width={"80%"} targetAttribute={"Current:"} toolTipContent={"The most recently recieved value for the attribute"}  targetAttributeValue={activeWarning.newWarningValue} stringValue={activeWarning.newWarningUnits}/></Grid>
+            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["SUPPRESS"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["IGNORE"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
+ Ignored warnings will not be shown again, suppressing suspends warnings for a preset time, alter this in your setings.
+            </Typography></Grid>
+            <Grid item xs={6}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleSupress} >SUPRESS WARNING</Box></Button></Grid>
+            <Grid item xs={6}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleIgnore} >IGNORE WARNING</Box></Button></Grid>
+            <Grid item xs={12}><Box sx={{height:'25px'}}></Box></Grid>
+            
+            </Grid>
+ </Box>
   );
 };
 

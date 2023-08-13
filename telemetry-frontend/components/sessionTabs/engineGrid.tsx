@@ -16,6 +16,8 @@ import TwoValueDisplay from './gearDisplay.';
 import Gauge from './fuelGauge';
 import WarningInstance from '../../interfaces/warningInterface';
 import WarningsDashboard from '../warningDashboard/keyWarningsDashboard';
+
+
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
@@ -50,8 +52,9 @@ const WrappedImageBox = () => (
       MarginRight={'0px'}
       MarginLeft={'0px'}
       MarginTop={'0px'}
-      imageSrc="/images/spa.svg"
-    />
+      imageSrc="/images/spa.svg" borderRadius={0} hasOverlay={false}    >
+        
+      </ImageBox>
   </BlackBox>
 );
 

@@ -24,14 +24,21 @@ const SetupFeedback = ({ conditions }: SetupFeedbackProps) => {
         </>
       );
   return (
-    <Box sx={{ width: '100%', height: '50%',position:'relative', backgroundColor:'#F6F6F6',
-    borderRadius: 1.5,
-    boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.5)" }}>
+    <Box
+    sx={{
+      width: "100%",
+      height: "100%",
+      backgroundColor: "white",
+      borderRadius: 1.5,
+      boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.3)",
+      border: "6px solid rgba(8, 13, 100, 0.6)",
+    }}
+  >
     <Box sx={{ width: '100%', height: '100%',position:'relative' }}>
     <Grid container spacing={2} alignItems="center">
-    <Grid item xs={12}><Typography id="input-slider" gutterBottom sx={{fontSize:30}}  fontWeight="bold">
+    <Grid item xs={12} sx={{ display: "flex",ml:1 }}><Typography id="input-slider" fontFamily={"Yapari"} gutterBottom sx={{fontSize:30}}  fontWeight="bold">
     Driver Feedback On Setup
-    </Typography><InfoToolTip name={"Driver Feeback"} info={tooltipInfo}/></Grid>
+    </Typography><InfoToolTip name={"Driver Feeback"} info={tooltipInfo} iconColor={''}/></Grid>
         {conditions.map((condition, index) => (
           <React.Fragment key={index}>
             <Grid item xs={4}>

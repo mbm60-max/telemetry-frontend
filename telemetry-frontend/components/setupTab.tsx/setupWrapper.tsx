@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid, Paper, styled } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -68,11 +68,27 @@ useEffect(() => {
   }
   return (
     <>
-      <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={3} sx={{ minWidth: "100px" }}>
-          <SetupController setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} onClick={handleSelectedFieldChange}/>
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(8, 13, 56, 0)",
+        borderRadius: 1.5,
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",
+      }}
+    >
+       <Box sx={{paddingLeft:2,paddingRight:2,paddingBottom:2}}>
+      <Grid container columnSpacing={2} rowSpacing={4}  >
+        <Grid item xs={12} sm={3.5} >
+        <Grid container spacing={4} alignItems="center">
+        <Grid item xs={12}>
+        <SetupController setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} onClick={handleSelectedFieldChange}/>
+
         </Grid>
-        <Grid item xs={12} sm={9}>
+        </Grid>
+        </Grid>
+        
+        <Grid item xs={12} sm={8.5}>
           <Grid container spacing={4} alignItems="center">
             <Grid item xs={12}>
               <SetupSelectedFieldDisplay conditions={[]} fieldData={setupDataDict[selectedField]} setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} selectedField={ selectedField === '' ? "No Field Selected" : selectedField}/>
@@ -86,8 +102,11 @@ useEffect(() => {
           </Grid>
         </Grid>
       </Grid>
+      </Box>
+      </Box>
     </>
   );
 };
 
 export default SetupWrapper;
+//<SetupController setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} onClick={handleSelectedFieldChange}/>

@@ -178,8 +178,8 @@ const SessionStartup: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
-      selectedCar.trim() !== "" &&
-      selectedCompound.trim() !== "" &&
+      selectedCar.trim() !== "NONE" &&
+      selectedCompound.trim() !== "NONE" &&
       selectedTrack != "noTrack"
     ) {
       const queryParams = `car=${selectedCar}&compound=${selectedCompound}&track=${selectedTrack}&setup=${selectedSetup === 'NONE' ? "No Field Selected" : selectedSetup}`;

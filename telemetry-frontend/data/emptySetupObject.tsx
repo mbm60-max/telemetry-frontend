@@ -41,7 +41,7 @@ const emptySetupObject = {
     },
     "Damping Ratio Rebound": {
       Value: "",
-      Units: "",
+      Units: "%",
     },
     "Camber Angle": {
       Value: "",
@@ -61,15 +61,15 @@ const emptySetupObject = {
     },
     "LSD Initial Torque": {
       Value: "",
-      Units: "?",
+      Units: "",
     },
     "LSD Acceleration Sensitivity": {
       Value: "",
-      Units: "?",
+      Units: "",
     },
     "LSD Braking Sensitivity": {
       Value: "",
-      Units: "?",
+      Units: "",
     },
     "Front Rear Torque Distribution": {
       Value: "",

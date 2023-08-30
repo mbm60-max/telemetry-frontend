@@ -27,7 +27,7 @@ const SetupFeedbackSlider = ({ tooltipText,maxValue,minValue,name,step }: SetupF
         </>
       );
   return (
-    <Box sx={{ width: "85%",backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+    <Box  className={"slider"} sx={{ width: "85%",backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
     <Typography id="input-slider" gutterBottom>
     {name}
     </Typography>
@@ -42,7 +42,7 @@ const SetupFeedbackSlider = ({ tooltipText,maxValue,minValue,name,step }: SetupF
           max={maxValue}
           step={step}
         />
-      </Grid> <InfoToolTip name={name} info={tooltipInfo}/>
+      </Grid> <InfoToolTip name={name} info={tooltipInfo} iconColor={'white'}/>
     </Grid>
   </Box>
      )

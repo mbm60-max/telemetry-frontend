@@ -4,6 +4,7 @@ import Image from "next/image";
 import InfoToolTip from "../helperTooltip.tsx/infoTooltip";
 import SetupFeedbackSlider from "./setupFeedbackSlider";
 import SetupField from "./setupField";
+import splitAndCapitalise from "../../utils/splitAndCapitalise";
 
 interface SetupController {
     setupName:string;
@@ -28,44 +29,45 @@ const SetupController = ({setupName,onClick}: SetupController) => {
     </>
   );
   return (
+    
     <Box
       sx={{
         width: "100%",
         height: "100%",
-        position: "relative",
-        backgroundColor: "#F6F6F6",
-        minHeight: "100%",
+        backgroundColor: "white",
         borderRadius: 1.5,
-        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.5)",
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.3)",
+        border: "6px solid rgba(8, 13, 100, 0.6)",
       }}
     >
-      <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
-        <Grid container spacing={2} alignItems="center">
+      <Box>
+        <Grid container spacing={2} >
           <Grid item xs={12}>
-            <Grid container spacing={2} alignItems="center">
+            <Grid container spacing={4} >
               <Grid
                 item
-                xs={4}
-                sx={{ display: "flex", justifyContent: "left" }}
+                xs={12}
+                sx={{ display: "flex",ml:2 }}
               >
                 <Typography
                   variant="h6"
                   sx={{ fontSize: 30 }}
                   fontWeight="bold"
+                  fontFamily={"Yapari"}
                 >
-                  {setupName}
+                  {splitAndCapitalise(setupName)}
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
-                <InfoToolTip name={"Driver Feeback"} info={tooltipInfo} />
-              </Grid>
+              
             </Grid>
-            <Grid item xs={12}>
-                <Typography variant="body2" sx={{ fontSize: 20 }}>
+            <Grid item xs={12}><Box sx={{height:'30px'}}></Box></Grid>
+            <Grid item xs={12} sx={{ display: "flex",ml:2 }}>
+                <Typography variant="body2" sx={{ fontSize: 20 }} fontFamily={"Satoshi"}>
                   {Boolean(selectedField) ? selectedField : 'No field selected'}
                 </Typography>
               </Grid>
           </Grid>
+          <Grid item xs={12}><Box ></Box></Grid>
           <Grid item xs={12}>
             <Grid
               container
@@ -88,6 +90,7 @@ const SetupController = ({setupName,onClick}: SetupController) => {
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
                 <SetupField name={"Differential"} tooltipInfo={tooltipInfo} onClick={handleSelectedFieldChange}/>
               </Grid>
+              <Grid item xs={12}><Box ></Box></Grid>
             </Grid>
           </Grid>
         </Grid>

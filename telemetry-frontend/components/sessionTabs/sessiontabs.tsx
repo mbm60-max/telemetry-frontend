@@ -30,6 +30,7 @@ import emptySetupObject from '../../data/emptySetupObject';
 import { SettingsContext } from '../authProviderSettings';
 import { Theme } from '@mui/material/styles';
 import NavBar from '../navbar/navbar';
+import isNewLapCheck from '../../utils/isNewLapCheck';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -256,7 +257,10 @@ export default function BasicTabs() {
     const [wheelRR_RevPerSecond, setWheelRR_RevPerSecond] = useState([{x: 0, y: 0}]);
     const [lastLapTime, setLastLapTime] = useState('');
     const [bestLapTime, setBestLapTime] = useState('');
+    const [lapCount, setLapCount] = useState(0);
     const [lapTimer, setLapTimer] = useState('');
+    const [fuelStartLap,setFuelStartLap] = useState(0);
+    const [previousLapCount,setPreviousLapCount]= useState(0);
     const [oilTempStream, setOilTempStream] = useState([{ x: 0, y: 0 }]);
     const [minAlertRPM, setMinAlertRpm] = useState(0);
     const [maxAlertRPM, setMaxAlertRpm] = useState(0);
@@ -362,7 +366,14 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
    [`dashboard${dashNumber}`]: newValue,
  }));
 };
-  
+const resetFuelData=()=>{
+  const isNewLap = isNewLapCheck(lapCount,previousLapCount);
+  if(isNewLap){
+    setPreviousLapCount(lapCount);
+    setFuelStartLap(gasLevel);
+  }
+}
+
 const [packetFlag,setPacketFlag] = useState(false);
 
    function handlePacket (receivedExtendedPacket: ExtendedPacket){
@@ -385,6 +396,9 @@ const [packetFlag,setPacketFlag] = useState(false);
               appendNumberData(attributes[attribute],attributeValue)
               break;
             case 'maxAlertRPM':
+              appendNumberData(attributes[attribute],attributeValue)
+            break;
+            case 'lapCount':
               appendNumberData(attributes[attribute],attributeValue)
             break;
             case 'transmissionTopSpeed':
@@ -415,6 +429,7 @@ const [packetFlag,setPacketFlag] = useState(false);
         }
   
       }
+      resetFuelData();
     };
   
     
@@ -500,6 +515,7 @@ const [packetFlag,setPacketFlag] = useState(false);
     const stateSettersNumber: StateSettersNumber = {
       minAlertRPM:setMinAlertRpm,
       maxAlertRPM:setMaxAlertRpm,
+      lapCount:setLapCount,
       calculatedMaxSpeed:setCalculatedMaxSpeed,
       transmissionTopSpeed:setTransmissionTopSpeed,
       gasCapacity:setGasCapacity,
@@ -653,6 +669,11 @@ const [packetFlag,setPacketFlag] = useState(false);
   
   const isMobile = useMediaQuery('(max-width:750px)')
 
+
+
+  
+
+
   return (
     <> {activeWarnings.length > 0 ? (
       activeWarnings.map((value, index) => (
@@ -695,7 +716,7 @@ const [packetFlag,setPacketFlag] = useState(false);
       <GeneralGrid throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track, distanceFromStart)} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${1}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${1}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${1}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${1}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${1}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${1}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${2}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${2}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${2}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${2}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${2}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${2}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>
+      <EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${2}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${2}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${2}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${2}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${2}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${2}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag} lastLapTime={lastLapTime} fuelStartLap={fuelStartLap}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
       <GearboxGrid currentGearStream={currentGear} rpmClutchToGearboxStream={rpmClutchToGearboxStream} rpmStream={rpmStream} clutchEngagementStream={clutchEngagementStream} clutchPedalStream={clutchPedalStream} suggestedGearStream={suggestedGear} lapTimer={lapTimer} inLapShifts={inLapShifts}  handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${3}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${3}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${3}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${3}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${3}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${3}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>

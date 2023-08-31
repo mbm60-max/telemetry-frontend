@@ -13,9 +13,11 @@ import ImageBox from '../homepageTrack';
 import GearDisplay from './gearDisplay.';
 import SmallLapTable from './lapTimeTable';
 import TwoValueDisplay from './gearDisplay.';
-import Gauge from './fuelGauge';
+import Gauge from '../fuelComponents/fuelGauge';
 import WarningInstance from '../../interfaces/warningInterface';
 import WarningsDashboard from '../warningDashboard/keyWarningsDashboard';
+import getFuelOnConsumptionByRelativeFuelLevels, { calculateRemainingFuel } from '../../utils/relativeFuelCalculations';
+import FuelDataDisplay from '../fuelComponents/fuelData';
 
 
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
@@ -66,7 +68,9 @@ interface GeneralGridProps{
   oilPressureStream: { x: number; y: number; }[];
   minAlertRPM:number;
   maxAlertRPM:number;
+  fuelStartLap:number;
   gasLevel:number;
+  lastLapTime:string;
   gasCapacity:number;
   calculatedMaxSpeed:number;
   transmissionTopSpeed:number;
@@ -97,7 +101,7 @@ interface GeneralGridProps{
   setValuesOfInterestCurrentLimitsLower:(newDict: { [key: string]: number; }, dashNumber: number) => void
   packetFlag:boolean;
 }
-export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStream,minAlertRPM,maxAlertRPM, calculatedMaxSpeed,transmissionTopSpeed,oilPressureStream,waterTempStream,gasCapacity,gasLevel,turboBoost,acknowledgedWarningLower,acknowledgedWarnings,activeWarnings,activeWarningsLower,handleAcknowledgedWarnings,handleAcknowledgedWarningsLower,handleActiveWarnings,handleActiveWarningsLower,handleIsWarning,handleSuppressedWarnings,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestCurrentLimitsLower,valuesOfInterestData,valuesOfInterestDefaultLimits,valuesOfInterestGreaterThanWarning,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestCurrentLimitsLower,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,packetFlag,}:GeneralGridProps) {
+export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStream,minAlertRPM,maxAlertRPM, calculatedMaxSpeed,transmissionTopSpeed,oilPressureStream,waterTempStream,gasCapacity,gasLevel,turboBoost,acknowledgedWarningLower,acknowledgedWarnings,activeWarnings,activeWarningsLower,handleAcknowledgedWarnings,handleAcknowledgedWarningsLower,handleActiveWarnings,handleActiveWarningsLower,handleIsWarning,handleSuppressedWarnings,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestCurrentLimitsLower,valuesOfInterestData,valuesOfInterestDefaultLimits,valuesOfInterestGreaterThanWarning,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestCurrentLimitsLower,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,packetFlag,lastLapTime,fuelStartLap,}:GeneralGridProps) {
   const handleSetNewWarning=(updatedValuesOfInterest:string[],updatedValuesOfInterestData:number[],updatedValuesOfInterestUnits:string[],updatedValuesOfInterestDefualtLimits:number[])=>{
     setValuesOfInterest(updatedValuesOfInterest,2);
     setValuesOfInterestData(updatedValuesOfInterestData,2);
@@ -110,8 +114,23 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
   const handleSetLimitsLower=(newDict:{[key: string]: number;})=>{
     setValuesOfInterestCurrentLimitsLower(newDict,2);
   }
+  //const tsxTimeString = "02:30:15.500"; // Example TSX time string
 
-
+  //const parseTSXTimeString = (tsxTimeString) => {
+    //const [timePart, millisecondsPart] = tsxTimeString.split(".");
+    //const [hours, minutes, seconds] = timePart.split(":").map(Number);
+    //const milliseconds = Number(millisecondsPart || 0);
+    //return { hours, minutes, seconds, milliseconds };
+  //};
+  
+  //const convertToSeconds = ({ hours, minutes, seconds, milliseconds }) => {
+    //return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
+  //};
+  
+  //const seconds = convertToSeconds(parseTSXTimeString(tsxTimeString));
+  //console.log(seconds);
+  const fuelObject = calculateRemainingFuel(100,95,90); //change to fuel start lap and gas level and lap time
+  const FuelObjectMaps = getFuelOnConsumptionByRelativeFuelLevels(fuelObject,90); //change to lap time
 
   const possibleWarningsValues=[throttleStream,oilTempStream,rpmStream,turboBoost,oilPressureStream,gasLevel,waterTempStream]
   const possibleWarningsNames=["Oil Temperature","RPM","Turbo Boost Pressure","Oil Pressure","Fuel Level","Water Temperature"]
@@ -211,18 +230,19 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
         <Grid item xs={12} sm={8}>
           <Item><DynamicBasicChart label={'Water Temperature '} expectedMaxValue={255} expectedMinValue={-1} dataStream={waterTempStream} units={'°C'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
-        <Grid item xs={12}>
-          <Item><TwoValueDisplay nameOne='Minimum Alert RPM' nameTwo='Maximum Alert RPM' dataValueOne={minAlertRPM} dataValueTwo={maxAlertRPM}/></Item>
+        <Grid item xs={12} sm={12}>
+          <Item><FuelDataDisplay FuelObjectMaps={FuelObjectMaps}></FuelDataDisplay></Item>
         </Grid>
-        
-        
         <Grid item xs={12} sm={8}>
           <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={rpmStream} units={'RPM'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Item><Grid container spacing={1}><Grid item xs={6}> Fuel Level: {gasLevel}%<Gauge gasCapacity={gasCapacity} gasLevel={gasLevel} targetSrc={"/images/fuel.svg"}/></Grid><Grid item xs={6}> Turbo Pressure: {turboBoost*100} kPa<Gauge gasCapacity={100} gasLevel={turboBoost} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
+          <Item><TwoValueDisplay nameOne='Minimum Alert RPM' nameTwo='Maximum Alert RPM' dataValueOne={minAlertRPM} dataValueTwo={maxAlertRPM}/></Item>
+        </Grid>
+        <Grid item xs={6}>
           <Item><TwoValueDisplay nameOne='Calculated Max Speed' nameTwo='Transmission Max Speed' dataValueOne={calculatedMaxSpeed} dataValueTwo={transmissionTopSpeed}/></Item>
         </Grid>
       </Grid>

@@ -15,7 +15,7 @@ import ImageBox from '../homepageTrack';
 import GearDisplay from './gearDisplay.';
 import SmallLapTable from './lapTimeTable';
 import TwoValueDisplay from './gearDisplay.';
-import Gauge from './fuelGauge';
+import Gauge from '../fuelComponents/fuelGauge';
 import WarningInstance from '../../interfaces/warningInterface';
 import WarningsDashboard from '../warningDashboard/keyWarningsDashboard';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 

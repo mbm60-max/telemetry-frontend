@@ -75,21 +75,27 @@ useEffect(() => {
         backgroundColor: "rgba(8, 13, 56, 0)",
         borderRadius: 1.5,
         boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",
+
       }}
     >
-       <Box sx={{paddingLeft:2,paddingRight:2,paddingBottom:2}}>
-      <Grid container columnSpacing={2} rowSpacing={4}  >
-        <Grid item xs={12} sm={3.5} >
-        <Grid container spacing={4} alignItems="center">
+       <Box sx={{paddingLeft:2,paddingRight:3,paddingBottom:4}}>
+      <Grid container columnSpacing={4} rowSpacing={2}  >
+        <Grid item xs={12} sm={3.5}   >
+      
+        <Grid container spacing={2} sx={{height:'100%'}}>
         <Grid item xs={12}>
+          
         <SetupController setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} onClick={handleSelectedFieldChange}/>
 
+        
         </Grid>
+        
         </Grid>
         </Grid>
         
         <Grid item xs={12} sm={8.5}>
-          <Grid container spacing={4} alignItems="center">
+       
+          <Grid container spacing={2} sx={{height:'102%'}}>
             <Grid item xs={12}>
               <SetupSelectedFieldDisplay conditions={[]} fieldData={setupDataDict[selectedField]} setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} selectedField={ selectedField === '' ? "No Field Selected" : selectedField}/>
             </Grid>
@@ -100,6 +106,7 @@ useEffect(() => {
               <SetupFeedback conditions={setupFeedbackConditions} />
             </Grid>
           </Grid>
+          
         </Grid>
       </Grid>
       </Box>

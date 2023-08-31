@@ -33,14 +33,14 @@ const SetupController = ({setupName,onClick}: SetupController) => {
     <Box
       sx={{
         width: "100%",
-        height: "100%",
+        height: "102%",
         backgroundColor: "white",
         borderRadius: 1.5,
         boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.3)",
         border: "6px solid rgba(8, 13, 100, 0.6)",
       }}
     >
-      <Box>
+      <Box >
         <Grid container spacing={2} >
           <Grid item xs={12}>
             <Grid container spacing={4} >

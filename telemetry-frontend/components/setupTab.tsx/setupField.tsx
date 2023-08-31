@@ -15,7 +15,7 @@ const SetupField = ({ name,tooltipInfo,onClick }: SetupFieldProps) => {
     }
 
   return (
-    <Box sx={{ width: '100%', height: '100%',position:'relative'}}>
+    <Box sx={{ width: '90%',position:'relative'}}>
       <Button  className={"warningButton"} sx={{width:'100%'}}onClick={handleClick} variant='contained' >
 
 <Box sx={{ width: "100%",height:'100%',backgroundColor:'F6F6F6', margin:1, padding:2,wrap: "wrap", overflow:'scroll',display:'flex',justifyContent:'center',alignItems:'center'}}>

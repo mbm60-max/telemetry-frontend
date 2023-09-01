@@ -141,7 +141,9 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
             if(typeof value !== "number"){
               const lastItem = value[value.length-1]
               valuesToUpdate[i]= lastItem.y;
+              
             }else{
+              console.log(possibleWarningsValues)
               valuesToUpdate[i]= value;
             }
         }
@@ -189,7 +191,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
           (warning) => warning.newWarning === valuesOfInterest[i]
         )
         if ((!warningExists)&&(!warningIsIgnored)) {
-        handleActiveWarningsLower(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+        handleActiveWarningsLower(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimitsLower[`limitLower${i}`]);
         handleIsWarning();
         }
       }else if((valuesOfInterestData[i]>valuesOfInterestCurrentLimitsLower[`limitlower${i}`])&&(activeWarningsLower!==undefined)){
@@ -208,7 +210,9 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
           }
       }
     }
-  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits,valuesOfInterestGreaterThanWarning]);
+  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits,valuesOfInterestGreaterThanWarning,valuesOfInterestCurrentLimitsLower]);
+  //console.log("here");
+ // console.log(valuesOfInterestData);
   return (
     
     <Box sx={{ flexGrow: 1 }}>

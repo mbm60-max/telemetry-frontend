@@ -234,49 +234,49 @@ export default function BasicTabs() {
       },
     };
   };
-    const [throttleStream, setThrottleStream] = useState([{ x: 0, y: 0 }]);
-    const [brakeStream, setBrakeStream] = useState([{ x: 0, y: 0 }]);
-    const [speedStream, setSpeedStream] = useState([{ x: 0, y: 0 }]);
-    const [suggestedGear,setSuggestedGear] = useState([{ x: 0, y: 0 }]);
-    const [currentGear,setCurrentGear] = useState([{ x: 0, y: 0 }]);
-    const [frontLeftTemp, setFrontLeftTemp] = useState([{ x: 0, y: 0 }]);
-    const [frontRightTemp, setFrontRightTemp] = useState([{ x: 0, y: 0 }]);
-    const [rearLeftTemp, setRearLeftTemp] = useState([{ x: 0, y: 0 }]);
-    const [rearRightTemp, setRearRightTemp] = useState([{ x: 0, y: 0 }]);
-    const [tireFL_SusHeight, setTireFL_SusHeight] = useState([{x: 0, y: 0}]);
-    const [tireFR_SusHeight, setTireFR_SusHeight] = useState([{x: 0, y: 0}]);
-    const [tireRL_SusHeight, setTireRL_SusHeight] = useState([{x: 0, y: 0}]);
-    const [tireRR_SusHeight, setTireRR_SusHeight] = useState([{x: 0, y: 0}]);
-    const [tireFL_TireRadiu, setTireFL_TireRadius] = useState([{x: 0, y: 0}]);
-    const [tireFR_TireRadius, setTireFR_TireRadius] = useState([{x: 0, y: 0}]);
-    const [tireRL_TireRadius, setTireRL_TireRadius] = useState([{x: 0, y: 0}]);
-    const [tireRR_TireRadius, setTireRR_TireRadius] = useState([{x: 0, y: 0}]);
-    const [wheelFL_RevPerSecond, setWheelFL_RevPerSecond] = useState([{x: 0, y: 0}]);
-    const [wheelFR_RevPerSecond, setWheelFR_RevPerSecond] = useState([{x: 0, y: 0}]);
-    const [wheelRL_RevPerSecond, setWheelRL_RevPerSecond] = useState([{x: 0, y: 0}]);
-    const [wheelRR_RevPerSecond, setWheelRR_RevPerSecond] = useState([{x: 0, y: 0}]);
+    const [throttleStream, setThrottleStream] = useState([{ x: 0, y: -1 }]);
+    const [brakeStream, setBrakeStream] = useState([{ x: 0, y: -1 }]);
+    const [speedStream, setSpeedStream] = useState([{ x: 0, y: -1 }]);
+    const [suggestedGear,setSuggestedGear] = useState([{ x: 0, y: -1 }]);
+    const [currentGear,setCurrentGear] = useState([{ x: 0, y: -1 }]);
+    const [frontLeftTemp, setFrontLeftTemp] = useState([{ x: 0, y: 5 }]);
+    const [frontRightTemp, setFrontRightTemp] = useState([{ x: 0, y: 5 }]);
+    const [rearLeftTemp, setRearLeftTemp] = useState([{ x: 0, y: 5 }]);
+    const [rearRightTemp, setRearRightTemp] = useState([{ x: 0, y: 5 }]);
+    const [tireFL_SusHeight, setTireFL_SusHeight] = useState([{x: 0, y: -1}]);
+    const [tireFR_SusHeight, setTireFR_SusHeight] = useState([{x: 0, y: -1}]);
+    const [tireRL_SusHeight, setTireRL_SusHeight] = useState([{x: 0, y: -1}]);
+    const [tireRR_SusHeight, setTireRR_SusHeight] = useState([{x: 0, y: -1}]);
+    const [tireFL_TireRadiu, setTireFL_TireRadius] = useState([{x: 0, y: -1}]);
+    const [tireFR_TireRadius, setTireFR_TireRadius] = useState([{x: 0, y: -1}]);
+    const [tireRL_TireRadius, setTireRL_TireRadius] = useState([{x: 0, y: -1}]);
+    const [tireRR_TireRadius, setTireRR_TireRadius] = useState([{x: 0, y: -1}]);
+    const [wheelFL_RevPerSecond, setWheelFL_RevPerSecond] = useState([{x: 0, y: -1}]);
+    const [wheelFR_RevPerSecond, setWheelFR_RevPerSecond] = useState([{x: 0, y: -1}]);
+    const [wheelRL_RevPerSecond, setWheelRL_RevPerSecond] = useState([{x: 0, y: -1}]);
+    const [wheelRR_RevPerSecond, setWheelRR_RevPerSecond] = useState([{x: 0, y: -1}]);
     const [lastLapTime, setLastLapTime] = useState('');
     const [bestLapTime, setBestLapTime] = useState('');
-    const [lapCount, setLapCount] = useState(0);
+    const [lapCount, setLapCount] = useState(-1);
     const [lapTimer, setLapTimer] = useState('');
-    const [fuelStartLap,setFuelStartLap] = useState(0);
-    const [previousLapCount,setPreviousLapCount]= useState(0);
-    const [oilTempStream, setOilTempStream] = useState([{ x: 0, y: 0 }]);
-    const [minAlertRPM, setMinAlertRpm] = useState(0);
-    const [maxAlertRPM, setMaxAlertRpm] = useState(0);
-    const [calculatedMaxSpeed,setCalculatedMaxSpeed]= useState(0);
-    const [transmissionTopSpeed,setTransmissionTopSpeed]= useState(0);
-    const [gasCapacity,setGasCapacity]= useState(0);
-    const [gasLevel,setGasLevel]= useState(0);
-    const [turboBoost,setTurboBoost]= useState(0);
-    const [inLapShifts, setInLapShifts] = useState(0);
-    const [rpmStream, setRpmStream] = useState([{ x: 0, y: 0 }]);
-    const [waterTempStream, setWaterTemperatureStream] = useState([{ x: 0, y: 0 }]);
-    const [oilPressureStream, setOilPressureStream] = useState([{ x: 0, y: 0 }]);
-    const [clutchEngagementStream,setClutchEngagementStream] = useState([{ x: 0, y: 0 }]);
-    const [clutchPedalStream,setClutchPedalStream]= useState([{ x: 0, y: 0 }]);
-    const [rpmClutchToGearboxStream,setRpmFromClutchToGearbox]= useState([{ x: 0, y: 0 }]);
-    const [distanceFromStart, setDistanceFromStart] = useState(0);
+    const [fuelStartLap,setFuelStartLap] = useState(-1);
+    const [previousLapCount,setPreviousLapCount]= useState(-1);
+    const [oilTempStream, setOilTempStream] = useState([{ x: 0, y: -1 }]);
+    const [minAlertRPM, setMinAlertRpm] = useState(-1);
+    const [maxAlertRPM, setMaxAlertRpm] = useState(-1);
+    const [calculatedMaxSpeed,setCalculatedMaxSpeed]= useState(-1);
+    const [transmissionTopSpeed,setTransmissionTopSpeed]= useState(-1);
+    const [gasCapacity,setGasCapacity]= useState(-1);
+    const [gasLevel,setGasLevel]= useState(-1);
+    const [turboBoost,setTurboBoost]= useState(-1);
+    const [inLapShifts, setInLapShifts] = useState(-1);
+    const [rpmStream, setRpmStream] = useState([{ x: 0, y: -1 }]);
+    const [waterTempStream, setWaterTemperatureStream] = useState([{ x: 0, y: -1 }]);
+    const [oilPressureStream, setOilPressureStream] = useState([{ x: 0, y: -1 }]);
+    const [clutchEngagementStream,setClutchEngagementStream] = useState([{ x: 0, y: -1 }]);
+    const [clutchPedalStream,setClutchPedalStream]= useState([{ x: 0, y: -1 }]);
+    const [rpmClutchToGearboxStream,setRpmFromClutchToGearbox]= useState([{ x: 0, y: -1 }]);
+    const [distanceFromStart, setDistanceFromStart] = useState(-1);
     const [setupData, setSetupData] = useState<SetupDataInterface>(getEmptySetupObject());
     const signalRService = new SignalRService(userName,defaults.defualtIPAddress,"sport");
     useEffect(() => {
@@ -302,11 +302,12 @@ export default function BasicTabs() {
     dashboard3: ['RPM','RPM'],
     dashboard4: ['mm','mm','mm','mm','RPS','RPS','RPS','RPS'],
   });
+  
   const [dashboardWarningsData, setDashboardWarningsData] = React.useState<{ [key: string]: number[] }>({
-    dashboard1: [1, 5, 3, 4],
-    dashboard2: [0,0,0,0,0,0],
-    dashboard3: [0,0],
-    dashboard4: [100,100,100,100,10,10,10,10],
+    dashboard1: [-1, -1, -1, -1],
+    dashboard2: [-1,-1,-1,-1,-1,-1],
+    dashboard3: [-1,-1],
+    dashboard4: [-1,-1,-1,-1,-1,-1,-1,-1],
   });
   const [dashboardWarningsDefaultLimits, setDashboardWarningsDefaultLimits] = React.useState<{ [key: string]: number[] }>({
     dashboard1: [105, 105, 105, 105],
@@ -669,11 +670,7 @@ const [packetFlag,setPacketFlag] = useState(false);
   
   const isMobile = useMediaQuery('(max-width:750px)')
 
-
-
-  
-
-
+ 
   return (
     <> {activeWarnings.length > 0 ? (
       activeWarnings.map((value, index) => (
@@ -685,7 +682,7 @@ const [packetFlag,setPacketFlag] = useState(false);
       <p>No active warnings.</p>
     )}
     {activeWarningsLower.length > 0 ? (
-      activeWarningsLower.map((value, index) => (
+      activeWarningsLower.map((value, index) => ( 
         <>
         <ActualWarningModal key={value.id} activewarning={value} handleActiveWarnings={handleActiveWarningsLower} handleAcknowledgedWarnings={handleAcknowledgedWarningsLower} isHigherWarning={false}/>
         </>

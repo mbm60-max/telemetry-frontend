@@ -45,7 +45,6 @@ const ActualWarning = ({onClose,activeWarning,handleActiveWarnings,handleAcknowl
   const handleSupress=()=>{
     onClose();
   }
-
   return (
     
    <Box sx={{ width: '100vw', height: '100%'}}>

@@ -6,6 +6,7 @@ import SettingsObject, {
   DataSettings,
   DefaultsSettings,
 } from "../../interfaces/defaultSettingsInterface";
+import SettingsDefaultWarningsTabSelector from "./settingsDefaultWarnings";
 import SettingsTextDisplay from "./settingsTextDisplay";
 import SettingsToggleDisplay from "./settingsToggleDisplay";
 interface SettingsDisplayProps {
@@ -121,6 +122,8 @@ const SettingsDisplay = ({
               Alter warning interval
             </Button>
           </Grid>
+          <Grid item xs={12}><SettingsDefaultWarningsTabSelector/></Grid>
+          
         </Grid>
       )}
       {field == "Appearance" && (

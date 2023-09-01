@@ -1,8 +1,10 @@
-import { Box, TableContainer, Paper, Table, TableHead, TableRow, TableBody, styled, TableCell, tableCellClasses } from "@mui/material";
+import { Box, TableContainer, Paper, Table, TableHead, TableRow, TableBody, styled, TableCell, tableCellClasses, Typography, Grid } from "@mui/material";
 import { fuelMapObject } from "../../utils/relativeFuelCalculations";
+import roundTo1DP, { roundTo3SF } from "../../utils/roudning";
 
 interface FuelDataProps{
 FuelObjectMaps:fuelMapObject[];
+gasLevel:number;
 }
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -25,9 +27,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
   }));
   
-const FuelDataDisplay = ({FuelObjectMaps}: FuelDataProps) => {
+const FuelDataDisplay = ({FuelObjectMaps,gasLevel}: FuelDataProps) => {
     return (
         <Box sx={{ padding: 0.5 }}>
+          <Grid container spacing={4} >
+          <Grid item xs={12} >
       <TableContainer sx={{ maxHeight: 423 }} component={Paper}>
         <Table sx={{ minWidth: 700, maxHeight: 200 }} aria-label="customized table">
           
@@ -51,18 +55,60 @@ const FuelDataDisplay = ({FuelObjectMaps}: FuelDataProps) => {
                   <StyledTableCell component="th" scope="row">
                     {row.mixtureSetting}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.powerPercentage}</StyledTableCell>
-                  <StyledTableCell align="right">{row.consumptionPercentage}</StyledTableCell>
-                  <StyledTableCell align="right">{row.fuelConsumedPerLap}</StyledTableCell>
-                  <StyledTableCell align="right">{row.lapsRemainingOnCurrentFuel}</StyledTableCell>
-                  <StyledTableCell align="right">{row.timeRemainingOnCurrentFuel}</StyledTableCell>
-                  <StyledTableCell align="right">{row.lapTimeDiff}</StyledTableCell>
-                  <StyledTableCell align="right">{row.lapTimeExpected}</StyledTableCell>
+                  <StyledTableCell align="right">{roundTo3SF(row.powerPercentage)}</StyledTableCell>
+                  <StyledTableCell align="right">{roundTo3SF(row.consumptionPercentage)}</StyledTableCell>
+                  <StyledTableCell align="right">{roundTo1DP(row.fuelConsumedPerLap)}</StyledTableCell>
+                  <StyledTableCell align="right">{roundTo1DP(row.lapsRemainingOnCurrentFuel)}</StyledTableCell>
+                  <StyledTableCell align="right">{roundTo1DP(row.timeRemainingOnCurrentFuel)}</StyledTableCell>
+                  <StyledTableCell align="right">{roundTo1DP(row.lapTimeDiff)}</StyledTableCell>
+                  <StyledTableCell align="right">{roundTo1DP(row.lapTimeExpected)}</StyledTableCell>
                 </StyledTableRow>
               ))}
           </TableBody>
         </Table>
       </TableContainer>
+      </Grid>
+      <Grid item xs={12} >
+      <Grid container spacing={2} >
+      <Grid item xs={12} sm={4}>
+      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: "rgba(8, 13, 56, 0)",
+        borderRadius: 1.5,minHeight:'80px',overflow:'auto',
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "6px solid rgba(8, 13, 100, 0.6)" }}>
+  <Typography fontFamily={"Yapari"}  variant="body1" style={{ marginRight: '8px',marginLeft:'8px',fontSize:25,whiteSpace:'nowrap'}}>
+    Fuel Remaining:
+  </Typography>
+  <Typography  fontFamily={"Satoshi"} variant="body1" style={{fontWeight: 'bold',fontSize:30}}>
+    {gasLevel}
+  </Typography>
+</Box>
+</Grid>
+<Grid item xs={12} sm={4}>
+      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: "rgba(8, 13, 56, 0)",
+        borderRadius: 1.5,minHeight:'80px',overflow:'auto',
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "6px solid rgba(8, 13, 100, 0.6)"  }}>
+  <Typography fontFamily={"Yapari"}  variant="body1" style={{ marginRight: '8px',marginLeft:'8px',fontSize:25,whiteSpace:'nowrap'}}>
+    Time Remaining:
+  </Typography>
+  <Typography  fontFamily={"Satoshi"} variant="body1" style={{fontWeight: 'bold',fontSize:30}}>
+    {gasLevel}
+  </Typography>
+</Box>
+</Grid>
+<Grid item xs={12} sm={4}>
+      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: "rgba(8, 13, 56, 0)",
+        borderRadius: 1.5,minHeight:'80px',overflow:'auto',
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "6px solid rgba(8, 13, 100, 0.6)" }}>
+  <Typography fontFamily={"Yapari"}  variant="body1" style={{ marginRight: '8px',marginLeft:'8px',fontSize:25,whiteSpace:'nowrap'}}>
+    Laps Remaining:
+  </Typography>
+  <Typography  fontFamily={"Satoshi"} variant="body1" style={{fontWeight: 'bold',fontSize:30}}>
+    {gasLevel}
+  </Typography>
+</Box>
+</Grid>
+</Grid>
+</Grid>
+</Grid>
     </Box>
     );
 };

@@ -17,7 +17,7 @@ interface TwoValueProps {
 
 const ItemContainer = styled('div')({
   padding: '0px',
-  border: '1px solid #ccc',
+  border: '1px solid grey',
   overflow: 'hidden',
   wordWrap: 'break-word', // Use word-wrap to handle long texts
   textAlign: 'center',
@@ -38,8 +38,7 @@ const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(2),
-  color: theme.palette.text.secondary,
-  height: '100%',
+  color: "grey",
   boxSizing: 'border-box',
   width: '100%',
 }));
@@ -52,11 +51,14 @@ const WrappedTypography = styled(Typography)(({ theme }) => ({
 
 export default function TwoValueDisplay({ dataValueOne, dataValueTwo, nameOne, nameTwo }: TwoValueProps) {
   return (
-    <Grid container spacing={2}>
+    <Box sx={{display: 'flex', alignItems: 'center',backgroundColor: "rgba(8, 13, 56, 0)",
+        borderRadius: 1.5,
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "6px solid rgba(8, 13, 100, 0.6)" }}>
+    <Grid container spacing={2} >
       <Grid item xs={12} sm={12}>
       <ItemContainer>
       <Grid container spacing={0}>
-      <Grid item xs={12} sm={12}> <Typography sx={{fontSize:35}}variant="body1" fontFamily={"Yapari"}>{nameOne}</Typography></Grid>
+      <Grid item xs={12} sm={12} > <Typography sx={{fontSize:35,overflow:'auto',whiteSpace:'nowrap'}}variant="body1" fontFamily={"Yapari"}>{nameOne}</Typography></Grid>
       <Grid item xs={12} sm={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor:'#FB9536',color:'white',width:'50%',borderRadius:'30px'}}>
               <Typography sx={{ overflow: "scroll", textAlign:'center' }}fontFamily={"Satoshi"} fontSize={29}fontWeight="bold">
               {dataValueOne}
@@ -68,7 +70,7 @@ export default function TwoValueDisplay({ dataValueOne, dataValueTwo, nameOne, n
       <Grid item xs={12} sm={12}>
       <ItemContainer>
       <Grid container spacing={0}>
-      <Grid item xs={12} sm={12}> <Typography sx={{fontSize:35}}variant="body1" fontFamily={"Yapari"}>{nameTwo}</Typography></Grid>
+      <Grid item xs={12} sm={12}> <Typography sx={{fontSize:35,overflow:'auto',whiteSpace:'nowrap'}}variant="body1" fontFamily={"Yapari"}>{nameTwo}</Typography></Grid>
       <Grid item xs={12} sm={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor:'#FB9536',color:'white',width:'50%',borderRadius:'30px'}}>
               <Typography sx={{ overflow: "scroll", textAlign:'center' }}fontFamily={"Satoshi"} fontSize={29}fontWeight="bold">
               {dataValueTwo}
@@ -78,5 +80,6 @@ export default function TwoValueDisplay({ dataValueOne, dataValueTwo, nameOne, n
         </ItemContainer>
       </Grid>
     </Grid>
+    </Box>
   );
 };

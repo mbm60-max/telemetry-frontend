@@ -17,15 +17,37 @@ const SettingsField = ({ name,Info,onClick,Icon}: SettingsFieldProps) => {
     }
 
   return (
-    <Box sx={{ width: '100%', height: '100%',position:'relative'}}><Button  onClick={handleClick} variant='contained' sx={{ width: '95%',minHeight:'100px',ml:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1,backgroundColor:'grey'}}>
-    <Grid container spacing={2} alignItems="center">
-<Box sx={{ width: "100%",height:'100%',backgroundColor:'F6F6F6', margin:1, padding:2,wrap: "wrap", overflow:'scroll'}}>
-<Grid container spacing={2} alignItems="center"><Grid item xs={12} sm={1} sx={{mt:1}}><Icon sx={{mt:1}}/></Grid><Grid item xs={12} sm={10}sx={{display:'flex',justifyContent:'left',alignItems:'center'}}><Grid container spacing={2} alignItems="center"><Grid item xs={12} sx={{mt:1}}><Typography sx={{ml:2,mt:2}}id="input-slider" gutterBottom >
-    {name}
-    </Typography></Grid><Grid item xs={12} sx={{mt:1}}>{Info}</Grid></Grid></Grid><Grid item xs={12} sm={1}><ArrowForwardIosIcon sx={{mt:2}}/></Grid></Grid>
+    <Box sx={{ width: '85%'}}>
+      <Button  onClick={handleClick} variant='contained' sx={{ width: '95%',ml:2, borderRadius:1, border: '1px solid red' ,boxShadow:1,backgroundColor:'grey'}}>
+        <Grid container spacing={2} alignItems="center">
+          <Box sx={{ width: "100%",height:'100%',backgroundColor:'F6F6F6', margin:1, padding:2,wrap: "wrap", overflow:'scroll'}}>
+            <Grid container spacing={0} alignItems="center">
+              <Grid item xs={12} sm={1} sx={{mt:-3}}>
+                <Icon />
+              </Grid>
+              <Grid item xs={12} sm={10}sx={{display:'flex',justifyContent:'left',alignItems:'center'}}>
+                <Grid container spacing={0} >
+                  <Grid item xs={12} sx={{display:'flex',justifyContent:'left'}} >
+                    <Typography sx={{ml:2,mt:2}}id="input-slider" gutterBottom >
+                      {name}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} sx={{display:'flex',justifyContent:'left'}}>
+                  <Typography sx={{ml:2,mt:2,overflow:'auto',whiteSpace:'nowrap'}}id="input-slider" gutterBottom >
+                  {Info}
+                    </Typography>
+                   
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={1}>
+                <ArrowForwardIosIcon sx={{mt:2}}/>
+              </Grid>
+            </Grid>
+          </Box>
+        </Grid>
+      </Button> 
     </Box>
-    </Grid></Button> 
-  </Box>
      )
      }
 

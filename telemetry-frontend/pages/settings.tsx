@@ -12,9 +12,7 @@ const Settings = () => {
     }
 return (
   <>
-  <Box className='header'><Button onClick={handleExitReview}>Exit Review</Button></Box>
-  <Box sx={{ width: '100%' }}>
-  <Homepage style={'homepage'}><SettingsWrapper/></Homepage></Box>
+<SettingsWrapper/>
   </>
      
 );

@@ -1,14 +1,28 @@
-import { Button, Divider, Grid, styled } from "@mui/material";
+import { Button, createTheme, Divider, Grid, Paper, styled, useMediaQuery } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { JsxElement } from "typescript";
 import SettingsObject from "../../interfaces/defaultSettingsInterface";
 import { SettingsContext } from "../authProviderSettings";
+import Homepage from "../background/background";
+import NavBar from "../navbar/navbar";
 import SettingsDisplay from "./settingsDisplay";
 import SettingsController from "./settingsFieldSelection";
 import SettingsTitle from "./settingsTitle";
 interface SettingsWrapperProps {}
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'left',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.text.secondary,
+  backgroundColor: 'rgba(132, 126, 126, 0)',
+  boxShadow: 'none', // Override the shadow effect
+}));
+
 const SettingsWrapper = ({}: SettingsWrapperProps) => {
   const { alerts,setAlerts,data,setData,appearance,setAppearance,defaults,setDefaults} = useContext(SettingsContext);
  const userSettings:SettingsObject={
@@ -32,7 +46,15 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
   const handleFieldSelection = (field: string) => {
     setField(field);
   };
-  return (
+
+  const isMobile = useMediaQuery('(max-width:750px)')
+
+  return (<>
+    <Homepage style={'navbar-container'}>
+                <Item><NavBar /></Item>
+              </Homepage>
+              <Box sx={{ width: '100%' }}>
+    <Homepage style={isMobile ? 'homepage-container300' : 'homepage-container'}>
     <div
       style={{
         height: "100vh",
@@ -100,7 +122,8 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
           </Grid>
         </Grid>
       </div>
-    </div>
+    </div></Homepage></Box>
+    </>
   );
 };
 export default SettingsWrapper;

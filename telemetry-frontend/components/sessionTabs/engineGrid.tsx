@@ -130,7 +130,7 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
   //const seconds = convertToSeconds(parseTSXTimeString(tsxTimeString));
   //console.log(seconds);
   const fuelObject = calculateRemainingFuel(100,95,90); //change to fuel start lap and gas level and lap time
-  const FuelObjectMaps = getFuelOnConsumptionByRelativeFuelLevels(fuelObject,90); //change to lap time
+  const FuelObjectMaps = getFuelOnConsumptionByRelativeFuelLevels(fuelObject,90,95); //change to lap time,and gas level
 
   const possibleWarningsValues=[throttleStream,oilTempStream,rpmStream,turboBoost,oilPressureStream,gasLevel,waterTempStream]
   const possibleWarningsNames=["Oil Temperature","RPM","Turbo Boost Pressure","Oil Pressure","Fuel Level","Water Temperature"]
@@ -231,7 +231,7 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
           <Item><DynamicBasicChart label={'Water Temperature '} expectedMaxValue={255} expectedMinValue={-1} dataStream={waterTempStream} units={'°C'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={12} sm={12}>
-          <Item><FuelDataDisplay FuelObjectMaps={FuelObjectMaps}></FuelDataDisplay></Item>
+          <Item><FuelDataDisplay FuelObjectMaps={FuelObjectMaps} gasLevel={gasLevel}></FuelDataDisplay></Item>
         </Grid>
         <Grid item xs={12} sm={8}>
           <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={rpmStream} units={'RPM'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>

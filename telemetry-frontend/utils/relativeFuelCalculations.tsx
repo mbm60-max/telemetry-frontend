@@ -1,7 +1,7 @@
  class fuelConsumptionObject {
     fuelConsumedPerLap: number = 0;
     lapsRemaining: number = -1;
-    timeRemaining: number = -1
+    timeRemaining: number = -1;
 }
 
 export class fuelMapObject {
@@ -15,7 +15,7 @@ export class fuelMapObject {
     lapTimeExpected: number = 0;
 }
 
-const  getFuelOnConsumptionByRelativeFuelLevels=(fuelObject:fuelConsumptionObject,lastLapTime:number)=>{
+const  getFuelOnConsumptionByRelativeFuelLevels=(fuelObject:fuelConsumptionObject,lastLapTime:number,gasLevel:number)=>{
     let i = -5;
 
     // Source:
@@ -32,10 +32,8 @@ const  getFuelOnConsumptionByRelativeFuelLevels=(fuelObject:fuelConsumptionObjec
             relativeFuelMap.consumptionPercentage=(100 - i * fuelConsumptionPerLevelChange) / 100,
         
 
-        relativeFuelMap.fuelConsumedPerLap = fuelObject.fuelConsumedPerLap * relativeFuelMap.consumptionPercentage
-        relativeFuelMap.lapsRemainingOnCurrentFuel = fuelObject.lapsRemaining + fuelObject.lapsRemaining * (
-                1 - relativeFuelMap.consumptionPercentage
-        )
+        relativeFuelMap.fuelConsumedPerLap = fuelObject.fuelConsumedPerLap * relativeFuelMap.consumptionPercentage;
+        relativeFuelMap.lapsRemainingOnCurrentFuel = gasLevel /  relativeFuelMap.fuelConsumedPerLap;
 
         relativeFuelMap.timeRemainingOnCurrentFuel = fuelObject.timeRemaining + fuelObject.timeRemaining * (
                 1 - relativeFuelMap.consumptionPercentage
@@ -43,6 +41,8 @@ const  getFuelOnConsumptionByRelativeFuelLevels=(fuelObject:fuelConsumptionObjec
         relativeFuelMap.lapTimeDiff = lastLapTime * (1 - relativeFuelMap.powerPercentage)
         relativeFuelMap.lapTimeExpected = lastLapTime+ relativeFuelMap.lapTimeDiff
 
+        relativeFuelMap.powerPercentage= relativeFuelMap.powerPercentage * 100,
+        relativeFuelMap.consumptionPercentage = relativeFuelMap.consumptionPercentage * 100,
         relativeFuelMaps.push(relativeFuelMap)
         i += 1
     }

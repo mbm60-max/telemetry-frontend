@@ -203,7 +203,7 @@ export default function GearboxGrid({currentGearStream,suggestedGearStream,rpmSt
           <Item><DynamicBasicChart label={'RPM Clutch To Gearbox '} expectedMaxValue={255} expectedMinValue={-1} dataStream={rpmClutchToGearboxStream} units={'RPM'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={12}>
-          <Item><TwoValueDisplay dataValueOne={inLapShifts} dataValueTwo={0} nameOne={'Total Shifts In Lap'} nameTwo={'?'}/></Item>
+          <Item><TwoValueDisplay dataValueOne={inLapShifts} dataValueTwo={0} nameOne={'Total Shifts In Lap'} nameTwo={'Total Shifts In Lap'}/></Item>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Item><DynamicBasicChart label={'Suggested Gear'} expectedMaxValue={255} expectedMinValue={-1} dataStream={suggestedGearStream} units={''} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>

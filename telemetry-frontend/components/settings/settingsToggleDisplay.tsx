@@ -104,9 +104,8 @@ import {
                   </FormControl>
                 </Grid>
                 <InfoToolTip
-                name={targetSetting}
-                info={tooltipInfo}
-              />
+                  name={targetSetting}
+                  info={tooltipInfo} iconColor={""}              />
               </Grid>
             </Box>
           </Grid>

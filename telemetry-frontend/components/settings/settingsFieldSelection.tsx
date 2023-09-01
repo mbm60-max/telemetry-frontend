@@ -1,4 +1,4 @@
-import { Box, Grid, Slider, Typography } from "@mui/material";
+import { Box, Divider, Grid, Slider, styled, Typography } from "@mui/material";
 import React, { useState } from "react";
 import Image from "next/image";
 import InfoToolTip from "../helperTooltip.tsx/infoTooltip";
@@ -22,51 +22,40 @@ const SettingsController = ({onClick}: SettingsControllerProps) => {
     onClick(fieldName);
     setSelectedField(fieldName);
   }
-
+  
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        backgroundColor: "#F6F6F6",
-        minHeight: "300px",
-        borderRadius: 1.5,
-        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.5)",
-      }}
-    >
-      <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
+    
+      <Box sx={{ width: "100%" }}>
         <Grid container spacing={2} alignItems="center">
           
           <Grid item xs={12}>
             <Grid
               container
-              spacing={2}
+              spacing={0}
               alignItems="center"
             >
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-                <SettingsField name={"Account"} Info={"Name, Password, Delete Account"} onClick={handleSelectedFieldChange} Icon={AccountCircleIcon} />
+                <SettingsField name={"Account"} Info={"Name, Password, Delete Account"} onClick={handleSelectedFieldChange} Icon={AccountCircleIcon} hasDivider={true} />
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-                <SettingsField name={"Data"} Info={"ML Data Consent, Review Lap Limits"} onClick={handleSelectedFieldChange} Icon={DatasetLinkedIcon} />
+                <SettingsField name={"Data"} Info={"ML Data Consent, Review Lap Limits"} onClick={handleSelectedFieldChange} Icon={DatasetLinkedIcon} hasDivider={true} />
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
                 <SettingsField
-                                  name={"Alerts"}
-                                  Info={"Default Warnings, Warnings Intervals"}
-                                  onClick={handleSelectedFieldChange} Icon={NotificationsActiveIcon}                />
+                name={"Alerts"}
+                Info={"Default Warnings, Warnings Intervals"}
+                onClick={handleSelectedFieldChange} Icon={NotificationsActiveIcon} hasDivider={true}                />
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-                <SettingsField name={"Appearance"} Info={"Light Mode/Dark Mode, ?"} onClick={handleSelectedFieldChange} Icon={RemoveRedEyeIcon}/>
+                <SettingsField name={"Appearance"} Info={"Light Mode/Dark Mode, Language"} onClick={handleSelectedFieldChange} Icon={RemoveRedEyeIcon} hasDivider={true}/>
               </Grid>
               <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-                <SettingsField name={"Defaults"} Info={"IP Address, Metric vs Imperial"} onClick={handleSelectedFieldChange} Icon={FilterNoneIcon}/>
+                <SettingsField name={"Defaults"} Info={"IP Address, Metric vs Imperial"} onClick={handleSelectedFieldChange} Icon={FilterNoneIcon} hasDivider={false}/>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
       </Box>
-    </Box>
   );
 };
 

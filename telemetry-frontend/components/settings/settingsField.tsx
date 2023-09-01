@@ -1,5 +1,5 @@
 
-import { Box, Button, Grid, SvgIconTypeMap, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, styled, SvgIconTypeMap, Typography, useMediaQuery } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import InfoToolTip from '../helperTooltip.tsx/infoTooltip';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -8,24 +8,32 @@ interface SettingsFieldProps{
 name:string;
 Info:string;
 onClick:(field:string)=>void;
+hasDivider:boolean;
 Icon:OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string; }
 }
 
-const SettingsField = ({ name,Info,onClick,Icon}: SettingsFieldProps) => {
+const SettingsField = ({ name,Info,onClick,Icon,hasDivider}: SettingsFieldProps) => {
     const handleClick=()=>{
         onClick(name);
     }
-
+const isMobile = useMediaQuery('(max-width:600px)')
+const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
+  borderWidth: "1.5px", // Adjust the thickness of the line here
+  borderColor: "white", // You can change the color to any valid CSS color value
+width:'73%'
+}));
   return (
-    <Box sx={{ width: '85%'}}>
-      <Button  onClick={handleClick} variant='contained' sx={{ width: '95%',ml:2, borderRadius:1, border: '1px solid red' ,boxShadow:1,backgroundColor:'grey'}}>
+   
+              <Grid container spacing={0} alignItems="center" >
+              <Grid item xs={12}> <Box sx={{ width: '100%',display:'flex',justifyContent:'end'}}><Box sx={{width: '85%'}}>
+      <Button  onClick={handleClick} variant='contained' sx={{ width: '95%',ml:0, borderRadius:1, boxShadow:0,backgroundColor:'rgba(0,0,0,0)'}}>
         <Grid container spacing={2} alignItems="center">
           <Box sx={{ width: "100%",height:'100%',backgroundColor:'F6F6F6', margin:1, padding:2,wrap: "wrap", overflow:'scroll'}}>
             <Grid container spacing={0} alignItems="center">
-              <Grid item xs={12} sm={1} sx={{mt:-3}}>
+              <Grid item xs={12} sm={1} sx={{mt:0}}>
                 <Icon />
               </Grid>
-              <Grid item xs={12} sm={10}sx={{display:'flex',justifyContent:'left',alignItems:'center'}}>
+              {!isMobile ?(<Grid item xs={6} sm={10}sx={{display:'flex',justifyContent:'left',alignItems:'center'}}>
                 <Grid container spacing={0} >
                   <Grid item xs={12} sx={{display:'flex',justifyContent:'left'}} >
                     <Typography sx={{ml:2,mt:2}}id="input-slider" gutterBottom >
@@ -39,15 +47,20 @@ const SettingsField = ({ name,Info,onClick,Icon}: SettingsFieldProps) => {
                    
                   </Grid>
                 </Grid>
-              </Grid>
+              </Grid>):null}
               <Grid item xs={12} sm={1}>
                 <ArrowForwardIosIcon sx={{mt:2}}/>
               </Grid>
             </Grid>
           </Box>
         </Grid>
-      </Button> 
-    </Box>
+      </Button> </Box>
+    </Box></Grid>
+    {hasDivider?(
+              <Grid item xs={12} ><Box sx={{width:'100%',display:'flex',justifyContent:'end'}}><StyledHorizontalDivider/></Box></Grid>):null}
+                </Grid>
+            
+   
      )
      }
 

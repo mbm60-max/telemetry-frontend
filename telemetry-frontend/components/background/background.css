@@ -21,6 +21,7 @@
   background: linear-gradient(to bottom,rgba(9, 27, 119, 0.4) 0%, rgba(9, 27, 119, 0) 100%);
 }
 
+
 .setups-container{
   width: 100%;
   height: 3500px;
@@ -59,4 +60,66 @@
   height: 900px;
   overflow: hidden; 
   background: linear-gradient(to bottom,  rgba(9, 27, 119, 0) 0%,rgba(9, 27, 119, 1) 100%);
+}
+
+
+#dark.homepage-container {
+  width: 100%;
+  height: 900px;
+  overflow: hidden; 
+  background: linear-gradient(to bottom, rgba(4, 11, 48, 1) 0%, rgba(9, 27, 119, 0) 100%);
+}
+#dark.homepage-container300 {
+width: 100%;
+height: 300px;
+overflow: hidden; 
+background: linear-gradient(to bottom, rgba(4, 11, 48, 1) 0%, rgba(9, 27, 119, 0.4) 100%);
+}
+#dark.homepage-container100 {
+width: 100%;
+height: 100px;
+overflow: hidden; 
+background: linear-gradient(to bottom, rgba(4, 11, 48, 1) 0%, rgba(9, 27, 119, 0.4) 100%);
+}
+#dark .homepage-specail{
+  background: linear-gradient(to bottom,rgba(4, 11, 48, 0.9) 0%, rgba(9, 27, 119, 0) 100%);
+}
+#dark.setups-container{
+  width: 100%;
+  height: 3500px;
+  overflow: hidden; 
+  background: linear-gradient(to bottom, rgba(4, 11, 48, 1) 0%, rgba(9, 27, 119, 0) 100%);
+}
+#dark.homepage-containerExtended {
+  width: 100%;
+  height: 1500px;
+  overflow: hidden; 
+  background: rgba(4, 11, 48, 0)100%;
+}
+  
+#dark.homepage{
+    width: 100%;
+      height: 100%;
+      overflow: hidden; 
+      background: rgba(4, 11, 48, 1);
+  }
+  #dark.navbar-container {
+    width: 100%;
+    height: 70px;
+    overflow: hidden; 
+    background: linear-gradient(to bottom, rgba(4, 11, 48, 1)
+    0%, rgba(9, 27, 119, 1)100%);
+}
+#dark.navbar-containe-reverse {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; 
+  background: linear-gradient(to bottom, rgba(4, 11, 48, 1)100%, rgba(1, 4, 18, 1)
+  0%);
+}
+#dark.homepage-container-reverse {
+  width: 100%;
+  height: 900px;
+  overflow: hidden; 
+  background: linear-gradient(to bottom,  rgba(4, 11, 48, 0) 0%,rgba(9, 27, 119, 1) 100%);
 }

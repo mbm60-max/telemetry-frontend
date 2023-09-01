@@ -77,8 +77,11 @@ import {
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography sx={{ fontSize: 22 }}>{currentValue}</Typography>
-          </Grid>
+          <Typography sx={{ fontSize: 18 }}>Current Value:</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography sx={{ fontSize: 22 }}>{currentValue?(toggleLeft):toggleRight}</Typography>
+        </Grid>
           <Grid item xs={6}>
             <Box
               sx={{
@@ -99,7 +102,7 @@ import {
                   <FormControl fullWidth>
                   <FormControlLabel
         control={<Switch checked={inputValue} onChange={handleChange} />}
-        label={inputValue ? toggleLeft : toggleRight}
+        label={inputValue ?  toggleRight : toggleLeft}
       />
                   </FormControl>
                 </Grid>

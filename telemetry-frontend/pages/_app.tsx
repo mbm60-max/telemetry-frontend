@@ -3,6 +3,7 @@ import { AppProps } from "next/app";
 import { AuthProvider } from "../components/authProvider"
 import { SettingsProvider } from "../components/authProviderSettings";
 import { WarningProvider } from "../components/authProviderWarnings";
+import ThemeDiv from "../components/themeDiv";
 
 function MyApp({ Component, pageProps }:AppProps) {
 
@@ -10,7 +11,9 @@ function MyApp({ Component, pageProps }:AppProps) {
     <AuthProvider>
        <WarningProvider>
         <SettingsProvider>
-      <Component {...pageProps} />
+          <ThemeDiv>
+          <Component {...pageProps}  />
+          </ThemeDiv>
       </SettingsProvider>
       </WarningProvider>
     </AuthProvider>

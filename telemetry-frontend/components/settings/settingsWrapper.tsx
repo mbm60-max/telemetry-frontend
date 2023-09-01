@@ -48,40 +48,48 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
   };
 
   const isMobile = useMediaQuery('(max-width:750px)')
-
+  const Item = styled(Paper)(({ theme }) => ({
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'left',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.text.secondary,
+    backgroundColor: 'rgba(132, 126, 126, 0)',
+    boxShadow: 'none', // Override the shadow effect
+  }));
   return (<>
     <Homepage style={'navbar-container'}>
                 <Item><NavBar /></Item>
               </Homepage>
               <Box sx={{ width: '100%' }}>
-    <Homepage style={isMobile ? 'homepage-container300' : 'homepage-container'}>
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+    <Homepage style={isMobile ? 'homepage-container300' : 'homepage-container100'}>
+    </Homepage>
+    <Homepage style={'homepage-specail'}>
+      <Box  sx={{
+        width: "100%",
+        height: "100%",display:'flex',justifyContent:'center'}}>
+    <Box
+      sx={{
+        width: "95%",
+        height: "100%",
+        backgroundColor: "rgba(8, 13, 56, 0.4)",
+        borderRadius: 1.5,
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",
+
       }}
     >
-      <div
-        style={{
-          height: "95vh",
-          width: "95vw",
-          display: "flex",
-          backgroundColor: "#D8DDF5",
-          borderRadius: 10,
-        }}
-      >
         <Grid container spacing={0}>
-          <Grid item xs={5.5}>
-            <Grid container spacing={2}>
+          <Grid item xs={6} sx={{borderRight:'1.5px solid white'}}>
+            <Grid container spacing={0}>
               <Grid item xs={12}>
-                <SettingsTitle title={"Settings"} fontSize={30} />
+                <Box sx={{mt:4}}>
+                <SettingsTitle title={"Settings"} fontSize={30} /></Box>
               </Grid>
               <Grid item xs={12}>
                 <Box
                   sx={{
-                    height: "50vh",
+                    height: "100vh",
                     display: "flex",
                     alignItems: "center",
                   }}
@@ -91,19 +99,7 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid
-            item
-            xs={1}
-            sx={{
-              justifyContent: "center",
-              display: "flex",
-              height: "94.2vh",
-            }}
-          >
-            <StyledVerticalDivider orientation="vertical" />
-          </Grid>
-
-          <Grid item xs={5.5}>
+          <Grid item xs={6} sx={{borderLeft:'1.5px solid white'}}>
             <Grid container spacing={0} direction="row">
               <Grid item xs={12}>
                 <Grid container spacing={0} direction="row">
@@ -120,9 +116,8 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </div>
-    </div></Homepage></Box>
+        </Grid></Box></Box>
+      </Homepage></Box>
     </>
   );
 };

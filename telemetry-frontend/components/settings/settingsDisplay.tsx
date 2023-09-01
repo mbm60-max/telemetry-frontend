@@ -134,24 +134,14 @@ const SettingsDisplay = ({
               currentSettingsData={userSettings.appearance}
               handleUpdateSettings={handleUpdateSettings}
               tooltipText={""}
-              toggleLeft={"Darkmode"}
-              toggleRight={"Lightmode"}
+              toggleLeft={"Lightmode"}
+              toggleRight={"Darkmode"}
             />
           </Grid>
         </Grid>
       )}
       {field == "Defaults" && (
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Set defualt units imperial vs metric
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Alter Default IP
-            </Button>
-          </Grid>
           <Grid item xs={12}>
             <SettingsTextDisplay
               currentValue={userSettings.defaults.defualtIPAddress}

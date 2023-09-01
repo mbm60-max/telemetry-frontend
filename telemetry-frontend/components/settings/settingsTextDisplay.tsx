@@ -121,8 +121,7 @@ const SettingsTextDisplay = ({
               </Grid>
               <InfoToolTip
                 name={targetSetting}
-                info={tooltipInfo}
-              />
+                info={tooltipInfo} iconColor={""}              />
             </Grid>
           </Box>
         </Grid>

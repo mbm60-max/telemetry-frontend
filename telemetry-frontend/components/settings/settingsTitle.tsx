@@ -1,4 +1,4 @@
-import {  Divider,  styled, Typography } from "@mui/material";
+import {  Box, Divider,  styled, Typography } from "@mui/material";
 import React from "react";
 interface SettingsTitleProps {
     title:string;
@@ -15,7 +15,8 @@ const SettingsTitle = ({title,fontSize}: SettingsTitleProps) => {
         alignItems: "center",
       }}
     >
-      <Typography sx={{fontSize:{fontSize},ml:2,color: "#4A5A44"}}>{title}</Typography>
+      <Box sx={{ width: '100%',display:'flex',justifyContent:'end'}}><Box sx={{width: '85%'}}>
+      <Typography sx={{fontSize:{fontSize},ml:4,color: "#4A5A44"}}>{title}</Typography></Box></Box>
     </div>
   );
 };

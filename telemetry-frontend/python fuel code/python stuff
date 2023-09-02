@@ -1,0 +1,160 @@
+// main file
+
+@linear()
+def update_fuel_map(step):
+    global g_stored_fuel_map
+
+    if len(app.gt7comm.laps) == 0:
+        div_fuel_map.text = ""
+        return
+
+    last_lap = app.gt7comm.laps[0]
+
+    if last_lap == g_stored_fuel_map:
+        return
+    else:
+        g_stored_fuel_map = last_lap
+
+    # TODO Add real live data during a lap
+    div_fuel_map.text = gt7diagrams.get_fuel_map_html_table(last_lap)
+    
+    g_stored_fuel_map = None
+    
+    div_fuel_map = Div(width=200, height=125, css_classes=["fuel_map"])
+    [get_help_div(gt7help.TIME_TABLE), race_time_table.t_lap_times, get_help_div(gt7help.FUEL_MAP), div_fuel_map, get_help_div(gt7help.TUNING_INFO), div_tuning_info],
+    ]
+        [div_speed_peak_valley_diagram, div_fuel_map], # TODO Race table does not render twice, one rendering will be empty
+     ],
+     curdoc().add_periodic_callback(update_fuel_map, 5000)
+     
+     
+     
+     //communciation file
+      self.fuel_capacity = struct.unpack('f', ddata[0x48:0x48 + 4])[0]
+        self.current_fuel = struct.unpack('f', ddata[0x44:0x44 + 4])[0]  # fuel
+        
+         self.current_lap.fuel_at_end = self.last_data.current_fuel
+        self.current_lap.fuel_consumed = self.current_lap.fuel_at_start - self.current_lap.fuel_at_end
+          self.current_lap.fuel_at_start = self.last_data.current_fuel
+          
+          
+          
+          //diagrams
+def get_fuel_map_html_table(last_lap):
+    fuel_maps = gt7helper.get_fuel_on_consumption_by_relative_fuel_levels(last_lap)
+    table = (
+        "<table><tr>"
+        "<th title='The fuel level relative to the current one'>Fuel Lvl.</th>"
+        "<th title='Fuel consumed'>Fuel Cons.</th>"
+        "<th title='Laps remaining with this setting'>Laps Rem.</th>"
+        "<th title='Time remaining with this setting' >Time Rem.</th>"
+        "<th title='Time Diff to last lap with this setting'>Time Diff</th></tr>"
+    )
+    for fuel_map in fuel_maps:
+        no_fuel_consumption = fuel_map.fuel_consumed_per_lap <= 0
+        line_style = ""
+        if fuel_map.mixture_setting == 0 and not no_fuel_consumption:
+            line_style = "background-color:rgba(0,255,0,0.5)"
+        table += (
+                "<tr id='fuel_map_row_%d' style='%s'>"
+                "<td style='text-align:center'>%d</td>"
+                "<td style='text-align:center'>%d</td>"
+                "<td style='text-align:center'>%.1f</td>"
+                "<td style='text-align:center'>%s</td>"
+                "<td style='text-align:center'>%s</td>"
+                "</tr>"
+                % (
+                    fuel_map.mixture_setting,
+                    line_style,
+                    fuel_map.mixture_setting,
+                    0 if no_fuel_consumption else fuel_map.fuel_consumed_per_lap,
+                    0 if no_fuel_consumption else fuel_map.laps_remaining_on_current_fuel,
+                    "No Fuel" if no_fuel_consumption else (gt7helper.seconds_to_lap_time(
+                        fuel_map.time_remaining_on_current_fuel / 1000
+                    )),
+                    "Consumption" if no_fuel_consumption else (gt7helper.seconds_to_lap_time(fuel_map.lap_time_diff / 1000)),
+                )
+        )
+    table += "</table>"
+    table += "<p>Fuel Remaining: <b>%d</b></p>" % last_lap.fuel_at_end
+    return table
+
+
+//helper
+
+
+def calculate_remaining_fuel(
+        fuel_start_lap: int, fuel_end_lap: int, lap_time: int
+) -> Tuple[int, float, float]:
+    # no fuel consumed
+    if fuel_start_lap == fuel_end_lap:
+        return 0, -1, -1
+
+    # fuel consumed, calculate
+    fuel_consumed_per_lap = fuel_start_lap - fuel_end_lap
+    laps_remaining = fuel_end_lap / fuel_consumed_per_lap
+    time_remaining = laps_remaining * lap_time
+
+    return fuel_consumed_per_lap, laps_remaining, time_remaining
+
+class FuelMap:
+    """A Fuel Map with calculated attributes of the fuel setting
+
+    Attributes:
+            fuel_consumed_per_lap   The amount of fuel consumed per lap with this fuel map
+    """
+
+    def __init__(self, mixture_setting, power_percentage, consumption_percentage):
+        """
+        Create a Fuel Map that is relative to the base setting
+
+        :param mixture_setting: Mixture Setting of the Fuel Map
+        :param power_percentage: Percentage of available power to the car relative to the base setting
+        :param consumption_percentage: Percentage of fuel consumption relative to the base setting
+        """
+        self.mixture_setting = mixture_setting
+        self.power_percentage = power_percentage
+        self.consumption_percentage = consumption_percentage
+
+        self.fuel_consumed_per_lap = 0
+        self.laps_remaining_on_current_fuel = 0
+        self.time_remaining_on_current_fuel = 0
+        self.lap_time_diff = 0
+        self.lap_time_expected = 0
+        
+        def get_fuel_on_consumption_by_relative_fuel_levels(lap: Lap) -> List[FuelMap]:
+    # Relative Setting, Laps to Go, Time to Go, Assumed Diff in Lap Times
+    fuel_consumed_per_lap, laps_remaining, time_remaining = calculate_remaining_fuel(
+        lap.fuel_at_start, lap.fuel_at_end, lap.lap_finish_time
+    )
+    i = -5
+
+    # Source:
+    # https://www.gtplanet.net/forum/threads/test-results-fuel-mixture-settings-and-other-fuel-saving-techniques.369387/
+    fuel_consumption_per_level_change = 8
+    power_per_level_change = 4
+
+    relative_fuel_maps = []
+
+    while i <= 5:
+        relative_fuel_map = FuelMap(
+            mixture_setting=i,
+            power_percentage=(100 - i * power_per_level_change) / 100,
+            consumption_percentage=(100 - i * fuel_consumption_per_level_change) / 100,
+        )
+
+        relative_fuel_map.fuel_consumed_per_lap = fuel_consumed_per_lap * relative_fuel_map.consumption_percentage
+        relative_fuel_map.laps_remaining_on_current_fuel = laps_remaining + laps_remaining * (
+                1 - relative_fuel_map.consumption_percentage
+        )
+
+        relative_fuel_map.time_remaining_on_current_fuel = time_remaining + time_remaining * (
+                1 - relative_fuel_map.consumption_percentage
+        )
+        relative_fuel_map.lap_time_diff = lap.lap_finish_time * (1 - relative_fuel_map.power_percentage)
+        relative_fuel_map.lap_time_expected = lap.lap_finish_time + relative_fuel_map.lap_time_diff
+
+        relative_fuel_maps.append(relative_fuel_map)
+        i += 1
+
+    return relative_fuel_maps

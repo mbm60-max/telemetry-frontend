@@ -11,6 +11,14 @@ interface WarningContextType {
   setDashboardWarningsCurrentLimitsLower: (
     value: { [key: string]: { [key: string]: number } }
   ) => void;
+  dashboardWarningsNames: { [key: string]: { [key: string]: string } };
+  setDashboardWarningsNames: (
+    value: { [key: string]: { [key: string]: string } }
+  ) => void;
+  dashboardWarningsUnitsTest: { [key: string]: { [key: string]: string } };
+  setDashboardWarningsUnitsTest: (
+    value: { [key: string]: { [key: string]: string } }
+  ) => void;
   activeWarnings: WarningInstance[];
   setActiveWarnings: React.Dispatch<React.SetStateAction<WarningInstance[]>>;
   acknowledgedWarnings: WarningInstance[];
@@ -34,6 +42,8 @@ export const WarningContext = createContext<WarningContextType>({
   setDashboardWarningsCurrentLimits: () => {},
   dashboardWarningsCurrentLimitsLower: {},
   setDashboardWarningsCurrentLimitsLower: () => {},
+  dashboardWarningsNames: {},
+  setDashboardWarningsNames: () => {},
   activeWarnings: [],
   setActiveWarnings: () => {},
   acknowledgedWarnings: [],
@@ -43,6 +53,8 @@ export const WarningContext = createContext<WarningContextType>({
   acknowledgedWarningsLower: [],
   setAcknowledgedWarningsLower: () => {},
   updateWarningsArray: () => {},
+  setDashboardWarningsUnitsTest: () => {},
+  dashboardWarningsUnitsTest: {},
 });
 
 
@@ -74,6 +86,20 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
       dashboard2: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0, limitLower4: 0, limitLower5: 0, limitLower6: 0 },
       dashboard3: { limitLower0: 0, limitLower1:0 },
       dashboard4: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0, limitLower4: 0, limitLower5: 0, limitLower6: 0 , limitLower7:0 },
+    });
+    const [dashboardWarningsNames, setDashboardWarningsNames] =
+    React.useState<{ [key: string]: { [key: string]: string } }>({
+      dashboard1: { name0: 'Front Left Temp', name1: 'Front Right Temp', name2: 'Rear Left Temp', name3: 'Rear Right Temp' },
+      dashboard2: { name0: "test name", name1: "test name", name2: "test name", name3: "test name", name4: "test name", name5: "test name", name6: "test name" },
+      dashboard3: { name0: "test name", name1:"test name" },
+      dashboard4: { name0: "test name", name1: "test name", name2: "test name", name3: "test name", name4: "test name", name5: "test name", name6: "test name" , name7:"test name" },
+    });
+    const [dashboardWarningsUnitsTest, setDashboardWarningsUnitsTest] =
+    React.useState<{ [key: string]: { [key: string]: string } }>({
+      dashboard1: { name0: '°C', name1: '°C', name2: '°C', name3: '°C', },
+      dashboard2: { name0: "test name", name1: "test name", name2: "test name", name3: "test name", name4: "test name", name5: "test name", name6: "test name" },
+      dashboard3: { name0: "test name", name1:"test name" },
+      dashboard4: { name0: "test name", name1: "test name", name2: "test name", name3: "test name", name4: "test name", name5: "test name", name6: "test name" , name7:"test name" },
     });
     const [activeWarnings, setActiveWarnings] = useState<WarningInstance[]>([]);
     const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
@@ -115,6 +141,8 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
         setDashboardWarningsCurrentLimits,
         dashboardWarningsCurrentLimitsLower,
         setDashboardWarningsCurrentLimitsLower,
+        dashboardWarningsNames,
+        setDashboardWarningsNames,
         setActiveWarnings,
         setActiveWarningsLower,
         setAcknowledgedWarningsLower,
@@ -124,6 +152,8 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
         activeWarningsLower,
         acknowledgedWarningsLower,
         updateWarningsArray,
+        dashboardWarningsUnitsTest,
+        setDashboardWarningsUnitsTest
       }}
     >
       {children}

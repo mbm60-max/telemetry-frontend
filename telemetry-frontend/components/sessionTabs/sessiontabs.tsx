@@ -97,7 +97,11 @@ export default function BasicTabs() {
     setAcknowledgedWarnings,
     setAcknowledgedWarningsLower,
     setActiveWarnings,
-    setActiveWarningsLower
+    setActiveWarningsLower,
+    dashboardWarningsNames,
+    setDashboardWarningsNames,
+    setDashboardWarningsUnitsTest,
+    dashboardWarningsUnitsTest
   } = warningContext;
   const DynamicChart = dynamic(() => import('./chart'), { 
     loader: () => import('./chart'),
@@ -291,26 +295,26 @@ export default function BasicTabs() {
  
 
   const [dashboardWarnings, setDashboardWarnings] = React.useState<{ [key: string]: string[] }>({
-    dashboard1: ['Front Left Temp', 'Front Right Temp', 'Rear Left Temp', 'Rear Right Temp'],
+    dashboard1: ['Front Left Temp', 'Front Right Temp', 'Rear Left Temp'],
     dashboard2: ["Oil Temperature","RPM","Turbo Boost Pressure","Oil Pressure","Fuel Level","Water Temperature"],
     dashboard3: ["RPM","RPM To Clutch"],
     dashboard4: ['Front Left Suspension Height', 'Front Right Suspension Height', 'Rear Left Suspension Height', 'Rear Right Suspension Height','Front Left RPS', 'Front Right RPS', 'Rear Left RPS', 'Rear Right RPS'],
   });
   const [dashboardWarningsUnits, setDashboardWarningsUnits] = React.useState<{ [key: string]: string[] }>({
-    dashboard1: ['°C', '°C', '°C', '°C'],
+    dashboard1: [],
     dashboard2: ['°C','RPM','bar','bar','%','°C'],
     dashboard3: ['RPM','RPM'],
     dashboard4: ['mm','mm','mm','mm','RPS','RPS','RPS','RPS'],
   });
   
   const [dashboardWarningsData, setDashboardWarningsData] = React.useState<{ [key: string]: number[] }>({
-    dashboard1: [-1, -1, -1, -1],
+    dashboard1: [],
     dashboard2: [-1,-1,-1,-1,-1,-1],
     dashboard3: [-1,-1],
     dashboard4: [-1,-1,-1,-1,-1,-1,-1,-1],
   });
   const [dashboardWarningsDefaultLimits, setDashboardWarningsDefaultLimits] = React.useState<{ [key: string]: number[] }>({
-    dashboard1: [105, 105, 105, 105],
+    dashboard1: [],
     dashboard2: [0,0,0,0,0,0],
     dashboard3: [3000,3000],
     dashboard4: [0,0,0,0,0,0,0,0],
@@ -322,6 +326,27 @@ export default function BasicTabs() {
       [`dashboard${dashNumber}`]: newValue,
     }));
 };
+
+useEffect(() => {
+  const dashboardValues: { index: number; names: string[] }[] = [];
+let indexValue=1;
+  for (const dashboardKey in dashboardWarningsNames) {
+    if (dashboardWarningsNames.hasOwnProperty(dashboardKey)) {
+      const namesObj = dashboardWarningsNames[dashboardKey];
+      const names = Object.values(namesObj);
+      dashboardValues.push({ index : indexValue, names });
+      indexValue+=1;
+    }
+
+  }
+
+  dashboardValues.forEach(({ index, names }) => {
+
+    handleSetValuesOfInterest(names,index);
+  });
+}, [dashboardWarningsNames]);
+
+
 const handleSetValuesOfInterestData = (newValue:number[],dashNumber: number)=>{
   setDashboardWarningsData((prevDashboardWarnings) => ({
     ...prevDashboardWarnings,
@@ -367,6 +392,27 @@ const handleSetValuesOfInterestUnits = (newValue:string[],dashNumber: number)=>{
    [`dashboard${dashNumber}`]: newValue,
  }));
 };
+
+useEffect(() => {
+  const dashboardValues: { index: number; units: string[] }[] = [];
+let indexValue=1;
+  for (const dashboardKey in dashboardWarningsUnitsTest) {
+    if (dashboardWarningsUnitsTest.hasOwnProperty(dashboardKey)) {
+      const unitsObj = dashboardWarningsUnitsTest[dashboardKey];
+      const units = Object.values(unitsObj);
+      console.log(units)
+      dashboardValues.push({ index : indexValue, units });
+      indexValue+=1;
+    }
+
+  }
+
+  dashboardValues.forEach(({ index, units }) => {
+console.log(units)
+    handleSetValuesOfInterestUnits(units,index);
+  });
+}, []);
+
 const resetFuelData=()=>{
   const isNewLap = isNewLapCheck(lapCount,previousLapCount);
   if(isNewLap){

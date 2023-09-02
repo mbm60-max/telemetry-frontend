@@ -134,6 +134,8 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
 
   useEffect(() => {
     const handleValuesOfInterestFetch=(valuesToCheck:string[],valuesToUpdate:number[],dashboardNumber:number,possibleWarningsNames:string[])=>{
+      console.log('called')
+      console.log(valuesToCheck)
       for(let i =0; i<valuesToCheck.length;i++){
         for(let j =0; j<possibleWarningsNames.length;j++){
         if(valuesToCheck[i]==possibleWarningsNames[j]){
@@ -143,7 +145,6 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
               valuesToUpdate[i]= lastItem.y;
               
             }else{
-              console.log(possibleWarningsValues)
               valuesToUpdate[i]= value;
             }
         }
@@ -152,7 +153,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
       return;
     }
     handleValuesOfInterestFetch(valuesOfInterest,valuesOfInterestData,1,possibleWarningsNames)
-  }, [packetFlag]);
+  }, [packetFlag,valuesOfInterest]);
 
   useEffect(() => {
     for(let i=0; i<valuesOfInterest.length;i++){

@@ -112,6 +112,7 @@ export default function WarningsDashboard({
   const Blue = "#0000ff";
   const numberOfSteps = 10;
   console.log(valuesOfInterestCurrentLimits);
+  console.log(valuesOfInterest);
   const [selectedLimits, setSelectedLimits] = React.useState<{
     [key: string]: number;
   }>(
@@ -124,6 +125,21 @@ export default function WarningsDashboard({
       {}
     )
   );
+
+  //need to change so value its  set to the value in valuesOfInterestCurrentLimits instead of 0
+  useEffect(() => {
+    valuesOfInterest.forEach((value, index) => {
+      setSelectedLimits((prevFields) => ({
+        ...prevFields,
+        [`limit${index}`]: valuesOfInterestCurrentLimits[`limit${index}`] || 0, // Default to 0 if not found
+      }));
+  
+      setSelectedLimitsLower((prevFields) => ({
+        ...prevFields,
+        [`limitLower${index}`]: valuesOfInterestCurrentLimitsLower[`limitLower${index}`] || 0, // Default to 0 if not found
+      }));
+    });
+  }, [valuesOfInterest, valuesOfInterestCurrentLimits, valuesOfInterestCurrentLimitsLower]);
 
   const [selectedLimitsLower, setSelectedLimitsLower] = React.useState<{
     [key: string]: number;
@@ -310,9 +326,9 @@ export default function WarningsDashboard({
 
     // Update the previous value with the current selectedLimits
     prevSelectedLimits.current = selectedLimits;
-
     // Rest of the useEffect code...
     handleSetLimits(selectedLimits);
+    console.log(selectedLimits)
   }, [selectedLimits]);
 
   useEffect(() => {

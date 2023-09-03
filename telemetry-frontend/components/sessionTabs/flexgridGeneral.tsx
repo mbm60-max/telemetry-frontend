@@ -97,6 +97,15 @@ interface GeneralGridProps{
   setValuesOfInterestCurrentLimits:(newDict: { [key: string]: number; }, dashNumber: number) => void
   setValuesOfInterestCurrentLimitsLower:(newDict: { [key: string]: number; }, dashNumber: number) => void
   packetFlag:boolean;
+  valuesOfInterestUnits: string[];
+  handleSetWarning: (
+    updatedValuesOfInterest: string[],
+    updatedValuesOfInterestData: number[],
+    updatedValuesOfInterestUnits: string[],
+    updatedValuesOfInterestDefualtLimits: number[]
+  ) => void;
+  handleSetLimits: (newDict: { [key: string]: number },readyFlag:number) => void;
+  handleSetLimitsLower: (newDict: { [key: string]: number },readyFlag:number) => void;
 }
 
 function checkTrackStatus(track:string| string[] | undefined){
@@ -110,115 +119,14 @@ function getTrackPath(track:string| string[] | undefined){
   }return "/images/noTrack.svg";
 }
 
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestData,valuesOfInterestDefaultLimits,packetFlag,valuesOfInterestGreaterThanWarning,setValuesOfInterestCurrentLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,activeWarningsLower,acknowledgedWarningLower,valuesOfInterestCurrentLimitsLower}:GeneralGridProps) {
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestData,valuesOfInterestDefaultLimits,packetFlag,valuesOfInterestGreaterThanWarning,setValuesOfInterestCurrentLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,activeWarningsLower,acknowledgedWarningLower,valuesOfInterestCurrentLimitsLower,handleSetLimits,handleSetLimitsLower,handleSetWarning,valuesOfInterestUnits}:GeneralGridProps) {
  
-  const handleSetNewWarning=(updatedValuesOfInterest:string[],updatedValuesOfInterestData:number[],updatedValuesOfInterestUnits:string[],updatedValuesOfInterestDefualtLimits:number[])=>{
-    setValuesOfInterest(updatedValuesOfInterest,1);
-    setValuesOfInterestData(updatedValuesOfInterestData,1);
-    setValuesOfInterestDefualtLimits(updatedValuesOfInterestDefualtLimits,1);
-    setValuesOfInterestUnits(updatedValuesOfInterestUnits,1);
-  }
-  const handleSetLimits=(newDict:{[key: string]: number;})=>{
-    setValuesOfInterestCurrentLimits(newDict,1);
-  }
-  const handleSetLimitsLower=(newDict:{[key: string]: number;})=>{
-    setValuesOfInterestCurrentLimitsLower(newDict,1);
-  }
 
-
-
-  const possibleWarningsValues=[throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp]
-  const possibleWarningsNames=["Throttle","Brake","Velocity","Suggested Gear","Current Gear","Front Left Temp","Front Right Temp","Rear Left Temp","Rear Right Temp"]
-  useEffect(() => {
-  }, [valuesOfInterestCurrentLimits]);
-
-  useEffect(() => {
-    const handleValuesOfInterestFetch=(valuesToCheck:string[],valuesToUpdate:number[],dashboardNumber:number,possibleWarningsNames:string[])=>{
-      console.log('called')
-      console.log(valuesToCheck)
-      for(let i =0; i<valuesToCheck.length;i++){
-        for(let j =0; j<possibleWarningsNames.length;j++){
-        if(valuesToCheck[i]==possibleWarningsNames[j]){
-            const value=possibleWarningsValues[j];
-            if(typeof value !== "number"){
-              const lastItem = value[value.length-1]
-              valuesToUpdate[i]= lastItem.y;
-              
-            }else{
-              valuesToUpdate[i]= value;
-            }
-        }
-      }
-      }setValuesOfInterestData(valuesToUpdate,dashboardNumber);
-      return;
-    }
-    handleValuesOfInterestFetch(valuesOfInterest,valuesOfInterestData,1,possibleWarningsNames)
-  }, [packetFlag,valuesOfInterest]);
-
-  useEffect(() => {
-    for(let i=0; i<valuesOfInterest.length;i++){
-
-      if((valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
-        const warningExists = activeWarnings.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )//;
-        const warningIsIgnored = acknowledgedWarnings.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        if ((!warningExists)&&(!warningIsIgnored)) {
-        handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-        handleIsWarning();
-        }
-      }else if((valuesOfInterestData[i]<valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
-        const warningExists = activeWarnings.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        const warningIsIgnored = acknowledgedWarnings.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        if (warningExists) {
-          handleActiveWarnings(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-          handleIsWarning();
-          }else if(warningIsIgnored){
-            handleAcknowledgedWarnings(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-            handleIsWarning();
-          }
-      }
-      if((valuesOfInterestData[i]<=valuesOfInterestCurrentLimitsLower[`limitLower${i}`])&&(activeWarningsLower!==undefined)){
-        const warningExists = activeWarningsLower.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )//;
-        const warningIsIgnored = acknowledgedWarningLower.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        if ((!warningExists)&&(!warningIsIgnored)) {
-        handleActiveWarningsLower(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimitsLower[`limitLower${i}`]);
-        handleIsWarning();
-        }
-      }else if((valuesOfInterestData[i]>valuesOfInterestCurrentLimitsLower[`limitlower${i}`])&&(activeWarningsLower!==undefined)){
-        const warningExists = activeWarningsLower.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        const warningIsIgnored = acknowledgedWarningLower.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        if (warningExists) {
-          handleActiveWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-          handleIsWarning();
-          }else if(warningIsIgnored){
-            handleAcknowledgedWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-            handleIsWarning();
-          }
-      }
-    }
-  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits,valuesOfInterestGreaterThanWarning,valuesOfInterestCurrentLimitsLower]);
-  //console.log("here");
- // console.log(valuesOfInterestData);
   return (
     
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-      <Grid item xs={12}><Item><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Item></Grid>
+      <Grid item xs={12}><Item><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Item></Grid>
         <Grid item xs={12} sm={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={255} expectedMinValue={-1} dataStream={throttleStream} units={'%'} labelXaxis={'Distance Into Lap M'}></DynamicBasicChart></Item>
         </Grid>

@@ -20,8 +20,8 @@ interface WarningsDashboardProps {
     updatedValuesOfInterestUnits: string[],
     updatedValuesOfInterestDefualtLimits: number[]
   ) => void;
-  handleSetLimits: (newDict: { [key: string]: number }) => void;
-  handleSetLimitsLower: (newDict: { [key: string]: number }) => void;
+  handleSetLimits: (newDict: { [key: string]: number },readyFlag:number) => void;
+  handleSetLimitsLower: (newDict: { [key: string]: number },readyFlag:number) => void;
   handleActiveWarnings: (
     add: boolean,
     newWarning: string,
@@ -111,49 +111,23 @@ export default function WarningsDashboard({
   const Green = "#90cc8e";
   const Blue = "#0000ff";
   const numberOfSteps = 10;
-  console.log(valuesOfInterestCurrentLimits);
-  console.log(valuesOfInterest);
-  const [selectedLimits, setSelectedLimits] = React.useState<{
-    [key: string]: number;
-  }>(
-    valuesOfInterest.reduce(
-      (limits: { [key: string]: number }, value: string, index: number) => {
-        limits[`limit${index}`] =
-          valuesOfInterestCurrentLimits[`limit${index}`];
-        return limits;
-      },
-      {}
-    )
-  );
+  const readyFlagRef = useRef(0);
 
-  //need to change so value its  set to the value in valuesOfInterestCurrentLimits instead of 0
+
+  const [selectedLimits, setSelectedLimits] = React.useState<{ [key: string]: number }>({});
   useEffect(() => {
-    valuesOfInterest.forEach((value, index) => {
-      setSelectedLimits((prevFields) => ({
-        ...prevFields,
-        [`limit${index}`]: valuesOfInterestCurrentLimits[`limit${index}`] || 0, // Default to 0 if not found
-      }));
-  
-      setSelectedLimitsLower((prevFields) => ({
-        ...prevFields,
-        [`limitLower${index}`]: valuesOfInterestCurrentLimitsLower[`limitLower${index}`] || 0, // Default to 0 if not found
-      }));
-    });
-  }, [valuesOfInterest, valuesOfInterestCurrentLimits, valuesOfInterestCurrentLimitsLower]);
+    setSelectedLimits(valuesOfInterestCurrentLimits);
+  }, []);
 
-  const [selectedLimitsLower, setSelectedLimitsLower] = React.useState<{
-    [key: string]: number;
-  }>(
-    valuesOfInterest.reduce(
-      (limits: { [key: string]: number }, value: string, index: number) => {
-        limits[`limitLower${index}`] =
-          valuesOfInterestCurrentLimitsLower[`limitLower${index}`];
-        return limits;
-      },
-      {}
-    )
-  );
 
+useEffect(() => {
+  readyFlagRef.current += 1;
+}, [valuesOfInterest]);
+
+  const [selectedLimitsLower, setSelectedLimitsLower] = React.useState<{ [key: string]: number }>({});
+  useEffect(() => {
+    setSelectedLimitsLower(valuesOfInterestCurrentLimitsLower);
+  }, []);
   const handleLimitSelection = (
     limit: number,
     limitLower: number,
@@ -185,6 +159,7 @@ export default function WarningsDashboard({
   const prevSelectedLimits = useRef(selectedLimits);
   const prevSelectedLimitsLower = useRef(selectedLimitsLower);
   const handleDeleteWarning = (LimitsIndex: number, valuesIndex: number) => {
+  
     const updatedValuesOfInterest = [...valuesOfInterest];
     const updatedValuesOfInterestData = [...valuesOfInterestData];
     const updatedValuesOfInterestUnits = [...valuesOfInterestUnits];
@@ -241,7 +216,7 @@ export default function WarningsDashboard({
     });
     Object.keys(selectedLimitsLower).forEach((key) => {
       const currentLimitsIndex = parseInt(key.slice(10)); // Extract the index from the key (e.g., "limit0" -> 0)
-      console.log(key.slice(10));
+
       if (currentLimitsIndex !== LimitsIndex) {
         // Skip the entry with the index that matches LimitsIndex
         const newLimitsIndex =
@@ -267,6 +242,7 @@ export default function WarningsDashboard({
     newUnits: string,
     newWarning: string
   ) => {
+
     //adds value to end of values of interest and adds new limit to selected limit with value newLimit
     const updatedValuesOfInterest = [...valuesOfInterest];
     const updatedSelectedLimits = { ...selectedLimits };
@@ -300,6 +276,8 @@ export default function WarningsDashboard({
     setSelectedLimits(updatedSelectedLimits);
     setSelectedLimitsLower(updatedSelectedLimitsLower);
   };
+
+
   useEffect(() => {
     // Compare selectedLimits with the previous value
     Object.keys(selectedLimits).forEach((key) => {
@@ -327,9 +305,9 @@ export default function WarningsDashboard({
     // Update the previous value with the current selectedLimits
     prevSelectedLimits.current = selectedLimits;
     // Rest of the useEffect code...
-    handleSetLimits(selectedLimits);
+    handleSetLimits(selectedLimits,readyFlagRef.current);
     console.log(selectedLimits)
-  }, [selectedLimits]);
+  }, [selectedLimits,readyFlagRef.current]);
 
   useEffect(() => {
     // Compare selectedLimits with the previous value
@@ -359,7 +337,7 @@ export default function WarningsDashboard({
     prevSelectedLimitsLower.current = selectedLimitsLower;
 
     // Rest of the useEffect code...
-    handleSetLimitsLower(selectedLimitsLower);
+    handleSetLimitsLower(selectedLimitsLower,readyFlagRef.current);
   }, [selectedLimitsLower]);
 
   // ... rest of the component ...

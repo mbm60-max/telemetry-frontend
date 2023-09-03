@@ -105,109 +105,22 @@ interface TyresSuspensionProps{
   setValuesOfInterestCurrentLimits:(newDict: { [key: string]: number; }, dashNumber: number) => void
   setValuesOfInterestCurrentLimitsLower:(newDict: { [key: string]: number; }, dashNumber: number) => void
   packetFlag:boolean;
+  valuesOfInterestUnits: string[];
+  handleSetWarning: (
+    updatedValuesOfInterest: string[],
+    updatedValuesOfInterestData: number[],
+    updatedValuesOfInterestUnits: string[],
+    updatedValuesOfInterestDefualtLimits: number[]
+  ) => void;
+  handleSetLimits: (newDict: { [key: string]: number },readyFlag:number) => void;
+  handleSetLimitsLower: (newDict: { [key: string]: number },readyFlag:number) => void;
+
 }
-export default function TyresSuspensionGrid({tireFL_SurfaceTemperature,tireFR_SurfaceTemperature,tireRL_SurfaceTemperature,tireRR_SurfaceTemperature,tireFL_SusHeight,tireFR_SusHeight,tireRL_SusHeight,tireRR_SusHeight,tireFL_TireRadius,tireFR_TireRadius,tireRL_TireRadius,tireRR_TireRadius,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,wheelFL_RevPerSecond,wheelFR_RevPerSecond,wheelRL_RevPerSecond,wheelRR_RevPerSecond,acknowledgedWarningLower,acknowledgedWarnings,activeWarnings,activeWarningsLower,handleAcknowledgedWarnings,handleAcknowledgedWarningsLower,handleActiveWarnings,handleActiveWarningsLower,handleIsWarning,handleSuppressedWarnings,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestCurrentLimitsLower,valuesOfInterestData,valuesOfInterestDefaultLimits,valuesOfInterestGreaterThanWarning,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestCurrentLimitsLower,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,packetFlag}:TyresSuspensionProps) {
-  const handleSetNewWarning=(updatedValuesOfInterest:string[],updatedValuesOfInterestData:number[],updatedValuesOfInterestUnits:string[],updatedValuesOfInterestDefualtLimits:number[])=>{
-    setValuesOfInterest(updatedValuesOfInterest,4);
-    setValuesOfInterestData(updatedValuesOfInterestData,4);
-    setValuesOfInterestDefualtLimits(updatedValuesOfInterestDefualtLimits,4);
-    setValuesOfInterestUnits(updatedValuesOfInterestUnits,4);
-  }
-  const handleSetLimits=(newDict:{[key: string]: number;})=>{
-    setValuesOfInterestCurrentLimits(newDict,4);
-  }
-  const handleSetLimitsLower=(newDict:{[key: string]: number;})=>{
-    setValuesOfInterestCurrentLimitsLower(newDict,4);
-  }
-
-
-
-  const possibleWarningsValues=[tireFL_SusHeight,tireFR_SusHeight,tireRL_SusHeight,tireRR_SusHeight,wheelFL_RevPerSecond,wheelFR_RevPerSecond,wheelRL_RevPerSecond,wheelRR_RevPerSecond]
-  const possibleWarningsNames=["Front Left Suspension Height","Front Right Suspension Height","Rear Left Suspension Height","Rear Right Suspension Height","Front Left RPS","Front Right RPS","Rear Left RPS","Rear Right RPS"]
-  useEffect(() => {
-  }, [valuesOfInterestCurrentLimits]);
-
-  useEffect(() => {
-    const handleValuesOfInterestFetch=(valuesToCheck:string[],valuesToUpdate:number[],dashboardNumber:number,possibleWarningsNames:string[])=>{
-      for(let i =0; i<valuesToCheck.length;i++){
-        for(let j =0; j<possibleWarningsNames.length;j++){
-        if(valuesToCheck[i]==possibleWarningsNames[j]){
-            const value=possibleWarningsValues[j];
-            if(typeof value !== "number"){
-              const lastItem = value[value.length-1]
-              valuesToUpdate[i]= lastItem.y;
-            }else{
-              valuesToUpdate[i]= value;
-            }
-        }
-      }
-      }setValuesOfInterestData(valuesToUpdate,dashboardNumber);
-      return;
-    }
-    handleValuesOfInterestFetch(valuesOfInterest,valuesOfInterestData,4,possibleWarningsNames)
-  }, [packetFlag]);
-
-  useEffect(() => {
-    for(let i=0; i<valuesOfInterest.length;i++){
-
-      if((valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
-        const warningExists = activeWarnings.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )//;
-        const warningIsIgnored = acknowledgedWarnings.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        if ((!warningExists)&&(!warningIsIgnored)) {
-        handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-        handleIsWarning();
-        }
-      }else if((valuesOfInterestData[i]<valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
-        const warningExists = activeWarnings.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        const warningIsIgnored = acknowledgedWarnings.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        if (warningExists) {
-          handleActiveWarnings(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-          handleIsWarning();
-          }else if(warningIsIgnored){
-            handleAcknowledgedWarnings(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-            handleIsWarning();
-          }
-      }
-      if((valuesOfInterestData[i]<=valuesOfInterestCurrentLimitsLower[`limitLower${i}`])&&(activeWarningsLower!==undefined)){
-        const warningExists = activeWarningsLower.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )//;
-        const warningIsIgnored = acknowledgedWarningLower.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        if ((!warningExists)&&(!warningIsIgnored)) {
-        handleActiveWarningsLower(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-        handleIsWarning();
-        }
-      }else if((valuesOfInterestData[i]>valuesOfInterestCurrentLimitsLower[`limitlower${i}`])&&(activeWarningsLower!==undefined)){
-        const warningExists = activeWarningsLower.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        const warningIsIgnored = acknowledgedWarningLower.some(
-          (warning) => warning.newWarning === valuesOfInterest[i]
-        )
-        if (warningExists) {
-          handleActiveWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-          handleIsWarning();
-          }else if(warningIsIgnored){
-            handleAcknowledgedWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
-            handleIsWarning();
-          }
-      }
-    }
-  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits,valuesOfInterestGreaterThanWarning]);
-  return (
+export default function TyresSuspensionGrid({tireFL_SurfaceTemperature,tireFR_SurfaceTemperature,tireRL_SurfaceTemperature,tireRR_SurfaceTemperature,tireFL_SusHeight,tireFR_SusHeight,tireRL_SusHeight,tireRR_SusHeight,tireFL_TireRadius,tireFR_TireRadius,tireRL_TireRadius,tireRR_TireRadius,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,wheelFL_RevPerSecond,wheelFR_RevPerSecond,wheelRL_RevPerSecond,wheelRR_RevPerSecond,acknowledgedWarningLower,acknowledgedWarnings,activeWarnings,activeWarningsLower,handleAcknowledgedWarnings,handleAcknowledgedWarningsLower,handleActiveWarnings,handleActiveWarningsLower,handleIsWarning,handleSuppressedWarnings,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestCurrentLimitsLower,valuesOfInterestData,valuesOfInterestDefaultLimits,valuesOfInterestGreaterThanWarning,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestCurrentLimitsLower,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,packetFlag,valuesOfInterestUnits,handleSetLimits,handleSetLimitsLower,handleSetWarning}:TyresSuspensionProps) {
+ return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
-      <Grid item xs={12}><Item><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetNewWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Item></Grid>
+      <Grid item xs={12}><Item><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Item></Grid>
         <Grid item xs={12} sm={8}>
           <Item><MultiDisplayChart expectedMinValue={0} expectedMaxValue={255} dataStream1={tireFL_SurfaceTemperature} dataStream2={tireFR_SurfaceTemperature} dataStream3={tireRL_SurfaceTemperature} dataStream4={tireRR_SurfaceTemperature} height={400} label={"Tyre Temps"} units={'°C'} labelXaxis={'Distance Into Lap M'}/></Item>
         </Grid>

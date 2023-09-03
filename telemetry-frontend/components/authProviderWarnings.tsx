@@ -90,16 +90,16 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
     const [dashboardWarningsNames, setDashboardWarningsNames] =
     React.useState<{ [key: string]: { [key: string]: string } }>({
       dashboard1: { name0: 'Front Left Temp', name1: 'Front Right Temp', name2: 'Rear Left Temp', name3: 'Rear Right Temp' },
-      dashboard2: { name0: "test name", name1: "test name", name2: "test name", name3: "test name", name4: "test name", name5: "test name", name6: "test name" },
-      dashboard3: { name0: "test name", name1:"test name" },
-      dashboard4: { name0: "test name", name1: "test name", name2: "test name", name3: "test name", name4: "test name", name5: "test name", name6: "test name" , name7:"test name" },
+      dashboard2: { name0: "Oil Temperature", name1: "RPM", name2: "Turbo Boost Pressure", name3: "Oil Pressure", name4: "Fuel Level", name5: "Water Temperature"},
+      dashboard3: { name0: "RPM", name1:"RPM To Clutch" },
+      dashboard4: { name0: "Front Left Suspension Height", name1: "Front Right Suspension Height", name2: "Rear Left Suspension Height", name3: "Rear Right Suspension Height", name4: "Front Left RPS", name5: "Front Right RPS", name6: "Rear Left RPS" , name7:"Rear Right RPS" },
     });
     const [dashboardWarningsUnitsTest, setDashboardWarningsUnitsTest] =
     React.useState<{ [key: string]: { [key: string]: string } }>({
       dashboard1: { name0: '°C', name1: '°C', name2: '°C', name3: '°C', },
-      dashboard2: { name0: "test name", name1: "test name", name2: "test name", name3: "test name", name4: "test name", name5: "test name", name6: "test name" },
-      dashboard3: { name0: "test name", name1:"test name" },
-      dashboard4: { name0: "test name", name1: "test name", name2: "test name", name3: "test name", name4: "test name", name5: "test name", name6: "test name" , name7:"test name" },
+      dashboard2: { name0: '°C', name1: 'RPM', name2: 'Bar', name3: 'Bar', name4: '%', name5: '°C' },
+      dashboard3: { name0: 'RPM', name1:'RPM' },
+      dashboard4: { name0: 'mm', name1: 'mm', name2: 'mm', name3: 'mm', name4: 'RPS', name5: 'RPS', name6: 'RPS' , name7:'RPS'},
     });
     const [activeWarnings, setActiveWarnings] = useState<WarningInstance[]>([]);
     const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<WarningInstance[]>([]);

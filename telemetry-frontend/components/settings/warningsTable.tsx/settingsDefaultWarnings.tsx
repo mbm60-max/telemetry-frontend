@@ -26,9 +26,9 @@
 import { ThemeProvider } from "@emotion/react"
 import { Box, createTheme, styled, Tab, Tabs, useMediaQuery } from "@mui/material"
 import React, { useContext } from "react";
-import Homepage from "../background/background"
+import Homepage from "../../background/background"
 import DefaultWarningDataTable, { WarningDataObject } from "./defaultWarningDataTable";
-import { WarningContext } from '../authProviderWarnings';
+import { WarningContext } from '../../authProviderWarnings';
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -48,7 +48,7 @@ interface TabPanelProps {
         {...other}
       >
         {value === index && (
-          <Box sx={{ p: 3 }}>
+          <Box sx={{ p: 1 }}>
             {children}
           </Box>
         )}
@@ -83,7 +83,11 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
       setAcknowledgedWarnings,
       setAcknowledgedWarningsLower,
       setActiveWarnings,
-      setActiveWarningsLower
+      setActiveWarningsLower,
+      dashboardWarningsNames,
+      setDashboardWarningsNames,
+      dashboardWarningsUnitsTest,
+      setDashboardWarningsUnitsTest
     } = warningContext;
 
     const [value, setValue] = React.useState(0);
@@ -125,14 +129,16 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
         if (dashboardKey in dashboardWarningsCurrentLimits && dashboardKey in dashboardWarningsCurrentLimitsLower) {
           const dashboardLimits = dashboardWarningsCurrentLimits[dashboardKey];
           const dashboardLowerLimits = dashboardWarningsCurrentLimitsLower[dashboardKey];
-      
+          const dashboardNames = dashboardWarningsNames[dashboardKey];
+          const dashboardUnits = dashboardWarningsUnitsTest[dashboardKey];
           // Iterate through each limit and create a warning object
           let innerIndex = 0;
           for (const limitKey in dashboardLimits) {
             
             if (dashboardLimits.hasOwnProperty(limitKey)) {
               const singleWarning = new WarningDataObject();
-              singleWarning.name = "max's test";
+              singleWarning.name = dashboardNames[`name${innerIndex}`];
+              singleWarning.units = dashboardUnits[`name${innerIndex}`];
               singleWarning.upperLimit = dashboardLimits[limitKey];
               singleWarning.lowerLimit = dashboardLowerLimits[`limitLower${innerIndex}`];
               WarningDataMaps.push(singleWarning);
@@ -158,16 +164,16 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
      
       
     <TabPanel value={value} index={0} >
-   <DefaultWarningDataTable WarningData={fillWarningData(1)}></DefaultWarningDataTable>
+   <DefaultWarningDataTable WarningData={fillWarningData(1)} hasDivider={true} targetSetting={"Change Default Warnings"}></DefaultWarningDataTable>
     </TabPanel>
     <TabPanel value={value} index={1}>
-    <DefaultWarningDataTable WarningData={fillWarningData(2)}></DefaultWarningDataTable>
+    <DefaultWarningDataTable WarningData={fillWarningData(2)} hasDivider={true} targetSetting={"Change Default Warnings"}></DefaultWarningDataTable>
     </TabPanel>
     <TabPanel value={value} index={2}>
-    <DefaultWarningDataTable WarningData={fillWarningData(3)}></DefaultWarningDataTable>
+    <DefaultWarningDataTable WarningData={fillWarningData(3)} hasDivider={true} targetSetting={"Change Default Warnings"}></DefaultWarningDataTable>
     </TabPanel>
     <TabPanel value={value} index={3}>
-    <DefaultWarningDataTable WarningData={fillWarningData(4)}></DefaultWarningDataTable>
+    <DefaultWarningDataTable WarningData={fillWarningData(4)} hasDivider={true} targetSetting={"Change Default Warnings"}></DefaultWarningDataTable>
     </TabPanel>
     </>
      );

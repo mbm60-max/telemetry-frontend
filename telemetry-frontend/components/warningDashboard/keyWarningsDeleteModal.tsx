@@ -24,12 +24,12 @@ const style = {
      justifyContent:'center'  // Add this to make sure the children are wrapped and the container becomes scrollable
        // Set the direction to 'column' to wrap the children vertically
 };
-interface KeyWarningsModalProps {
+interface KeyWarningsDeleteModalProps {
   handleDeleteWarning:(LimitsIndex: number, valuesIndex: number) => void;
   allWarnings:string[];
 }
 
-export default function KeyWarningsAddModal({ handleDeleteWarning,allWarnings }: KeyWarningsModalProps) {
+export default function KeyWarningsDeleteModal({ handleDeleteWarning,allWarnings }: KeyWarningsDeleteModalProps) {
   const [open, setOpen] = useState(false);
   const [valuesIndex, setValuesIndex] = useState(0);
   const [limitsIndex, setLimitsIndex] = useState(0);

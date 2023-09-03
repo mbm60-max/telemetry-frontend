@@ -75,7 +75,7 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
   const [dashboardWarningsCurrentLimits, setDashboardWarningsCurrentLimits] =
     React.useState<{ [key: string]: { [key: string]: number } }>({
       dashboard1: { limit0: 106, limit1: 105, limit2: 105, limit3: 105 },
-      dashboard2: { limit0: 0, limit1: 0, limit2: 0, limit3: 0, limit4: 0, limit5: 0, limit6: 0 },
+      dashboard2: { limit0: 0, limit1: 0, limit2: 0, limit3: 0, limit4: 0, limit5: 0 },
       dashboard3: { limit0: 3000, limit1:3000 },
       dashboard4: { limit0: 100, limit1: 100, limit2: 100, limit3: 100,limit4:10,limit5:10,limit6:10,limit7:10},
     });
@@ -83,7 +83,7 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
   const [dashboardWarningsCurrentLimitsLower, setDashboardWarningsCurrentLimitsLower] =
     React.useState<{ [key: string]: { [key: string]: number } }>({
       dashboard1: { limitLower0: 5, limitLower1: 0, limitLower2: 0, limitLower3: 0 },
-      dashboard2: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0, limitLower4: 0, limitLower5: 0, limitLower6: 0 },
+      dashboard2: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0, limitLower4: 0, limitLower5: 0},
       dashboard3: { limitLower0: 0, limitLower1:0 },
       dashboard4: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0, limitLower4: 0, limitLower5: 0, limitLower6: 0 , limitLower7:0 },
     });

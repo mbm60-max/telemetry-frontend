@@ -6,7 +6,7 @@ import SettingsObject, {
   DataSettings,
   DefaultsSettings,
 } from "../../interfaces/defaultSettingsInterface";
-import SettingsDefaultWarningsTabSelector from "./settingsDefaultWarnings";
+import SettingsDefaultWarningsTabSelector from "./warningsTable.tsx/settingsDefaultWarnings";
 import SettingsTextDisplay from "./settingsTextDisplay";
 import SettingsToggleDisplay from "./settingsToggleDisplay";
 interface SettingsDisplayProps {
@@ -66,7 +66,6 @@ const SettingsDisplay = ({
         alignItems: "center",
       }}
     >
-      <Typography sx={{ ml: 2, color: "#4A5A44" }}>{field}</Typography>
       {field == "Account" && (
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12}>
@@ -112,16 +111,6 @@ const SettingsDisplay = ({
       )}
       {field == "Alerts" && (
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Alter Default warnings
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Alter warning interval
-            </Button>
-          </Grid>
           <Grid item xs={12}><SettingsDefaultWarningsTabSelector/></Grid>
           
         </Grid>

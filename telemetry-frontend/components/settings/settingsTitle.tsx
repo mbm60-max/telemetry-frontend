@@ -16,7 +16,7 @@ const SettingsTitle = ({title,fontSize}: SettingsTitleProps) => {
       }}
     >
       <Box sx={{ width: '100%',display:'flex',justifyContent:'end'}}><Box sx={{width: '85%'}}>
-      <Typography sx={{fontSize:{fontSize},ml:4,color: "#4A5A44"}}>{title}</Typography></Box></Box>
+      <Typography sx={{fontSize:{fontSize},ml:4,color: "red"}}>{title}</Typography></Box></Box>
     </div>
   );
 };

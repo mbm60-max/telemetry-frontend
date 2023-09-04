@@ -166,16 +166,16 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
      
       
     <TabPanel value={value} index={0} >
-   <DefaultWarningDataTable WarningData={fillWarningData(1)} hasDivider={true} targetSetting={"Change Default Warnings"}></DefaultWarningDataTable>
+   <DefaultWarningDataTable WarningData={fillWarningData(1)} hasDivider={true} targetSetting={"Change Default Warnings"} tabIndex={0}></DefaultWarningDataTable>
     </TabPanel>
     <TabPanel value={value} index={1}>
-    <DefaultWarningDataTable WarningData={fillWarningData(2)} hasDivider={true} targetSetting={"Change Default Warnings"}></DefaultWarningDataTable>
+    <DefaultWarningDataTable WarningData={fillWarningData(2)} hasDivider={true} targetSetting={"Change Default Warnings"} tabIndex={1}></DefaultWarningDataTable>
     </TabPanel>
     <TabPanel value={value} index={2}>
-    <DefaultWarningDataTable WarningData={fillWarningData(3)} hasDivider={true} targetSetting={"Change Default Warnings"}></DefaultWarningDataTable>
+    <DefaultWarningDataTable WarningData={fillWarningData(3)} hasDivider={true} targetSetting={"Change Default Warnings"} tabIndex={2}></DefaultWarningDataTable>
     </TabPanel>
     <TabPanel value={value} index={3}>
-    <DefaultWarningDataTable WarningData={fillWarningData(4)} hasDivider={true} targetSetting={"Change Default Warnings"}></DefaultWarningDataTable>
+    <DefaultWarningDataTable WarningData={fillWarningData(4)} hasDivider={true} targetSetting={"Change Default Warnings"} tabIndex={3}></DefaultWarningDataTable>
     </TabPanel>
     </>
      );

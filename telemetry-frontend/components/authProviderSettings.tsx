@@ -95,7 +95,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
 
 
       useEffect(() => {
-        console.log("settings change")
+
         // Fetch the matching settings from the API
         const handleUpdateSettings= async () => {
             const username=userName

@@ -74,6 +74,9 @@ interface WarningState {
 
 export const WarningProvider = ({ children }: WarningProviderProps) => {
   const {alerts} = useContext(SettingsContext);
+  useEffect(() => {
+   console.log(alerts)
+  }, [alerts]);
   console.log(alerts)
   //console.log(alerts.alertDefaultWarningsNames)
   //console.log(Object.fromEntries(alerts.alertDefaultWarningsNames[0].map((alert, index) => [`name${index}`, alert])))
@@ -115,6 +118,48 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
     dashboard3 : Object.fromEntries(alerts.alertDefaultWarningsUnits[2].map((alert, index) => [`name${index}`, alert])),
     dashboard4 : Object.fromEntries(alerts.alertDefaultWarningsUnits[3].map((alert, index) => [`name${index}`, alert])),
   });
+
+
+  useEffect(() => {
+    console.log(alerts);
+    
+    // Update dashboardWarningsCurrentLimits
+    const updatedDashboardWarningsCurrentLimits = {
+      dashboard1: Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[0].map((alert, index) => [`limit${index}`, alert])),
+      dashboard2: Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[1].map((alert, index) => [`limit${index}`, alert])),
+      dashboard3: Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[2].map((alert, index) => [`limit${index}`, alert])),
+      dashboard4: Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[3].map((alert, index) => [`limit${index}`, alert])),
+    };
+    setDashboardWarningsCurrentLimits(updatedDashboardWarningsCurrentLimits);
+  
+    // Update dashboardWarningsCurrentLimitsLower
+    const updatedDashboardWarningsCurrentLimitsLower = {
+      dashboard1: Object.fromEntries(alerts.alertDefaultWarningsLowerLimits[0].map((alert, index) => [`limitLower${index}`, alert])),
+      dashboard2: Object.fromEntries(alerts.alertDefaultWarningsLowerLimits[1].map((alert, index) => [`limitLower${index}`, alert])),
+      dashboard3: Object.fromEntries(alerts.alertDefaultWarningsLowerLimits[2].map((alert, index) => [`limitLower${index}`, alert])),
+      dashboard4: Object.fromEntries(alerts.alertDefaultWarningsLowerLimits[3].map((alert, index) => [`limitLower${index}`, alert])),
+    };
+    setDashboardWarningsCurrentLimitsLower(updatedDashboardWarningsCurrentLimitsLower);
+  
+    // Update dashboardWarningsNames
+    const updatedDashboardWarningsNames = {
+      dashboard1: Object.fromEntries(alerts.alertDefaultWarningsNames[0].map((alert, index) => [`name${index}`, alert])),
+      dashboard2: Object.fromEntries(alerts.alertDefaultWarningsNames[1].map((alert, index) => [`name${index}`, alert])),
+      dashboard3: Object.fromEntries(alerts.alertDefaultWarningsNames[2].map((alert, index) => [`name${index}`, alert])),
+      dashboard4: Object.fromEntries(alerts.alertDefaultWarningsNames[3].map((alert, index) => [`name${index}`, alert])),
+    };
+    setDashboardWarningsNames(updatedDashboardWarningsNames);
+  
+    // Update dashboardWarningsUnitsTest
+    const updatedDashboardWarningsUnitsTest = {
+      dashboard1: Object.fromEntries(alerts.alertDefaultWarningsUnits[0].map((alert, index) => [`name${index}`, alert])),
+      dashboard2: Object.fromEntries(alerts.alertDefaultWarningsUnits[1].map((alert, index) => [`name${index}`, alert])),
+      dashboard3: Object.fromEntries(alerts.alertDefaultWarningsUnits[2].map((alert, index) => [`name${index}`, alert])),
+      dashboard4: Object.fromEntries(alerts.alertDefaultWarningsUnits[3].map((alert, index) => [`name${index}`, alert])),
+    };
+    setDashboardWarningsUnitsTest(updatedDashboardWarningsUnitsTest);
+  }, [alerts]);
+  
     const [activeWarnings, setActiveWarnings] = useState<WarningInstance[]>([]);
     const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
     const [activeWarningsLower, setActiveWarningsLower] = useState<WarningInstance[]>([]);

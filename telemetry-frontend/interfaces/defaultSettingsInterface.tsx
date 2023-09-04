@@ -7,10 +7,14 @@
   }
   
   export interface AlertSettings {
-   alertDefaultWarnings:string[];
+   alertDefaultWarningsNames:string[][];
+   alertDefaultWarningsUpperLimits:number[][];
+   alertDefaultWarningsLowerLimits:number[][];
+   alertDefaultWarningsUnits:string[][];
    alertWarningInterval:number;
    type: string;
   }
+
   export interface DataSettings {
     allowML: boolean;
     reviewLapLimit: number;

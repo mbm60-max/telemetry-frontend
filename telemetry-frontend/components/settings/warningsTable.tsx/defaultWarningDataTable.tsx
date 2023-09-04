@@ -51,7 +51,12 @@ const DefaultWarningDataTable = ({WarningData,hasDivider,targetSetting}: Default
   const readyFlagRef = useRef(0);
   const [selectedLimits, setSelectedLimits] = React.useState<{ [key: string]: number }>({});
   useEffect(() => {
-    setSelectedLimits(selectedLimits);
+    const newSelectedLimits: { [key: string]: number } = {};
+    WarningData.forEach((warning, index) => {
+      // Use the index as the key (assuming it starts from 0)
+      newSelectedLimits[`limit${index}`] = warning.upperLimit;
+    });
+    setSelectedLimits(newSelectedLimits);
   }, []);
 
 
@@ -66,7 +71,7 @@ useEffect(() => {
 
 
   useEffect(() => {
-    console.log(selectedLimits[`limit${0}`])
+    console.log(selectedLimits)
   }, [selectedLimits]);
 
   const handleLimitSelection = (
@@ -87,7 +92,6 @@ useEffect(() => {
       }));
     }
     if (limitLower != -1 && limit != -1) {
-      console.log("her")
       setSelectedLimitsLower((prevFields) => ({
         ...prevFields,
         [`limitLower${index}`]: limitLower,
@@ -98,6 +102,8 @@ useEffect(() => {
       }));
     }
   };
+
+
     return (
         
     <Box sx={{ width:'200%',height: "100%", position: "relative" }}>

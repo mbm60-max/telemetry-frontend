@@ -91,7 +91,23 @@ const SignUpForm: React.FC = () => {
             type: "AppearanceSettings"
         },
         alerts: {
-            alertDefaultWarnings:["Alert 1","Alert 2"],
+
+            alertDefaultWarningsNames:[['Alert 1','Alert 2','Alert 3','Alert 4'],
+                                       ['"Oil Temperature"','RPM','Turbo Boost Pressure','Oil Pressure','Fuel Level','Water Temperature'],
+                                       ['RPM','RPM To Clutch'],
+                                       ['Front Left Suspension Height','Front Right Suspension Height','Rear Left Suspension Height','Rear Right Suspension Height','Front Left RPS','Front Right RPS','Rear Left RPS','Rear Right RPS']],
+            alertDefaultWarningsUpperLimits:[[ 106,  105,  105,  105 ],
+                                             [ 0,  0,  0,  0,  0,  0 ],
+                                             [ 3000, 3000 ],
+                                             [ 100,  100,  100,  100,10,10,10,10]],
+            alertDefaultWarningsLowerLimits:[[ 5,  0,  0,  0 ],
+                                             [ 0,  0,  0,  0,  0,  0],
+                                             [ 0, 0 ],
+                                             [ 0,  0,  0,  0,  0,  0,  0 , 0 ]],
+            alertDefaultWarningsUnits:[[ '°C',  '°C',  '°C',  '°C', ],
+                                             [ '°C', 'RPM',  'Bar',  'Bar',  '%',  '°C' ],
+                                             [ 'RPM', 'RPM' ],
+                                             [ 'mm',  'mm',  'mm',  'mm',  'RPS',  'RPS',  'RPS' , 'RPS']],
             alertWarningInterval:5000,
             type: "AlertSettings"
         },

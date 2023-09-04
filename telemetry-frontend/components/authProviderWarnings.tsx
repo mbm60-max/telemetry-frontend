@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createContext, ReactNode } from 'react';
 import WarningInstance from '../interfaces/warningInterface';
+import { SettingsContext } from './authProviderSettings';
 
 interface WarningContextType {
   dashboardWarningsCurrentLimits: { [key: string]: { [key: string]: number } };
@@ -72,35 +73,48 @@ interface WarningState {
 }
 
 export const WarningProvider = ({ children }: WarningProviderProps) => {
+  const {alerts} = useContext(SettingsContext);
+  console.log(alerts)
+  //console.log(alerts.alertDefaultWarningsNames)
+  //console.log(Object.fromEntries(alerts.alertDefaultWarningsNames[0].map((alert, index) => [`name${index}`, alert])))
   const [dashboardWarningsCurrentLimits, setDashboardWarningsCurrentLimits] =
     React.useState<{ [key: string]: { [key: string]: number } }>({
-      dashboard1: { limit0: 106, limit1: 105, limit2: 105, limit3: 105 },
-      dashboard2: { limit0: 0, limit1: 0, limit2: 0, limit3: 0, limit4: 0, limit5: 0 },
-      dashboard3: { limit0: 3000, limit1:3000 },
-      dashboard4: { limit0: 100, limit1: 100, limit2: 100, limit3: 100,limit4:10,limit5:10,limit6:10,limit7:10},
+      dashboard1 : Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[0].map((alert, index) => [`limit${index}`, alert])),
+      dashboard2 : Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[1].map((alert, index) => [`limit${index}`, alert])),
+      dashboard3 : Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[2].map((alert, index) => [`limit${index}`, alert])),
+      dashboard4 : Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[3].map((alert, index) => [`limit${index}`, alert])),
     });
 
   const [dashboardWarningsCurrentLimitsLower, setDashboardWarningsCurrentLimitsLower] =
     React.useState<{ [key: string]: { [key: string]: number } }>({
-      dashboard1: { limitLower0: 5, limitLower1: 0, limitLower2: 0, limitLower3: 0 },
-      dashboard2: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0, limitLower4: 0, limitLower5: 0},
-      dashboard3: { limitLower0: 0, limitLower1:0 },
-      dashboard4: { limitLower0: 0, limitLower1: 0, limitLower2: 0, limitLower3: 0, limitLower4: 0, limitLower5: 0, limitLower6: 0 , limitLower7:0 },
+      dashboard1 : Object.fromEntries(alerts.alertDefaultWarningsLowerLimits[0].map((alert, index) => [`limitLower${index}`, alert])),
+      dashboard2 : Object.fromEntries(alerts.alertDefaultWarningsLowerLimits[1].map((alert, index) => [`limitLower${index}`, alert])),
+      dashboard3 : Object.fromEntries(alerts.alertDefaultWarningsLowerLimits[2].map((alert, index) => [`limitLower${index}`, alert])),
+      dashboard4 : Object.fromEntries(alerts.alertDefaultWarningsLowerLimits[3].map((alert, index) => [`limitLower${index}`, alert])), 
     });
+
+   // const dashboard1 = Object.fromEntries(alerts.alertDefaultWarningsNames[0].map((alert, index) => [`name${index}`, alert]));
+    //const dashboard2 = Object.fromEntries(alerts.alertDefaultWarningsNames[1].map((alert, index) => [`name${index}`, alert]));
+    //const dashboard3 = Object.fromEntries(alerts.alertDefaultWarningsNames[2].map((alert, index) => [`name${index}`, alert]));
+    //const dashboard4 = Object.fromEntries(alerts.alertDefaultWarningsNames[3].map((alert, index) => [`name${index}`, alert]));
+   // useEffect(()=>{
+     // console.log(dashboard1)
+       //     },[dashboard1])
+
     const [dashboardWarningsNames, setDashboardWarningsNames] =
     React.useState<{ [key: string]: { [key: string]: string } }>({
-      dashboard1: { name0: 'Front Left Temp', name1: 'Front Right Temp', name2: 'Rear Left Temp', name3: 'Rear Right Temp' },
-      dashboard2: { name0: "Oil Temperature", name1: "RPM", name2: "Turbo Boost Pressure", name3: "Oil Pressure", name4: "Fuel Level", name5: "Water Temperature"},
-      dashboard3: { name0: "RPM", name1:"RPM To Clutch" },
-      dashboard4: { name0: "Front Left Suspension Height", name1: "Front Right Suspension Height", name2: "Rear Left Suspension Height", name3: "Rear Right Suspension Height", name4: "Front Left RPS", name5: "Front Right RPS", name6: "Rear Left RPS" , name7:"Rear Right RPS" },
+      dashboard1 : Object.fromEntries(alerts.alertDefaultWarningsNames[0].map((alert, index) => [`name${index}`, alert])),
+      dashboard2 : Object.fromEntries(alerts.alertDefaultWarningsNames[1].map((alert, index) => [`name${index}`, alert])),
+      dashboard3 : Object.fromEntries(alerts.alertDefaultWarningsNames[2].map((alert, index) => [`name${index}`, alert])),
+      dashboard4 : Object.fromEntries(alerts.alertDefaultWarningsNames[3].map((alert, index) => [`name${index}`, alert])),
     });
     const [dashboardWarningsUnitsTest, setDashboardWarningsUnitsTest] =
     React.useState<{ [key: string]: { [key: string]: string } }>({
-      dashboard1: { name0: '°C', name1: '°C', name2: '°C', name3: '°C', },
-      dashboard2: { name0: '°C', name1: 'RPM', name2: 'Bar', name3: 'Bar', name4: '%', name5: '°C' },
-      dashboard3: { name0: 'RPM', name1:'RPM' },
-      dashboard4: { name0: 'mm', name1: 'mm', name2: 'mm', name3: 'mm', name4: 'RPS', name5: 'RPS', name6: 'RPS' , name7:'RPS'},
-    });
+      dashboard1 : Object.fromEntries(alerts.alertDefaultWarningsUnits[0].map((alert, index) => [`name${index}`, alert])),
+    dashboard2 : Object.fromEntries(alerts.alertDefaultWarningsUnits[1].map((alert, index) => [`name${index}`, alert])),
+    dashboard3 : Object.fromEntries(alerts.alertDefaultWarningsUnits[2].map((alert, index) => [`name${index}`, alert])),
+    dashboard4 : Object.fromEntries(alerts.alertDefaultWarningsUnits[3].map((alert, index) => [`name${index}`, alert])),
+  });
     const [activeWarnings, setActiveWarnings] = useState<WarningInstance[]>([]);
     const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<WarningInstance[]>([]);
     const [activeWarningsLower, setActiveWarningsLower] = useState<WarningInstance[]>([]);
@@ -160,3 +174,4 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
     </WarningContext.Provider>
   );
 };
+

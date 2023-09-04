@@ -9,13 +9,15 @@ function MyApp({ Component, pageProps }:AppProps) {
 
   return (
     <AuthProvider>
+      <SettingsProvider>
        <WarningProvider>
-        <SettingsProvider>
+        
           <ThemeDiv>
           <Component {...pageProps}  />
           </ThemeDiv>
-      </SettingsProvider>
+      
       </WarningProvider>
+      </SettingsProvider>
     </AuthProvider>
   );
 }

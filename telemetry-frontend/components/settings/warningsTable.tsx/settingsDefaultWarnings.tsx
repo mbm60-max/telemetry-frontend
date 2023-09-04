@@ -25,7 +25,7 @@
 
 import { ThemeProvider } from "@emotion/react"
 import { Box, createTheme, styled, Tab, Tabs, useMediaQuery } from "@mui/material"
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Homepage from "../../background/background"
 import DefaultWarningDataTable, { WarningDataObject } from "./defaultWarningDataTable";
 import { WarningContext } from '../../authProviderWarnings';
@@ -127,6 +127,7 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
       
         // Check if the dashboard exists in the limits objects
         if (dashboardKey in dashboardWarningsCurrentLimits && dashboardKey in dashboardWarningsCurrentLimitsLower) {
+          console.log(dashboardWarningsNames[dashboardKey])
           const dashboardLimits = dashboardWarningsCurrentLimits[dashboardKey];
           const dashboardLowerLimits = dashboardWarningsCurrentLimitsLower[dashboardKey];
           const dashboardNames = dashboardWarningsNames[dashboardKey];
@@ -138,6 +139,7 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
             if (dashboardLimits.hasOwnProperty(limitKey)) {
               const singleWarning = new WarningDataObject();
               singleWarning.name = dashboardNames[`name${innerIndex}`];
+              console.log( singleWarning.name )
               singleWarning.units = dashboardUnits[`name${innerIndex}`];
               singleWarning.upperLimit = dashboardLimits[limitKey];
               singleWarning.lowerLimit = dashboardLowerLimits[`limitLower${innerIndex}`];

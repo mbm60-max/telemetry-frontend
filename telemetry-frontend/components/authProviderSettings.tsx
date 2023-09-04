@@ -48,7 +48,10 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
     });
    
       const [alerts, setAlerts] = useState<AlertSettings>({
-        alertDefaultWarnings: [],
+        alertDefaultWarningsNames: [["1"],[],[],[]],
+        alertDefaultWarningsUpperLimits: [[0],[],[],[]],
+        alertDefaultWarningsLowerLimits: [[0],[],[],[]],
+        alertDefaultWarningsUnits: [["mm"],[],[],[]],
         alertWarningInterval: 10,
         type: "AlertSettings",
       });
@@ -92,6 +95,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
 
 
       useEffect(() => {
+        console.log("settings change")
         // Fetch the matching settings from the API
         const handleUpdateSettings= async () => {
             const username=userName
@@ -117,7 +121,6 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
       }, [alerts, appearance, data, defaults, initialFetchHasHappened, userName]);
 
       useEffect(()=>{
-console.log(defaults.defualtIPAddress);
       },[defaults])
 
 

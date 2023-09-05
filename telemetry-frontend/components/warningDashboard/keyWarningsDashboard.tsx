@@ -370,7 +370,6 @@ useEffect(() => {
         />
         <KeyWarningsAddModal
           handleAddWarning={handleAddWarning}
-          allWarnings={valuesOfInterest}
         />
         <KeyWarningsDeleteModal
           handleDeleteWarning={handleDeleteWarning}

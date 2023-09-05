@@ -30,10 +30,9 @@ interface KeyWarningsSettingsAddProps {
   newLimitChange:(newLimit: number) => void;
   newLimitChangeLower:(newLimitLower: number) => void;
   onClose:()=>void;
-  allWarnings:string[];
 }
 
-const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange,newLimitChange,onClose,allWarnings,newLimitChangeLower}: KeyWarningsSettingsAddProps) => {
+const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange,newLimitChange,onClose,newLimitChangeLower}: KeyWarningsSettingsAddProps) => {
     const [newUnits, setNewUnits] = useState("");
     const [newWarning, setNewWarning] = useState("");
     const [newLimit, setNewLimit] = useState(-1);

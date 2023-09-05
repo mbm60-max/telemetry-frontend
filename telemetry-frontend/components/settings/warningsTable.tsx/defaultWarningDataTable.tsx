@@ -218,7 +218,7 @@ const fillAllWarningsArray=(WaringData:WarningDataObject[])=>{
       </Grid>
       <Grid item xs={12}><KeyWarningsAddModal handleAddWarning={function (newLimit: number, newLimitLower: number, newUnits: string, newWarning: string): void {
             throw new Error("Function not implemented.");
-          } } allWarnings={[]}></KeyWarningsAddModal><KeyWarningsDeleteModal handleDeleteWarning={handleDeleteWarning} allWarnings={fillAllWarningsArray(WarningData)}></KeyWarningsDeleteModal></Grid>
+          } } ></KeyWarningsAddModal><KeyWarningsDeleteModal handleDeleteWarning={handleDeleteWarning} allWarnings={fillAllWarningsArray(WarningData)}></KeyWarningsDeleteModal></Grid>
       {hasDivider && <Grid item xs={12}>
        <StyledHorizontalDivider/>
        </Grid>}

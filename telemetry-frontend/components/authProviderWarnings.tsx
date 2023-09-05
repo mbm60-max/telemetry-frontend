@@ -164,6 +164,20 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
     const [activeWarningsLower, setActiveWarningsLower] = useState<WarningInstance[]>([]);
     const [acknowledgedWarningsLower, setAcknowledgedWarningsLower] = useState<WarningInstance[]>([]);
   
+
+    const resetAllWarningData = ()=>{
+      console.log("reset warnings")
+      const emptyWarningInstanceArray: WarningInstance[] = [];
+      setActiveWarnings(emptyWarningInstanceArray);
+      setAcknowledgedWarnings(emptyWarningInstanceArray);
+      setAcknowledgedWarningsLower(emptyWarningInstanceArray);
+      setAcknowledgedWarningsLower(emptyWarningInstanceArray);
+    }
+    useEffect(() => {
+      resetAllWarningData();
+    }, [updateFlag]);
+
+    
     const updateWarningsArray = (
       add: boolean,
       newWarning: string,

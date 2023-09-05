@@ -73,11 +73,12 @@ interface WarningState {
 }
 
 export const WarningProvider = ({ children }: WarningProviderProps) => {
-  const {alerts} = useContext(SettingsContext);
+  const {alerts,updateFlag} = useContext(SettingsContext);
   useEffect(() => {
-   console.log(alerts)
+    console.log("whaa")
+   console.log(alerts.alertDefaultWarningsUpperLimits)
   }, [alerts]);
-  console.log(alerts)
+
   //console.log(alerts.alertDefaultWarningsNames)
   //console.log(Object.fromEntries(alerts.alertDefaultWarningsNames[0].map((alert, index) => [`name${index}`, alert])))
   const [dashboardWarningsCurrentLimits, setDashboardWarningsCurrentLimits] =
@@ -121,8 +122,6 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
 
 
   useEffect(() => {
-    console.log(alerts);
-    
     // Update dashboardWarningsCurrentLimits
     const updatedDashboardWarningsCurrentLimits = {
       dashboard1: Object.fromEntries(alerts.alertDefaultWarningsUpperLimits[0].map((alert, index) => [`limit${index}`, alert])),
@@ -158,7 +157,7 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
       dashboard4: Object.fromEntries(alerts.alertDefaultWarningsUnits[3].map((alert, index) => [`name${index}`, alert])),
     };
     setDashboardWarningsUnitsTest(updatedDashboardWarningsUnitsTest);
-  }, [alerts]);
+  }, [alerts,updateFlag]);
   
     const [activeWarnings, setActiveWarnings] = useState<WarningInstance[]>([]);
     const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<WarningInstance[]>([]);

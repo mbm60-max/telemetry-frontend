@@ -116,7 +116,13 @@ export default function WarningsDashboard({
 
   const [selectedLimits, setSelectedLimits] = React.useState<{ [key: string]: number }>({});
   useEffect(() => {
+    console.log("before")
+    console.log(selectedLimits)
+    console.log(valuesOfInterestCurrentLimits)
     setSelectedLimits(valuesOfInterestCurrentLimits);
+    console.log(selectedLimits)
+    console.log("after")
+    console.log(valuesOfInterestCurrentLimits)
   }, []);
 
 

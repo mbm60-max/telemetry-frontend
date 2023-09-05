@@ -38,6 +38,7 @@ import HorizontalBanner from "../components/horizontalBanner/horizontalBanner";
 import trackData from "../data/trackData";
 import splitAndCapitalise from "../utils/splitAndCapitalise";
 import CompoundStatBars from "../components/sessionStartupComponents/compoundStats";
+import { SettingsContext } from "../components/authProviderSettings";
 
 const SessionStartup: React.FC = () => {
   const [selectedRowId, setSelectedRowId] = useState<GridRowId | null>(null); // Manage selectedRowId in the parent component
@@ -175,6 +176,7 @@ const SessionStartup: React.FC = () => {
   const handleSetSelectedRowIdSetupGrid = (id: GridRowId | null) => {
     selectedRowIdSetupGridRef.current = id
   }
+  const {updateFlag,setUpdateFlag} = useContext(SettingsContext);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (
@@ -182,6 +184,7 @@ const SessionStartup: React.FC = () => {
       selectedCompound.trim() !== "NONE" &&
       selectedTrack != "noTrack"
     ) {
+      setUpdateFlag(!updateFlag);
       const queryParams = `car=${selectedCar}&compound=${selectedCompound}&track=${selectedTrack}&setup=${selectedSetup === 'NONE' ? "No Field Selected" : selectedSetup}`;
       router.push(`/session?${queryParams}`);
     } setCarError("You must select a car to contiue")

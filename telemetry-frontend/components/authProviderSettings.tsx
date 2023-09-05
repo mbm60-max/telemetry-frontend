@@ -14,7 +14,8 @@ interface SettingsContextType {
   setAppearance:(appearanceValue: AppearanceSettings) => void;
   defaults: DefaultsSettings;
   setDefaults:(defaultValue: DefaultsSettings) => void;
-  
+  updateFlag:boolean;
+  setUpdateFlag:(newValue:boolean)=>void;
 }
 
 export const SettingsContext = createContext<SettingsContextType>({
@@ -26,6 +27,8 @@ export const SettingsContext = createContext<SettingsContextType>({
     setAppearance: () => {},
     defaults: {} as DefaultsSettings,
     setDefaults: () => {},
+    updateFlag: false,
+    setUpdateFlag: () => {},
   });
 
 interface SettingsProviderProps {
@@ -47,6 +50,8 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
         type: "DataSettings",
     });
    
+    const [updateFlag,setUpdateFlag] = useState(false);
+
       const [alerts, setAlerts] = useState<AlertSettings>({
         alertDefaultWarningsNames: [["1"],[],[],[]],
         alertDefaultWarningsUpperLimits: [[0],[],[],[]],
@@ -98,6 +103,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
 
         // Fetch the matching settings from the API
         const handleUpdateSettings= async () => {
+          console.log("fetched settings")
             const username=userName
             const settingsname="Default Settings"
             const settingsObject = {
@@ -118,7 +124,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
           if(initialFetchHasHappened){
             handleUpdateSettings();
           }
-      }, [alerts, appearance, data, defaults, initialFetchHasHappened, userName]);
+      }, [alerts, appearance, data, defaults, initialFetchHasHappened, userName, updateFlag]);
 
       useEffect(()=>{
       },[defaults])
@@ -135,9 +141,12 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
    setAppearance,
    defaults,
    setDefaults:setDefaultsHandler,
+   updateFlag,
+   setUpdateFlag,
       }}
     >
       {children}
     </SettingsContext.Provider>
   );
 };
+

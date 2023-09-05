@@ -29,6 +29,7 @@ import React, { useContext, useEffect } from "react";
 import Homepage from "../../background/background"
 import DefaultWarningDataTable, { WarningDataObject } from "./defaultWarningDataTable";
 import { WarningContext } from '../../authProviderWarnings';
+import { SettingsContext } from "../../authProviderSettings";
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -89,7 +90,7 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
       dashboardWarningsUnitsTest,
       setDashboardWarningsUnitsTest
     } = warningContext;
-
+    const {alerts} = useContext(SettingsContext);
     const [value, setValue] = React.useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setValue(newValue);
@@ -127,9 +128,8 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
       
         // Check if the dashboard exists in the limits objects
         if (dashboardKey in dashboardWarningsCurrentLimits && dashboardKey in dashboardWarningsCurrentLimitsLower) {
-          console.log(dashboardWarningsNames[dashboardKey])
-          const dashboardLimits = dashboardWarningsCurrentLimits[dashboardKey];
-          const dashboardLowerLimits = dashboardWarningsCurrentLimitsLower[dashboardKey];
+          const dashboardLimits = alerts.alertDefaultWarningsUpperLimits[index-1];
+          const dashboardLowerLimits = alerts.alertDefaultWarningsLowerLimits[index-1];
           const dashboardNames = dashboardWarningsNames[dashboardKey];
           const dashboardUnits = dashboardWarningsUnitsTest[dashboardKey];
           // Iterate through each limit and create a warning object
@@ -139,10 +139,9 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
             if (dashboardLimits.hasOwnProperty(limitKey)) {
               const singleWarning = new WarningDataObject();
               singleWarning.name = dashboardNames[`name${innerIndex}`];
-              console.log( singleWarning.name )
               singleWarning.units = dashboardUnits[`name${innerIndex}`];
-              singleWarning.upperLimit = dashboardLimits[limitKey];
-              singleWarning.lowerLimit = dashboardLowerLimits[`limitLower${innerIndex}`];
+              singleWarning.upperLimit = dashboardLimits[innerIndex];
+              singleWarning.lowerLimit = dashboardLowerLimits[innerIndex];
               WarningDataMaps.push(singleWarning);
             }innerIndex+=1;
           }

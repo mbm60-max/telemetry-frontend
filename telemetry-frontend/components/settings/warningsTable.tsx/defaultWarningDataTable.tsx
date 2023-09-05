@@ -87,9 +87,6 @@ const DefaultWarningDataTable = ({WarningData,hasDivider,targetSetting,tabIndex}
  
 const handleAlertEdit=(targetAttribute:string,dashboardIndex:number,newValue:{})=>{
   const newAlertsValue = { ...alerts };
-  console.log("test")
-  console.log(newValue)
-console.log(extractValuesToArray(newValue))
     switch(targetAttribute){
       case "alertDefaultWarningsUpperLimits":
         newAlertsValue.alertDefaultWarningsUpperLimits[dashboardIndex] = extractValuesToArray(newValue);
@@ -109,19 +106,17 @@ useEffect(() => {
 //edit to actualy remove instead of setting it to the value to be removed 
 //add the addition version and check both work with weird array limit of the existing code
   const handleDeleteWarning = (uselessIndex: number, itemIndex: number)=>{
-    console.log("yarp")
-    console.log(tabIndex)
-    console.log(itemIndex)
     const previousAlertsValue = { ...alerts };
-    previousAlertsValue.alertDefaultWarningsUpperLimits[tabIndex] = previousAlertsValue.alertDefaultWarningsUpperLimits[tabIndex].splice(itemIndex, 1);
-    previousAlertsValue.alertDefaultWarningsLowerLimits[tabIndex] = previousAlertsValue.alertDefaultWarningsLowerLimits[tabIndex].splice(itemIndex, 1);
-    previousAlertsValue.alertDefaultWarningsNames[tabIndex] = previousAlertsValue.alertDefaultWarningsNames[tabIndex].splice(itemIndex, 1);
-    previousAlertsValue.alertDefaultWarningsUnits[tabIndex] = previousAlertsValue.alertDefaultWarningsUnits[tabIndex].splice(itemIndex, 1);
-    console.log(previousAlertsValue.alertDefaultWarningsUpperLimits[tabIndex])
-    console.log(previousAlertsValue.alertDefaultWarningsLowerLimits[tabIndex])
-    console.log(previousAlertsValue.alertDefaultWarningsNames[tabIndex])
-    console.log(previousAlertsValue.alertDefaultWarningsUnits[tabIndex])
-    //setAlerts(previousAlertsValue);
+    //previousAlertsValue.alertDefaultWarningsUpperLimits[tabIndex].splice(itemIndex, 1);
+    //previousAlertsValue.alertDefaultWarningsLowerLimits[tabIndex].splice(itemIndex, 1);
+    //previousAlertsValue.alertDefaultWarningsNames[tabIndex].splice(itemIndex, 1);
+    //previousAlertsValue.alertDefaultWarningsUnits[tabIndex].splice(itemIndex, 1);
+
+    previousAlertsValue.alertDefaultWarningsUpperLimits[tabIndex] = previousAlertsValue.alertDefaultWarningsUpperLimits[tabIndex].slice(0, itemIndex).concat(previousAlertsValue.alertDefaultWarningsUpperLimits[tabIndex].slice(itemIndex + 1));
+    previousAlertsValue.alertDefaultWarningsLowerLimits[tabIndex] = previousAlertsValue.alertDefaultWarningsLowerLimits[tabIndex].slice(0, itemIndex).concat(previousAlertsValue.alertDefaultWarningsLowerLimits[tabIndex].slice(itemIndex + 1));
+    previousAlertsValue.alertDefaultWarningsNames[tabIndex] = previousAlertsValue.alertDefaultWarningsNames[tabIndex].slice(0, itemIndex).concat(previousAlertsValue.alertDefaultWarningsNames[tabIndex].slice(itemIndex + 1));
+    previousAlertsValue.alertDefaultWarningsUnits[tabIndex] = previousAlertsValue.alertDefaultWarningsUnits[tabIndex].slice(0, itemIndex).concat(previousAlertsValue.alertDefaultWarningsUnits[tabIndex].slice(itemIndex + 1));
+    setAlerts(previousAlertsValue);
   }
 
 

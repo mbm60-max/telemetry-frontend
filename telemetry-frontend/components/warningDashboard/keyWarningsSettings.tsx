@@ -101,6 +101,19 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["UPPER LIMIT"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["LOWER LIMIT"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
            <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
+      id="outlined-basic"
+      label="Set Upper Limit"
+      variant="outlined"
+      type="number" // Set input type to 'number'
+      inputProps={{
+        min: 0, // Set minimum value to 0
+      }}
+      value={newLimit}
+      onChange={handleNewLimitChange}
+        error={Boolean(limitError)}
+        helperText={limitError}
+    /></Grid>
+           <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
         id="outlined-basic"
         label="Set Lower Limit"
         variant="outlined"
@@ -113,19 +126,7 @@ const KeyWarningsSettingsAdd = ({ handleAddition,newUnitsChange,newWarningChange
         error={Boolean(limitLowerError)}
         helperText={limitLowerError}
       /></Grid>
-           <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}><TextField className="textBoxXG"
-      id="outlined-basic"
-      label="Set Upper Limit"
-      variant="outlined"
-      type="number" // Set input type to 'number'
-      inputProps={{
-        min: 0, // Set minimum value to 0
-      }}
-      value={newLimit}
-      onChange={handleNewLimitChange}
-        error={Boolean(limitError)}
-        helperText={limitError}
-    /></Grid><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
+           <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
 Only limits that are not -1 will be put in place.
            </Typography></Grid>
            <Grid item xs={6} sx={{display:'flex',justifyContent:'center',overflow:"auto"}}><HorizontalBanner GridContent={["NAME"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Grid>

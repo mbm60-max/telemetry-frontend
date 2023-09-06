@@ -57,6 +57,21 @@ const SettingsDisplay = ({
     }
     return { isValid: false, errorMessage: "Internal Issue" };
   };
+  const  validateNotificationDelay = (value: string | number) => {
+    if(value > 1800 || value < 5){
+      return{ isValid: false, errorMessage: "Value must be between 5 and 1800" };
+    }
+    return { isValid: true, errorMessage: "" };
+      
+  }
+  const validateReviewLimit = (value: string | number) => {
+    if(value > 100 || value < 10){
+      return{ isValid: false, errorMessage: "Value must be between 10 and 100" };
+    }
+    return { isValid: true, errorMessage: "" };   
+  }
+
+
   return (
     <div
       style={{
@@ -107,11 +122,73 @@ const SettingsDisplay = ({
               Opt in to ml and strategy
             </Button>
           </Grid>
+          <Grid item xs={12}>
+            <SettingsToggleDisplay
+              currentValue={userSettings.data.allowML}
+              targetSetting={"OPT OUT OF LAP DATA PUSHING"}
+              hasDivider={true}
+              settingsProp={"lightModeEnabled"}
+              currentSettingsData={userSettings.data}
+              handleUpdateSettings={handleUpdateSettings}
+              tooltipText={"Stops your lap data being used in training ML models and from being stored, removes ability to use review page"}
+              toggleLeft={"Opted In"}
+              toggleRight={"Opted Out"}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <SettingsToggleDisplay
+              currentValue={userSettings.data.optInToDataPushing}
+              targetSetting={"OPT IN TO ML AND STRATEGY FEATURES"}
+              hasDivider={true}
+              settingsProp={"optInToDataPushing"}
+              currentSettingsData={userSettings.data}
+              handleUpdateSettings={handleUpdateSettings}
+              tooltipText={"Allows Machine Learning features to be accessed"}
+              toggleLeft={"Opted In"}
+              toggleRight={"Opted Out"}
+              
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <SettingsTextDisplay
+              currentValue={userSettings.alerts.alertWarningInterval+" "+"Laps"}
+              targetSetting={"ALTER REVIEW LAP LIMIT"}
+              hasDivider={false}
+              handleUpdateSettings={handleUpdateSettings}
+              currentSettingsData={userSettings.alerts}
+              settingsProp={"alertWarningInterval"}
+              validateInput={validateReviewLimit}
+              tooltipText={
+                "This must between 10 and 100, this is how many laps that will be retained for future use"
+              }
+              isNumber={true}
+              minValue={10}
+              maxValue={100}
+            />
+          </Grid>
         </Grid>
       )}
       {field == "Alerts" && (
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12}><SettingsDefaultWarningsTabSelector/></Grid>
+          <Grid item xs={12}>
+            <SettingsTextDisplay
+              currentValue={userSettings.alerts.alertWarningInterval+" "+"ms"}
+              targetSetting={"Alter Warning Notification Interval (1000ms)"}
+              hasDivider={false}
+              handleUpdateSettings={handleUpdateSettings}
+              currentSettingsData={userSettings.alerts}
+              settingsProp={"alertWarningInterval"}
+              validateInput={validateNotificationDelay}
+              tooltipText={
+                "This must between 5 and 1800, this number is taken to 3dp and converted to ms, determines frequency of warnings"
+              }
+              isNumber={true}
+              minValue={5}
+              maxValue={1800}
+              modifier={1000}
+            />
+          </Grid>
           
         </Grid>
       )}
@@ -125,7 +202,7 @@ const SettingsDisplay = ({
               settingsProp={"lightModeEnabled"}
               currentSettingsData={userSettings.appearance}
               handleUpdateSettings={handleUpdateSettings}
-              tooltipText={""}
+              tooltipText={"Adjusts colours to better suit light and dark enviroments"}
               toggleLeft={"Lightmode"}
               toggleRight={"Darkmode"}
             />
@@ -146,6 +223,7 @@ const SettingsDisplay = ({
               tooltipText={
                 "This must be 4 numbers between 0 and 255 seperated by 3 dots, eg 1.123.234.0"
               }
+              isNumber={false}
             />
           </Grid>
           <Grid item xs={12}>
@@ -156,7 +234,7 @@ const SettingsDisplay = ({
               settingsProp={"defaultUnitsMetric"}
               currentSettingsData={userSettings.defaults}
               handleUpdateSettings={handleUpdateSettings}
-              tooltipText={"This switches"}
+              tooltipText={"The unit system to be used across the site"}
               toggleLeft={"Metric"}
               toggleRight={"Imperial"}
             />

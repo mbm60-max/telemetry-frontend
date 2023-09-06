@@ -73,22 +73,9 @@ const SettingsDefaultWarningsTabSelector= ({}: SettingsDefaultWarningsTabSelecto
     const warningContext = useContext(WarningContext);
     const {
       dashboardWarningsCurrentLimits,
-      setDashboardWarningsCurrentLimits,
       dashboardWarningsCurrentLimitsLower,
-      setDashboardWarningsCurrentLimitsLower,
-      activeWarnings,
-      activeWarningsLower,
-      acknowledgedWarnings,
-      acknowledgedWarningsLower,
-      updateWarningsArray,
-      setAcknowledgedWarnings,
-      setAcknowledgedWarningsLower,
-      setActiveWarnings,
-      setActiveWarningsLower,
       dashboardWarningsNames,
-      setDashboardWarningsNames,
       dashboardWarningsUnitsTest,
-      setDashboardWarningsUnitsTest
     } = warningContext;
     const {alerts} = useContext(SettingsContext);
     const [value, setValue] = React.useState(0);

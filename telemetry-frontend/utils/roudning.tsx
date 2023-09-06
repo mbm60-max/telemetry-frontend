@@ -1,6 +1,9 @@
 const roundTo1DP =(input:number)=>{
     return Math.round(input * 10) / 10;
 };
+export const roundTo3DP = (input:number) => {
+  return Math.round(input * 1000) / 1000;
+};
 
 export const roundTo3SF = (input:number) => {
     // Convert the number to a string to count significant figures

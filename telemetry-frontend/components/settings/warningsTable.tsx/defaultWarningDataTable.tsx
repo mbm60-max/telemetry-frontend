@@ -226,8 +226,8 @@ const fillAllWarningsArray=(WaringData:WarningDataObject[])=>{
 
       </Grid>
       <Grid item xs={12}><KeyWarningsAddModal handleAddWarning={handleAddWarning} ></KeyWarningsAddModal><KeyWarningsDeleteModal handleDeleteWarning={handleDeleteWarning} allWarnings={fillAllWarningsArray(WarningData)}></KeyWarningsDeleteModal></Grid>
-      {hasDivider && <Grid item xs={12}>
-       <StyledHorizontalDivider/>
+      {hasDivider && <Grid item xs={12}><Box sx={{ width: "100%", height: "100%", position: "relative" }}>
+       <StyledHorizontalDivider/></Box>
        </Grid>}
      
     </Grid>

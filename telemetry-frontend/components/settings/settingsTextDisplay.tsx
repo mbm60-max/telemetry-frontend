@@ -15,6 +15,7 @@ import {
 import InfoToolTip from "../helperTooltip.tsx/infoTooltip";
 import { AlertSettings, AppearanceSettings, DataSettings, DefaultsSettings } from "../../interfaces/defaultSettingsInterface";
 import { ReactNode, useState } from "react";
+import { roundTo3DP } from "../../utils/roudning";
 
 interface SettingsTextDisplayProps {
   currentValue: string | number;
@@ -25,6 +26,10 @@ interface SettingsTextDisplayProps {
   currentSettingsData:AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings;
   handleUpdateSettings:(updatedValue: AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings) => void
   tooltipText:string;
+  isNumber:boolean;
+  minValue?:number;
+  maxValue?:number;
+  modifier?:number;
 }
 const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
@@ -41,6 +46,10 @@ const SettingsTextDisplay = ({
   handleUpdateSettings,
   validateInput,
   tooltipText,
+  isNumber,
+  minValue,
+  maxValue,
+  modifier,
 }: SettingsTextDisplayProps) => {
     const [inputValue,setInputValue]=useState<string|number>();
     const [errorValue,setErrorValue]=useState("");
@@ -53,12 +62,29 @@ const SettingsTextDisplay = ({
     </>
   );
   const handleUpdate=()=>{
-        const updatedValue = {
-            ...currentSettingsData,
-            [settingsProp]: inputValue,
-          };
-        handleUpdateSettings(updatedValue);
+    console.log( modifier)
+    console.log(typeof inputValue !== "undefined")
+    console.log(typeof inputValue !== "string")
+    if(modifier && typeof inputValue !== "undefined" ){
+      const numericInputValue = typeof inputValue === "string" ? parseFloat(inputValue) : inputValue;
+      const updatedValue = {
+        ...currentSettingsData,
+        [settingsProp]: (roundTo3DP(numericInputValue)*modifier),
+      };
+    handleUpdateSettings(updatedValue);
+    }
+    else{
+      const updatedValue = {
+        ...currentSettingsData,
+        [settingsProp]: inputValue,
+      };
+    handleUpdateSettings(updatedValue);
+    }
+  
   }
+
+ 
+
   const handleValidation=(value:string|number)=>{
     const {isValid,errorMessage} = validateInput(value);
     if(!isValid){
@@ -90,7 +116,7 @@ const SettingsTextDisplay = ({
         <Grid item xs={12}>
           <Typography sx={{ fontSize: 22 }}>{currentValue}</Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={10} sm={6}>
           <Box
             sx={{
               width: "100%",
@@ -115,6 +141,11 @@ const SettingsTextDisplay = ({
                     onChange={handleChange}
                     error={Boolean(errorValue)}
                     helperText={errorValue}
+                    type={isNumber ? 'number' : 'text'} 
+                    inputProps={{
+                      min: minValue, 
+                      max: maxValue,
+                    }}
                   >
                   </TextField>
                 </FormControl>

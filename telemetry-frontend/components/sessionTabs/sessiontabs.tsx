@@ -83,7 +83,7 @@ export default function BasicTabs() {
   const router = useRouter();
   const { car, compound, track } = router.query;
   const { isLoggedIn, userName } = useContext(AuthContext);
-  const {defaults} = useContext(SettingsContext);
+  const {defaults,alerts} = useContext(SettingsContext);
   const warningContext = useContext(WarningContext);
   const {
     dashboardWarningsCurrentLimits,
@@ -668,7 +668,7 @@ const [packetFlag,setPacketFlag] = useState(false);
         id: `${warning.newWarning}-${index}-${Date.now()}`,
       }));
       setActiveWarnings(updatedWarnings);
-    }, 5000); // 5000 milliseconds (5 seconds)
+    }, alerts.alertWarningInterval); 
 
     // Clean up the interval when the component unmounts to avoid memory leaks
     return () => clearInterval(rerenderInterval);
@@ -684,7 +684,7 @@ const [packetFlag,setPacketFlag] = useState(false);
         id: `${warning.newWarning}-${index}-${Date.now()}`,
       }));
       setActiveWarningsLower(updatedWarnings);
-    }, 5000); // 5000 milliseconds (5 seconds)
+    }, alerts.alertWarningInterval);
 
     // Clean up the interval when the component unmounts to avoid memory leaks
     return () => clearInterval(rerenderInterval);

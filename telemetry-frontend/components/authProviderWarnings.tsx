@@ -166,9 +166,9 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
   
 
     const resetAllWarningData = ()=>{
-      console.log("reset warnings")
       const emptyWarningInstanceArray: WarningInstance[] = [];
       setActiveWarnings(emptyWarningInstanceArray);
+      setActiveWarningsLower(emptyWarningInstanceArray);
       setAcknowledgedWarnings(emptyWarningInstanceArray);
       setAcknowledgedWarningsLower(emptyWarningInstanceArray);
       setAcknowledgedWarningsLower(emptyWarningInstanceArray);

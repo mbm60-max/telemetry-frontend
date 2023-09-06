@@ -119,6 +119,15 @@ useEffect(() => {
     setAlerts(previousAlertsValue);
   }
 
+  const handleAddWarning = (newLimit: number, newLimitLower: number, newUnits: string, newWarning: string)=>{
+    const newAlertsValue = { ...alerts };
+    newAlertsValue.alertDefaultWarningsUpperLimits[tabIndex].push(newLimit);
+    newAlertsValue.alertDefaultWarningsLowerLimits[tabIndex].push(newLimitLower);
+    newAlertsValue.alertDefaultWarningsNames[tabIndex].push(newWarning);
+    newAlertsValue.alertDefaultWarningsUnits[tabIndex].push(newUnits);
+    setAlerts(newAlertsValue);
+  }
+
 
   const handleLimitSelection = (
     limit: number,
@@ -216,9 +225,7 @@ const fillAllWarningsArray=(WaringData:WarningDataObject[])=>{
           </Grid>
 
       </Grid>
-      <Grid item xs={12}><KeyWarningsAddModal handleAddWarning={function (newLimit: number, newLimitLower: number, newUnits: string, newWarning: string): void {
-            throw new Error("Function not implemented.");
-          } } ></KeyWarningsAddModal><KeyWarningsDeleteModal handleDeleteWarning={handleDeleteWarning} allWarnings={fillAllWarningsArray(WarningData)}></KeyWarningsDeleteModal></Grid>
+      <Grid item xs={12}><KeyWarningsAddModal handleAddWarning={handleAddWarning} ></KeyWarningsAddModal><KeyWarningsDeleteModal handleDeleteWarning={handleDeleteWarning} allWarnings={fillAllWarningsArray(WarningData)}></KeyWarningsDeleteModal></Grid>
       {hasDivider && <Grid item xs={12}>
        <StyledHorizontalDivider/>
        </Grid>}

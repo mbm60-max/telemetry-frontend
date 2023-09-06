@@ -149,7 +149,6 @@ export default function GridWarningConsumer({handleAcknowledgedWarnings,handleAc
 
   useEffect(() => {
     for(let i=0; i<valuesOfInterest.length;i++){
-
       if((valuesOfInterestData[i]>=valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
         const warningExists = activeWarnings.some(
           (warning) => warning.newWarning === valuesOfInterest[i]
@@ -157,11 +156,14 @@ export default function GridWarningConsumer({handleAcknowledgedWarnings,handleAc
         const warningIsIgnored = acknowledgedWarnings.some(
           (warning) => warning.newWarning === valuesOfInterest[i]
         )
+
         if ((!warningExists)&&(!warningIsIgnored)) {
         handleActiveWarnings(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
         handleIsWarning();
         }
-      }else if((valuesOfInterestData[i]<valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
+      }
+      
+      else if((valuesOfInterestData[i]<valuesOfInterestCurrentLimits[`limit${i}`])&&(activeWarnings!==undefined)){
         const warningExists = activeWarnings.some(
           (warning) => warning.newWarning === valuesOfInterest[i]
         )
@@ -176,18 +178,51 @@ export default function GridWarningConsumer({handleAcknowledgedWarnings,handleAc
             handleIsWarning();
           }
       }
-      if((valuesOfInterestData[i]<=valuesOfInterestCurrentLimitsLower[`limitLower${i}`])&&(activeWarningsLower!==undefined)){
+    }
+  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits,valuesOfInterestGreaterThanWarning]);
+
+
+  useEffect(() => {
+    for(let i=0; i<valuesOfInterest.length;i++){
+      if(valuesOfInterestData[i] <= valuesOfInterestCurrentLimitsLower[`limitLower${i}`] && activeWarningsLower !== undefined){
         const warningExists = activeWarningsLower.some(
           (warning) => warning.newWarning === valuesOfInterest[i]
         )//;
         const warningIsIgnored = acknowledgedWarningLower.some(
           (warning) => warning.newWarning === valuesOfInterest[i]
         )
+
+        const warningExistsObject = activeWarningsLower.find(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        );
+        
+        const warningIsIgnoredObject = acknowledgedWarningLower.find(
+          (warning) => warning.newWarning === valuesOfInterest[i]
+        );
+
         if ((!warningExists)&&(!warningIsIgnored)) {
         handleActiveWarningsLower(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimitsLower[`limitLower${i}`]);
         handleIsWarning();
         }
-      }else if((valuesOfInterestData[i]>valuesOfInterestCurrentLimitsLower[`limitlower${i}`])&&(activeWarningsLower!==undefined)){
+        else if(warningExistsObject){
+          if(warningExistsObject.newWarningLimit!=valuesOfInterestCurrentLimitsLower[`limitLower${i}`]){
+            handleActiveWarningsLower(false,warningExistsObject.newWarning,warningExistsObject.newWarningValue,warningExistsObject.newWarningUnits,warningExistsObject.newWarningLimit);
+            handleIsWarning();
+            handleActiveWarningsLower(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimitsLower[`limitLower${i}`]);
+            handleIsWarning();
+          }
+        }
+        else if(warningIsIgnoredObject){
+          if(warningIsIgnoredObject.newWarningLimit!=valuesOfInterestCurrentLimitsLower[`limitLower${i}`]){
+            handleAcknowledgedWarningsLower(false,warningIsIgnoredObject.newWarning,warningIsIgnoredObject.newWarningValue,warningIsIgnoredObject.newWarningUnits,warningIsIgnoredObject.newWarningLimit);
+          handleIsWarning();
+          handleActiveWarningsLower(true,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimitsLower[`limitLower${i}`]);
+        handleIsWarning();
+          }
+        }
+      }
+
+      else if((valuesOfInterestData[i]>valuesOfInterestCurrentLimitsLower[`limitLower${i}`])&&(activeWarningsLower!==undefined)){
         const warningExists = activeWarningsLower.some(
           (warning) => warning.newWarning === valuesOfInterest[i]
         )
@@ -195,16 +230,17 @@ export default function GridWarningConsumer({handleAcknowledgedWarnings,handleAc
           (warning) => warning.newWarning === valuesOfInterest[i]
         )
         if (warningExists) {
-          handleActiveWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+          handleActiveWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimitsLower[`limitLower${i}`]);
           handleIsWarning();
           }else if(warningIsIgnored){
-            handleAcknowledgedWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimits[`limit${i}`]);
+            handleAcknowledgedWarningsLower(false,valuesOfInterest[i],valuesOfInterestData[i],valueOfInterestUnits[i],valuesOfInterestCurrentLimitsLower[`limitLower${i}`]);
             handleIsWarning();
           }
       }
     }
-  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestCurrentLimits,valuesOfInterestGreaterThanWarning,valuesOfInterestCurrentLimitsLower]);
+  }, [valuesOfInterest.length, valuesOfInterestData,valuesOfInterestGreaterThanWarning,valuesOfInterestCurrentLimitsLower]);
 
+ 
   let selectedComponent;
 
   // Conditionally render one of the four components based on the number

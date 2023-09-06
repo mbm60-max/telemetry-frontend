@@ -247,7 +247,7 @@ export default function BasicTabs() {
     const [frontLeftTemp, setFrontLeftTemp] = useState([{ x: 0, y: -1 }]);
     const [frontRightTemp, setFrontRightTemp] = useState([{ x: 0, y: -1 }]);
     const [rearLeftTemp, setRearLeftTemp] = useState([{ x: 0, y: -1 }]);
-    const [rearRightTemp, setRearRightTemp] = useState([{ x: 0, y: -1 }]);
+    const [rearRightTemp, setRearRightTemp] = useState([{ x: 0, y: 2 }]);
     const [tireFL_SusHeight, setTireFL_SusHeight] = useState([{x: 0, y: -1}]);
     const [tireFR_SusHeight, setTireFR_SusHeight] = useState([{x: 0, y: -1}]);
     const [tireRL_SusHeight, setTireRL_SusHeight] = useState([{x: 0, y: -1}]);

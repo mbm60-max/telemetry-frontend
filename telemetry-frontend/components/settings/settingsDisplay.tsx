@@ -1,5 +1,5 @@
 import { Button, Divider, Grid, styled, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import SettingsObject, {
   AlertSettings,
   AppearanceSettings,
@@ -9,6 +9,8 @@ import SettingsObject, {
 import SettingsDefaultWarningsTabSelector from "./warningsTable.tsx/settingsDefaultWarnings";
 import SettingsTextDisplay from "./settingsTextDisplay";
 import SettingsToggleDisplay from "./settingsToggleDisplay";
+import axios, { AxiosResponse } from "axios";
+import { AuthContext } from "../authProvider";
 interface SettingsDisplayProps {
   field: string;
   userSettings: SettingsObject;
@@ -26,6 +28,28 @@ const SettingsDisplay = ({
   setData,
   setDefaults,
 }: SettingsDisplayProps) => {
+
+  const {userName} = useContext(AuthContext);
+  const handleUserNameChange = async ( username:string|number) => {
+    try {
+      let Failed = false;
+       //Send the data to the server
+       const userResponse: AxiosResponse = await axios.get('/api/checkuserapi', {
+        params: { username },
+      });
+      
+      if (userResponse.data.message === 'Success') {
+        //username taken
+        return { isValid: false, errorMessage: "That username is already taken" };
+      }
+      return  { isValid: true, errorMessage: "" };
+    }
+    catch (error) {
+      console.error("Error checking for user:", error);
+    }
+  }
+
+
   const handleUpdateSettings = (
     updatedValue:
       | AlertSettings
@@ -33,18 +57,23 @@ const SettingsDisplay = ({
       | DataSettings
       | DefaultsSettings
   ) => {
-    // Identify the type of updatedValue and call the corresponding setter
-    if (updatedValue.type === "AlertSettings") {
-      setAlerts(updatedValue as AlertSettings);
-    } else if (updatedValue.type === "AppearanceSettings") {
-      setAppearance(updatedValue as AppearanceSettings);
-    } else if (updatedValue.type === "DataSettings") {
-      setData(updatedValue as DataSettings);
-    } else if (updatedValue.type === "DefaultSettings") {
-      setDefaults(updatedValue as DefaultsSettings);
-    } else {
-      console.log(updatedValue.type);
+    if(typeof updatedValue === "string"){
+      return;
     }
+    else{
+      if (updatedValue.type === "AlertSettings") {
+        setAlerts(updatedValue as AlertSettings);
+      } else if (updatedValue.type === "AppearanceSettings") {
+        setAppearance(updatedValue as AppearanceSettings);
+      } else if (updatedValue.type === "DataSettings") {
+        setData(updatedValue as DataSettings);
+      } else if (updatedValue.type === "DefaultSettings") {
+        setDefaults(updatedValue as DefaultsSettings);
+      } else {
+        console.log(updatedValue.type + "is not a valid settings type");
+      }
+    }
+    // Identify the type of updatedValue and call the corresponding setter
   };
   const validateIPWithMessage = (value: string | number) => {
     const ipRegex =
@@ -103,25 +132,36 @@ const SettingsDisplay = ({
               Reset Account Data
             </Button>
           </Grid>
+          <Grid item xs={12}>
+          <SettingsTextDisplay
+              currentValue={userSettings.defaults.defualtIPAddress}
+              targetSetting={"Change Username"}
+              hasDivider={true}
+              settingsProp={""}
+              validateInputPromise={handleUserNameChange}
+              tooltipText={
+                "This must be 4 numbers between 0 and 255 seperated by 3 dots, eg 1.123.234.0"
+              }
+              isNumber={false}
+            />
+          </Grid>
+          <Grid item xs={12}>
+          <SettingsTextDisplay
+          
+              targetSetting={"Change Password"}
+              hasDivider={true}
+              settingsProp={""}
+              validateInputPromise={validateIPWithMessage}
+              tooltipText={
+                "This must be 4 numbers between 0 and 255 seperated by 3 dots, eg 1.123.234.0"
+              }
+              isNumber={false}
+            />
+          </Grid>
         </Grid>
       )}
       {field == "Data" && (
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Opt ouf of lap data pusing
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Alter review lap limit 10-100
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Opt in to ml and strategy
-            </Button>
-          </Grid>
           <Grid item xs={12}>
             <SettingsToggleDisplay
               currentValue={userSettings.data.allowML}

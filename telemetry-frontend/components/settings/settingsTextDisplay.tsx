@@ -18,18 +18,19 @@ import { ReactNode, useState } from "react";
 import { roundTo3DP } from "../../utils/roudning";
 
 interface SettingsTextDisplayProps {
-  currentValue: string | number;
+  currentValue?: string | number;
   targetSetting: string;
   hasDivider: boolean;
   settingsProp:string;
-  validateInput:(value:string|number)=>{isValid:boolean,errorMessage:string};
-  currentSettingsData:AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings;
-  handleUpdateSettings:(updatedValue: AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings) => void
+  validateInput?:(value:string|number)=>{isValid:boolean,errorMessage:string};
+  currentSettingsData?:AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings;
+  handleUpdateSettings?:(updatedValue: AlertSettings | AppearanceSettings | DataSettings | DefaultsSettings) => void
   tooltipText:string;
   isNumber:boolean;
   minValue?:number;
   maxValue?:number;
   modifier?:number;
+  validateInputPromise?: (username: string) => Promise<{ isValid: boolean; errorMessage: string;}| undefined>
 }
 const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
@@ -50,6 +51,7 @@ const SettingsTextDisplay = ({
   minValue,
   maxValue,
   modifier,
+  validateInputPromise,
 }: SettingsTextDisplayProps) => {
     const [inputValue,setInputValue]=useState<string|number>();
     const [errorValue,setErrorValue]=useState("");
@@ -62,44 +64,54 @@ const SettingsTextDisplay = ({
     </>
   );
   const handleUpdate=()=>{
-    console.log( modifier)
-    console.log(typeof inputValue !== "undefined")
-    console.log(typeof inputValue !== "string")
-    if(modifier && typeof inputValue !== "undefined" ){
-      const numericInputValue = typeof inputValue === "string" ? parseFloat(inputValue) : inputValue;
-      const updatedValue = {
-        ...currentSettingsData,
-        [settingsProp]: (roundTo3DP(numericInputValue)*modifier),
-      };
-    handleUpdateSettings(updatedValue);
+    if(handleUpdateSettings&&currentSettingsData){
+      if(modifier && typeof inputValue !== "undefined" ){
+        const numericInputValue = typeof inputValue === "string" ? parseFloat(inputValue) : inputValue;
+        const updatedValue = {
+          ...currentSettingsData,
+          [settingsProp]: (roundTo3DP(numericInputValue)*modifier),
+        };
+      handleUpdateSettings(updatedValue);
+      }
+      else{
+        const updatedValue = {
+          ...currentSettingsData,
+          [settingsProp]: inputValue,
+        };
+      handleUpdateSettings(updatedValue);
+      }
+    }else if(validateInputPromise){
+      if(typeof inputValue === "string"){
+        //update username
+      }
     }
-    else{
-      const updatedValue = {
-        ...currentSettingsData,
-        [settingsProp]: inputValue,
-      };
-    handleUpdateSettings(updatedValue);
-    }
-  
   }
 
  
 
   const handleValidation=(value:string|number)=>{
-    const {isValid,errorMessage} = validateInput(value);
-    if(!isValid){
-        setErrorValue(errorMessage);
-        setCanSubmit(false);
-        return
+    if(validateInput){
+      const {isValid,errorMessage} = validateInput(value);
+      if(!isValid){
+          setErrorValue(errorMessage);
+          setCanSubmit(false);
+          return
+      }
+          setErrorValue("");
+          setCanSubmit(true);
+          return
     }
-        setErrorValue("");
-        setCanSubmit(true);
-        return
+    else{
+      console.log("no method provided")
+      return;
+    }
     }
   
   const handleChange=(event: React.ChangeEvent<{ value: string|number }>)=>{
-    handleValidation(event.target.value);
-    setInputValue(event.target.value)
+    if(handleValidation){
+      handleValidation(event.target.value);
+      setInputValue(event.target.value)
+    }
   }
 
   return (
@@ -110,12 +122,13 @@ const SettingsTextDisplay = ({
             {targetSetting}
           </Typography>
         </Grid>
+        {currentValue ? <>
         <Grid item xs={12}>
           <Typography sx={{ fontSize: 18 }}>Current Value:</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: 22 }}>{currentValue}</Typography>
-        </Grid>
+         <Typography sx={{ fontSize: 22 }}>{currentValue}</Typography>
+        </Grid> </> : null}
         <Grid item xs={10} sm={6}>
           <Box
             sx={{

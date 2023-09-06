@@ -82,7 +82,7 @@ const SettingsTextDisplay = ({
       }
     }else if(validateInputPromise){
       if(typeof inputValue === "string"){
-        //update username
+        handleUserNameChange(inputValue);
       }
     }
   }
@@ -106,10 +106,31 @@ const SettingsTextDisplay = ({
       return;
     }
     }
-  
+
+    const handleUserNameChange = async ( username:string) => {
+      if (validateInputPromise){
+        try {
+          const result = await validateInputPromise(username);
+
+          if (result) {
+            const { isValid, errorMessage } = result;
+            
+            // Now you can safely use isValid and errorMessage
+            setErrorValue(errorMessage);
+          } else {
+            // Handle the case where result is undefined
+            console.error('Validation result is undefined');
+          }
+        } catch (error) {
+          console.error(error);
+        }
+    }  
+    }
   const handleChange=(event: React.ChangeEvent<{ value: string|number }>)=>{
-    if(handleValidation){
+    if(validateInput){
       handleValidation(event.target.value);
+      setInputValue(event.target.value)
+    }else if (validateInputPromise && typeof event.target.value === "string"){
       setInputValue(event.target.value)
     }
   }

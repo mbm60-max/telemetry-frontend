@@ -12,6 +12,7 @@ import SettingsToggleDisplay from "./settingsToggleDisplay";
 import axios, { AxiosResponse } from "axios";
 import { AuthContext } from "../authProvider";
 import validatePassword from "../../utils/validatePassword";
+import EmailSender from "../emailSend";
 interface SettingsDisplayProps {
   field: string;
   userSettings: SettingsObject;
@@ -204,20 +205,7 @@ const handlePasswordValidation =(newPassword: string) => {
               checkPasswordIsNew={checkPasswordIsNew}
             />
           </Grid>
-          <Grid item xs={12}>
-          <SettingsTextDisplay
-          
-              targetSetting={"Change Email"}
-              hasDivider={true}
-              settingsProp={""}
-              validateEmail={handleEmailValidation}
-              tooltipText={
-                "This must contain two chars seperated by an @ symbol"
-              }
-              isNumber={false}
-              checkPasswordIsNew={checkPasswordIsNew}
-            />
-          </Grid>
+          <EmailSender/>
         </Grid>
       )}
       {field == "Data" && (

@@ -11,6 +11,7 @@ import BadgeIcon from "@mui/icons-material/Badge";
 import Divider from "@mui/material/Divider";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import SettingsObject from "../interfaces/defaultSettingsInterface";
+import validatePassword from "../utils/validatePassword";
 
 const SignUpForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -133,18 +134,7 @@ const SignUpForm: React.FC = () => {
     }
   };
   //split this up
-  const validatePassword = (password: string) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/;
-    //At least one lowercase letter ((?=.*[a-z])
-    //At least one uppercase letter ((?=.*[A-Z])
-    //At least one digit ((?=.*\d))
-    //Length of at least 6 characters ([a-zA-Z\d]{6,})
-    if (!passwordRegex.test(password)) {
-      return false;
-    }
   
-    return true;
-  };
   //find an api to do this better
   const validateEmail = (str: string) => {
     const regex = /.*@.*/;

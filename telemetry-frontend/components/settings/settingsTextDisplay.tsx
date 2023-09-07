@@ -14,8 +14,11 @@ import {
 } from "@mui/material";
 import InfoToolTip from "../helperTooltip.tsx/infoTooltip";
 import { AlertSettings, AppearanceSettings, DataSettings, DefaultsSettings } from "../../interfaces/defaultSettingsInterface";
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { roundTo3DP } from "../../utils/roudning";
+import { AuthContext } from "../authProvider";
+import validatePassword from "../../utils/validatePassword";
+import axios, { AxiosResponse } from "axios";
 
 interface SettingsTextDisplayProps {
   currentValue?: string | number;
@@ -31,6 +34,8 @@ interface SettingsTextDisplayProps {
   maxValue?:number;
   modifier?:number;
   validateInputPromise?: (username: string) => Promise<{ isValid: boolean; errorMessage: string;}| undefined>
+  validatePassword?:(newPassword: string) => { isValid: boolean; errorMessage: string;}
+  checkPasswordIsNew?:(password: string) => Promise<{ isValid: boolean; errorMessage: string;}| undefined>
 }
 const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
@@ -52,6 +57,8 @@ const SettingsTextDisplay = ({
   maxValue,
   modifier,
   validateInputPromise,
+  validatePassword,
+  checkPasswordIsNew
 }: SettingsTextDisplayProps) => {
     const [inputValue,setInputValue]=useState<string|number>();
     const [errorValue,setErrorValue]=useState("");
@@ -63,7 +70,19 @@ const SettingsTextDisplay = ({
       </em>
     </>
   );
-  const handleUpdate=()=>{
+
+  const { userName } = useContext(AuthContext);
+  const handlePasswordUpdate = async (newPassword:string,userName:string)=>{
+    try {
+      await axios.post("/api/changepasswordapi", {newPassword,userName });
+   }
+   catch (error) {
+     console.error("Error checking for user:", error);
+   }
+  }
+
+  
+  const handleUpdate=async ()=>{
     if(handleUpdateSettings&&currentSettingsData){
       if(modifier && typeof inputValue !== "undefined" ){
         const numericInputValue = typeof inputValue === "string" ? parseFloat(inputValue) : inputValue;
@@ -84,10 +103,17 @@ const SettingsTextDisplay = ({
       if(typeof inputValue === "string"){
         handleUserNameChange(inputValue);
       }
+    }else if(validatePassword && checkPasswordIsNew){
+      if(typeof inputValue === "string"){
+        const passwordCanSubmit = await checkPasswordIsNew(inputValue);
+        if(passwordCanSubmit?.isValid==true){
+          handlePasswordUpdate(inputValue,userName);
+          return true;
+        }setErrorValue("New password cannot be the same as old password")
+        return false;
+      }
     }
   }
-
- 
 
   const handleValidation=(value:string|number)=>{
     if(validateInput){
@@ -107,6 +133,25 @@ const SettingsTextDisplay = ({
     }
     }
 
+
+    const changeUsername = async ( newUsername:string,oldUsername:string) =>{
+      const collectionNames:string[]=["Settings","setups","Users",oldUsername];
+      const databaseNames:string[]=["Data","Data","Test","UserSessions"];
+      console.log(oldUsername);
+      if(collectionNames.length==databaseNames.length){
+        for(let i=0;i<collectionNames.length;i++){
+          try {
+            let collectionName = collectionNames[i];
+            let databaseName = databaseNames[i];
+            await axios.post("/api/changeusernameapi", {newUsername, oldUsername, collectionName, databaseName });
+         }
+         catch (error) {
+           console.error("Error checking for user:", error);
+         }
+        }
+      }
+    }
+
     const handleUserNameChange = async ( username:string) => {
       if (validateInputPromise){
         try {
@@ -114,9 +159,14 @@ const SettingsTextDisplay = ({
 
           if (result) {
             const { isValid, errorMessage } = result;
-            
+            if(isValid){
+              console.log("tyring to change")
+              changeUsername(username,userName);
+            }else{
             // Now you can safely use isValid and errorMessage
             setErrorValue(errorMessage);
+            }
+            
           } else {
             // Handle the case where result is undefined
             console.error('Validation result is undefined');
@@ -126,12 +176,25 @@ const SettingsTextDisplay = ({
         }
     }  
     }
+
   const handleChange=(event: React.ChangeEvent<{ value: string|number }>)=>{
     if(validateInput){
       handleValidation(event.target.value);
       setInputValue(event.target.value)
     }else if (validateInputPromise && typeof event.target.value === "string"){
       setInputValue(event.target.value)
+      setCanSubmit(true);
+    }else if(validatePassword && typeof event.target.value === "string"){
+      const passwordIsValid = validatePassword(event.target.value);
+      if(passwordIsValid.isValid==true){
+        setErrorValue("");
+        setInputValue(event.target.value);
+        setCanSubmit(true);
+      }else{
+        setErrorValue(passwordIsValid.errorMessage);
+        setInputValue(event.target.value);
+        setCanSubmit(false);
+      }
     }
   }
 

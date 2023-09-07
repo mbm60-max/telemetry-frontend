@@ -116,13 +116,7 @@ export default function WarningsDashboard({
 
   const [selectedLimits, setSelectedLimits] = React.useState<{ [key: string]: number }>({});
   useEffect(() => {
-    console.log("before")
-    console.log(selectedLimits)
-    console.log(valuesOfInterestCurrentLimits)
     setSelectedLimits(valuesOfInterestCurrentLimits);
-    console.log(selectedLimits)
-    console.log("after")
-    console.log(valuesOfInterestCurrentLimits)
   }, []);
 
 
@@ -135,17 +129,17 @@ useEffect(() => {
     setSelectedLimitsLower(valuesOfInterestCurrentLimitsLower);
   }, []);
   const handleLimitSelection = (
-    limit: number,
     limitLower: number,
+    limit: number,
     index: string
   ) => {
-    if (limit == -1) {
+    if (limitLower == -1) {
       setSelectedLimitsLower((prevFields) => ({
         ...prevFields,
         [`limitLower${index}`]: limitLower,
       }));
     }
-    if (limitLower == -1) {
+    if (limit == -1) {
       setSelectedLimits((prevFields) => ({
         ...prevFields,
         [`limit${index}`]: limit,

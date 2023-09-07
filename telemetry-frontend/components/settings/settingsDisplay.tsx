@@ -11,6 +11,7 @@ import SettingsTextDisplay from "./settingsTextDisplay";
 import SettingsToggleDisplay from "./settingsToggleDisplay";
 import axios, { AxiosResponse } from "axios";
 import { AuthContext } from "../authProvider";
+import validatePassword from "../../utils/validatePassword";
 interface SettingsDisplayProps {
   field: string;
   userSettings: SettingsObject;
@@ -28,11 +29,10 @@ const SettingsDisplay = ({
   setData,
   setDefaults,
 }: SettingsDisplayProps) => {
-
-  const {userName} = useContext(AuthContext);
-  const handleUserNameChange = async ( username:string|number) => {
+  const { userName } = useContext(AuthContext);
+  
+  const handleUserNameChange = async ( username:string) => {
     try {
-      let Failed = false;
        //Send the data to the server
        const userResponse: AxiosResponse = await axios.get('/api/checkuserapi', {
         params: { username },
@@ -48,6 +48,51 @@ const SettingsDisplay = ({
       console.error("Error checking for user:", error);
     }
   }
+
+
+const checkOriginalPassword = async (newPassword:string)=>{
+  const username=userName;
+  try {
+    const checkOriginalPasswordResponse: AxiosResponse = await axios.get('/api/checkpasswordapi', {
+      params: { username},
+    });
+    
+    console.log('Response:', checkOriginalPasswordResponse);
+    if(checkOriginalPasswordResponse.data.password==newPassword){
+      return true;
+    }else{
+      return false;
+    }
+    
+  } catch (error) {
+    console.error('Error fetching setup:', error);
+  }
+}
+const checkPasswordIsNew= async (newPassword:string)=>{
+  try {
+    // Check if the new password is the same as the old password
+    const isSameAsOriginalPassword = await checkOriginalPassword(newPassword);
+  
+    if (isSameAsOriginalPassword) {
+      return { isValid: false, errorMessage: "New password must be different from the old one" };
+    } return { isValid: true, errorMessage: "" };
+  }catch(error) {
+    console.error('Error fetching setup:', error);
+  }
+}
+
+
+const handlePasswordValidation =(newPassword: string) => {
+      // Assuming `validatePassword` is an asynchronous function, await it
+      const result = validatePassword(newPassword);
+
+      if (result) {
+        return { isValid: true, errorMessage: '' };
+      } else {
+        return { isValid: false, errorMessage: 'Password must contain at least one upper, lower, and numeric character, and must be over 6 letters long.' };
+      }
+};
+
 
 
   const handleUpdateSettings = (
@@ -140,7 +185,7 @@ const SettingsDisplay = ({
               settingsProp={""}
               validateInputPromise={handleUserNameChange}
               tooltipText={
-                "This must be 4 numbers between 0 and 255 seperated by 3 dots, eg 1.123.234.0"
+                "This can be anything as long as it is not already in use, changing your name makes your previous name available "
               }
               isNumber={false}
             />
@@ -151,11 +196,26 @@ const SettingsDisplay = ({
               targetSetting={"Change Password"}
               hasDivider={true}
               settingsProp={""}
-              validateInputPromise={validateIPWithMessage}
+              validatePassword={handlePasswordValidation}
               tooltipText={
-                "This must be 4 numbers between 0 and 255 seperated by 3 dots, eg 1.123.234.0"
+                "This must be new, over 6 characters long and contain at least a upper,lower and numeric character"
               }
               isNumber={false}
+              checkPasswordIsNew={checkPasswordIsNew}
+            />
+          </Grid>
+          <Grid item xs={12}>
+          <SettingsTextDisplay
+          
+              targetSetting={"Change Email"}
+              hasDivider={true}
+              settingsProp={""}
+              validateEmail={handleEmailValidation}
+              tooltipText={
+                "This must contain two chars seperated by an @ symbol"
+              }
+              isNumber={false}
+              checkPasswordIsNew={checkPasswordIsNew}
             />
           </Grid>
         </Grid>

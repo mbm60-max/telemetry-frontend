@@ -1,5 +1,5 @@
 import { Button, Divider, Grid, styled, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SettingsObject, {
   AlertSettings,
   AppearanceSettings,
@@ -12,9 +12,10 @@ import SettingsToggleDisplay from "./settingsToggleDisplay";
 import axios, { AxiosResponse } from "axios";
 import { AuthContext } from "../authProvider";
 import validatePassword from "../../utils/validatePassword";
-import EmailSender from "../emailSend";
 import handleValidateEmail from "../../utils/emailSender";
 import handleVerifyEmail from "../../utils/emailSender";
+import LockedButton from "./lockedButton";
+import SeriousActionButton from "./actionButton";
 interface SettingsDisplayProps {
   field: string;
   userSettings: SettingsObject;
@@ -33,7 +34,7 @@ const SettingsDisplay = ({
   setDefaults,
 }: SettingsDisplayProps) => {
   const { userName } = useContext(AuthContext);
-  
+  const [pageLock,setPageLock]=useState(true);
   const handleUserNameChange = async ( username:string) => {
     try {
        //Send the data to the server
@@ -181,6 +182,18 @@ const handlePasswordValidation =(newPassword: string) => {
     return { isValid: true, errorMessage: "" };   
   }
 
+  const handleSetLock=(setValue:boolean)=>{
+    setPageLock(setValue);
+  }
+  const relockAccountPage=()=>{
+    handleSetLock(true);
+  }
+
+  useEffect(() => {
+    if (field !== 'Account') {
+      relockAccountPage();
+    }
+  }, [field]);
 
   return (
     <div
@@ -191,18 +204,8 @@ const handlePasswordValidation =(newPassword: string) => {
         alignItems: "center",
       }}
     >
-      {field == "Account" && (
-        <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Change Username
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Change Password
-            </Button>
-          </Grid>
+      {field == "Account" && (<>
+      {pageLock ?<LockedButton targetSetting={"Password"} hasDivider={true} tooltipText={"Enter your password to view this page"} setLock={handleSetLock} username={userName}></LockedButton> : <Grid container spacing={2} alignItems="center">
           <Grid item xs={12}>
             <Button variant="contained" disabled>
               Delete Account
@@ -212,6 +215,12 @@ const handlePasswordValidation =(newPassword: string) => {
             <Button variant="contained" disabled>
               Reset Account Data
             </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <SeriousActionButton targetSetting={"Delete Account"} hasDivider={true} tooltipText={""} username={""} warningMessage={"Deleting you account will remove all personal data associated with your username. Your username will become available for others to use. This action cannot be undone. All data will be lost."} action={"ACCOUNT DELETION"}/>
+          </Grid>
+          <Grid item xs={12}>
+            <SeriousActionButton targetSetting={"Reset Account Data"} hasDivider={true} tooltipText={""} username={""} warningMessage={"Resetting you account will maintain your user status, but will remove any setups,lap data, settings or other personal information, you will maintain access to the account"} action={"ACCOUNT DATA WIPE"}/>
           </Grid>
           <Grid item xs={12}>
           <SettingsTextDisplay
@@ -254,8 +263,8 @@ const handlePasswordValidation =(newPassword: string) => {
               checkEmailIsNew={checkEmailIsNew}
             />
           </Grid>
-          <EmailSender/>
-        </Grid>
+        </Grid>}
+        </>
       )}
       {field == "Data" && (
         <Grid container spacing={2} alignItems="center">

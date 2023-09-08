@@ -5,7 +5,7 @@ const MONGODB_URI = 'mongodb+srv://MaxByng-Maddick:Kismetuni66@cluster0.a31ajbo.
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
-      const { newPassword,userName} = req.body;
+      const { newValue,userName,target} = req.body;
       try {
         // Connect to the MongoDB cluster
         const client = await MongoClient.connect(MONGODB_URI, {
@@ -28,9 +28,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           } else {
             // If the document exists, update it by replacing the username field with the newUsername variable,
             // leaving everything else the same
+            const updateQuery: Record<string, any> = {}; // Use type assertion here
+            updateQuery[target] = newValue;
             await SettingsCollection.updateOne(
               { username: userName },
-              { $set: { password: newPassword } }
+              { $set: updateQuery }
             );
           }
         }

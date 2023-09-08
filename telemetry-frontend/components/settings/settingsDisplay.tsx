@@ -13,6 +13,8 @@ import axios, { AxiosResponse } from "axios";
 import { AuthContext } from "../authProvider";
 import validatePassword from "../../utils/validatePassword";
 import EmailSender from "../emailSend";
+import handleValidateEmail from "../../utils/emailSender";
+import handleVerifyEmail from "../../utils/emailSender";
 interface SettingsDisplayProps {
   field: string;
   userSettings: SettingsObject;
@@ -51,28 +53,48 @@ const SettingsDisplay = ({
   }
 
 
-const checkOriginalPassword = async (newPassword:string)=>{
+const checkOriginalData= async (newData:string,target:string)=>{
   const username=userName;
-  try {
-    const checkOriginalPasswordResponse: AxiosResponse = await axios.get('/api/checkpasswordapi', {
-      params: { username},
-    });
-    
-    console.log('Response:', checkOriginalPasswordResponse);
-    if(checkOriginalPasswordResponse.data.password==newPassword){
-      return true;
-    }else{
-      return false;
+  if(target == "password"){
+    try {
+      const checkOriginalDataResponse: AxiosResponse = await axios.get('/api/checkpasswordapi', {
+        params: { username},
+      });
+      
+      console.log('Response:', checkOriginalDataResponse);
+      if(checkOriginalDataResponse.data.password==newData){
+        return true;
+      }else{
+        return false;
+      }
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    
-  } catch (error) {
-    console.error('Error fetching setup:', error);
+  }else if(target == "email"){
+    try {
+      const checkOriginalDataResponse: AxiosResponse = await axios.get('/api/checkemailisnewapi', {
+        params: { username},
+      });
+      
+      console.log('Response:', checkOriginalDataResponse);
+      if(checkOriginalDataResponse.data.email==newData){
+        return true;
+      }else{
+        return false;
+      }
+      
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
+  
 }
+
 const checkPasswordIsNew= async (newPassword:string)=>{
   try {
     // Check if the new password is the same as the old password
-    const isSameAsOriginalPassword = await checkOriginalPassword(newPassword);
+    const isSameAsOriginalPassword = await checkOriginalData(newPassword,"password");
   
     if (isSameAsOriginalPassword) {
       return { isValid: false, errorMessage: "New password must be different from the old one" };
@@ -81,10 +103,21 @@ const checkPasswordIsNew= async (newPassword:string)=>{
     console.error('Error fetching setup:', error);
   }
 }
+const checkEmailIsNew= async (newEmail:string)=>{
+  try {
+    // Check if the new password is the same as the old password
+    const isSameAsOriginalEmail = await checkOriginalData(newEmail,"email");
+  
+    if (isSameAsOriginalEmail) {
+      return { isValid: false, errorMessage: "New email must be different from the old one" };
+    } return { isValid: true, errorMessage: "" };
+  }catch(error) {
+    console.error('Error fetching setup:', error);
+  }
+}
 
 
 const handlePasswordValidation =(newPassword: string) => {
-      // Assuming `validatePassword` is an asynchronous function, await it
       const result = validatePassword(newPassword);
 
       if (result) {
@@ -93,6 +126,8 @@ const handlePasswordValidation =(newPassword: string) => {
         return { isValid: false, errorMessage: 'Password must contain at least one upper, lower, and numeric character, and must be over 6 letters long.' };
       }
 };
+
+
 
 
 
@@ -180,7 +215,7 @@ const handlePasswordValidation =(newPassword: string) => {
           </Grid>
           <Grid item xs={12}>
           <SettingsTextDisplay
-              currentValue={userSettings.defaults.defualtIPAddress}
+              currentValue={userName}
               targetSetting={"Change Username"}
               hasDivider={true}
               settingsProp={""}
@@ -203,6 +238,20 @@ const handlePasswordValidation =(newPassword: string) => {
               }
               isNumber={false}
               checkPasswordIsNew={checkPasswordIsNew}
+            />
+          </Grid>
+          <Grid item xs={12}>
+          <SettingsTextDisplay
+          
+              targetSetting={"Change Email"}
+              hasDivider={true}
+              settingsProp={""}
+              verifyEmail={handleVerifyEmail}
+              tooltipText={
+                "This must be a valid email address, you will need to verify this using a link to apply the change."
+              }
+              isNumber={false}
+              checkEmailIsNew={checkEmailIsNew}
             />
           </Grid>
           <EmailSender/>

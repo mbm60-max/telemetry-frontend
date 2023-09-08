@@ -19,6 +19,7 @@ import { roundTo3DP } from "../../utils/roudning";
 import { AuthContext } from "../authProvider";
 import validatePassword from "../../utils/validatePassword";
 import axios, { AxiosResponse } from "axios";
+import handleVerifyEmail from "../../utils/emailSender";
 
 interface SettingsTextDisplayProps {
   currentValue?: string | number;
@@ -36,6 +37,8 @@ interface SettingsTextDisplayProps {
   validateInputPromise?: (username: string) => Promise<{ isValid: boolean; errorMessage: string;}| undefined>
   validatePassword?:(newPassword: string) => { isValid: boolean; errorMessage: string;}
   checkPasswordIsNew?:(password: string) => Promise<{ isValid: boolean; errorMessage: string;}| undefined>
+  verifyEmail?: (targetEmail: string, subject: string, message: string, userName: string) => void;
+  checkEmailIsNew?:(email: string) => Promise<{ isValid: boolean; errorMessage: string;}| undefined>
 }
 const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
@@ -58,11 +61,14 @@ const SettingsTextDisplay = ({
   modifier,
   validateInputPromise,
   validatePassword,
-  checkPasswordIsNew
+  checkPasswordIsNew,
+  verifyEmail,
+  checkEmailIsNew,
 }: SettingsTextDisplayProps) => {
     const [inputValue,setInputValue]=useState<string|number>();
     const [errorValue,setErrorValue]=useState("");
     const [canSubmit,setCanSubmit]=useState(false);
+
   const tooltipInfo = (
     <>
       <em>
@@ -73,8 +79,10 @@ const SettingsTextDisplay = ({
 
   const { userName } = useContext(AuthContext);
   const handlePasswordUpdate = async (newPassword:string,userName:string)=>{
+    const newValue=newPassword;
+    const target="password";
     try {
-      await axios.post("/api/changepasswordapi", {newPassword,userName });
+      await axios.post("/api/changeuserdataapi", {newValue,userName,target});
    }
    catch (error) {
      console.error("Error checking for user:", error);
@@ -112,6 +120,18 @@ const SettingsTextDisplay = ({
         }setErrorValue("New password cannot be the same as old password")
         return false;
       }
+    }else if(verifyEmail && checkEmailIsNew){
+      if(typeof inputValue === "string"){
+        const emailCanSubmit = await checkEmailIsNew(inputValue);
+        if(emailCanSubmit?.isValid==true){
+          const subject="Email Verification Request"
+          const verificationMessage=`Dear ${userName}, You have either decided to alter your email or verify your original email. If you took this action please proceed with the link at the bottom of this email. If this was not you please contact us using suport-gtTeam@gmail.com `
+          handleVerifyEmail(inputValue,subject,verificationMessage,userName);
+          return true;
+        }setErrorValue("New email cannot be the same as old email")
+        return false;
+      
+    }
     }
   }
 
@@ -195,6 +215,9 @@ const SettingsTextDisplay = ({
         setInputValue(event.target.value);
         setCanSubmit(false);
       }
+    }else if(verifyEmail && typeof event.target.value === "string"){
+      setCanSubmit(true);
+      setInputValue(event.target.value);
     }
   }
 

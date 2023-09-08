@@ -27,22 +27,22 @@ export const handleSendEmail = async (targetEmail:string,subject:string,message:
   };
 
 const handleVerifyEmail = (targetEmail:string,subject:string,message:string,userName:string)=>{
-    const link = handleToken(userName);
+    const link = handleToken(userName,targetEmail);
     handleSendEmail(targetEmail,subject,message+""+link);
   }
 
 
-    export const handleToken=(userName:string)=>{
+    export const handleToken=(userName:string,targetEmail:string)=>{
     const generatedToken = generateToken(10);
     //random generation
     handleTokenUpdate(generatedToken,userName);
-    const queryParams = `Token=${generatedToken}`;
-    return `/?${queryParams}`;
+    const queryParams = `Token=${generatedToken}&username=${userName}&email=${targetEmail}`;
+    return `localhost:3000/verify?${queryParams}`;
     }
 
   export const generateToken=(length:number)=>{
     const charset =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let token = "";
 
   for (let i = 0; i < length; i++) {

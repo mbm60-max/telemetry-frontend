@@ -57,12 +57,12 @@ const BlackBox = styled(Box)(({ theme }) => ({
   paddingBottom:15,
 }));
 
-interface ReviewWrapperProps {
+interface ReviewViewProps {
   viewNumber:string;
 }
 
 
-export default function ReviewWrapper({viewNumber}:ReviewWrapperProps) {
+export default function ReviewView({viewNumber}:ReviewViewProps) {
   const [controllerOpen, setControllerOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -352,7 +352,7 @@ export default function ReviewWrapper({viewNumber}:ReviewWrapperProps) {
       <Grid item xs={12}>
 
         <Item>
-          {!controllerOpen && <Button onClick={handleOpen}> {viewNumber} Edit Graph Settings  <TuneIcon/><InfoToolTip name={"Review Charts"} info={tooltipInfo}/></Button> }
+          {!controllerOpen && <Button onClick={handleOpen}> {viewNumber} Edit Graph Settings  <TuneIcon/><InfoToolTip name={"Review Charts"} info={tooltipInfo} iconColor={''}/></Button> }
           
           <Modal
   open={open}
@@ -365,7 +365,7 @@ export default function ReviewWrapper({viewNumber}:ReviewWrapperProps) {
       <div style={{ display: 'grid', gridGap: '16px', gridTemplateColumns: '1fr' }}>
         <Grid container spacing={2}>
       <Grid item xs>
-        <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>{viewNumber} Controller </Typography></Grid><InfoToolTip name={"Review Chart Controller"} info={tooltipInfoController}/></Grid>
+        <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>{viewNumber} Controller </Typography></Grid><InfoToolTip name={"Review Chart Controller"} info={tooltipInfoController} iconColor={''}/></Grid>
         <Grid container spacing={2}>
       <Grid item xs={6}>
         <ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"} />
@@ -373,7 +373,7 @@ export default function ReviewWrapper({viewNumber}:ReviewWrapperProps) {
           <>
            <Grid container spacing={2}>
       <Grid item xs>
-            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Lap {item}</Typography></Grid><InfoToolTip name={"Laps"} info={tooltipInfoLap}/></Grid>
+            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Lap {item}</Typography></Grid><InfoToolTip name={"Laps"} info={tooltipInfoLap} iconColor={''}/></Grid>
             <ReviewLapSelection onSelectLap={handleLapsSelection} lapNumber={item.toString()} availableLaps={availableLaps} />
             {selectedLaps[`lap${item}`]}{selectedStreamsDataLap1[`stream1DataLap${item}`]}{selectedStreamsDataLap2[`stream2DataLap${item}`]}
           </>
@@ -385,7 +385,7 @@ export default function ReviewWrapper({viewNumber}:ReviewWrapperProps) {
           <>
            <Grid container spacing={2}>
       <Grid item xs>
-            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid><InfoToolTip name={"Streams"} info={tooltipInfoStreams}/></Grid>
+            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid><InfoToolTip name={"Streams"} info={tooltipInfoStreams} iconColor={''}/></Grid>
             <ReviewFieldSelection onSelectField={handleFieldSelection} fieldNumber={item.toString()} />
             <ReviewGrouping
               Field={selectedFields[`field${item}`]}

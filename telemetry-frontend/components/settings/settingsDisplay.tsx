@@ -263,6 +263,7 @@ const handlePasswordValidation =(newPassword: string) => {
           let collectionName = collectionNames[i];
           let databaseName = databaseNames[i];
           await axios.post("/api/deleteuserdataapi", {username, collectionName, databaseName });
+          router.push("/login");
        }
        catch (error) {
          console.error("Error checking for user:", error);

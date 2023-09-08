@@ -48,16 +48,18 @@ const Item = styled(Paper)(({ theme }) => ({
   }));
 
 interface SeriousActionModalProps {
- action:string
+ action:string;
+ triggerActionMethod: () => void;
 }
 
-export default function SeriousActionModal({action}: SeriousActionModalProps) {
+export default function SeriousActionModal({action,triggerActionMethod}: SeriousActionModalProps) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleConfirm = () => {
+    triggerActionMethod();
     handleClose();
   };
 
@@ -84,7 +86,7 @@ export default function SeriousActionModal({action}: SeriousActionModalProps) {
             <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}></Grid><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
 This action cannot be directly undone
             </Typography></Grid>
-            <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleClose} >Confirm {action}</Box></Button></Grid>
+            <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleConfirm} >Confirm {action}</Box></Button></Grid>
             <Grid item xs={12}><Box sx={{height:'25px'}}></Box></Grid>
             </Grid>
 </Box>

@@ -5,7 +5,7 @@ const MONGODB_URI = 'mongodb+srv://MaxByng-Maddick:Kismetuni66@cluster0.a31ajbo.
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
-    const { username,email, password } = req.body;
+    const { username,email, password, token, emailIsVerified } = req.body;
 
     try {
       // Connect to the MongoDB cluster
@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const db = client.db('Test');
       const collection = db.collection('Users');
       // Create a new document with the username and password
-      const document = { username,email, password };
+      const document = { username,email, password,token,emailIsVerified };
       await collection.insertOne(document);
 
       // Close the database connection

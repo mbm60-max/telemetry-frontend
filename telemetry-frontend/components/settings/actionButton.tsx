@@ -17,6 +17,7 @@ import SeriousActionAddModal from "./seriousChangeWarningModal";
     username:string;
     warningMessage:string;
     action:string;
+    actionMethod:(username: string) => Promise<void>;
   }
   const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
       borderWidth: "1px", // Adjust the thickness of the line here
@@ -31,8 +32,12 @@ import SeriousActionAddModal from "./seriousChangeWarningModal";
     username,
     warningMessage,
     action,
+    actionMethod,
   }: SeriousActionButtonProps) => {
 
+    const triggerActionMethod=()=>{
+        actionMethod(username);
+    }
     const tooltipInfo = (
         <>
           <em>
@@ -54,7 +59,7 @@ import SeriousActionAddModal from "./seriousChangeWarningModal";
             </Typography>
           </Grid>
           <Grid item xs={12}>
-          <SeriousActionModal action={action}/>
+          <SeriousActionModal action={action} triggerActionMethod={triggerActionMethod} />
           </Grid>
           {hasDivider && <Grid item xs={12}>
            <StyledHorizontalDivider/>

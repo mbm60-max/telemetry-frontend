@@ -16,6 +16,7 @@ import handleValidateEmail from "../../utils/emailSender";
 import handleVerifyEmail from "../../utils/emailSender";
 import LockedButton from "./lockedButton";
 import SeriousActionButton from "./actionButton";
+import router from "next/router";
 interface SettingsDisplayProps {
   field: string;
   userSettings: SettingsObject;
@@ -189,6 +190,87 @@ const handlePasswordValidation =(newPassword: string) => {
     handleSetLock(true);
   }
 
+  const deleteAccount = async ( username:string) =>{
+    console.log("called")
+    const collectionNames:string[]=["Settings","setups","Users",username];
+    const databaseNames:string[]=["Data","Data","Test","UserSessions"];
+    if(collectionNames.length==databaseNames.length){
+      for(let i=0;i<collectionNames.length;i++){
+        try {
+          let collectionName = collectionNames[i];
+          let databaseName = databaseNames[i];
+          await axios.post("/api/deleteuserdataapi", {username, collectionName, databaseName });
+          router.push("/signup");
+       }
+       catch (error) {
+         console.error("Error checking for user:", error);
+       }
+      }
+    }
+  }
+
+  const resetAccount = async (username:string) =>{
+ 
+    const settingsname = "Default Settings"
+    const settingsObject: SettingsObject = {
+      data: {
+          allowML: false,
+          reviewLapLimit: 10,
+          optInToDataPushing:false,
+          type: "DataSettings"
+      },
+      appearance: {
+          lightModeEnabled:true,
+          language:"en",
+          type: "AppearanceSettings"
+      },
+      alerts: {
+
+          alertDefaultWarningsNames:[["Front Left Temp","Front Right Temp","Rear Left Temp","Rear Right Temp"],
+                                     ['"Oil Temperature"','RPM','Turbo Boost Pressure','Oil Pressure','Fuel Level','Water Temperature'],
+                                     ['RPM','RPM To Clutch'],
+                                     ['Front Left Suspension Height','Front Right Suspension Height','Rear Left Suspension Height','Rear Right Suspension Height','Front Left RPS','Front Right RPS','Rear Left RPS','Rear Right RPS']],
+          alertDefaultWarningsUpperLimits:[[ 106,  105,  105,  105 ],
+                                           [ 0,  0,  0,  0,  0,  0 ],
+                                           [ 3000, 3000 ],
+                                           [ 100,  100,  100,  100,10,10,10,10]],
+          alertDefaultWarningsLowerLimits:[[ 5,  0,  0,  0 ],
+                                           [ 0,  0,  0,  0,  0,  0],
+                                           [ 0, 0 ],
+                                           [ 0,  0,  0,  0,  0,  0,  0 , 0 ]],
+          alertDefaultWarningsUnits:[[ '°C',  '°C',  '°C',  '°C', ],
+                                           [ '°C', 'RPM',  'Bar',  'Bar',  '%',  '°C' ],
+                                           [ 'RPM', 'RPM' ],
+                                           [ 'mm',  'mm',  'mm',  'mm',  'RPS',  'RPS',  'RPS' , 'RPS']],
+          alertWarningInterval:5000,
+          type: "AlertSettings"
+      },
+      defaults: {
+          defaultUnitsMetric:true,
+          defualtIPAddress:"0.0.0.0",
+          type: "DefaultSettings"
+      },
+    
+    };
+    //put settings detials back to default
+    await axios.post("/api/editusersettingsapi", { username,settingsname , settingsObject });
+
+    const collectionNames:string[]=["setups",username];
+    const databaseNames:string[]=["Data","UserSessions"];
+    if(collectionNames.length==databaseNames.length){
+      for(let i=0;i<collectionNames.length;i++){
+        try {
+          let collectionName = collectionNames[i];
+          let databaseName = databaseNames[i];
+          await axios.post("/api/deleteuserdataapi", {username, collectionName, databaseName });
+       }
+       catch (error) {
+         console.error("Error checking for user:", error);
+       }
+      }
+    }
+  }
+
   useEffect(() => {
     if (field !== 'Account') {
       relockAccountPage();
@@ -217,10 +299,10 @@ const handlePasswordValidation =(newPassword: string) => {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <SeriousActionButton targetSetting={"Delete Account"} hasDivider={true} tooltipText={""} username={""} warningMessage={"Deleting you account will remove all personal data associated with your username. Your username will become available for others to use. This action cannot be undone. All data will be lost."} action={"ACCOUNT DELETION"}/>
+            <SeriousActionButton targetSetting={"Delete Account"} hasDivider={true} tooltipText={""} username={userName} warningMessage={"Deleting you account will remove all personal data associated with your username. Your username will become available for others to use. This action cannot be undone. All data will be lost."} action={"ACCOUNT DELETION"} actionMethod={deleteAccount}/>
           </Grid>
           <Grid item xs={12}>
-            <SeriousActionButton targetSetting={"Reset Account Data"} hasDivider={true} tooltipText={""} username={""} warningMessage={"Resetting you account will maintain your user status, but will remove any setups,lap data, settings or other personal information, you will maintain access to the account"} action={"ACCOUNT DATA WIPE"}/>
+            <SeriousActionButton targetSetting={"Reset Account Data"} hasDivider={true} tooltipText={""} username={userName} warningMessage={"Resetting you account will maintain your user status, but will remove any setups,lap data, settings or other personal information, you will maintain access to the account"} action={"ACCOUNT DATA WIPE"} actionMethod={resetAccount}/>
           </Grid>
           <Grid item xs={12}>
           <SettingsTextDisplay

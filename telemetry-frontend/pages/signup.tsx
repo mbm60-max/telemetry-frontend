@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import SettingsObject from "../interfaces/defaultSettingsInterface";
 import validatePassword from "../utils/validatePassword";
+import { generateToken } from "../utils/emailSender";
 
 const SignUpForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -77,7 +78,9 @@ const SignUpForm: React.FC = () => {
       if(Failed==true){
         return
       }
-      await axios.post("/api/registerapi", { username, email, password });
+      const token = generateToken(10);
+      const emailIsVerified = false;
+      await axios.post("/api/registerapi", { username, email, password, token, emailIsVerified });
       const settingsname = "Default Settings"
       const settingsObject: SettingsObject = {
         data: {

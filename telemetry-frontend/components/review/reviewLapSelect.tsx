@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridRowId, GridToolbar } from '@mui/x-data-grid';
 import { useDemoData } from '@mui/x-data-grid-generator';
 import { carData } from '../../data/gtCarList';
-import '../sessionStartupComponents/setupComponents/carSelectionTable/carSelectionTable.css'
+import './reviewLapTable.css'
 import { useState } from 'react';
 
 interface LapSelectionTableProps{
@@ -58,12 +58,13 @@ const [selectedRowId,setSelectedRowId]=useState<GridRowId | null>(null);
 
 
   return (
-    <Box className="my-grid-container"  sx={{ height: 400, width: 1,'& .custom-header': {
+    <Box className="my-grid-container"  sx={{height: 400, width: 1,'& .custom-header': {
       backgroundColor: '#FB9536',
       color:'#F6F6F6'
     },'& .MuiSvgIcon-root': {
       fill: '#F6F6F6', // Change the fill color of the icons
     }}}>
+    
       <DataGrid
         rows={rows}
         columns={columns}

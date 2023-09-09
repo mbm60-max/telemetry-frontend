@@ -8,7 +8,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Button, Modal, Typography } from '@mui/material';
 import ReviewFieldSelection from './reviewFieldSelection';
 import ReviewGrouping from './reviewGrouping';
-import ReviewStreamNumberSelection from './reviewStreamNumbeSelection';
+import ReviewStreamNumberSelection from './reviewStreamNumberSelection';
 import ReviewChart from './reviewChart';
 import axios, { AxiosResponse } from 'axios';
 import { AuthContext } from '../authProvider';
@@ -17,6 +17,8 @@ import TuneIcon from '@mui/icons-material/Tune';
 import InfoToolTip from '../helperTooltip.tsx/infoTooltip';
 import LapSelectionTable from './reviewLapSelect';
 import { GridRowId } from '@mui/x-data-grid';
+import ClearIcon from '@mui/icons-material/Clear';
+import HorizontalBanner from '../horizontalBanner/horizontalBanner';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -24,16 +26,16 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '75%',
-  height:'75%',
+  height: '75%',
   bgcolor: 'rgba(8, 13, 56, 0.5)',
   border: '2px solid white',
-  borderRadius:15,
+  borderRadius: 15,
   boxShadow: 24,
   p: 4,
   overflowY: 'auto', // Add this to enable vertical scrolling when content overflows
-      display: 'flex',
-     justifyContent:'center'  // Add this to make sure the children are wrapped and the container becomes scrollable
-       // Set the direction to 'column' to wrap the children vertically
+  display: 'flex',
+  justifyContent: 'center'  // Add this to make sure the children are wrapped and the container becomes scrollable
+  // Set the direction to 'column' to wrap the children vertically
 };
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#FB9536' : '#FB9536',
@@ -48,6 +50,13 @@ const ItemWhite = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: 'center',
   backGroundColor: theme.palette.text.primary,
+}));
+const ItemBlur= styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(100,100,0,0.3)' : 'rgba(164, 198, 252,0.5)',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  backGroundColor: theme.palette.text.primary,
+  borderRadius:50,
 }));
 const ItemCentered = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -313,16 +322,16 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
   }
 
   ///const parseLapSelectionData=(parsedObject:any)=>{
-    
-    //updateCarData();
+
+  //updateCarData();
   ///}
-  function parseBracketedString(inputString:string) {
+  function parseBracketedString(inputString: string) {
     // Remove square brackets and split by commas
     const items = inputString.slice(1, -1).split(',');
-  
+
     // Trim each item to remove extra whitespace
     const resultArray = items.map((item) => item.trim());
-  
+
     return resultArray;
   }
 
@@ -339,12 +348,12 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
           const carArray = lapsResponse.data.lapData.map((lapItem: { car: any; }) => lapItem.car);
           const bestLaptimeArray = lapsResponse.data.lapData.map((lapItem: { bestlaptime: any; }) => lapItem.bestlaptime);
           const finalLapArray = [];
-          for(let i=0; i< bestLaptimeArray.length;i++){
+          for (let i = 0; i < bestLaptimeArray.length; i++) {
             const bestLapTimes = parseBracketedString(bestLaptimeArray[i])
             const bestLapTime = bestLapTimes[0];
             finalLapArray.push(bestLapTime);
           }
-         
+
           const newData = {
             date: lapsResponse.data.lapData.map((lapItem: { date: any; }) => lapItem.date),
             laptime: finalLapArray,
@@ -352,7 +361,7 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
             car: lapsResponse.data.lapData.map((lapItem: { car: any; }) => lapItem.car),
           };
           updateLapSelectionData(newData);
-        handleLapUpdate(datesArray);
+          handleLapUpdate(datesArray);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -363,9 +372,6 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
 
   useEffect(() => {
     const fetchData = async (lapSelection: number, lapDate: string) => {
-      console.log("hit")
-      console.log(lapSelection)
-      console.log(lapDate)
       try {
         const dataResponse: AxiosResponse = await axios.get('/api/retrivereviewdataapi', {
           params: { username, lapDate },
@@ -396,10 +402,10 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
     }
   }, [selectedLaps, selectedStreams]);
 
-  const handleShow=()=>{
+  const handleShow = () => {
     setShowView(true);
   }
-  const handleHide=()=>{
+  const handleHide = () => {
     setShowView(false);
   }
 
@@ -426,13 +432,13 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
 
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}><Grid item xs={12}><Item>
-        <Grid container spacing={0}>
-        <Grid item xs={12}><Typography fontFamily={"Yapari"} fontWeight={"bold"} fontSize={35}sx={{color:"white"}}>{viewNumber} </Typography></Grid>
-          <Grid item xs={12}>
+          <Grid container spacing={0}>
+            <Grid item xs={12}><Typography fontFamily={"Yapari"} fontWeight={"bold"} fontSize={35} sx={{ color: "white" }}>{viewNumber} </Typography></Grid>
+            <Grid item xs={12}>
 
-          
-              {!controllerOpen &&        <Grid container spacing={0}><Grid item xs={2} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Button onClick={handleShow}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15}sx={{color:"white"}}>SHOW VIEW </Typography><TuneIcon /></Button></Grid><Grid item xs={2} sx={{display:'flex',justifyContent:'start',alignItems:'center'}}><Button onClick={handleHide}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15}sx={{color:"white"}}>HIDE VIEW   </Typography><TuneIcon /></Button></Grid><Grid item xs={8} sx={{display:'flex',justifyContent:'end',alignItems:'center'}}><Button onClick={handleOpen}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15}sx={{color:"white"}}> EDIT VIEW SETTINGS </Typography><TuneIcon /><InfoToolTip name={"Review Charts"} info={tooltipInfo} iconColor={''} /></Button> </Grid></Grid>}
-              
+
+              {!controllerOpen && <Grid container spacing={0}><Grid item xs={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><Button onClick={handleShow}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>SHOW VIEW </Typography><TuneIcon /></Button></Grid><Grid item xs={2} sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}><Button onClick={handleHide}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>HIDE VIEW   </Typography><TuneIcon /></Button></Grid><Grid item xs={8} sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}><Button onClick={handleOpen}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}> EDIT VIEW SETTINGS </Typography><TuneIcon /><InfoToolTip name={"Review Charts"} info={tooltipInfo} iconColor={''} /></Button> </Grid></Grid>}
+
               <Modal
                 open={open}
                 onClose={handleClose}
@@ -440,59 +446,78 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <Grid container spacing={4}>
-                        <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
-                          <Typography sx={{ fontSize: 34, color:'white'}} fontWeight={"bold"} fontFamily={"Yapari"} >{viewNumber} Controller </Typography>
-                          </Grid>
-                        
-                      
-                        <Grid item xs={12}>
-                        
-                          <ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"} />
-                          <Box sx={{maxHeight:'150px', overflow:"scroll"}}>
-                          {selectedNumberLaps.map((item) => (
-                            <>
-                              <Grid container spacing={2}>
-                                <Grid item xs>
-                                  <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Lap {item}</Typography></Grid><InfoToolTip name={"Laps"} info={tooltipInfoLap} iconColor={''} /></Grid>
+                <Box sx={{ width: '80vw', height: '100%'}}>
+    <Button className="parallelogram-buttonBlueXS" onClick={handleClose} sx={{postion:'absolute',top:0,left:'85%'}}>Clear<ClearIcon/></Button>
+   <Grid container spacing={4}><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography fontFamily={"Yapari"} fontSize={35} fontWeight={"bold"} sx={{color:'white',whiteSpace:'nowrap',overflow:'scroll'}}>{viewNumber} Controller</Typography></Grid>
+   <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
+            
+            
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{padding:0.5,width: '100%'}}>
+            <ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"} />
+    </Box></Grid>
+             <Grid item xs={12}>
+              
+             <Grid container spacing={4}>
+            
+             {selectedNumberLaps.map((item) => (
+                          <>
+                            <Grid item xs={12}> <ItemBlur>
+                            <Grid container spacing={4}>
+                            <Grid item xs={12}>
                               
-                              {selectedLaps[`lap${item}`]}{selectedStreamsDataLap1[`stream1DataLap${item}`]}{selectedStreamsDataLap2[`stream2DataLap${item}`]}
-                              <LapSelectionTable onSelectLap={handleLapsSelection}lapSelectionData={lapSelectionData} lapNumber={`${item}`}/>
-                            </>
+                                <Typography sx={{color:"white",whiteSpace:'nowrap',overflow:'scroll',ml:2}} fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={25}>Lap {item}</Typography>  </Grid>
+                             {selectedLaps[`lap${item}`]}{selectedStreamsDataLap1[`stream1DataLap${item}`]}{selectedStreamsDataLap2[`stream2DataLap${item}`]}
+                             <Grid item xs={12}><LapSelectionTable onSelectLap={handleLapsSelection} lapSelectionData={lapSelectionData} lapNumber={`${item}`} /></Grid>
+                             </Grid></ItemBlur>
+                             </Grid>
+
+                          </>
+
+                        ))}</Grid>
+             </Grid>
+             <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
+             <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{padding:0.5,width: '100%'}}>
+             <ReviewStreamNumberSelection onSelectNumber={handleNumberSelection} label={"Number Of Streams"} />
+    </Box></Grid>
+             <Grid item xs={12}>
+             <Grid container spacing={4}>
+                        {selectedNumber.map((item) => (
+                          <><Grid item xs={12}> <ItemBlur>
+                          <Grid container spacing={4}>
+                          <Grid item xs={12}>
                             
-                          ))}</Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <ReviewStreamNumberSelection onSelectNumber={handleNumberSelection} label={"Number Of Streams"} />
-                          {selectedNumber.map((item) => (
-                            <>
-                              <Grid container spacing={2}>
-                                <Grid item xs>
-                                  <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid><InfoToolTip name={"Streams"} info={tooltipInfoStreams} iconColor={''} /></Grid>
-                              <ReviewFieldSelection onSelectField={handleFieldSelection} fieldNumber={item.toString()} />
-                              <ReviewGrouping
-                                Field={selectedFields[`field${item}`]}
-                                onSelectStream={handleStreamSelection}
-                                streamNumber={item.toString()}
-                                onSelectStreamMinMax={handleMinMaxValues}
-                                onSelectStreamGraphTypes={handleGraphTypes}
-                                onSelectSpecialStream={handleSpecialStream}
-                              />
-                              {selectedFields[`field${item}`]}{selectedStreams[`stream${item}`]}
-                            </>
-                          ))}</Grid>
-                          </Grid>
-                      </Box>
+                              <Typography sx={{color:"white",whiteSpace:'nowrap',overflow:'scroll',ml:2}} fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={25}>Stream {item}</Typography>  </Grid>
+                              <Grid item xs={12}> {selectedFields[`field${item}`]}{selectedStreams[`stream${item}`]}</Grid>
+                           <Grid item xs={12}><ReviewFieldSelection onSelectField={handleFieldSelection} fieldNumber={item.toString()} /></Grid>
+                           <Grid item xs={12}><ReviewGrouping
+                              Field={selectedFields[`field${item}`]}
+                              onSelectStream={handleStreamSelection}
+                              streamNumber={item.toString()}
+                              onSelectStreamMinMax={handleMinMaxValues}
+                              onSelectStreamGraphTypes={handleGraphTypes}
+                              onSelectSpecialStream={handleSpecialStream}
+                            /></Grid>
+                           </Grid></ItemBlur>
+                           </Grid>
+                          </>
+                        ))}</Grid></Grid>
+             <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleClose} >Exit</Box></Button></Grid>
+             <Grid item xs={12}><Box sx={{height:'25px'}}></Box></Grid>
+             </Grid>
+ </Box>
+
+
+
+                  
                 </Box>
               </Modal>
-              </Grid>
-              </Grid></Item>
-              </Grid>
-              {showView &&   <Grid item xs={12}>
-                <ItemWhite>
+            </Grid>
+          </Grid></Item>
+        </Grid>
+          {showView && <Grid item xs={12}>
+            <ItemWhite>
               <ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])} numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`], selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={validateData(lapDistanceXAxis)} XAxisDataLap2={validateData(lapDistanceXAxisLap2)} height={350} />
-              </ItemWhite>
+            </ItemWhite>
           </Grid>}
         </Grid>
       </Box>

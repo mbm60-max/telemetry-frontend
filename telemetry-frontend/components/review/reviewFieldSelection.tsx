@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { ListSubheader } from '@mui/material';
-
+import '../sessionStartupComponents/setupComponents/setupStyles.css'
 interface ReviewFieldSelectionProps{
   onSelectField: (field: string, fieldNumber:string) => void;
   fieldNumber:string;
@@ -19,7 +19,7 @@ export default function ReviewFieldSelection({onSelectField,fieldNumber}:ReviewF
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 120 }} className={"textBox"}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Field</InputLabel>
         <Select

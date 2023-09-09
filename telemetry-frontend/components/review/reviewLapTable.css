@@ -1,0 +1,19 @@
+.my-grid-container .MuiDataGrid-row.Mui-selected {
+    background-color: blue !important; /* Your selected row background color */
+    color: #ffffff !important; /* Your selected row text color (e.g., white) */
+  }
+  .my-grid-container {
+    background-color: rgba(132, 126, 126, 0.5); /* Set the desired background color */
+    border-radius: 50px;
+    color: #ffffff !important;
+  }
+  .my-grid-container .css-1lymaxv-MuiDataGrid-root {
+    color: #ffffff !important;
+    border-radius: 50px !important; /* Your selected row text color (e.g., white) */
+  }
+  .my-grid-container .css-16c50h-MuiInputBase-root-MuiTablePagination-select{
+    color: #ffffff !important;
+  }
+  .my-grid-container .css-rtrcn9-MuiTablePagination-root{
+    color: #ffffff !important;
+  }

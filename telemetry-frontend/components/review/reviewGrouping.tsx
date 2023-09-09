@@ -4,7 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import '../sessionStartupComponents/setupComponents/setupStyles.css'
 interface ReviewGroupingProps{
     Field:string| null;
     onSelectStream: (stream: string, streamNumber:string) => void;
@@ -83,7 +83,7 @@ if (Field === "General") {
     setSelectedLabel(newLabel);
   }
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box sx={{ minWidth: 120 }} className={"textBox"}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">{selectedLabel}</InputLabel>
         <Select

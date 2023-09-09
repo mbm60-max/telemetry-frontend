@@ -68,9 +68,7 @@ const ReviewWrapper = ({}: ReviewWrapperProps) => {
         padding:1
       }}>
         <Grid container spacing={8}>
-        <Grid item xs={12}>new lqp selection method</Grid>
         <Grid item xs={12}>rework of states</Grid>
-        <Grid item xs={12}>model spacing</Grid>
           <Grid item xs={12}sm={12} >
          <ReviewView viewNumber={'Primary View'}/>
         </Grid>

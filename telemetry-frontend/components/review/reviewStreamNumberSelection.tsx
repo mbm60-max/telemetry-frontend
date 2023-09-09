@@ -16,7 +16,7 @@ export default function ReviewStreamNumberSelection({label,onSelectNumber}:Revie
         onSelectNumber(Number(event.target.value));
       };
   return (
-    <FormControl sx={{backgroundColor:'#FB9536',width:"25vw",borderRadius:10, display:'flex',justifyContent:'left',paddingLeft:2,paddingRight:2}}>
+    <FormControl sx={{backgroundColor:'#FB9536',width:"51%",borderRadius:10, display:'flex',justifyContent:'left',paddingLeft:2,paddingRight:2}}>
       <FormLabel sx={{ml:2}}id="demo-radio-buttons-group-label"><Typography sx={{color:"white",whiteSpace:'nowrap',overflow:'scroll'}} fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={25}>{label}</Typography></FormLabel>
       <RadioGroup
       row

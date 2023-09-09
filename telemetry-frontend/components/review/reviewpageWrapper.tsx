@@ -7,10 +7,8 @@ import SettingsObject from "../../interfaces/defaultSettingsInterface";
 import { SettingsContext } from "../authProviderSettings";
 import Homepage from "../background/background";
 import NavBar from "../navbar/navbar";
-import ReviewView from "../review/reviewWrapper";
-import SettingsDisplay from "./settingsDisplay";
-import SettingsController from "./settingsFieldSelection";
-import SettingsTitle from "./settingsTitle";
+import ReviewView from "./reviewWrapper";
+
 interface ReviewWrapperProps {}
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -69,16 +67,14 @@ const ReviewWrapper = ({}: ReviewWrapperProps) => {
         boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",
         padding:1
       }}>
-        <Grid container spacing={0}>
-        <Grid item xs={12}>Hide views Show views</Grid>
-        <Grid item xs={12}>label for each</Grid>
+        <Grid container spacing={8}>
         <Grid item xs={12}>new lqp selection method</Grid>
         <Grid item xs={12}>rework of states</Grid>
         <Grid item xs={12}>model spacing</Grid>
-          <Grid item xs={12}sm={6} >
+          <Grid item xs={12}sm={12} >
          <ReviewView viewNumber={'Primary View'}/>
         </Grid>
-        <Grid item xs={12}sm={6} >
+        <Grid item xs={12}sm={12} >
             <ReviewView viewNumber={'Secondary View'}/>
         </Grid></Grid>
         </Box></Box>

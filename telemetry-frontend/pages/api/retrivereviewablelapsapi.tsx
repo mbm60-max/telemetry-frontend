@@ -23,14 +23,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const collection = db.collection(username);
         if (collection) {
           // Collection with the matching username found
-          const lapDataResult = await collection.find({}, { projection: { DateReceived: 1 } }).toArray();
-            console.log(lapDataResult);
+          const lapDataResult = await collection.find({}, { projection: { DateReceived: 1, Track: 1, Car: 1, BestLapTime: 1 } }).toArray();
+          console.log(lapDataResult);
+
           if (lapDataResult.length > 0) {
             // Documents found
-            const lapDates = lapDataResult.map((doc) => doc.DateReceived);
-            console.log(lapDates);
-            res.status(200).json({ message: 'Success', lapDates });
-          } else {
+            const lapData = lapDataResult.map((doc) => ({
+              id: lapDataResult.indexOf(doc) + 1,
+              date: doc.DateReceived,
+              bestlaptime: doc.BestLapTime,
+              track: doc.Track,
+              car: doc.Car,
+            }));
+
+            console.log(lapData);
+            res.status(200).json({ message: 'Success', lapData });
+          }else {
             // No documents found
             console.error('No user lap data found');
             res.status(200).json({ message: 'No user lap data found' });

@@ -15,27 +15,34 @@ import { AuthContext } from '../authProvider';
 import ReviewLapSelection from './reviewLapSelection';
 import TuneIcon from '@mui/icons-material/Tune';
 import InfoToolTip from '../helperTooltip.tsx/infoTooltip';
-
+import LapSelectionTable from './reviewLapSelect';
+import { GridRowId } from '@mui/x-data-grid';
 
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '50%',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  width: '75%',
+  height:'75%',
+  bgcolor: 'rgba(8, 13, 56, 0.5)',
+  border: '2px solid white',
+  borderRadius:15,
   boxShadow: 24,
   p: 4,
+  overflowY: 'auto', // Add this to enable vertical scrolling when content overflows
+      display: 'flex',
+     justifyContent:'center'  // Add this to make sure the children are wrapped and the container becomes scrollable
+       // Set the direction to 'column' to wrap the children vertically
 };
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === 'dark' ? '#FB9536' : '#FB9536',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
-const ItemBlack = styled(Paper)(({ theme }) => ({
+const ItemWhite = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -48,29 +55,30 @@ const ItemCentered = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
-  display:'flex',
-  justifyContent:'center',
-  alignItems:'center'
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
 }));
 const BlackBox = styled(Box)(({ theme }) => ({
-  paddingTop:15,
-  paddingBottom:15,
+  paddingTop: 15,
+  paddingBottom: 15,
 }));
 
 interface ReviewViewProps {
-  viewNumber:string;
+  viewNumber: string;
 }
 
 
-export default function ReviewView({viewNumber}:ReviewViewProps) {
+export default function ReviewView({ viewNumber }: ReviewViewProps) {
   const [controllerOpen, setControllerOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
+  const [showView, setShowView] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [state, setState] = React.useState({
     left: false,
   });
-  
+
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event.type === 'keydown' &&
@@ -81,6 +89,27 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
     }
 
     setControllerOpen(open);
+  };
+  const [lapSelectionData, setLapSelectionData] = useState<{
+    date: string[];
+    laptime: string[];
+    track: string[];
+    car: string[];
+  }>({
+    date: [],
+    laptime: [],
+    track: [],
+    car: [],
+  });
+
+  // Function to update carData based on a passed-in dictionary
+  const updateLapSelectionData = (newData: {
+    date: string[];
+    laptime: string[];
+    track: string[];
+    car: string[];
+  }) => {
+    setLapSelectionData(newData);
   };
 
   const [selectedFields, setSelectedFields] = React.useState<{ [key: string]: string }>({
@@ -114,7 +143,7 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
   });
   const [selectedNumber, setSelectedNumber] = React.useState([1]);
   const [selectedNumberLaps, setSelectedNumberLaps] = React.useState([1]);
-  const [availableLaps,setAvailableLaps]=  React.useState<string[]>(["No Laps Found"]);
+  const [availableLaps, setAvailableLaps] = React.useState<string[]>(["No Laps Found"]);
   const [minValues, setMinValues] = React.useState<{ [key: string]: any }>({
     min1: 0,
     min2: 0,
@@ -123,7 +152,7 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
     max1: 0,
     max2: 0,
   });
-  const [graphTypesArray, setGraphTypesArray]= React.useState(["straight"]);
+  const [graphTypesArray, setGraphTypesArray] = React.useState(["straight"]);
   const [lapDistanceXAxis, setLapDistanceXAxis] = React.useState([0]);
   const [lapDistanceXAxisLap2, setLapDistanceXAxisLap2] = React.useState([0]);
   const handleFieldSelection = (field: string, fieldNumber: string) => {
@@ -132,7 +161,7 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
       [`field${fieldNumber}`]: field,
     }));
   };
-  
+
   const handleLapsSelection = (laps: string, lapNumber: string) => {
     setSelectedLaps((prevLaps) => ({
       ...prevLaps,
@@ -145,82 +174,87 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
       [`stream${streamNumber}`]: stream,
     }));
   };
-  
+
   const handleNumberSelection = (numberOfStreams: number) => {
-    if(numberOfStreams == 1){
+    if (numberOfStreams == 1) {
       // reset stream 2lap 1 and stream 2 lap 2
       setSelectedStreamsDataLap1((prevStreams) => ({
         ...prevStreams,
-        [`stream${2}DataLap1`]: '',}))
+        [`stream${2}DataLap1`]: '',
+      }))
       setSelectedStreamsDataLap2((prevStreams) => ({
         ...prevStreams,
-        [`stream${2}DataLap2`]: '',}))
-        setSelectedStreams((prevStreams) => ({
-          ...prevStreams,
-          [`stream${2}`]: '',
-        }));
+        [`stream${2}DataLap2`]: '',
+      }))
+      setSelectedStreams((prevStreams) => ({
+        ...prevStreams,
+        [`stream${2}`]: '',
+      }));
     }
     setSelectedNumber(Array.from({ length: numberOfStreams }, (_, index) => index + 1));
   };
   const handleNumberLapsSelection = (numberOfLaps: number) => {
-    if(numberOfLaps == 1){
+    if (numberOfLaps == 1) {
       // reset stream 1 lap 2 and stream 2 lap 2
       setSelectedStreamsDataLap2((prevStreams) => ({
         ...prevStreams,
-        [`stream${1}DataLap2`]: '',}))
+        [`stream${1}DataLap2`]: '',
+      }))
       setSelectedStreamsDataLap2((prevStreams) => ({
         ...prevStreams,
-        [`stream${2}DataLap2`]: '',}))
+        [`stream${2}DataLap2`]: '',
+      }))
     }
     setSelectedNumberLaps(Array.from({ length: numberOfLaps }, (_, index) => index + 1));
   };
 
-  const handleLapUpdate = (lapsArray:string[])=>{
+  const handleLapUpdate = (lapsArray: string[]) => {
     setAvailableLaps(lapsArray);
   }
- 
 
-  const handleStreamDataLap1 = (streamData:any, streamDataNumber:number,isSpecial:boolean)=>{
-    if(isSpecial){
+
+  const handleStreamDataLap1 = (streamData: any, streamDataNumber: number, isSpecial: boolean) => {
+    if (isSpecial) {
       const stringData = streamData.toString();
-      const fullString = '['+ stringData + ']'
+      const fullString = '[' + stringData + ']'
       setSelectedStreamsDataLap1((prevStreams) => ({
         ...prevStreams,
-        [`stream${streamDataNumber}DataLap1`]:  fullString,
+        [`stream${streamDataNumber}DataLap1`]: fullString,
       })
       );
     }
-    else{
+    else {
       setSelectedStreamsDataLap1((prevStreams) => ({
-      ...prevStreams,
-      [`stream${streamDataNumber}DataLap1`]: streamData,
-    })
-    );}
+        ...prevStreams,
+        [`stream${streamDataNumber}DataLap1`]: streamData,
+      })
+      );
+    }
   }
-  const handleStreamDataLap2 = (streamData:any, streamDataNumber:number,isSpecial:boolean)=>{
-    if(isSpecial){
+  const handleStreamDataLap2 = (streamData: any, streamDataNumber: number, isSpecial: boolean) => {
+    if (isSpecial) {
       const stringData = streamData.toString();
-      const fullString = '['+ stringData + ']'
+      const fullString = '[' + stringData + ']'
 
       setSelectedStreamsDataLap2((prevStreams) => ({
         ...prevStreams,
         [`stream${streamDataNumber}DataLap2`]: fullString,
       }));
-    }else{
+    } else {
       setSelectedStreamsDataLap2((prevStreams) => ({
         ...prevStreams,
         [`stream${streamDataNumber}DataLap2`]: streamData,
       }));
     }
   }
-  const handleSpecialStream = (isSpecial:boolean, streamDataNumber:string)=>{
+  const handleSpecialStream = (isSpecial: boolean, streamDataNumber: string) => {
     setSelectedSpecialStream((prevValues) => ({
       ...prevValues,
       [`stream${streamDataNumber}isSpecial`]: isSpecial,
     }));
   }
 
-  const handleMinMaxValues = (minValue:string, maxValue:string,streamNumber:string)=> {
+  const handleMinMaxValues = (minValue: string, maxValue: string, streamNumber: string) => {
     setMinValues((prevMinValues) => ({
       ...prevMinValues,
       [`min${streamNumber}`]: Number(minValue),
@@ -230,55 +264,68 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
       [`max${streamNumber}`]: Number(maxValue),
     }));
   }
-  const handleGraphTypes = (graphType:string, streamNumber:string, isSpecial:boolean)=> {
+  const handleGraphTypes = (graphType: string, streamNumber: string, isSpecial: boolean) => {
     const prevGraph = graphTypesArray;
     let newGraph = prevGraph;
     const graphTypeIndex = Number(streamNumber);
-    if(isSpecial){
-      const fullArray = [graphType,graphType,graphType,graphType];
+    if (isSpecial) {
+      const fullArray = [graphType, graphType, graphType, graphType];
       const stringDataGraphTypes = fullArray.toString();
-      const fullStringGraphTypes = '['+ stringDataGraphTypes + ']'
-      newGraph[graphTypeIndex-1]=fullStringGraphTypes;
-      newGraph[graphTypeIndex+1]=fullStringGraphTypes;
-    }else{
-      newGraph[graphTypeIndex-1]=graphType;
-      newGraph[graphTypeIndex+1]=graphType;
+      const fullStringGraphTypes = '[' + stringDataGraphTypes + ']'
+      newGraph[graphTypeIndex - 1] = fullStringGraphTypes;
+      newGraph[graphTypeIndex + 1] = fullStringGraphTypes;
+    } else {
+      newGraph[graphTypeIndex - 1] = graphType;
+      newGraph[graphTypeIndex + 1] = graphType;
     }
     setGraphTypesArray(newGraph);
   }
 
-  const getLabel = (stream1:string, stream2:string)=> {
-    if(stream2 == ""){
+  const getLabel = (stream1: string, stream2: string) => {
+    if (stream2 == "") {
       return stream1;
     }
-    return selectedStreams[`stream${1}`]  + " vs " + selectedStreams[`stream${2}`]
+    return selectedStreams[`stream${1}`] + " vs " + selectedStreams[`stream${2}`]
   }
-  
-  function validateData(streamData:any){
+
+  function validateData(streamData: any) {
     if (streamData !== undefined && streamData !== null && streamData !== '') {
       const parsedArray = JSON.parse(streamData) as number[];
-    if (Array.isArray(parsedArray)) {
-      return parsedArray;
+      if (Array.isArray(parsedArray)) {
+        return parsedArray;
+      }
     }
-    } 
-      return [0];
+    return [0];
   }
   const { userName } = useContext(AuthContext);
   const username = userName;
-  function parseSpecailStream(stream:string,parsedObject:any){
-    const specailStreams = ["Suspension Height", "Rotational Speed","Tyre Temperatures"];
-    if(stream == specailStreams[0]){
-      return [parsedObject.data["TireFL_SusHeight"],parsedObject.data["TireFR_SusHeight"],parsedObject.data["TireRL_SusHeight"],parsedObject.data["TireRR_SusHeight"]];
+  function parseSpecailStream(stream: string, parsedObject: any) {
+    const specailStreams = ["Suspension Height", "Rotational Speed", "Tyre Temperatures"];
+    if (stream == specailStreams[0]) {
+      return [parsedObject.data["TireFL_SusHeight"], parsedObject.data["TireFR_SusHeight"], parsedObject.data["TireRL_SusHeight"], parsedObject.data["TireRR_SusHeight"]];
     }
-    else if(stream == specailStreams[1]){
-      return [parsedObject.data["WheelFL_RevPerSecond"],parsedObject.data["WheelFR_RevPerSecond"],parsedObject.data["WheelRL_RevPerSecond"],parsedObject.data["WheelRR_RevPerSecond"]];
-    }else if(stream == specailStreams[2]){
-      return [parsedObject.data["TireFL_SurfaceTemperature"],parsedObject.data["TireFR_SurfaceTemperature"],parsedObject.data["TireRL_SurfaceTemperature"],parsedObject.data["TireRR_SurfaceTemperature"]]
+    else if (stream == specailStreams[1]) {
+      return [parsedObject.data["WheelFL_RevPerSecond"], parsedObject.data["WheelFR_RevPerSecond"], parsedObject.data["WheelRL_RevPerSecond"], parsedObject.data["WheelRR_RevPerSecond"]];
+    } else if (stream == specailStreams[2]) {
+      return [parsedObject.data["TireFL_SurfaceTemperature"], parsedObject.data["TireFR_SurfaceTemperature"], parsedObject.data["TireRL_SurfaceTemperature"], parsedObject.data["TireRR_SurfaceTemperature"]]
     }
     return parsedObject.data[stream];
   }
 
+  ///const parseLapSelectionData=(parsedObject:any)=>{
+    
+    //updateCarData();
+  ///}
+  function parseBracketedString(inputString:string) {
+    // Remove square brackets and split by commas
+    const items = inputString.slice(1, -1).split(',');
   
+    // Trim each item to remove extra whitespace
+    const resultArray = items.map((item) => item.trim());
+  
+    return resultArray;
+  }
+
   useEffect(() => {
     const fetchAvailableLaps = async () => {
       try {
@@ -286,14 +333,39 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
           params: { username },
         });
         if (lapsResponse.data.message === 'Success') {
-          handleLapUpdate(lapsResponse.data.lapDates);
+          //handleLapUpdate(parseBracketedString(lapsResponse.data.lapData[0]["laptime"]));
+          const datesArray = lapsResponse.data.lapData.map((lapItem: { date: any; }) => lapItem.date);
+          const trackArray = lapsResponse.data.lapData.map((lapItem: { track: any; }) => lapItem.track);
+          const carArray = lapsResponse.data.lapData.map((lapItem: { car: any; }) => lapItem.car);
+          const bestLaptimeArray = lapsResponse.data.lapData.map((lapItem: { bestlaptime: any; }) => lapItem.bestlaptime);
+          const finalLapArray = [];
+          for(let i=0; i< bestLaptimeArray.length;i++){
+            const bestLapTimes = parseBracketedString(bestLaptimeArray[i])
+            const bestLapTime = bestLapTimes[0];
+            finalLapArray.push(bestLapTime);
+          }
+         
+          const newData = {
+            date: lapsResponse.data.lapData.map((lapItem: { date: any; }) => lapItem.date),
+            laptime: finalLapArray,
+            track: lapsResponse.data.lapData.map((lapItem: { track: any; }) => lapItem.track),
+            car: lapsResponse.data.lapData.map((lapItem: { car: any; }) => lapItem.car),
+          };
+          updateLapSelectionData(newData);
+        handleLapUpdate(datesArray);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
     fetchAvailableLaps();
-    const fetchData = async (lapSelection:number,lapDate:string) => {
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async (lapSelection: number, lapDate: string) => {
+      console.log("hit")
+      console.log(lapSelection)
+      console.log(lapDate)
       try {
         const dataResponse: AxiosResponse = await axios.get('/api/retrivereviewdataapi', {
           params: { username, lapDate },
@@ -301,16 +373,16 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
         if (dataResponse.data.message === 'Success') {
           var jsonString = JSON.stringify(dataResponse.data);
           var parsedObject = JSON.parse(jsonString);
-          if(lapSelection == 1){
-            handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1,selectedSpecialStream[`stream1isSpecial`])
-            if(selectedNumber.length>=2){
-              handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${2}`],parsedObject),2,selectedSpecialStream[`stream2isSpecial`]);
+          if (lapSelection == 1) {
+            handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${1}`], parsedObject), 1, selectedSpecialStream[`stream1isSpecial`])
+            if (selectedNumber.length >= 2) {
+              handleStreamDataLap1(parseSpecailStream(selectedStreams[`stream${2}`], parsedObject), 2, selectedSpecialStream[`stream2isSpecial`]);
             }
             setLapDistanceXAxis(parsedObject.data["distanceFromStart"]);
-          }else{
-            handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${1}`],parsedObject),1,selectedSpecialStream[`stream1isSpecial`])
-            if(selectedNumber.length>=2){
-              handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${2}`],parsedObject),2,selectedSpecialStream[`stream2isSpecial`]);
+          } else {
+            handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${1}`], parsedObject), 1, selectedSpecialStream[`stream1isSpecial`])
+            if (selectedNumber.length >= 2) {
+              handleStreamDataLap2(parseSpecailStream(selectedStreams[`stream${2}`], parsedObject), 2, selectedSpecialStream[`stream2isSpecial`]);
             }
             setLapDistanceXAxisLap2(parsedObject.data["distanceFromStart"]);
           }
@@ -319,18 +391,23 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
         console.error('Error fetching data:', error);
       }
     };
-    for(let i=1; i<=selectedNumberLaps.length; i++){
-      fetchData(i,selectedLaps[`lap${i}`]);
+    for (let i = 1; i <= selectedNumberLaps.length; i++) {
+      fetchData(i, selectedLaps[`lap${i}`]);
     }
-  }, [username, selectedLaps, selectedStreams, selectedNumber.length, selectedNumberLaps.length, selectedSpecialStream]);
+  }, [selectedLaps, selectedStreams]);
+
+  const handleShow=()=>{
+    setShowView(true);
+  }
+  const handleHide=()=>{
+    setShowView(false);
+  }
+
+
+
   const tooltipInfo = (
     <>
       <em>{'Review chart allows you to see how you to compare any two of up to ten laps.'}</em> <b>{'Each lap view can be tailored to show one or two streams of data, this is presented as the whole lap data stream against the distance into the lap at the point of recording'}</b> <u>{'You are able to have up to two of these views at once'}</u>
-    </>
-  );
-  const tooltipInfoController = (
-    <>
-      <em>{'This controller only adjusts settings for the named view'}</em>
     </>
   );
   const tooltipInfoLap = (
@@ -347,67 +424,78 @@ export default function ReviewView({viewNumber}:ReviewViewProps) {
 
     <>
 
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2}>
-      <Grid item xs={12}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}><Grid item xs={12}><Item>
+        <Grid container spacing={0}>
+        <Grid item xs={12}><Typography fontFamily={"Yapari"} fontWeight={"bold"} fontSize={35}sx={{color:"white"}}>{viewNumber} </Typography></Grid>
+          <Grid item xs={12}>
 
-        <Item>
-          {!controllerOpen && <Button onClick={handleOpen}> {viewNumber} Edit Graph Settings  <TuneIcon/><InfoToolTip name={"Review Charts"} info={tooltipInfo} iconColor={''}/></Button> }
           
-          <Modal
-  open={open}
-  onClose={handleClose}
-  aria-labelledby="modal-modal-title"
-  aria-describedby="modal-modal-description"
->
-  <Box sx={style}>
-    <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      <div style={{ display: 'grid', gridGap: '16px', gridTemplateColumns: '1fr' }}>
-        <Grid container spacing={2}>
-      <Grid item xs>
-        <Typography sx={{ fontSize: 24 }} color="text.secondary" gutterBottom>{viewNumber} Controller </Typography></Grid><InfoToolTip name={"Review Chart Controller"} info={tooltipInfoController} iconColor={''}/></Grid>
-        <Grid container spacing={2}>
-      <Grid item xs={6}>
-        <ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"} />
-        {selectedNumberLaps.map((item) => (
-          <>
-           <Grid container spacing={2}>
-      <Grid item xs>
-            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Lap {item}</Typography></Grid><InfoToolTip name={"Laps"} info={tooltipInfoLap} iconColor={''}/></Grid>
-            <ReviewLapSelection onSelectLap={handleLapsSelection} lapNumber={item.toString()} availableLaps={availableLaps} />
-            {selectedLaps[`lap${item}`]}{selectedStreamsDataLap1[`stream1DataLap${item}`]}{selectedStreamsDataLap2[`stream2DataLap${item}`]}
-          </>
-        ))}
+              {!controllerOpen &&        <Grid container spacing={0}><Grid item xs={2} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Button onClick={handleShow}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15}sx={{color:"white"}}>SHOW VIEW </Typography><TuneIcon /></Button></Grid><Grid item xs={2} sx={{display:'flex',justifyContent:'start',alignItems:'center'}}><Button onClick={handleHide}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15}sx={{color:"white"}}>HIDE VIEW   </Typography><TuneIcon /></Button></Grid><Grid item xs={8} sx={{display:'flex',justifyContent:'end',alignItems:'center'}}><Button onClick={handleOpen}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15}sx={{color:"white"}}> EDIT VIEW SETTINGS </Typography><TuneIcon /><InfoToolTip name={"Review Charts"} info={tooltipInfo} iconColor={''} /></Button> </Grid></Grid>}
+              
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <Grid container spacing={4}>
+                        <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}}>
+                          <Typography sx={{ fontSize: 34, color:'white'}} fontWeight={"bold"} fontFamily={"Yapari"} >{viewNumber} Controller </Typography>
+                          </Grid>
+                        
+                      
+                        <Grid item xs={12}>
+                        
+                          <ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"} />
+                          <Box sx={{maxHeight:'150px', overflow:"scroll"}}>
+                          {selectedNumberLaps.map((item) => (
+                            <>
+                              <Grid container spacing={2}>
+                                <Grid item xs>
+                                  <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Lap {item}</Typography></Grid><InfoToolTip name={"Laps"} info={tooltipInfoLap} iconColor={''} /></Grid>
+                              
+                              {selectedLaps[`lap${item}`]}{selectedStreamsDataLap1[`stream1DataLap${item}`]}{selectedStreamsDataLap2[`stream2DataLap${item}`]}
+                              <LapSelectionTable onSelectLap={handleLapsSelection}lapSelectionData={lapSelectionData} lapNumber={`${item}`}/>
+                            </>
+                            
+                          ))}</Box>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <ReviewStreamNumberSelection onSelectNumber={handleNumberSelection} label={"Number Of Streams"} />
+                          {selectedNumber.map((item) => (
+                            <>
+                              <Grid container spacing={2}>
+                                <Grid item xs>
+                                  <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid><InfoToolTip name={"Streams"} info={tooltipInfoStreams} iconColor={''} /></Grid>
+                              <ReviewFieldSelection onSelectField={handleFieldSelection} fieldNumber={item.toString()} />
+                              <ReviewGrouping
+                                Field={selectedFields[`field${item}`]}
+                                onSelectStream={handleStreamSelection}
+                                streamNumber={item.toString()}
+                                onSelectStreamMinMax={handleMinMaxValues}
+                                onSelectStreamGraphTypes={handleGraphTypes}
+                                onSelectSpecialStream={handleSpecialStream}
+                              />
+                              {selectedFields[`field${item}`]}{selectedStreams[`stream${item}`]}
+                            </>
+                          ))}</Grid>
+                          </Grid>
+                      </Box>
+                </Box>
+              </Modal>
+              </Grid>
+              </Grid></Item>
+              </Grid>
+              {showView &&   <Grid item xs={12}>
+                <ItemWhite>
+              <ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])} numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`], selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={validateData(lapDistanceXAxis)} XAxisDataLap2={validateData(lapDistanceXAxisLap2)} height={350} />
+              </ItemWhite>
+          </Grid>}
         </Grid>
-        <Grid item xs={6}>
-        <ReviewStreamNumberSelection onSelectNumber={handleNumberSelection} label={"Number Of Streams"} />
-        {selectedNumber.map((item) => (
-          <>
-           <Grid container spacing={2}>
-      <Grid item xs>
-            <Typography sx={{ fontSize: 17 }} color="text.secondary" gutterBottom>Stream {item}</Typography></Grid><InfoToolTip name={"Streams"} info={tooltipInfoStreams} iconColor={''}/></Grid>
-            <ReviewFieldSelection onSelectField={handleFieldSelection} fieldNumber={item.toString()} />
-            <ReviewGrouping
-              Field={selectedFields[`field${item}`]}
-              onSelectStream={handleStreamSelection}
-              streamNumber={item.toString()}
-              onSelectStreamMinMax={handleMinMaxValues}
-              onSelectStreamGraphTypes={handleGraphTypes}
-              onSelectSpecialStream={handleSpecialStream}
-            />
-            {selectedFields[`field${item}`]}{selectedStreams[`stream${item}`]}
-          </>
-        ))}</Grid></Grid>
-      </div>
-    </Box>
-  </Box>
-</Modal>
-
-    
-<ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])} numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`], selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={validateData(lapDistanceXAxis)} XAxisDataLap2={validateData(lapDistanceXAxisLap2)} height={350}/></Item>
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
     </>
   );
 }

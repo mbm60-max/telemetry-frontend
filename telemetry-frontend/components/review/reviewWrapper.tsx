@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import '../sessionTabs/sessiontab.css'
 import { useContext, useEffect, useState } from 'react';
-import { Button, Modal, Typography } from '@mui/material';
+import { Button, Link, Modal, Typography } from '@mui/material';
 import ReviewFieldSelection from './reviewFieldSelection';
 import ReviewGrouping from './reviewGrouping';
 import ReviewStreamNumberSelection from './reviewStreamNumberSelection';
@@ -19,6 +19,11 @@ import LapSelectionTable from './reviewLapSelect';
 import { GridRowId } from '@mui/x-data-grid';
 import ClearIcon from '@mui/icons-material/Clear';
 import HorizontalBanner from '../horizontalBanner/horizontalBanner';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import ImageBanner from '../../components/splitImageBanner';
+import LabelIcon from '@mui/icons-material/Label';
+import BannerInterface from '../../interfaces/bannerContent';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -81,7 +86,8 @@ interface ReviewViewProps {
 export default function ReviewView({ viewNumber }: ReviewViewProps) {
   const [controllerOpen, setControllerOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [showView, setShowView] = React.useState(false);
+  const [showView, setShowView] = React.useState(true);
+  const [showGraph, setShowGraph] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [state, setState] = React.useState({
@@ -402,13 +408,39 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
     }
   }, [selectedLaps, selectedStreams]);
 
-  const handleShow = () => {
-    setShowView(true);
+  const handleShow = (target:string) => {
+    if(target==="graph"){
+      setShowGraph(true);
+    }
+    else if (target==="view"){
+      setShowView(true);
+    }
   }
-  const handleHide = () => {
-    setShowView(false);
+  const handleHide = (target:string) => {
+    if(target==="graph"){
+      setShowGraph(false);
+    }
+    else if (target==="view"){
+      setShowView(false);
+    }
   }
 
+  const bannerItems: BannerInterface[] = [
+    {
+      title: 'VIEW HIDDEN',
+      titleSize: 29,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      body: ['To view some data','To view some data', 'Press show header, then press show graph ', 'From there press edit view settings', 'Select a lap and a field'],
+      bodySize: [22, 17, 17, 17,17],
+      bodyFontStyle: 'Satoshi',
+      bodyFontWeight: 'normal',
+      customIcon: LabelIcon, // Replace with your custom icon component
+      ctaButton: 
+      <Button className={"sliderArray"} sx={{ml:2}} onClick={() => handleShow("view")}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>SHOW HEADER </Typography><VisibilityIcon /></Button>,
+      ctaTarget: '',
+    },
+  ];
 
 
   const tooltipInfo = (
@@ -431,13 +463,14 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
     <>
 
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}><Grid item xs={12}><Item>
+        <Grid container spacing={2}>
+        {showView ?<Grid item xs={12}><Item>
           <Grid container spacing={0}>
-            <Grid item xs={12}><Typography fontFamily={"Yapari"} fontWeight={"bold"} fontSize={35} sx={{ color: "white" }}>{viewNumber} </Typography></Grid>
+            <Grid item xs={12}><Box><Typography fontFamily={"Yapari"} fontWeight={"bold"} fontSize={35} sx={{ color: "white",ml:2 }}>{viewNumber}<Button className={"sliderArray"} onClick={() => handleHide("view")}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>HIDE HEADER </Typography><VisibilityIcon /></Button> </Typography></Box></Grid>
             <Grid item xs={12}>
 
 
-              {!controllerOpen && <Grid container spacing={0}><Grid item xs={2} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}><Button onClick={handleShow}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>SHOW VIEW </Typography><TuneIcon /></Button></Grid><Grid item xs={2} sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}><Button onClick={handleHide}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>HIDE VIEW   </Typography><TuneIcon /></Button></Grid><Grid item xs={8} sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}><Button onClick={handleOpen}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}> EDIT VIEW SETTINGS </Typography><TuneIcon /><InfoToolTip name={"Review Charts"} info={tooltipInfo} iconColor={''} /></Button> </Grid></Grid>}
+              <Grid container spacing={0}>{!showGraph ? <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center'}}><Button className={"sliderArray"} sx={{ml:2}} onClick={() => handleShow("graph")}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>SHOW GRAPH </Typography><VisibilityIcon /></Button></Grid>:<Grid item xs={4} sx={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}><Button className={"sliderArray"} sx={{ml:2}} onClick={() => handleHide("graph")}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>HIDE GRAPH   </Typography><VisibilityOffIcon /></Button></Grid>}{!controllerOpen && <Grid item xs={8} sx={{ display: 'flex', justifyContent: 'end', alignItems: 'center' }}><Button className={"sliderArray"} onClick={handleOpen}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}> EDIT VIEW SETTINGS </Typography><TuneIcon /><InfoToolTip name={"Review Charts"} info={tooltipInfo} iconColor={'white'} /></Button> </Grid>}</Grid>
 
               <Modal
                 open={open}
@@ -453,7 +486,7 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
             
             
             <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{padding:0.5,width: '100%'}}>
-            <ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"} />
+            <ReviewStreamNumberSelection onSelectNumber={handleNumberLapsSelection} label={"Number Of Laps"} currentValue={selectedNumberLaps.length} />
     </Box></Grid>
              <Grid item xs={12}>
               
@@ -477,7 +510,7 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
              </Grid>
              <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
              <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{padding:0.5,width: '100%'}}>
-             <ReviewStreamNumberSelection onSelectNumber={handleNumberSelection} label={"Number Of Streams"} />
+             <ReviewStreamNumberSelection onSelectNumber={handleNumberSelection} label={"Number Of Streams"} currentValue={selectedNumber.length}/>
     </Box></Grid>
              <Grid item xs={12}>
              <Grid container spacing={4}>
@@ -513,13 +546,26 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
               </Modal>
             </Grid>
           </Grid></Item>
-        </Grid>
-          {showView && <Grid item xs={12}>
+        </Grid>:<><Grid item xs={4}><Button className={"sliderArray"} sx={{ml:2}} onClick={() => handleShow("view")}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>SHOW HEADER </Typography><VisibilityIcon /></Button></Grid><Grid item xs={6}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={25} sx={{ color: "white" }}>{viewNumber}</Typography></Grid></>}
+          {showGraph && <Grid item xs={12}>
             <ItemWhite>
               <ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])} numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`], selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={validateData(lapDistanceXAxis)} XAxisDataLap2={validateData(lapDistanceXAxisLap2)} height={350} />
             </ItemWhite>
           </Grid>}
+          {((!showGraph)&&(!showView)) && <Grid item xs={12}><ImageBanner imageSrc={"/images/test5.jpg"} hasOverlay={true} minWidth={'330px'} minHeight={'330px'}  >
+                    <Box sx={{ height: "90%", width: '100%', overflow: 'auto', mt: '5%' }}>
+                      <Grid container spacing={2}> 
+                        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                          <HorizontalBanner GridContent={[`${viewNumber}`]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]}  isBannerInterface={false} />
+                        </Grid>
+                        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          <HorizontalBanner GridContent={bannerItems} fontSizes={[0]} needsBackground={true} fontFamilies={["N/A"]} fontWeights={["N/A"]} fontColour={["N/A"]} isMutliStage={true} marginLeftValue={[]} isBannerInterface={true} />
+                        </Grid> 
+                      </Grid>
+                    </Box>
+                  </ImageBanner></Grid>}
         </Grid>
+        
       </Box>
     </>
   );

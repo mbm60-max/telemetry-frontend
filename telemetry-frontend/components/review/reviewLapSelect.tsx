@@ -40,8 +40,9 @@ const [selectedRowId,setSelectedRowId]=useState<GridRowId | null>(null);
   const gridRef = React.useRef<any>(null); 
   const handleSelectionChange = (selectionModel: GridRowId[])=>{
     if (selectionModel.length > 0) {
-      
-      setSelectedRowId(selectionModel[0]);
+      console.log( selectionModel[0]);
+      const selectedRowId = selectionModel[0];
+    setSelectedRowId(selectedRowId);
       const selectedRow = rows.find((row) => row.id === selectedRowId);
       console.log(selectedRowId)
       if (selectedRow) {
@@ -51,6 +52,7 @@ const [selectedRowId,setSelectedRowId]=useState<GridRowId | null>(null);
         onSelectLap(selectedLap, lapNumber); // Assuming lapNumber is defined somewhere
       }
     } else {
+      setSelectedRowId(null);
       setSelectedLap("");
       // Handle deselection logic here if needed
     }

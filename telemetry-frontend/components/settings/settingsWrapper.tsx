@@ -6,6 +6,7 @@ import { JsxElement } from "typescript";
 import SettingsObject from "../../interfaces/defaultSettingsInterface";
 import { SettingsContext } from "../authProviderSettings";
 import Homepage from "../background/background";
+import Footer from "../footer/footer";
 import NavBar from "../navbar/navbar";
 import SettingsDisplay from "./settingsDisplay";
 import SettingsController from "./settingsFieldSelection";
@@ -118,6 +119,10 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
           </Grid>
         </Grid></Box></Box>
       </Homepage></Box>
+      <Homepage style='homepage-container-reverse-short'></Homepage>
+      <Homepage style={'navbar-container-reverse'}>
+                <Item><Footer /></Item>
+              </Homepage>
     </>
   );
 };

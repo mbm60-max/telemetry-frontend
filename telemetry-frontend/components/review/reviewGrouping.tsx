@@ -26,7 +26,6 @@ export default function ReviewGrouping({Field,onSelectStream,streamNumber, onSel
       onSelectStreamMinMax(minArray[minMaxIndex],maxArray[minMaxIndex], streamNumber);
       onSelectStreamGraphTypes(graphTypeArray[minMaxIndex],streamNumber,true);
     }else{
-      console.log("triggered")
       const minMaxIndex = selectedArray.indexOf(event.target.value as string);
       onSelectStreamMinMax(minArray[minMaxIndex],maxArray[minMaxIndex], streamNumber);
       onSelectStreamGraphTypes(graphTypeArray[minMaxIndex],streamNumber,false);

@@ -6,6 +6,7 @@ import { JsxElement } from "typescript";
 import SettingsObject from "../../interfaces/defaultSettingsInterface";
 import { SettingsContext } from "../authProviderSettings";
 import Homepage from "../background/background";
+import Footer from "../footer/footer";
 import NavBar from "../navbar/navbar";
 import ReviewView from "./reviewWrapper";
 
@@ -68,7 +69,6 @@ const ReviewWrapper = ({}: ReviewWrapperProps) => {
         padding:1
       }}>
         <Grid container spacing={8}>
-        <Grid item xs={12}>rework of states</Grid>
           <Grid item xs={12}sm={12} >
          <ReviewView viewNumber={'Primary View'}/>
         </Grid>
@@ -77,6 +77,12 @@ const ReviewWrapper = ({}: ReviewWrapperProps) => {
         </Grid></Grid>
         </Box></Box>
       </Homepage></Box>
+      <Homepage style='homepage-container-reverse-short'></Homepage>
+              <Homepage style={'navbar-container-reverse'}>
+                <Item><Footer /></Item>
+              </Homepage>
+            
+     
     </>
   );
 };

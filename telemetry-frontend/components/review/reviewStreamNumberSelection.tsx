@@ -9,8 +9,9 @@ import { Grid, Typography } from '@mui/material';
 interface ReviewStreamNumberSelectionProps{
     onSelectNumber: (numberOfStreams: number) => void;
     label:string;
+    currentValue:number;
 }
-export default function ReviewStreamNumberSelection({label,onSelectNumber}:ReviewStreamNumberSelectionProps) {
+export default function ReviewStreamNumberSelection({label,onSelectNumber,currentValue}:ReviewStreamNumberSelectionProps) {
 
     const handleChoice = (event: React.ChangeEvent<HTMLInputElement>) => {
         onSelectNumber(Number(event.target.value));
@@ -21,7 +22,7 @@ export default function ReviewStreamNumberSelection({label,onSelectNumber}:Revie
       <RadioGroup
       row
         aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="1"
+        defaultValue={currentValue}
         name="radio-buttons-group"
         onChange={handleChoice}
       >

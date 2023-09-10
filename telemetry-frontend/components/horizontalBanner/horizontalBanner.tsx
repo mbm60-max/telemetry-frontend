@@ -5,6 +5,8 @@ import { Box, Grid, Paper, styled, Typography } from '@mui/material';
 import BannerInterface from '../../interfaces/bannerContent';
 import ServiceDisplay from '../serviceDisplay/serviceDisplay';
 import ImageBox from '../homepageTrack';
+import IconGridInterface from '../../interfaces/iconGridInterface';
+import SocialsDisplay from '../serviceDisplay/socialsDisplay';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -40,7 +42,7 @@ const ItemSquare = styled(Paper)(({ theme }) => ({
   display:'flex',
 }));
 interface HorizontalBannerProps {
-GridContent:string[]|BannerInterface[];
+GridContent:string[]|BannerInterface[]|IconGridInterface[];
 needsBackground?:boolean;
 fontSizes:number[];
 fontFamilies:string[];
@@ -48,10 +50,11 @@ fontWeights:string[];
 fontColour:string[];
 isMutliStage:boolean;
 marginLeftValue:number[];
+isBannerInterface:boolean;
 }
 
 
-export default function HorizontalBanner({GridContent,needsBackground,fontColour,fontFamilies,fontSizes,fontWeights,isMutliStage,marginLeftValue}: HorizontalBannerProps) {
+export default function HorizontalBanner({GridContent,needsBackground,fontColour,fontFamilies,fontSizes,fontWeights,isMutliStage,marginLeftValue,isBannerInterface}: HorizontalBannerProps) {
 
     return (
 <Box sx={{width:'90%',height:'100%'}}>
@@ -63,18 +66,25 @@ export default function HorizontalBanner({GridContent,needsBackground,fontColour
                                 
                               typeof content !== 'string' ? (
                                 <ItemSquare>
-                                  <ServiceDisplay componentSetup={content} />
-                              </ItemSquare>
+                    {isBannerInterface ? (
+                      <ServiceDisplay componentSetup={content as BannerInterface} />
+                    ) : (
+                      <SocialsDisplay componentSetup={content as IconGridInterface} />
+                      /* Handle IconGridInterface content here */
+                    )}
+                  </ItemSquare>
                             ) : (
                                 null
                             )
                           ) : (
-                              typeof content !== 'string' ? (
-                                
-                                
-                                <ServiceDisplay componentSetup={content} />
-                            
-                             
+                              typeof content !== 'string' ? (<>
+                                {isBannerInterface ? (
+                                  <ServiceDisplay componentSetup={content as BannerInterface} />
+                                ) : (
+                                  <SocialsDisplay componentSetup={content as IconGridInterface} />
+                                  /* Handle IconGridInterface content here */
+                                )}
+                             </>
                             ) : (
                                 null
                             )
@@ -88,7 +98,16 @@ export default function HorizontalBanner({GridContent,needsBackground,fontColour
                                     </ImageBox>
                                 </Item>
                               ) : (
-                                  null
+                                typeof content !== 'string' ? (
+                                  <Item>
+                      {isBannerInterface ? (
+                        <ServiceDisplay componentSetup={content as BannerInterface} />
+                      ) : (
+                        <SocialsDisplay componentSetup={content as IconGridInterface} />
+                        /* Handle IconGridInterface content here */
+                      )}
+                    </Item>
+                              ):(null)
                               )
                             ) : (
                                 typeof content === 'string' ? (

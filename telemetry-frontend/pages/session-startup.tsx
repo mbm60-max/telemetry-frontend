@@ -242,10 +242,10 @@ const SessionStartup: React.FC = () => {
               <Grid container spacing={8}>
                 <Grid item xs={12}><Box sx={{ height: '50px' }}></Box></Grid>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <HorizontalBanner GridContent={["SESSION STARTUP"]} needsBackground={false} fontSizes={[45]} fontFamilies={["SatoshiBold"]} fontWeights={["normal"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+                  <HorizontalBanner GridContent={["SESSION STARTUP"]} needsBackground={false} fontSizes={[45]} fontFamilies={["SatoshiBold"]} fontWeights={["normal"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} />
                 </Grid>
                 <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                  <HorizontalBanner GridContent={["SELECT A CAR"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} />
+                  <HorizontalBanner GridContent={["SELECT A CAR"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} />
                 </Grid>
                 <Grid item xs={12} sx={{ height: "100%", display: 'flex', justifyContent: 'center' }}>
                   <Item>
@@ -255,7 +255,7 @@ const SessionStartup: React.FC = () => {
                 <Grid item xs={12}><Box sx={{ height: '50px' }}></Box></Grid>
                 <Grid item xs={12} sm={6} sx={{ height: "100%" }}>
                   <Grid container spacing={4}>
-                    <Grid item xs={12}> <HorizontalBanner GridContent={["SELECT A SETUP"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+                    <Grid item xs={12}> <HorizontalBanner GridContent={["SELECT A SETUP"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false}/></Grid>
                     <Grid item xs={12}> <Item>
                       <SetupTable onSelectSetup={handlesetupSelection} selectedRowId={selectedRowIdSetupGridRef.current} onRowSelectionModelChange={handleRowSelectionChangeSetupGrid} onSelectedRowIdChange={handleSetSelectedRowIdSetupGrid} fetchDataCallback={forceFetchData} />
                     </Item></Grid>
@@ -263,13 +263,13 @@ const SessionStartup: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{ height: "100%" }}>
                   <Grid container spacing={4}>
-                    <Grid item xs={12}> <HorizontalBanner GridContent={["SELECT A TRACK"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+                    <Grid item xs={12}> <HorizontalBanner GridContent={["SELECT A TRACK"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]}isBannerInterface={false} /></Grid>
                     <Grid item xs={12}> <Item>
                       <Grid container spacing={2} sx={{ height: "100%" }}>
 
                         <Grid item xs={12}>
                           <Grid container spacing={2} >
-                            <Grid item xs={12} >  <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}> <HorizontalBanner GridContent={[splitAndCapitalise(selectedTrack)]} needsBackground={false} fontSizes={[22]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid> </Grid>
+                            <Grid item xs={12} >  <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}> <HorizontalBanner GridContent={[splitAndCapitalise(selectedTrack)]} needsBackground={false} fontSizes={[22]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false}/></Grid> </Grid>
                             <Grid item xs={12}>  <Box
                               sx={{
                                 width: "100%",
@@ -310,12 +310,12 @@ const SessionStartup: React.FC = () => {
                 <Grid item xs={12}><Box sx={{ height: '50px' }}></Box></Grid>
                 <Grid item xs={12} sx={{ display: "flex", justifyContent: 'center' }}>
                   <Grid container spacing={4}>
-                    <Grid item xs={12} sx={{ display: "flex", justifyContent: 'center' }}> <HorizontalBanner GridContent={["SELECT A COMPOUND"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+                    <Grid item xs={12} sx={{ display: "flex", justifyContent: 'center' }}> <HorizontalBanner GridContent={["SELECT A COMPOUND"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false}/></Grid>
                     <Grid item xs={12} sx={{ display: "flex", justifyContent: 'center' }}> <Item><Box sx={{ width: "100%", height: '100%' }}>
                       <Grid container spacing={4}>
                         <Grid item xs={12} sm={6}>
                           <Grid container spacing={2}>
-                            <Grid item xs={12}><HorizontalBanner GridContent={[selectedCompound]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} /></Grid>
+                            <Grid item xs={12}><HorizontalBanner GridContent={[selectedCompound]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#F6F6F6"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false}/></Grid>
                             <Grid item xs={12}><FormControl fullWidth className={"compoundSelect"}>
                               <InputLabel id="demo-simple-select-label">
                                 Compound
@@ -387,7 +387,7 @@ const SessionStartup: React.FC = () => {
                 <Grid item xs={12}sx={{display:'flex',justifyContent:'center'}}>
                   <Item>
                     <Grid container spacing={4} sx={{ height: "100%" }}><Grid item xs={12}><Divider sx={{}}>
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["CURRENT SETUP"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["CURRENT SETUP"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></Box>
                     </Divider></Grid>
                       <Grid item xs={6}>
                       <Box className={"textFields"} sx={{ width: '90%', height: '75%', backgroundColor: 'rgba(8, 13, 56, 0.5)',borderRadius:8, margin: 1, padding: 1,  boxShadow: 1, justifyContent: 'center', alignItems: 'center', display: 'flex' ,border: "3px solid white",
@@ -459,7 +459,7 @@ const SessionStartup: React.FC = () => {
             </form>
             <Grid item xs={12}><Box sx={{ height: '150px' }}></Box></Grid>
             <Grid item xs={12}>
-              <Homepage style={'navbar-containe-reverse'}>
+              <Homepage style={'navbar-container-reverse'}>
                 <ItemFooter><Footer /></ItemFooter>
               </Homepage>
             </Grid>

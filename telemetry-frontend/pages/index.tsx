@@ -30,7 +30,13 @@ import LabelIcon from '@mui/icons-material/Label';
 import ImageBanner from '../components/splitImageBanner';
 import Footer from '../components/footer/footer';
 import '../components/navbar/navbar.css';
-
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import PinterestIcon from '@mui/icons-material/Pinterest';
+import IconGridInterface from '../interfaces/iconGridInterface';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -61,6 +67,50 @@ const Home = () => {
   }
   }, [isLoggedIn, router]);
 
+  const socialsItems: IconGridInterface[] = [
+    {
+      title: 'GTEAM PLC',
+      titleSize: 20,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      customIcon: LinkedInIcon, // Replace with your custom icon component
+    },
+    {
+      title: 'GTEAM COMS',
+      titleSize: 20,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      customIcon: FacebookIcon, // Replace with your custom icon component
+    },
+    {
+      title: 'GSTREAM',
+      titleSize: 20,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      customIcon: YouTubeIcon, // Replace with your custom icon component
+    },
+    {
+      title: 'GTEAM',
+      titleSize: 20,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      customIcon: PinterestIcon, // Replace with your custom icon component
+    },
+    {
+      title: 'GTEAM',
+      titleSize: 20,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      customIcon: InstagramIcon, // Replace with your custom icon component
+    },
+    {
+      title: 'GTEAM',
+      titleSize: 20,
+      titleFontStyle: 'Yapari',
+      titleFontWeight: 'bold',
+      customIcon: TwitterIcon, // Replace with your custom icon component
+    },
+  ]
   const bannerItems: BannerInterface[] = [
     {
       title: 'Sessions',
@@ -173,14 +223,14 @@ const Home = () => {
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={8}>
                 <Grid item xs={12}>
-                  <ImageBanner imageSrc={"/images/test2.jpg"} hasOverlay={true}  >
+                  <ImageBanner imageSrc={"/images/test2.jpg"} hasOverlay={true}  minWidth={'330px'} minHeight={'550px'}  >
                     <Box sx={{ height: "90%", width: '100%', overflow: 'auto', mt: '5%' }}>
                       <Grid container spacing={2}> 
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                          <HorizontalBanner GridContent={["WHAT WE OFFER"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+                          <HorizontalBanner GridContent={["WHAT WE OFFER"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false}/>
                         </Grid>
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                          <HorizontalBanner GridContent={bannerItems} fontSizes={[0]} needsBackground={true} fontFamilies={["N/A"]} fontWeights={["N/A"]} fontColour={["N/A"]} isMutliStage={true} marginLeftValue={[]} />
+                          <HorizontalBanner GridContent={bannerItems} fontSizes={[0]} needsBackground={true} fontFamilies={["N/A"]} fontWeights={["N/A"]} fontColour={["N/A"]} isMutliStage={true} marginLeftValue={[]}   isBannerInterface={true}/>
                         </Grid> 
                       </Grid>
                     </Box>
@@ -189,20 +239,20 @@ const Home = () => {
                 <Grid item xs={6}>
                   <Box sx={{ height: "93%", width: '100%', overflow: 'auto', mt: '5%' }}> 
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                      <HorizontalBanner GridContent={["OUR PARTNERS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+                      <HorizontalBanner GridContent={["OUR PARTNERS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]}  isBannerInterface={false}/>
                     </Grid>
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <HorizontalBanner GridContent={['/images/dataVision.svg', '/images/peopleco.svg', '/images/securl.svg', '/images/testbase.svg', '/images/woosh.svg', '/images/drvn.svg']} needsBackground={true} fontSizes={[22, 22, 22, 22, 22, 22]} fontFamilies={["Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi"]} fontWeights={[]} fontColour={["White", "White", "White", "White", "White", "White"]} isMutliStage={false} marginLeftValue={[0,50,50,50,50,50]} />
+                      <HorizontalBanner GridContent={['/images/dataVision.svg', '/images/peopleco.svg', '/images/securl.svg', '/images/testbase.svg', '/images/woosh.svg', '/images/drvn.svg']} needsBackground={true} fontSizes={[22, 22, 22, 22, 22, 22]} fontFamilies={["Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi"]} fontWeights={[]} fontColour={["White", "White", "White", "White", "White", "White"]} isMutliStage={false} marginLeftValue={[0,50,50,50,50,50]}  isBannerInterface={false}/>
                     </Grid>
                   </Box>
                 </Grid>
                 <Grid item xs={6}>
                   <Box sx={{ height: "93%", width: '100%', overflow: 'auto', mt: '5%' }}> 
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                      <HorizontalBanner GridContent={["OUR SOCIALS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} />
+                      <HorizontalBanner GridContent={["OUR SOCIALS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} />
                     </Grid>
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <HorizontalBanner GridContent={["COMPANY A", "COMPANY B", "COMPANY C", "COMPANY D", "COMPANY E", "COMPANY F"]} needsBackground={true} fontSizes={[22, 22, 22, 22, 22, 22]} fontFamilies={["Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi"]} fontWeights={[]} fontColour={["White", "White", "White", "White", "White", "White"]} isMutliStage={false} marginLeftValue={[]} />
+                      <HorizontalBanner GridContent={[socialsItems[0],socialsItems[1],socialsItems[2],socialsItems[3],socialsItems[4],socialsItems[5]]} needsBackground={true} fontSizes={[22,22,22,22,22,22]} fontFamilies={["Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi", "Satoshi"]} fontWeights={[]} fontColour={["Red","Red","Red","Red","Red","Red"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} />
                     </Grid>
                   </Box>
                 </Grid>
@@ -244,7 +294,7 @@ const Home = () => {
             </Homepage>
       </Grid>
       <Grid item xs={12}>
-              <Homepage style={'navbar-containe-reverse'}>
+              <Homepage style={'navbar-container-reverse'}>
                 <Item><Footer /></Item>
               </Homepage>
             </Grid>

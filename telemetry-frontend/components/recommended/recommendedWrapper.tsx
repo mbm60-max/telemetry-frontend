@@ -1,7 +1,8 @@
 import { Button, createTheme, Divider, Grid, Paper, styled, Typography, useMediaQuery } from "@mui/material";
 import { Box, Container } from "@mui/system";
+import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { JsxElement } from "typescript";
 import SettingsObject from "../../interfaces/defaultSettingsInterface";
 import { SettingsContext } from "../authProviderSettings";
@@ -26,11 +27,35 @@ const ItemPlayer = styled(Paper)(({ theme }) => ({
   borderRadius:15
 }));
 
+interface VideoContent{
+  url:string;
+  title:string;
+  postedBy:string;
+}
 
-const videoData = [
-  {url:"bmD-tZe8HBA",title:"This is the title",postedBy:"Max"},{url:"bmD-tZe8HBA",title:"This is the title",postedBy:"Max"},{url:"bmD-tZe8HBA",title:"This is the title",postedBy:"Max"},{url:"bmD-tZe8HBA",title:"This is the title",postedBy:"Max"}
-];
+
 const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
+
+  const [allVideosArray, setAllVideosArray] = useState<any[]>([]); // Specify the type for allVideosArray
+  const [videoData, setVideoData] = useState<VideoContent[]>([]); // Specify the type for videoData
+  const [dataFetched, setDataFetched] = useState(false);
+  // Function to add a new video to the videoData array
+  useEffect(() => {
+    if (allVideosArray.length > 0 && dataFetched) {
+      const videoArray: VideoContent[] = [];
+      for (let i = 0; i < 3; i++) {
+        if (allVideosArray[i]) {
+          let itemObject: VideoContent = {
+            url: allVideosArray[i].VideoId,
+            title: allVideosArray[i].Title,
+            postedBy: allVideosArray[i].Creator,
+          };
+          videoArray.push(itemObject);
+        }
+      }
+      setVideoData((prevVideoData) => [...prevVideoData, ...videoArray]);
+    }
+  }, [allVideosArray, dataFetched]);
 
   const StyledVerticalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
@@ -56,6 +81,28 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
     backgroundColor: 'rgba(132, 126, 126, 0)',
     boxShadow: 'none', // Override the shadow effect
   }));
+
+  useEffect(() => {
+    const fetchAvailableVideos = async () => {
+      try {
+        const searchQuery = "educational simulator racing (technique)"
+        const  ytQueryResponse: AxiosResponse = await axios.get('/api/fetchyoutubedataapi', {
+          params: { searchQuery },
+        });
+        if (ytQueryResponse.data.message === 'Success') {
+         console.log(ytQueryResponse.data);
+         setAllVideosArray(ytQueryResponse.data.data["VideoData"])
+         setDataFetched(true); 
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    console.log("called")
+    fetchAvailableVideos();
+
+  }, []);
+  
   return (<>
     <Homepage style={'navbar-container'}>
                 <Item><NavBar /></Item>

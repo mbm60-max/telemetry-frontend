@@ -225,7 +225,7 @@ const Home = () => {
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={8}>
                 <Grid item xs={12}>
-                  <ImageBanner imageSrc={"/images/test2.jpg"} hasOverlay={true}  minWidth={'330px'} minHeight={'550px'}  >
+                  <ImageBanner imageSrc={"/images/test2.jpg"} hasOverlay={true} minWidth={'330px'} minHeight={'550px'} borderRadius={100}  >
                     <Box sx={{ height: "90%", width: '100%', overflow: 'auto', mt: '5%' }}>
                       <Grid container spacing={2}> 
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>

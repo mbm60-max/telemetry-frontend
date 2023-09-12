@@ -10,12 +10,13 @@ interface SplitImageBannerProps{
   hasOverlay:boolean;
   minWidth:string;
   minHeight:string;
+  borderRadius:number;
 }
-const SplitImageBanner = ({children,imageSrc,hasOverlay,minWidth,minHeight}:SplitImageBannerProps) => {
+const SplitImageBanner = ({children,imageSrc,hasOverlay,minWidth,minHeight,borderRadius}:SplitImageBannerProps) => {
     return (
-        <Box sx={{width:'100%', display:'flex',justifyContent:'center'}}>
+        <Box sx={{width:'100%',display:'flex',justifyContent:'center'}}>
             <Grid container spacing={0} sx={{minWidth:minWidth,minHeight:minHeight}}>
-                <Grid item xs={12}><ImageBox imageSrc={imageSrc} Width={"100%"} Height={"100%"} MarginRight={""} MarginLeft={""} MarginTop={""} objectFit={"cover"} borderRadius={100} hasOverlay={hasOverlay} >{children}</ImageBox></Grid>
+                <Grid item xs={12}><ImageBox imageSrc={imageSrc} Width={"100%"} Height={"100%"} MarginRight={""} MarginLeft={""} MarginTop={""} objectFit={"cover"} borderRadius={borderRadius} hasOverlay={hasOverlay} >{children}</ImageBox></Grid>
                 </Grid></Box>
     );
   };

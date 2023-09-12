@@ -552,7 +552,7 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
               <ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])} numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`], selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={validateData(lapDistanceXAxis)} XAxisDataLap2={validateData(lapDistanceXAxisLap2)} height={350} />
             </ItemWhite>
           </Grid>}
-          {((!showGraph)&&(!showView)) && <Grid item xs={12}><ImageBanner imageSrc={"/images/test5.jpg"} hasOverlay={true} minWidth={'330px'} minHeight={'330px'}  >
+          {((!showGraph)&&(!showView)) && <Grid item xs={12}><ImageBanner imageSrc={"/images/test5.jpg"} hasOverlay={true} minWidth={'330px'} minHeight={'330px'} borderRadius={100}  >
                     <Box sx={{ height: "90%", width: '100%', overflow: 'auto', mt: '5%' }}>
                       <Grid container spacing={2}> 
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>

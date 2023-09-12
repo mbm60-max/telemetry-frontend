@@ -14,6 +14,7 @@ import YouTubePlayerComponent from "./videoPlayer.tsx/playercomponent";
 import ReactDOMServer from 'react-dom/server';
 import SvgRenderer from "../avatar/svgRenderer";
 import ChallengeBanner from "./challengeBanner";
+import TimeRemainingBanner from "./timeRemainingBanner";
 
 interface RecommendedWrapperProps {}
 
@@ -145,7 +146,22 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         console.error('Error fetching data:', error);
       }
     };
+    const fetchAvailableChallenges = async () => {
+      try {
+        const Type = "Challenge"
+        const  challengeResponse: AxiosResponse = await axios.get('/api/retrievechallengecontentapi', {
+          params: { Type },
+        });
+        if (challengeResponse.data.message === 'Success') {
+          console.log(challengeResponse.data.data["ChallengeData"][0])
+         //handle dataychallengeResponse.data.data["VideoData"])
+        }
+      } catch (error) {
+        console.error('Error fetching challenges:', error);
+      }
+    };
     fetchAvailableVideos();
+    fetchAvailableChallenges();
 
   }, []);
   
@@ -163,7 +179,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
     
       <Grid container spacing={4}>
           <Grid item xs={12}sm={isMobile ? 12 : 8} sx={{minWidth:'500px',}}>
-           <ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'800px',overflow:'scroll'}}>
+           <ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'1005px',overflow:'scroll'}}>
            <Grid item xs={12}>
           {videoData.map((item, index) => (
             index === videoData.length - 1 ? (
@@ -194,11 +210,24 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
          
         </Grid>
         
-        <Grid item xs={12}sm={isMobile ? 12 : 4} ><ItemPlayer>
-          <ChallengeBanner challengeName={"Consistency Challenge"} isCompleted={false}></ChallengeBanner></ItemPlayer>
+        <Grid item xs={12}sm={isMobile ? 12 : 4} ><ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> 
+        <Grid container spacing={0} sx={{height:'1005px',overflow:'scroll'}}>
+          
+          <Grid item xs={12} sx={{maxHeight:'200px',display:'flex',justifyContent:'center',mt:1}}>
+            <ChallengeBanner challengeName={"Consistency Challenge"} isCompleted={false} image={"/images/matthew-dockery-s99-JP8P3Hg-unsplash.jpg"}></ChallengeBanner>
+          </Grid>
+          <Grid item xs={12} sx={{maxHeight:'200px',display:'flex',justifyContent:'center'}}>
+            <ChallengeBanner challengeName={"Consistency Challenge"} isCompleted={false} image={"images/sander-trooijen-gcGqnjTO1i8-unsplash.jpg"}></ChallengeBanner>
+          </Grid>
+         
+          <Grid item xs={12} sx={{maxHeight:'200px',display:'flex',justifyContent:'center'}}><ChallengeBanner challengeName={"Consistency Challenge"} isCompleted={false} image={"/images/test1.jpg"}></ChallengeBanner></Grid>
+         
+          </Grid></Box>
+        </ItemPlayer>
         </Grid>
         </Grid>
         </Box>
+       
       </Homepage></Box>
       <Homepage style='homepage-container-reverse-short'></Homepage>
               <Homepage style={'navbar-container-reverse'}>

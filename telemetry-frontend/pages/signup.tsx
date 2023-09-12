@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { MouseEventHandler, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
 import { TextField, Button, Typography, styled } from "@mui/material";
@@ -13,6 +13,9 @@ import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import SettingsObject from "../interfaces/defaultSettingsInterface";
 import validatePassword from "../utils/validatePassword";
 import { generateToken } from "../utils/emailSender";
+import SvgRenderer from "../components/avatar/svgRenderer";
+import UserAvatar from "../components/avatar/userAvatar";
+import ReactDOMServer from "react-dom/server";
 
 const SignUpForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -25,6 +28,9 @@ const SignUpForm: React.FC = () => {
   const [emailError, setEmailError] = useState("");
   const [ipAddressError,setIPAddressError]= useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [pfpSVG20, setPfpSVG20] = useState("");
+  const [pfpSVG40, setPfpSVG40] = useState("");
+  const [pfpSVG60, setPfpSVG60] = useState("");
   const router = useRouter();
 
   const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
@@ -80,7 +86,7 @@ const SignUpForm: React.FC = () => {
       }
       const token = generateToken(10);
       const emailIsVerified = false;
-      await axios.post("/api/registerapi", { username, email, password, token, emailIsVerified });
+      await axios.post("/api/registerapi", { username, email, password, token, emailIsVerified, pfpSVG20,pfpSVG40,pfpSVG60});
       const settingsname = "Default Settings"
       const settingsObject: SettingsObject = {
         data: {
@@ -162,7 +168,8 @@ const SignUpForm: React.FC = () => {
     setUsername(e.target.value);
     setUsernameError(""); // Clear username error on change
   };
-
+  
+  
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
@@ -196,6 +203,33 @@ const SignUpForm: React.FC = () => {
     setConfirmPasswordError(""); // Clear confirm password error on change
   };
 
+  const handleCreateAvatar = () => {
+    const token=generateToken(10);
+    const avatarComponent20 = (
+      <UserAvatar
+        name={token}
+        variant="beam"
+        size={20}
+      />
+    );
+    const avatarComponent40 = (
+      <UserAvatar
+        name={token}
+        variant="beam"
+        size={40}
+      />
+    );
+    const avatarComponent60 = (
+      <UserAvatar
+        name={token}
+        variant="beam"
+        size={60}
+      />
+    );
+    setPfpSVG20(ReactDOMServer.renderToString(avatarComponent20))
+    setPfpSVG40(ReactDOMServer.renderToString(avatarComponent40))
+    setPfpSVG60(ReactDOMServer.renderToString(avatarComponent60))
+  };
   return (
     <>
       <div
@@ -222,8 +256,11 @@ const SignUpForm: React.FC = () => {
                 height: "610px",
               }}
             >
-              <div style={{ marginTop: 100 }}>
+              <div style={{ marginTop:20 }}>
                 <form onSubmit={handleSubmit}>
+                <div style={{ position: "relative", marginBottom: 24 }}>
+                    <Button onClick={handleCreateAvatar}>Generate Avatar</Button><SvgRenderer svgString={pfpSVG60} />
+                  </div>
                   <div style={{ position: "relative", marginBottom: 24 }}>
                     <IconBox icon={BadgeIcon}></IconBox>
                     <TextField

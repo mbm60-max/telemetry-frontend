@@ -4,7 +4,9 @@ import Link from "next/link";
 import React, { useContext, useState } from "react";
 import { JsxElement } from "typescript";
 import SettingsObject from "../../interfaces/defaultSettingsInterface";
+import { AuthContext } from "../authProvider";
 import { SettingsContext } from "../authProviderSettings";
+import SvgRenderer from "../avatar/svgRenderer";
 import Homepage from "../background/background";
 import Footer from "../footer/footer";
 import NavBar from "../navbar/navbar";
@@ -25,6 +27,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const SettingsWrapper = ({}: SettingsWrapperProps) => {
+  const {userName,pfpSVG20,pfpSVG40,pfpSVG60 } = useContext(AuthContext);
   const { alerts,setAlerts,data,setData,appearance,setAppearance,defaults,setDefaults} = useContext(SettingsContext);
  const userSettings:SettingsObject={
    data: data,
@@ -84,7 +87,7 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
           <Grid item xs={6} sx={{borderRight:'1.5px solid white'}}>
             <Grid container spacing={0}>
               <Grid item xs={12}>
-                <Box sx={{mt:4}}>
+                <Box sx={{mt:4}}><SvgRenderer svgString={pfpSVG60}></SvgRenderer>
                 <SettingsTitle title={"Settings"} fontSize={30} /></Box>
               </Grid>
               <Grid item xs={12}>

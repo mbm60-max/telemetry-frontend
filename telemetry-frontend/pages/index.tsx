@@ -37,6 +37,8 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import IconGridInterface from '../interfaces/iconGridInterface';
+import SvgRenderer from '../components/avatar/svgRenderer';
+import CustomAvatar from '../components/avatar/customAvatar';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -51,7 +53,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const Home = () => {
-  const { isLoggedIn, userName } = useContext(AuthContext);
+  const { isLoggedIn, userName,pfpSVG20,pfpSVG40,pfpSVG60 } = useContext(AuthContext);
   const router = useRouter();
   const Card1Fonts = [29, 22, 21]
   const Card1Colors = ["#F6F6F6", "#F6F6F6", "#F6F6F6"]
@@ -214,7 +216,7 @@ const Home = () => {
                         </Grid>
                       </Grid>
                     </Box>
-                  </div>{isLoggedIn && <h1>Hello, {userName}!</h1>}
+                  </div>
                 </Homepage>
                 </Grid>
          

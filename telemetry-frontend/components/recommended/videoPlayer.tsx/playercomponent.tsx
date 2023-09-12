@@ -1,23 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import YouTube from 'react-youtube';
+import Skeleton from '@mui/material/Skeleton';
 
 interface YouTubePlayerComponentProps{
     videoId:string
 }
 const YouTubePlayerComponent = ({ videoId}:YouTubePlayerComponentProps) => {
+  const [isReady, setIsReady] = useState(false);
+
     // Set up event handlers
     const onReady = (event: { target: any; }) => {
       // Access the player instance
       const player = event.target;
   
       // For example, you can automatically play the video
-      player.playVideo();
-
+      //player.playVideo();
+      console.log("fired")
+      //setIsReady(true);
     };
   
     const onError = (error: any) => {
       console.error('YouTube Player Error:', error);
     };
+
+    
+
     const containerStyle: React.CSSProperties = {
         width: '100%',
         minWidth: '300px',
@@ -51,9 +58,11 @@ const YouTubePlayerComponent = ({ videoId}:YouTubePlayerComponentProps) => {
       };
       return (
         <div style={containerStyle}>
+        
           <YouTube
             videoId={videoId}
             onError={onError}
+            onReady={onReady}
             style={innerStyle}
             opts={{
               width: '640', // Set your desired width
@@ -67,6 +76,12 @@ const YouTubePlayerComponent = ({ videoId}:YouTubePlayerComponentProps) => {
             }}
           />
           <div style={borderStyle}></div>
+          {isReady ? null : (
+        // Render a skeleton component while the video is not ready
+        <div style={borderStyle}>
+          <Skeleton variant="rectangular" width={640} height={250} />
+        </div>
+      )}
         </div>
       );
   };

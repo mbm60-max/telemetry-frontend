@@ -23,7 +23,12 @@ const LoginForm: React.FC = () => {
     });
   const loginResponse: AxiosResponse = await axios.get('/api/loginapi', {
     params: { username, password },
-  });const handleBackendLogin = () => {
+  });
+  const pfpResponse: AxiosResponse = await axios.get('/api/retrievepfpapi', {
+    params: { username},
+  });
+
+  const handleBackendLogin = () => {
     // Replace with your username value
     const usernameValue = 'example_username';
 
@@ -51,7 +56,8 @@ const LoginForm: React.FC = () => {
       await axios.get('/api/loginapi', {
         params: { username, password },
       });
-      setUserLoggedIn(username);
+      console.log(pfpResponse.data.pfpSVG)
+      setUserLoggedIn(username,pfpResponse.data.pfpSVG20,pfpResponse.data.pfpSVG40,pfpResponse.data.pfpSVG60);
       setPasswordError('');
       setUsernameError('');
       // Clear the form

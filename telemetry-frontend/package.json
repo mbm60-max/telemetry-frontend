@@ -22,6 +22,7 @@
     "@types/react-dom": "18.2.4",
     "apexcharts": "^3.40.0",
     "axios": "^1.4.0",
+    "boring-avatars": "^1.10.1",
     "chroma-js": "^2.4.2",
     "dotenv": "^16.3.1",
     "eslint": "8.41.0",
@@ -34,7 +35,8 @@
     "nodemailer": "^6.9.5",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
-    "react-dom": "18.2.0",
+    "react-dom": "^18.2.0",
+    "react-svgmt": "^2.0.2",
     "react-youtube": "^10.1.0",
     "signalr": "^2.4.3",
     "typescript": "5.0.4"

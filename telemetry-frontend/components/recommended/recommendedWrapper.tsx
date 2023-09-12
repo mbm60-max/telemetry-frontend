@@ -2,14 +2,18 @@ import { Button, createTheme, Divider, Grid, Paper, styled, Typography, useMedia
 import { Box, Container } from "@mui/system";
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { JsxElement } from "typescript";
 import SettingsObject from "../../interfaces/defaultSettingsInterface";
 import { SettingsContext } from "../authProviderSettings";
+import UserAvatar from "../avatar/userAvatar";
 import Homepage from "../background/background";
 import Footer from "../footer/footer";
 import NavBar from "../navbar/navbar";
 import YouTubePlayerComponent from "./videoPlayer.tsx/playercomponent";
+import ReactDOMServer from 'react-dom/server';
+import SvgRenderer from "../avatar/svgRenderer";
+import ChallengeBanner from "./challengeBanner";
 
 interface RecommendedWrapperProps {}
 
@@ -39,24 +43,65 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
   const [allVideosArray, setAllVideosArray] = useState<any[]>([]); // Specify the type for allVideosArray
   const [videoData, setVideoData] = useState<VideoContent[]>([]); // Specify the type for videoData
   const [dataFetched, setDataFetched] = useState(false);
+  const [loadMore,setLoadMore] = useState(false);
+  const [videoIndex, setVideoIndex] = useState(0);
+  const [hasMoreVideos, setHasMoreVideos]= useState(true);
   // Function to add a new video to the videoData array
-  useEffect(() => {
-    if (allVideosArray.length > 0 && dataFetched) {
-      const videoArray: VideoContent[] = [];
-      for (let i = 0; i < 3; i++) {
-        if (allVideosArray[i]) {
-          let itemObject: VideoContent = {
-            url: allVideosArray[i].VideoId,
-            title: allVideosArray[i].Title,
-            postedBy: allVideosArray[i].Creator,
-          };
-          videoArray.push(itemObject);
-        }
-      }
-      setVideoData((prevVideoData) => [...prevVideoData, ...videoArray]);
-    }
-  }, [allVideosArray, dataFetched]);
 
+  const observer = useRef<IntersectionObserver | null>(null);
+  
+  const thirdLastVideoElement = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMoreVideos) {
+          setLoadMore((prevLoadMore) => !prevLoadMore);
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [observer,hasMoreVideos]
+  );
+
+
+  const handleVideosUpdate=(originalIndex:number)=>{
+    const videoArray: VideoContent[] = [];
+        for (let i = videoIndex; i < originalIndex; i++) {
+          if (allVideosArray[videoIndex]) {
+            let itemObject: VideoContent = {
+              url: allVideosArray[i].VideoId,
+              title: allVideosArray[i].Title,
+              postedBy: allVideosArray[i].Creator,
+            };
+            videoArray.push(itemObject);
+            
+          }
+        }setVideoData((prevVideoData) => [...prevVideoData, ...videoArray]);
+        
+        setVideoIndex(originalIndex);
+  }
+  useEffect(() => {
+    
+    let originalIndex = videoIndex+5;
+    if (allVideosArray.length > 0 && dataFetched) {
+      if(originalIndex<allVideosArray.length){
+        handleVideosUpdate(originalIndex);
+      }else if (videoIndex <=allVideosArray.length){
+        let originalIndex = videoIndex+(allVideosArray.length-videoIndex);
+        handleVideosUpdate(originalIndex);
+        setHasMoreVideos(false);
+      }else{
+        setHasMoreVideos(false);
+      }
+     
+      
+    }
+  }, [allVideosArray, dataFetched,loadMore]);
+
+ 
+  useEffect(() => {console.log(hasMoreVideos)},[hasMoreVideos])
   const StyledVerticalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
     borderColor: "#EBF2E8", // You can change the color to any valid CSS color value
@@ -68,6 +113,9 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
   width:'99%',
   }));
 
+  const handleChange=()=>{
+    setLoadMore(!loadMore);
+  }
 
   const isMobile = useMediaQuery('(max-width:800px)')
   const cantShowTitle = useMediaQuery('(max-width:950px)')
@@ -90,7 +138,6 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
           params: { searchQuery },
         });
         if (ytQueryResponse.data.message === 'Success') {
-         console.log(ytQueryResponse.data);
          setAllVideosArray(ytQueryResponse.data.data["VideoData"])
          setDataFetched(true); 
         }
@@ -98,7 +145,6 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         console.error('Error fetching data:', error);
       }
     };
-    console.log("called")
     fetchAvailableVideos();
 
   }, []);
@@ -114,41 +160,45 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
       <Box  sx={{
         width: "100%",
         height: "100%",display:'flex',justifyContent:'center'}}>
-    <Box
-      sx={{
-        width: "95%",
-        height: "100%",
-        backgroundColor: "rgba(8, 13, 56, 0.4)",
-        borderRadius: 1.5,
-        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",
-        padding:1
-      }}>
+    
       <Grid container spacing={4}>
           <Grid item xs={12}sm={isMobile ? 12 : 8} sx={{minWidth:'500px',}}>
-           <ItemPlayer><Box sx={{width:'90%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'800px',overflow:'scroll'}}>
-           <Grid item xs={12}   >
+           <ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'800px',overflow:'scroll'}}>
+           <Grid item xs={12}>
           {videoData.map((item, index) => (
-            <Grid container spacing={0} key={index} sx={{mb:2,paddingLeft:0,paddingTop:1,paddingBottom:0}}>
-              <Grid item xs={cantShowTitle ? 12:9}   >
-              <YouTubePlayerComponent  videoId={item.url} />
+            index === videoData.length - 1 ? (
+              <Grid container spacing={0} key={index} sx={{mb:2,paddingLeft:0,paddingTop:1,paddingBottom:0}}>
+              <Grid item xs={cantShowTitle ? 12:9}    >
+                <div ref={thirdLastVideoElement}>
+              <YouTubePlayerComponent  videoId={item.url} /></div>
               </Grid>
               {cantShowTitle ? null : (
   <Grid item xs={3} >
     <Box sx={{display:'flex',justifyContent:'start',paddingLeft:2}}><Box sx={{display:'flex',justifyContent:'start'}}><Grid container spacing={1}><Grid item xs={12}><Typography sx={{ color: 'black' }} fontSize={20} fontFamily={"Satoshi"} fontWeight={"bold"}>{item.title}</Typography></Grid><Grid item xs={12}><Typography sx={{ color: 'grey' }} fontSize={15} fontFamily={"Satoshi"} fontWeight={"bold"}>{item.postedBy}</Typography></Grid></Grid></Box></Box>
     
   </Grid>
+)}</Grid>):<Grid container spacing={0} key={index} sx={{mb:2,paddingLeft:0,paddingTop:1,paddingBottom:0}}>
+<Grid item xs={cantShowTitle ? 12:9}   >
+<YouTubePlayerComponent  videoId={item.url} />
+</Grid>
+{cantShowTitle ? null : (
+<Grid item xs={3} >
+<Box sx={{display:'flex',justifyContent:'start',paddingLeft:2}}><Box sx={{display:'flex',justifyContent:'start'}}><Grid container spacing={1}><Grid item xs={12}><Typography sx={{ color: 'black' }} fontSize={20} fontFamily={"Satoshi"} fontWeight={"bold"}>{item.title}</Typography></Grid><Grid item xs={12}><Typography sx={{ color: 'grey' }} fontSize={15} fontFamily={"Satoshi"} fontWeight={"bold"}>{item.postedBy}</Typography></Grid></Grid></Box></Box>
+
+</Grid>
 )}</Grid>
+            
+            
           ))}</Grid>
         </Grid></Box></Box></ItemPlayer>
          
         </Grid>
         
-        <Grid item xs={12}sm={isMobile ? 12 : 4} >
-           daily challenge content  (track car compound conditions, best lap time vs top 10 global best, when you start sessions queries best , then updates if you beat it, keeps track of your best, would need to actually verify )
-           tips to improve ml based ?
+        <Grid item xs={12}sm={isMobile ? 12 : 4} ><ItemPlayer>
+          <ChallengeBanner challengeName={"Consistency Challenge"} isCompleted={false}></ChallengeBanner></ItemPlayer>
         </Grid>
         </Grid>
-        </Box></Box>
+        </Box>
       </Homepage></Box>
       <Homepage style='homepage-container-reverse-short'></Homepage>
               <Homepage style={'navbar-container-reverse'}>

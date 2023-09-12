@@ -92,7 +92,7 @@ const resultDict: Record<string, WarningObject> = {};
     
     <Box sx={{ width: '100vw', height: '100%'}}>
     <Button className="parallelogram-buttonBlueXS" onClick={handleClose} sx={{postion:'absolute',top:0,left:'90%'}}>Clear<ClearIcon/></Button>
-   <Grid container spacing={4}><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>  <Item><HorizontalBanner GridContent={[`Ignored Warnings`]} fontSizes={[35]} needsBackground={false} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></Item></Grid>
+   <Grid container spacing={4}><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}>  <Item><HorizontalBanner GridContent={[`Ignored Warnings`]} fontSizes={[35]} needsBackground={false} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></Item></Grid>
    <Grid item xs={12}><Box sx={{height:'0px'}}></Box></Grid>
             
             
@@ -101,8 +101,8 @@ const resultDict: Record<string, WarningObject> = {};
   <Table sx={{ minWidth: 150 }} aria-label="customized table">
     <TableHead>
       <TableRow>
-        <StyledTableCell><HorizontalBanner GridContent={["UPPER LIMITS"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></StyledTableCell>
-        <StyledTableCell><HorizontalBanner GridContent={["LOWER LIMITS"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} /></StyledTableCell>
+        <StyledTableCell><HorizontalBanner GridContent={["UPPER LIMITS"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></StyledTableCell>
+        <StyledTableCell><HorizontalBanner GridContent={["LOWER LIMITS"]} needsBackground={false} fontSizes={[29]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></StyledTableCell>
       </TableRow>
     </TableHead>
     <TableBody>

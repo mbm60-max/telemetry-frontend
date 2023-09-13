@@ -92,14 +92,14 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
         
 
         await this.connection.start();
-        await this.sendUserName(this.userName);
-        await this.sendIPAddress(this.ipAddress);
-        await this.sendGameType(this.gameType);
+        //await this.sendUserName(this.userName);
+        //await this.sendIPAddress(this.ipAddress);
+        //await this.sendGameType(this.gameType);
         console.log("SignalR connection established.");
       } catch (error) {
         console.error("Error establishing SignalR connection: ", error);
         // Retry after 3 seconds
-        setTimeout(this.startConnection, 200000);//3000 before
+        setTimeout(this.startConnection, 20000);//3000 before,20000
       }
     };
     // Set the callback function for handleFullPacket
@@ -112,15 +112,15 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
     this.handleFullPacketCallback = null;
   };
     public handleFullPacket = (receivedExtendedPacket: ExtendedPacket) => {
-      const { userName } = useContext(AuthContext);
-        //console.log('Received FullPacketMessage:', receivedExtendedPacket);
+      //const { userName } = useContext(AuthContext);
+        console.log('Received FullPacketMessage:', receivedExtendedPacket);
         if (this.handleFullPacketCallback) {
           
           if (!this.isFirstTimeFullPacket) {
             if (this.connection) {
               // Send the response back to the server
-              this.connection.invoke("SendResponse", userName)
-                  .catch(error => console.error("Error sending response:", error));
+             // this.connection.invoke("SendResponse", userName)
+              //    .catch(error => console.error("Error sending response:", error));
              this.isFirstTimeFullPacket = true;
          } else {
               console.error("SignalR connection is null.");

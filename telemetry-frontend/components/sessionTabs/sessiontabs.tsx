@@ -283,7 +283,7 @@ export default function BasicTabs() {
     const [rpmClutchToGearboxStream,setRpmFromClutchToGearbox]= useState([{ x: 0, y: -1 }]);
     const [distanceFromStart, setDistanceFromStart] = useState(-1);
     const [setupData, setSetupData] = useState<SetupDataInterface>(getEmptySetupObject());
-    const signalRService = new SignalRService(userName,defaults.defualtIPAddress,"sport");
+    const signalRService = new SignalRService(userName,"192.168.1.200","sport");//change to ip address
     useEffect(() => {
      signalRService.startConnection();
   

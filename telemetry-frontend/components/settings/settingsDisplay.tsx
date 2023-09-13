@@ -170,16 +170,19 @@ const handlePasswordValidation =(newPassword: string) => {
     return { isValid: false, errorMessage: "Internal Issue" };
   };
   const  validateNotificationDelay = (value: string | number) => {
-    if(value > 1800 || value < 5){
-      return{ isValid: false, errorMessage: "Value must be between 5 and 1800" };
+    if(typeof value == "number"){
+      if(value > 1800 || value < 5){
+        return{ isValid: false, errorMessage: "Value must be between 5 and 1800" };
+      }
     }
     return { isValid: true, errorMessage: "" };
       
   }
   const validateReviewLimit = (value: string | number) => {
+    if(typeof value == "number"){
     if(value > 100 || value < 10){
       return{ isValid: false, errorMessage: "Value must be between 10 and 100" };
-    }
+    }}
     return { isValid: true, errorMessage: "" };   
   }
 

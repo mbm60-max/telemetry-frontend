@@ -31,7 +31,7 @@ export default function BoxedNumber({width,targetAttribute,toolTipContent,string
     <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
         <Grid container spacing={2}><Grid item xs={8}><Typography id="input-slider" gutterBottom>
         {targetAttribute}&nbsp;{targetAttributeValue}{stringValue}
-      </Typography></Grid><Grid item xs={4}>  <InfoToolTip name={targetAttribute} info={tooltipInfo}/></Grid></Grid>
+      </Typography></Grid><Grid item xs={4}>  <InfoToolTip name={targetAttribute} info={tooltipInfo} iconColor={''}/></Grid></Grid>
     </Box>
   );
 }

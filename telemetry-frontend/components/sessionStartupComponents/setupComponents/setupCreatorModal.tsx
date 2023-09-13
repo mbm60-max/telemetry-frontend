@@ -249,7 +249,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
         <Box sx={style}>
         <Grid container spacing={12}  direction="row">
         <Grid item xs={12}> <Grid container spacing={8}  direction="row"><Grid item xs={12}><Box sx={{display:'flex',justifyContent:'center'}}>
-        <HorizontalBanner GridContent={["SETUP CREATOR"]} needsBackground={false} fontSizes={[40]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box></Grid>
+        <HorizontalBanner GridContent={["SETUP CREATOR"]} needsBackground={false} fontSizes={[40]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></Box></Grid>
         <Grid item xs={12}><Grid container spacing={4}  direction="row">
         <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <TextField className="textBox"
             id="name"
@@ -275,7 +275,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
                   <Grid container spacing={8}  direction="row">
         <Grid item xs={12}>
                   <StyledDivider className="divider">  
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["GENRERAL"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["GENRERAL"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></Box>
                   </StyledDivider>
                   </Grid>
                   <Grid item xs={12}>
@@ -358,7 +358,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
         <Grid item xs={12}>
                           <StyledDivider className="divider">
                   
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["TRANSMISSION"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["TRANSMISSION"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></Box>
                   </StyledDivider></Grid>
                   <Grid item xs={12}>
       <Grid container rowSpacing={4}  columnSpacing={6}  direction="row">
@@ -418,7 +418,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
            <Grid container spacing={8}  direction="row">
         <Grid item xs={12}>
             <StyledDivider className="divider">       
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["SUSPENSION AND AERO"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["SUSPENSION AND AERO"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></Box>
                   </StyledDivider>
                   </Grid>
                   <Grid item xs={12}>
@@ -534,7 +534,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
             <Grid container spacing={8}  direction="row">
         <Grid item xs={12}>
             <StyledDivider className="divider">       
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["DIFFERENTIAL"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["DIFFERENTIAL"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></Box>
                   </StyledDivider>
                   </Grid>
                   <Grid item xs={12}>
@@ -624,7 +624,7 @@ export default function SetupCreatorModal({onSetupAddition}:SetupCreatorModalPro
           </Grid></Grid></Grid>  </Grid> <Grid item xs={12}> <Grid container spacing={8}  direction="row">
           <Grid item xs={12} >
           <StyledDivider className="divider">       
-                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["SUBMISSION"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} /></Box>
+                  <Box sx={{display:'flex',justifyContent:'center'}}><HorizontalBanner GridContent={["SUBMISSION"]} needsBackground={false} fontSizes={[35]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} /></Box>
                   </StyledDivider></Grid><Grid item xs={12} >
         <Grid container spacing={8}  direction="row">
         <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}> <TextField className="textBox"

@@ -81,7 +81,7 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const router = useRouter();
-  const { car, compound, track } = router.query;
+  const { car, compound, track,challenge } = router.query;
   const { isLoggedIn, userName } = useContext(AuthContext);
   const {defaults,alerts} = useContext(SettingsContext);
   const warningContext = useContext(WarningContext);

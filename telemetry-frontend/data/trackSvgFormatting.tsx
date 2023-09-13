@@ -89,6 +89,27 @@
   height: '100%',
       },
     },
+    sainteCroixC: {
+      imageProps: {
+        position: PositionType.Absolute,
+  top: '60%',
+  left: '57%',
+  transform: 'translate(-72%, -50%)rotate(91deg)',
+  transformOrigin: 'center',
+  width: '100%',
+  height: '100%',
+  objectFit: ObjectFitType.Fill,
+  zIndex: 1,
+      },
+      trackProps: {
+        top: '10%',
+  left: '-15%',
+  transform: 'rotate(90deg)',
+  transformOrigin: 'center',
+  width: '100%',
+  height: '100%',
+      },
+    },
     // Add more track names and their specific props here
   };
 

@@ -38,15 +38,28 @@ interface VideoContent{
   postedBy:string;
 }
 
+interface ChallengeContent{
+  Track:string;
+  Car:string;
+  Target:number;
+}
+
 
 const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
 
   const [allVideosArray, setAllVideosArray] = useState<any[]>([]); // Specify the type for allVideosArray
+  const [challengeData, setChallengeData] = useState<ChallengeContent[]>([]); 
+  const [allChallengesArray, setAllChallengesArray] = useState<any[]>([]);
   const [videoData, setVideoData] = useState<VideoContent[]>([]); // Specify the type for videoData
   const [dataFetched, setDataFetched] = useState(false);
+  const [challengeDataFetched,setChallengeDataFetched]= useState(false);
   const [loadMore,setLoadMore] = useState(false);
   const [videoIndex, setVideoIndex] = useState(0);
   const [hasMoreVideos, setHasMoreVideos]= useState(true);
+  const challengeTypes = ["Consistency","Pace","Endurance"]
+  const challengeLetters = ["Challenge A","Challenge B","Challenge C"]
+  const challengeImages = ["/images/matthew-dockery-s99-JP8P3Hg-unsplash.jpg","images/sander-trooijen-gcGqnjTO1i8-unsplash.jpg","/images/test1.jpg"]
+  const [lastUpdatedDate,setLastUpdatedDate]=useState('');
   // Function to add a new video to the videoData array
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -67,6 +80,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
   );
 
 
+  
   const handleVideosUpdate=(originalIndex:number)=>{
     const videoArray: VideoContent[] = [];
         for (let i = videoIndex; i < originalIndex; i++) {
@@ -83,6 +97,28 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         
         setVideoIndex(originalIndex);
   }
+
+
+  useEffect(() => {
+  const handleChallengeUpdate=(originalIndex:number)=>{
+    const challengeArray: ChallengeContent[] = [];
+        for (let i = 0; i < originalIndex; i++) {
+          if (allChallengesArray[i]) {
+            let itemObject: ChallengeContent = {
+              Track: allChallengesArray[i].Track,
+              Car: allChallengesArray[i].Car,
+              Target: allChallengesArray[i].Target,
+            };
+            challengeArray.push(itemObject);
+            
+          }
+        }setChallengeData((prevChallengeData) => [...prevChallengeData, ...challengeArray]);
+        
+  }
+  handleChallengeUpdate(3);
+  
+}, [allChallengesArray, challengeDataFetched]);
+
   useEffect(() => {
     
     let originalIndex = videoIndex+5;
@@ -100,6 +136,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
       
     }
   }, [allVideosArray, dataFetched,loadMore]);
+
 
  
   useEffect(() => {console.log(hasMoreVideos)},[hasMoreVideos])
@@ -153,8 +190,22 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
           params: { Type },
         });
         if (challengeResponse.data.message === 'Success') {
-          console.log(challengeResponse.data.data["ChallengeData"][0])
+          setAllChallengesArray(challengeResponse.data.data["ChallengeData"])
+          setChallengeDataFetched(true); 
          //handle dataychallengeResponse.data.data["VideoData"])
+        }
+      } catch (error) {
+        console.error('Error fetching challenges:', error);
+      }
+    };
+    const fetchLastDate = async () => {
+      try {
+        const collectionName = "LastUpdatedChallenge"
+        const  lastUpdateDateResponse: AxiosResponse = await axios.get('/api/getlastupdateapi', {
+          params: { collectionName },
+        });
+        if (lastUpdateDateResponse.data.message === 'Success') {
+          setLastUpdatedDate(lastUpdateDateResponse.data.data["lastUpdatedDate"]);
         }
       } catch (error) {
         console.error('Error fetching challenges:', error);
@@ -162,7 +213,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
     };
     fetchAvailableVideos();
     fetchAvailableChallenges();
-
+    fetchLastDate();
   }, []);
   
   return (<>
@@ -179,7 +230,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
     
       <Grid container spacing={4}>
           <Grid item xs={12}sm={isMobile ? 12 : 8} sx={{minWidth:'500px',}}>
-           <ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'1005px',overflow:'scroll'}}>
+           <ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'1105px',overflow:'scroll'}}>
            <Grid item xs={12}>
           {videoData.map((item, index) => (
             index === videoData.length - 1 ? (
@@ -211,16 +262,12 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         </Grid>
         
         <Grid item xs={12}sm={isMobile ? 12 : 4} ><ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> 
-        <Grid container spacing={0} sx={{height:'1005px',overflow:'scroll'}}>
-          
-          <Grid item xs={12} sx={{maxHeight:'200px',display:'flex',justifyContent:'center',mt:1}}>
-            <ChallengeBanner challengeName={"Consistency Challenge"} isCompleted={false} image={"/images/matthew-dockery-s99-JP8P3Hg-unsplash.jpg"}></ChallengeBanner>
-          </Grid>
-          <Grid item xs={12} sx={{maxHeight:'200px',display:'flex',justifyContent:'center'}}>
-            <ChallengeBanner challengeName={"Consistency Challenge"} isCompleted={false} image={"images/sander-trooijen-gcGqnjTO1i8-unsplash.jpg"}></ChallengeBanner>
-          </Grid>
-         
-          <Grid item xs={12} sx={{maxHeight:'200px',display:'flex',justifyContent:'center'}}><ChallengeBanner challengeName={"Consistency Challenge"} isCompleted={false} image={"/images/test1.jpg"}></ChallengeBanner></Grid>
+        <Grid container spacing={0} sx={{height:'1105px',overflow:'scroll',mb:1}}>
+        {challengeData.map((item, index) => (
+          <Grid item xs={12}  key={index}sx={{maxHeight:'550px',display:'flex',justifyContent:'center',mt:2}}>
+          <ChallengeBanner challengeName={challengeTypes[index]} isCompleted={false} image={challengeImages[index]} trackName={item.Track} carName={item.Car} letterName={challengeLetters[index]} targetValue={item.Target} lastUpdatedDate={lastUpdatedDate}></ChallengeBanner>
+        </Grid>
+        ))}
          
           </Grid></Box>
         </ItemPlayer>

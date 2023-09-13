@@ -8,7 +8,7 @@ interface ImageBoxProps{
   MarginLeft:string|number
   MarginTop:string|number
   objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
-  borderRadius:number;
+  borderRadius:number|string;
   children:React.ReactNode;
   hasOverlay:boolean;
 }

@@ -41,19 +41,7 @@ const BlackBox = styled(Box)(({ theme }) => ({
   paddingTop:15,
   paddingBottom:15,
 }));
-const WrappedImageBox = () => (
-  <BlackBox>
-    <ImageBox
-      Width={'100%'}
-      Height={'400px'}
-      MarginRight={'0px'}
-      MarginLeft={'0px'}
-      MarginTop={'0px'}
-      imageSrc="/images/spa.svg" borderRadius={0} hasOverlay={false}    >
 
-      </ImageBox>
-  </BlackBox>
-);
 
 interface GeneralGridProps{
   throttleStream: { x: number; y: number; }[];
@@ -135,8 +123,8 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
     return Math.round(totalSeconds);
   }
 
-  const fuelObject = calculateRemainingFuel(fuelStartLap,gasLevel,convertTimeToSeconds(lastLapTime)); //change to fuel start lap and gas level and lap time
-  const FuelObjectMaps = getFuelOnConsumptionByRelativeFuelLevels(fuelObject,convertTimeToSeconds(lastLapTime),gasLevel); //change to lap time,and gas level
+  const fuelObject = calculateRemainingFuel(fuelStartLap,gasLevel,convertTimeToSeconds(lastLapTime)); 
+  const FuelObjectMaps = getFuelOnConsumptionByRelativeFuelLevels(fuelObject,convertTimeToSeconds(lastLapTime),gasLevel); 
 return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>

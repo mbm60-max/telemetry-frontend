@@ -29,10 +29,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           } else {
             // Find the document with the specified username
         const userDoc = await SettingsCollection.findOneAndDelete({ username: username });
-
-        if (!userDoc.value) {
-          // Return an error that the specific requested document doesn't exist
-          res.status(200).json({ message: 'Document never existed ' });
+        if(userDoc){
+          if (!userDoc.value) {
+            // Return an error that the specific requested document doesn't exist
+            res.status(200).json({ message: 'Document never existed ' });
+          }
         }
         }
   

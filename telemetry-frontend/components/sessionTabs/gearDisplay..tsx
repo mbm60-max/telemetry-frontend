@@ -50,6 +50,11 @@ const WrappedTypography = styled(Typography)(({ theme }) => ({
 }));
 
 export default function TwoValueDisplay({ dataValueOne, dataValueTwo, nameOne, nameTwo }: TwoValueProps) {
+  const checkNullDataValues=(dataValue:number)=>{
+    if(dataValue==-1){
+      return 'NONE'
+    }return dataValue;
+  }
   return (
     <Box sx={{display: 'flex', alignItems: 'center',backgroundColor: "rgba(8, 13, 56, 0)",
         borderRadius: 1.5,
@@ -61,7 +66,7 @@ export default function TwoValueDisplay({ dataValueOne, dataValueTwo, nameOne, n
       <Grid item xs={12} sm={12} > <Typography sx={{fontSize:35,overflow:'auto',whiteSpace:'nowrap'}}variant="body1" fontFamily={"Yapari"}>{nameOne}</Typography></Grid>
       <Grid item xs={12} sm={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor:'#FB9536',color:'white',width:'50%',borderRadius:'30px'}}>
               <Typography sx={{ overflow: "scroll", textAlign:'center' }}fontFamily={"Satoshi"} fontSize={29}fontWeight="bold">
-              {dataValueOne}
+              {checkNullDataValues(dataValueOne)}
             </Typography>
             </Box></Grid>
       </Grid>
@@ -73,7 +78,7 @@ export default function TwoValueDisplay({ dataValueOne, dataValueTwo, nameOne, n
       <Grid item xs={12} sm={12}> <Typography sx={{fontSize:35,overflow:'auto',whiteSpace:'nowrap'}}variant="body1" fontFamily={"Yapari"}>{nameTwo}</Typography></Grid>
       <Grid item xs={12} sm={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{backgroundColor:'#FB9536',color:'white',width:'50%',borderRadius:'30px'}}>
               <Typography sx={{ overflow: "scroll", textAlign:'center' }}fontFamily={"Satoshi"} fontSize={29}fontWeight="bold">
-              {dataValueTwo}
+              {checkNullDataValues(dataValueTwo)}
             </Typography>
             </Box></Grid>
       </Grid>

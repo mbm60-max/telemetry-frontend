@@ -1,13 +1,8 @@
-import { Button, Grid, Paper, styled } from "@mui/material";
-import { Box, Container } from "@mui/system";
-import Link from "next/link";
+import { Button, Grid, Paper, styled,Box, useMediaQuery } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { JsxElement } from "typescript";
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+
 import StatusBar from "./statusBar";
 import chroma from 'chroma-js';
-import ExtendedPacket from "../../../interfaces/extendedPacketInterface";
-import SignalRService from "../../../utils/signalrEndpoint";
 
 interface tyreTempKeys{
   frontLeftTemp:number,
@@ -50,24 +45,37 @@ const numberOfSteps = 20;
 //console.log(colorsBetween);
 
 const TyreTemps = ({frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp}:tyreTempKeys) => {
- 
+  const isLessThan600= useMediaQuery('(max-width:600px)')
+    const isLessThan1000= useMediaQuery('(max-width:1000px)')
+
+  const calcSwitchNames =()=>{
+   if(isLessThan1000&&!isLessThan600){
+    return false;
+   }return true;
+  }
+  const flTyre = calcSwitchNames() ? "Front Left" : "FL";
+  const frTyre = calcSwitchNames() ? "Front Right" : "FR";
+  const rlTyre = calcSwitchNames() ? "Rear Left" : "RL";
+  const rrTyre = calcSwitchNames() ? "Rear Right" : "RR";
   return (
-    <div style={{ height: "100%", width: "100%" }}>
-      <Grid container spacing={2} columns={12}>
-        <Grid item xs={12} sm={6}>
-          <Box sx={{ height: 230, backgroundColor: "white", border: "3px solid black", minWidth: "100px" }}>
-            <StatusBar tyre={"FL"} temp={frontLeftTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, frontLeftTemp, 85)} />
-            <StatusBar tyre={"RL"} temp={frontRightTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, frontRightTemp, 85)} />
-          </Box>
+    
+      <Grid container spacing={1}>
+        <Grid item xs={6} >
+         
+            <StatusBar tyre={flTyre} temp={frontLeftTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, frontLeftTemp, 85)} />
+           
+         
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <Box sx={{ height: 230, backgroundColor: "white", border: "3px solid black", minWidth: "100px" }}>
-            <StatusBar tyre={"FR"} temp={rearLeftTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, rearLeftTemp, 85)} />
-            <StatusBar tyre={"RR"} temp={rearRightTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, rearRightTemp, 85)} />
-          </Box>
+        <Grid item xs={6}> <StatusBar tyre={rlTyre} temp={frontRightTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, frontRightTemp, 85)} /></Grid>
+        <Grid item xs={6}><StatusBar tyre={frTyre} temp={rearLeftTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, rearLeftTemp, 85)} /></Grid>
+        <Grid item xs={6}>
+          
+            
+            <StatusBar tyre={rrTyre} temp={rearRightTemp} color={colorInterpolation(Red, Green, Blue, numberOfSteps, rearRightTemp, 85)} />
+         
         </Grid>
       </Grid>
-    </div>
+
   );
 };
 

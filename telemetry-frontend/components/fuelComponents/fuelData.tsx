@@ -61,7 +61,7 @@ const FuelDataDisplay = ({FuelObjectMaps,gasLevel}: FuelDataProps) => {
                   <StyledTableCell align="right">{roundTo1DP(row.lapsRemainingOnCurrentFuel)}</StyledTableCell>
                   <StyledTableCell align="right">{roundTo1DP(row.timeRemainingOnCurrentFuel)}</StyledTableCell>
                   <StyledTableCell align="right">{roundTo1DP(row.lapTimeDiff)}</StyledTableCell>
-                  <StyledTableCell align="right">{roundTo1DP(row.lapTimeExpected)}</StyledTableCell>
+                  <StyledTableCell align="right">{row.lapTimeExpected}</StyledTableCell>
                 </StyledTableRow>
               ))}
           </TableBody>

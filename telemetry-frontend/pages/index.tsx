@@ -1,19 +1,12 @@
 'use client'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import NavBar from '../components/navbar/navbar';
-import DynamicChart from '../components/sessionTabs/chart';
-import SideNav from '../components/sideNav';
-import TrackSelection from '../components/sessionStartupComponents/setupComponents/trackSelection';
-import TyreTemps from '../components/sessionTabs/tyresTempindicator/tyreTemps';
 import { Card, Container, Button, Typography } from '@mui/material';
-import ThrottleComponent from '../components/bin/throttle';
 import Homepage from '../components/background/background';
 import BasicCard from '../components/card';
 import '../calltoaction.css';
 import Link from "next/link";
-import BasicChart from '../components/sessionTabs/chart';
 import { AuthContext } from '../components/authProvider';
-import GearDisplay from '../components/sessionTabs/gearDisplay.';
 import { useRouter } from 'next/router';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -23,9 +16,6 @@ import HomepageTrack from '../components/homepageTrackDispaly';
 import LeftContentBox from '../components/leftHomePageContent';
 import HorizontalBanner from '../components/horizontalBanner/horizontalBanner';
 import BannerInterface from '../interfaces/bannerContent';
-import SportsScoreIcon from '@mui/icons-material/SportsScore';
-import { Sports } from '@mui/icons-material';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import LabelIcon from '@mui/icons-material/Label';
 import ImageBanner from '../components/splitImageBanner';
 import Footer from '../components/footer/footer';
@@ -37,8 +27,6 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import PinterestIcon from '@mui/icons-material/Pinterest';
 import IconGridInterface from '../interfaces/iconGridInterface';
-import SvgRenderer from '../components/avatar/svgRenderer';
-import CustomAvatar from '../components/avatar/customAvatar';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),

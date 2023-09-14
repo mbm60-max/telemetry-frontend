@@ -1,3 +1,5 @@
+import { convertSecondsToTime } from "./secondsToString";
+
  class fuelConsumptionObject {
     fuelConsumedPerLap: number = 0;
     lapsRemaining: number = -1;
@@ -12,7 +14,7 @@ export class fuelMapObject {
     lapsRemainingOnCurrentFuel: number = 0;
     timeRemainingOnCurrentFuel: number = 0;
     lapTimeDiff: number = 0;
-    lapTimeExpected: number = 0;
+    lapTimeExpected: string = '';
 }
 
 const  getFuelOnConsumptionByRelativeFuelLevels=(fuelObject:fuelConsumptionObject,lastLapTime:number,gasLevel:number)=>{
@@ -39,7 +41,7 @@ const  getFuelOnConsumptionByRelativeFuelLevels=(fuelObject:fuelConsumptionObjec
                 1 - relativeFuelMap.consumptionPercentage
         )
         relativeFuelMap.lapTimeDiff = lastLapTime * (1 - relativeFuelMap.powerPercentage)
-        relativeFuelMap.lapTimeExpected = lastLapTime+ relativeFuelMap.lapTimeDiff
+        relativeFuelMap.lapTimeExpected = convertSecondsToTime(lastLapTime+ relativeFuelMap.lapTimeDiff)
 
         relativeFuelMap.powerPercentage= relativeFuelMap.powerPercentage * 100,
         relativeFuelMap.consumptionPercentage = relativeFuelMap.consumptionPercentage * 100,

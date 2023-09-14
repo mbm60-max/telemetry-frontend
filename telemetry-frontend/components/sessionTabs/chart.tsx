@@ -24,7 +24,7 @@ interface BasicChartProps {
 export default function BasicChart({ label, expectedMaxValue, expectedMinValue, dataStream,units,labelXaxis }: BasicChartProps) {
 
   const series = [{
-    name: 'Throttle',
+    name: label,
     data: dataStream
   }];
 

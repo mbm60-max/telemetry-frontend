@@ -17,6 +17,8 @@ import MergeSort from '../../utils/mergeSort';
 interface smallLapTableProps{
     lastLapTime:string;
     bestLapTime:string;
+    compound:string;
+    setup:string;
 }
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -40,7 +42,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function createData(
   lapTime: string,
-  delta: number,
+  delta: string,
   compound: string,
   setup: string,
 ) {
@@ -49,14 +51,30 @@ function createData(
 
 
 
-export default function SmallLapTable({lastLapTime,bestLapTime}:smallLapTableProps) {
+
+export default function SmallLapTable({lastLapTime,bestLapTime,compound,setup}:smallLapTableProps) {
     const [rows, setRows] = useState<Array<any>>([])
     const [prevLap, setPrevLap] = useState('')
       /* won't work if the lap times are indentical */ 
       //add sorting and check for time of -1second
+
+      const parseLapTime = (lapTimeString:string) => {
+        const [hours, minutes, seconds, milliseconds] = lapTimeString
+          .split(':')
+          .map((part) => parseFloat(part));
+        return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
+      };
+      const getDeltaOneLap=()=>{
+        const bestLapDuration = parseLapTime(bestLapTime);
+        const lapDuration = parseLapTime(lastLapTime);
+        const delta = (lapDuration - bestLapDuration).toFixed(3);
+        return delta;
+      }
+
+
       useEffect(() => {
         if (prevLap !== lastLapTime) {
-          const newRow = createData(lastLapTime, 0.1, 'Hard', 'Basic');
+          const newRow = createData(lastLapTime, getDeltaOneLap(), compound, setup);
       setRows(prevRows => {
         const updatedRows = [...prevRows, newRow];
         const sortedRows = MergeSort(updatedRows);
@@ -66,6 +84,15 @@ export default function SmallLapTable({lastLapTime,bestLapTime}:smallLapTablePro
         }
       }, [lastLapTime, bestLapTime, prevLap, rows, MergeSort]);
 
+      useEffect(() => {
+        const bestLapDuration = parseLapTime(bestLapTime);
+        const updatedRows = rows.map((row) => {
+          const lapDuration = parseLapTime(row.lapTime);
+          const delta = (lapDuration - bestLapDuration).toFixed(3); // Calculate the difference in seconds to 3 decimal places
+          return { ...row, delta };
+        });
+        setRows(updatedRows);
+      }, [bestLapTime, rows]);
       
       
 

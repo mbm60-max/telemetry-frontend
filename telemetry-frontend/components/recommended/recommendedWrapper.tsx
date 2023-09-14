@@ -1,20 +1,12 @@
 import { Button, createTheme, Divider, Grid, Paper, styled, Typography, useMediaQuery } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import axios, { AxiosResponse } from "axios";
-import Link from "next/link";
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { JsxElement } from "typescript";
-import SettingsObject from "../../interfaces/defaultSettingsInterface";
-import { SettingsContext } from "../authProviderSettings";
-import UserAvatar from "../avatar/userAvatar";
 import Homepage from "../background/background";
 import Footer from "../footer/footer";
 import NavBar from "../navbar/navbar";
 import YouTubePlayerComponent from "./videoPlayer.tsx/playercomponent";
-import ReactDOMServer from 'react-dom/server';
-import SvgRenderer from "../avatar/svgRenderer";
 import ChallengeBanner from "./challengeBanner";
-import TimeRemainingBanner from "./timeRemainingBanner";
 
 interface RecommendedWrapperProps {}
 

@@ -12,7 +12,8 @@ import WarningsDashboard from '../warningDashboard/keyWarningsDashboard';
 import getFuelOnConsumptionByRelativeFuelLevels, { calculateRemainingFuel } from '../../utils/relativeFuelCalculations';
 import FuelDataDisplay from '../fuelComponents/fuelData';
 import { SettingsContext } from '../authProviderSettings';
-import { convertBarsToPsi, convertCelciusToFahrenheit, convertToPercentage, getPressureUnits, getTempUnits, getXAxisLabel } from '../../utils/converters';
+import { convertBarsToPsi, convertCelciusToFahrenheit, convertLitresToGallons, convertToPercentage, getPressureUnits, getTempUnits, getXAxisLabel } from '../../utils/converters';
+import { Typography } from '@mui/material';
 
 
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
@@ -122,8 +123,13 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
     
     return Math.round(totalSeconds);
   }
-
-  const fuelObject = calculateRemainingFuel(fuelStartLap,gasLevel,convertTimeToSeconds(lastLapTime)); 
+  const getGasLevel=()=>{
+    if(isMetric){
+      return gasLevel;
+    }
+    return convertLitresToGallons(gasLevel);
+  }
+  const fuelObject = calculateRemainingFuel(fuelStartLap,getGasLevel(),convertTimeToSeconds(lastLapTime)); 
   const FuelObjectMaps = getFuelOnConsumptionByRelativeFuelLevels(fuelObject,convertTimeToSeconds(lastLapTime),gasLevel); 
 return (
     <Box sx={{ flexGrow: 1 }}>
@@ -133,7 +139,7 @@ return (
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={convertToPercentage(255,255)} expectedMinValue={0} dataStream={throttleStream} units={'%'} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={6} sm={4}>
-          <Item>{lapTimer}<DynamicBasicChart label={'Oil Pressure'} expectedMaxValue={isMetric ? 200 : convertBarsToPsi(200)} expectedMinValue={0} dataStream={oilPressureStream} units={getPressureUnits(isMetric)} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Oil Pressure'} expectedMaxValue={isMetric ? 200 : convertBarsToPsi(200)} expectedMinValue={0} dataStream={oilPressureStream} units={getPressureUnits(isMetric)} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={6} sm={4}>
           <Item><DynamicBasicChart label={'Oil Temperature '}expectedMaxValue={isMetric ? 150 : convertCelciusToFahrenheit(150)} expectedMinValue={isMetric ? 20 : convertCelciusToFahrenheit(20)} dataStream={oilTempStream} units={getTempUnits(isMetric)} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>
@@ -144,11 +150,11 @@ return (
         <Grid item xs={12} sm={12}>
           <Item><FuelDataDisplay FuelObjectMaps={FuelObjectMaps} gasLevel={gasLevel}></FuelDataDisplay></Item>
         </Grid>
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} >
           <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={15000} expectedMinValue={0} dataStream={rpmStream} units={'RPM'} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Item><Grid container spacing={1}><Grid item xs={6}> Fuel Level: {gasLevel}( % of Litres)<Gauge gasCapacity={gasCapacity} gasLevel={gasLevel} targetSrc={"/images/fuel.svg"}/></Grid><Grid item xs={6}> Turbo Pressure: {turboBoost*100} {getPressureUnits(isMetric)}<Gauge gasCapacity={100} gasLevel={turboBoost} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
+        <Grid item xs={12}  >
+          <Item><Grid container spacing={2} sx={{maxHeight:'448px'}}> <Grid item xs={12} ><Typography fontFamily={'Yapari'} fontSize={35} fontWeight={"bold"} sx={{color:'black',whiteSpace:'nowrap',overflow:'scroll'}}>Turbo Pressure:{turboBoost*100} {getPressureUnits(isMetric)}</Typography></Grid> <Grid item xs={12} sx={{display:'flex',justifyContent:'center',maxHeight:'448px'}} ><Gauge gasCapacity={100} gasLevel={turboBoost} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
         </Grid>
         <Grid item xs={6}>
           <Item><TwoValueDisplay nameOne='Minimum Alert RPM' nameTwo='Maximum Alert RPM' dataValueOne={minAlertRPM} dataValueTwo={maxAlertRPM}/></Item>

@@ -1,6 +1,6 @@
 export const convertSecondsToTime= (seconds:number)=> {
     if (isNaN(seconds) || seconds < 0) {
-        return "NAN"
+        return "00:00:00"
     }
   
     const hours = Math.floor(seconds / 3600);

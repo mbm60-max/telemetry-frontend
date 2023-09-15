@@ -490,11 +490,6 @@ useEffect(() => {
               </Typography>
             </Grid>
           </Grid>
-            
-            
-
-            
-            
           </Box>
         </Grid>
       ))}</Grid>

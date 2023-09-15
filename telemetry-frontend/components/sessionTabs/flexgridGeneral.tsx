@@ -19,7 +19,7 @@ import ActualWarningModal from '../warningDashboard/actualWarningModal';
 import WarningInstance from '../../interfaces/warningInterface';
 import Homepage from '../background/background';
 import alterSuggestedGearWhenAtLimit from '../../utils/alterSuggestedGear';
-import { convertToPercentage, getXAxisLabel } from '../../utils/converters';
+import { convertKMHToMPH, convertToPercentage, getSpeedUnits, getXAxisLabel } from '../../utils/converters';
 import { SettingsContext } from '../authProviderSettings';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
@@ -130,7 +130,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
           <Item><Box sx={{backgroundColor:'black'}}>{lapTimer}<Test testOffset={distanceInLap}targetSrc={getTrackPath(track)} trackName={checkTrackStatus(track)} /></Box></Item>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={convertToPercentage(255,255)} expectedMinValue={0} dataStream={speedStream} units={'%'} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>
+          <Item><DynamicBasicChart label={'Speed Trace '} expectedMaxValue={isMetric ? 500 : convertKMHToMPH(500)} expectedMinValue={0} dataStream={speedStream} units={getSpeedUnits(isMetric)} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={12}>
           <Item><TwoValueDisplay dataValueOne={currentGear} dataValueTwo={alterSuggestedGearWhenAtLimit(suggestedGear)} nameOne={"Current Gear"} nameTwo={"Suggested Gear"}></TwoValueDisplay></Item>

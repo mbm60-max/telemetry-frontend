@@ -113,7 +113,7 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
   };
     public handleFullPacket = (receivedExtendedPacket: ExtendedPacket) => {
       //const { userName } = useContext(AuthContext);
-        console.log('Received FullPacketMessage:', receivedExtendedPacket);
+        //console.log('Received FullPacketMessage:', receivedExtendedPacket);
         if (this.handleFullPacketCallback) {
           
           if (!this.isFirstTimeFullPacket) {

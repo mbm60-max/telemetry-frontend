@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { createContext, ReactNode } from 'react';
 import WarningInstance from '../interfaces/warningInterface';
+import { mapMetricToImperial } from '../utils/converters';
 import { SettingsContext } from './authProviderSettings';
 
 interface WarningContextType {
@@ -73,7 +74,8 @@ interface WarningState {
 }
 
 export const WarningProvider = ({ children }: WarningProviderProps) => {
-  const {alerts,updateFlag} = useContext(SettingsContext);
+  const {alerts,updateFlag,defaults} = useContext(SettingsContext);
+  const isMetric = defaults.defaultUnitsMetric;
   useEffect(() => {
     console.log("whaa")
    console.log(alerts.alertDefaultWarningsUpperLimits)
@@ -151,13 +153,13 @@ export const WarningProvider = ({ children }: WarningProviderProps) => {
   
     // Update dashboardWarningsUnitsTest
     const updatedDashboardWarningsUnitsTest = {
-      dashboard1: Object.fromEntries(alerts.alertDefaultWarningsUnits[0].map((alert, index) => [`name${index}`, alert])),
-      dashboard2: Object.fromEntries(alerts.alertDefaultWarningsUnits[1].map((alert, index) => [`name${index}`, alert])),
-      dashboard3: Object.fromEntries(alerts.alertDefaultWarningsUnits[2].map((alert, index) => [`name${index}`, alert])),
-      dashboard4: Object.fromEntries(alerts.alertDefaultWarningsUnits[3].map((alert, index) => [`name${index}`, alert])),
+      dashboard1: Object.fromEntries(alerts.alertDefaultWarningsUnits[0].map((alert, index) => [`name${index}`, isMetric ? alert : mapMetricToImperial(alert)])),
+      dashboard2: Object.fromEntries(alerts.alertDefaultWarningsUnits[1].map((alert, index) => [`name${index}`,isMetric ? alert : mapMetricToImperial(alert)])),
+      dashboard3: Object.fromEntries(alerts.alertDefaultWarningsUnits[2].map((alert, index) => [`name${index}`,isMetric ? alert : mapMetricToImperial(alert)])),
+      dashboard4: Object.fromEntries(alerts.alertDefaultWarningsUnits[3].map((alert, index) => [`name${index}`, isMetric ? alert : mapMetricToImperial(alert)])),
     };
     setDashboardWarningsUnitsTest(updatedDashboardWarningsUnitsTest);
-  }, [alerts,updateFlag]);
+  }, [alerts,updateFlag,isMetric]);
   
     const [activeWarnings, setActiveWarnings] = useState<WarningInstance[]>([]);
     const [acknowledgedWarnings, setAcknowledgedWarnings] = useState<WarningInstance[]>([]);

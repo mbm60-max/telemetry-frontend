@@ -1,11 +1,12 @@
-import { roundTo3SF } from "./roudning";
+import roundTo1DP from "./roudning";
 
 const convertMpsToMph = (dataPoint: number)=>{
     if (dataPoint < 0){
-        return -1;
+        return 0;
     }
-    return Math.round(dataPoint * 2.23694);
+    return roundTo1DP(dataPoint * 2.23694);
   }
+
 
   export default convertMpsToMph;
 
@@ -13,43 +14,50 @@ const convertMpsToMph = (dataPoint: number)=>{
     if (dataPoint < 0){
         return 0;
     }
-    return dataPoint;
+    return roundTo1DP(dataPoint);
+  }
+  // behaviour is to always convert to non negative number, fowards is a -ve input so we reverse that, while reversing is a +ve input so left unchanged, these appear the same on the graph
+  export const convertWheelRPS= (dataPoint: number) => {
+    if (dataPoint < 0){
+      roundTo1DP(-1*dataPoint);
+    }
+    return roundTo1DP(dataPoint);
   }
 
 
   export const convertMpsToKMH = (dataPoint: number) => {
     if (dataPoint < 0){
-        return -1;
+        return 0;
     }
-    return Math.round(dataPoint * 3.6);
+    return roundTo1DP(dataPoint * 3.6);
   }
 
   export const convertCelciusToFahrenheit = (dataPoint: number) => {
     if (dataPoint < 0){
-        return -1;
+        return 0;
     }
-    return Math.round((dataPoint * 9/5) + 32);
+    return roundTo1DP((dataPoint * 9/5) + 32);
   };
 
   export const convertMMToInches = (dataPoint: number) => {
     if (dataPoint < 0){
-        return -1;
+        return 0;
     }
-    return roundTo3SF(dataPoint / 25.4);
+    return roundTo1DP(dataPoint / 25.4);
   };
 
   export const convertMetresToFeet = (dataPoint: number) => {
     if (dataPoint < 0){
-        return -1;
+        return 0;
     }
-    return roundTo3SF(dataPoint * 3.28084);
+    return roundTo1DP(dataPoint * 3.28084);
   };
 
   export const convertBarsToPsi = (dataPoint: number) => {
     if (dataPoint < 0){
-        return -1;
+        return 0;
     }
-    return roundTo3SF(dataPoint * 14.5038);
+    return roundTo1DP(dataPoint * 14.5038);
   };
 
   export const convertToPercentage = (dataPoint:number, maxValue:number) => {
@@ -57,43 +65,49 @@ const convertMpsToMph = (dataPoint: number)=>{
      return 0;
     }
   
-    return Math.round((dataPoint / maxValue) * 100);
+    return roundTo1DP((dataPoint / maxValue) * 100);
   };
   
   export const convertKPAToPSI = (dataPoint:number) => {
     if (dataPoint < 0){
-        return -1;
+        return 0;
     }
-    return roundTo3SF(dataPoint * 0.14503773773375); // 1 kPa ≈ 0.14503773773375 psi
+    return roundTo1DP(dataPoint * 0.14503773773375); // 1 kPa ≈ 0.14503773773375 psi
   };
 
   export const convertLitresToGallons = (dataPoint:number) => {
     if (dataPoint < 0){
-        return -1;
+        return 0;
     }
-    return roundTo3SF(dataPoint * 0.264172); // 1 liter ≈ 0.264172 gallons
+    return roundTo1DP(dataPoint * 0.264172); // 1 liter ≈ 0.264172 gallons
   };
 
+  export const convertKMHToMPH = (dataPoint:number)=>{
+    if (dataPoint < 0){
+      return 0;
+  }
+  return roundTo1DP(dataPoint * 0.6213712 ); 
+  }
   export const getXAxisLabel=(isMetric:boolean)=>{
     if(isMetric){
-      return 'Distance Into Lap M'
+      return 'Distance Into Lap Metres'
     }return 'Distance Into Lap Feet'
   }
 
   export const getTempUnits=(isMetric:boolean)=>{
     if(isMetric){
-      return 'Distance Into Lap M'
-    }return 'Distance Into Lap Feet'
+      return '°C'
+    }return '°F'
   }
   export const getSpeedUnits=(isMetric:boolean)=>{
     if(isMetric){
-      return 'Distance Into Lap M'
-    }return 'Distance Into Lap Feet'
+      return 'KM/H'
+    }return 'MPH'
   }
   export const getPressureUnits=(isMetric:boolean)=>{
     if(isMetric){
-      return 'Distance Into Lap M'
-    }return 'Distance Into Lap Feet'
+      return 'KPA'
+    }return 'KPSI'
   }
   export const getVolumeUnits=(isMetric:boolean)=>{
     if(isMetric){
@@ -102,17 +116,37 @@ const convertMpsToMph = (dataPoint: number)=>{
   }
   export const getPressureUnitsBar=(isMetric:boolean)=>{
     if(isMetric){
-      return 'Distance Into Lap M'
-    }return 'Distance Into Lap Feet'
+      return 'bar'
+    }return 'PSI'
   }
   export const getMMDistanceUnits=(isMetric:boolean)=>{
     if(isMetric){
-      return 'Distance Into Lap M'
-    }return 'Distance Into Lap Feet'
+      return 'mm'
+    }return 'Inches'
   }
   export const getMDistanceUnits=(isMetric:boolean)=>{
     if(isMetric){
-      return 'Distance Into Lap M'
-    }return 'Distance Into Lap Feet'
+      return 'm'
+    }return 'feet'
   }
  
+  export const mapMetricToImperial = (metricUnit:string) => {
+    switch (metricUnit) {
+      case 'KM/h':
+        return 'MPH';
+      case 'mm':
+        return 'in';
+      case 'm':
+        return 'feet';
+      case 'Bar':
+        return 'PSI';
+      case 'KPA':
+        return 'KPSI';
+      case 'Litres':
+        return 'Gallons';
+      case '°C':
+        return '°F';
+      default:
+        return metricUnit; // If no mapping is available, return the metric unit itself
+    }
+  };

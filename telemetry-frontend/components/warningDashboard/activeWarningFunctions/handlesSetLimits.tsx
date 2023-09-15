@@ -133,7 +133,9 @@ export default function GridWarningConsumer({handleAcknowledgedWarnings,handleAc
       for(let i =0; i<valuesToCheck.length;i++){
         for(let j =0; j<possibleWarningsNames.length;j++){
         if(valuesToCheck[i]==possibleWarningsNames[j]){
+          console.log(`VALUE THAT SHOULD UPDATE ${valuesToCheck[i]}`)
             const value=possibleWarningsValues[j];
+            console.log(`possible warning values${possibleWarningsValues}`)
             if(typeof value !== "number"){
               const lastItem = value[value.length-1]
               valuesToUpdate[i]= lastItem.y;
@@ -146,8 +148,9 @@ export default function GridWarningConsumer({handleAcknowledgedWarnings,handleAc
       }setValuesOfInterestData(valuesToUpdate,dashboardNumber);
       return;
     }
+    console.log("should be changing as called")
     handleValuesOfInterestFetch(valuesOfInterest,valuesOfInterestData,dashboardIndex,possibleWarningsNames)
-  }, [packetFlag,valuesOfInterest]);
+  }, [packetFlag,valuesOfInterest,possibleWarningsValues]);//last thing might cause too many rerenders
 
   useEffect(() => {
     for(let i=0; i<valuesOfInterest.length;i++){

@@ -50,11 +50,11 @@
     spa: {
       imageProps: {
         position: PositionType.Absolute,
-  top: '60%',
-  left: '60%',
+  top: '68%',
+  left: '67%',
   transform: 'translate(-72%, -50%)rotate(91deg)',
   transformOrigin: 'center',
-  width: '100%',
+  width: '110%',
   height: '100%',
   objectFit: ObjectFitType.Fill,
   zIndex: 1,

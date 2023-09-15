@@ -73,7 +73,7 @@ export default function SmallLapTable({lastLapTime,bestLapTime,compound,setup}:s
 
 
       useEffect(() => {
-        if (prevLap !== lastLapTime) {
+        if (prevLap !== lastLapTime && lastLapTime !== "-00:00:00.0010000") {
           const newRow = createData(lastLapTime, getDeltaOneLap(), compound, setup);
       setRows(prevRows => {
         const updatedRows = [...prevRows, newRow];
@@ -82,20 +82,36 @@ export default function SmallLapTable({lastLapTime,bestLapTime,compound,setup}:s
       });
       setPrevLap(lastLapTime);
         }
-      }, [lastLapTime, bestLapTime, prevLap, rows, MergeSort]);
+      }, [lastLapTime, prevLap]);
 
+      //useEffect(() => {
+        //const bestLapDuration = parseLapTime(bestLapTime);
+        //const updatedRows = rows.map((row) => {
+         // const lapDuration = parseLapTime(row.lapTime);
+          //const delta = (lapDuration - bestLapDuration).toFixed(3); // Calculate the difference in seconds to 3 decimal places
+          //return { ...row, delta };
+        //});
+        //setRows(updatedRows);
+      //}, [lastLapTime]);
       useEffect(() => {
-        const bestLapDuration = parseLapTime(bestLapTime);
-        const updatedRows = rows.map((row) => {
-          const lapDuration = parseLapTime(row.lapTime);
-          const delta = (lapDuration - bestLapDuration).toFixed(3); // Calculate the difference in seconds to 3 decimal places
-          return { ...row, delta };
-        });
-        setRows(updatedRows);
-      }, [bestLapTime, rows]);
+        if (bestLapTime !== "-00:00:00.0010000") {
+          const bestLapDuration = parseLapTime(bestLapTime);
+          const updatedRows = rows.map((row) => {
+            const lapDuration = parseLapTime(row.lapTime);
+            const delta = (lapDuration - bestLapDuration).toFixed(3);
+            return { ...row, delta };
+          });
+          setRows(updatedRows);
+        }
+      }, [bestLapTime]);
       
+      useEffect(() => {
+        console.log(rows);
+      },[rows]);
       
-
+      useEffect(() => {
+       console.log("maxbm10 ")
+      },[]);
   return (
     <Box sx={{ padding: 0.5 }}>
       <TableContainer sx={{ maxHeight: 423 }} component={Paper}>

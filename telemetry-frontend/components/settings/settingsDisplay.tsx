@@ -383,12 +383,12 @@ const handlePasswordValidation =(newPassword: string) => {
           </Grid>
           <Grid item xs={12}>
             <SettingsTextDisplay
-              currentValue={userSettings.alerts.alertWarningInterval+" "+"Laps"}
+              currentValue={userSettings.data.reviewLapLimit}
               targetSetting={"ALTER REVIEW LAP LIMIT"}
               hasDivider={false}
               handleUpdateSettings={handleUpdateSettings}
-              currentSettingsData={userSettings.alerts}
-              settingsProp={"alertWarningInterval"}
+              currentSettingsData={userSettings.data}
+              settingsProp={"reviewLapLimit"}
               validateInput={validateReviewLimit}
               tooltipText={
                 "This must between 10 and 100, this is how many laps that will be retained for future use"

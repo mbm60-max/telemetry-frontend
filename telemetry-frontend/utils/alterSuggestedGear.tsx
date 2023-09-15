@@ -10,3 +10,5 @@ export const alterSuggestedForGraph=(suggestedGear:number)=>{
       return 0;
     }return suggestedGear;
     }
+
+    

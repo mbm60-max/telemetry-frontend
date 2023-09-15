@@ -27,7 +27,7 @@ import { SettingsContext } from '../authProviderSettings';
 import NavBar from '../navbar/navbar';
 import isNewLapCheck from '../../utils/isNewLapCheck';
 import GridWarningConsumer from '../warningDashboard/activeWarningFunctions/handlesSetLimits';
-import convertMpsToMph, { convertBarsToPsi, convertCelciusToFahrenheit, convertMetresToFeet, convertMMToInches, convertMpsToKMH, convertToPercentage,convertKPAToPSI,convertLitresToGallons, convertNegativeToZero } from '../../utils/converters';
+import convertMpsToMph, { convertBarsToPsi, convertCelciusToFahrenheit, convertMetresToFeet, convertMMToInches, convertMpsToKMH, convertToPercentage,convertKPAToPSI,convertLitresToGallons, convertNegativeToZero, convertWheelRPS } from '../../utils/converters';
 import { alterSuggestedForGraph } from '../../utils/alterSuggestedGear';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -415,11 +415,11 @@ export default function BasicTabs() {
 
   function handlePacket(receivedExtendedPacket: ExtendedPacket) {
     setPacketFlag(!packetFlag);
-    console.log('Received FullPacketMessage:', receivedExtendedPacket);
+    //console.log('Received FullPacketMessage:', receivedExtendedPacket);
     //console.log(JSON.stringify(receivedExtendedPacket, null, 2));
     var jsonString = JSON.stringify(receivedExtendedPacket);
     var parsedObject = JSON.parse(jsonString);
-    const attributes = ['throttle', 'brake', 'metersPerSecond', 'suggestedGear', 'currentGear', 'tireFL_SurfaceTemperature', 'tireFR_SurfaceTemperature', 'tireRL_SurfaceTemperature', 'tireRR_SurfaceTemperature', 'lastLapTime', 'bestLapTime', 'engineRPM', 'oilTemperature', 'minAlertRPM', 'maxAlertRPM', 'transmissionTopSpeed', 'calculatedMaxSpeed', 'oilPressure', 'waterTemperature', 'gasLevel', 'gasCapacity', 'turboBoost', 'rpmFromClutchToGearbox', 'clutchEngagement', 'clutchPedal', 'InLapShifts', 'tireFL_SusHeight', 'tireFR_SusHeight', 'tireRL_SusHeight', 'tireRR_SusHeight', 'tireFL_TireRadius', 'tireFR_TireRadius', 'tireRL_TireRadius', 'tireRR_TireRadius', 'wheelFL_RevPerSecond', 'wheelFR_RevPerSecond', 'wheelRL_RevPerSecond', 'wheelRR_RevPerSecond'];
+    const attributes = ['throttle', 'brake', 'metersPerSecond', 'suggestedGear', 'currentGear', 'tireFL_SurfaceTemperature', 'tireFR_SurfaceTemperature', 'tireRL_SurfaceTemperature', 'tireRR_SurfaceTemperature', 'lastLapTime', 'bestLapTime', 'engineRPM', 'oilTemperature', 'minAlertRPM', 'maxAlertRPM', 'transmissionTopSpeed', 'calculatedMaxSpeed', 'oilPressure', 'waterTemperature', 'gasLevel', 'gasCapacity', 'turboBoost', 'rpmFromClutchToGearbox', 'clutchEngagement', 'clutchPedal', 'inLapShifts', 'tireFL_SusHeight', 'tireFR_SusHeight', 'tireRL_SusHeight', 'tireRR_SusHeight', 'tireFL_TireRadius', 'tireFR_TireRadius', 'tireRL_TireRadius', 'tireRR_TireRadius', 'wheelFL_RevPerSecond', 'wheelFR_RevPerSecond', 'wheelRL_RevPerSecond', 'wheelRR_RevPerSecond'];
     var timerValue = parsedObject['lapTiming'];
     var distanceFromStart = parsedObject['distanceFromStart'];
     setDistanceValue(distanceFromStart);
@@ -461,7 +461,7 @@ export default function BasicTabs() {
           case 'turboBoost':
             appendNumberData(attributes[attribute], attributeValue)
             break;
-          case 'InLapShifts':
+          case 'inLapShifts':
             appendNumberData(attributes[attribute], attributeValue)
             break;
           case 'distanceFromStart':
@@ -496,7 +496,7 @@ export default function BasicTabs() {
     switch (stateSetter) {
       case setSpeedStream:
         if (isMetric) {
-          convertMpsToKMH(convertNegativeToZero(dataPoint));
+          return convertMpsToKMH(convertNegativeToZero(dataPoint));
         } else {
           return convertMpsToMph(dataPoint);
         }
@@ -581,13 +581,13 @@ export default function BasicTabs() {
           convertMetresToFeet(dataPoint);
         }
       case setWheelFL_RevPerSecond:
-        return (-1 * convertNegativeToZero(dataPoint)); // converts negative values to positive, for some reason they were negative before
+        return convertWheelRPS(dataPoint); 
       case setWheelFR_RevPerSecond:
-        return (-1 * convertNegativeToZero(dataPoint)); // converts negative values to positive, for some reason they were negative before
+        return convertWheelRPS(dataPoint); 
       case setWheelRL_RevPerSecond:
-        return (-1 * convertNegativeToZero(dataPoint)); // converts negative values to positive, for some reason they were negative before
+        return convertWheelRPS(dataPoint); 
       case setWheelRR_RevPerSecond:
-        return (-1 * convertNegativeToZero(dataPoint)); // converts negative values to positive, for some reason they were negative before
+        return convertWheelRPS(dataPoint); 
       case setRpmStream:
         return convertNegativeToZero(dataPoint);
       case setOilTempStream:
@@ -620,11 +620,11 @@ export default function BasicTabs() {
     }
   };
   const getConversionNumbersSpecific = (
-    stateSetter:React.Dispatch<React.SetStateAction<number>>,
+    stateSetterNumber:React.Dispatch<React.SetStateAction<number>>,
     dataPoint: number,
     isMetric: boolean
   ): number => {
-    switch (stateSetter) {
+    switch (stateSetterNumber) {
       case setMinAlertRpm:
         return convertNegativeToZero(dataPoint);
       case setMaxAlertRpm:
@@ -734,7 +734,7 @@ export default function BasicTabs() {
       gasCapacity: setGasCapacity,
       gasLevel: setGasLevel,
       turboBoost: setTurboBoost,
-      InLapShifts: setInLapShifts,
+      inLapShifts: setInLapShifts,
     };
     const stateSetterNumber = stateSettersNumber[attribute];
     stateSetterNumber(getConversionNumbersSpecific(stateSetterNumber,dataPoint,defaults.defaultUnitsMetric));
@@ -897,7 +897,7 @@ export default function BasicTabs() {
         </>
       ))
     ) : (
-      <p>No active warnings.</p>
+      null
     )}
       {activeWarningsLower.length > 0 ? (
         activeWarningsLower.map((value, index) => (
@@ -906,7 +906,7 @@ export default function BasicTabs() {
           </>
         ))
       ) : (
-        <p>No active warnings.</p>
+       null
       )}
 
       <Grid item xs={12}>

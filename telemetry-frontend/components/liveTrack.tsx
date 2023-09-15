@@ -13,7 +13,10 @@ interface TestProps {
 const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
   let imageProps;
   let trackProps;
-
+  const calculateOffset= (testOffset:number) =>{
+    return -(testOffset+85);//use this to change the start position to match track and session type eg race vs time trial
+    //use negative to change direction of flow around track
+  } 
   if (typeof trackPropsDict[trackName] !== 'undefined') {
     ({ imageProps, trackProps } = trackPropsDict[trackName]);
   } else {
@@ -22,9 +25,10 @@ const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
     trackProps = undefined;
   }
   const carStyle = {
-    offsetDistance: `${testOffset}%`,
+    offsetDistance: `${calculateOffset(testOffset)}%`,
   };
 
+  
   const getCarClass = () => `car car-${trackName}`;
 
   return (
@@ -53,9 +57,7 @@ const Test = ({ targetSrc, trackName,testOffset }: TestProps) => {
           zIndex: imageProps.zIndex,
         }}
       >
-        <g className="path" fill="none" stroke="#fff" strokeWidth="1">
-          <path id="car-path" d={getPathByTrackName(trackName)} stroke="#FF0707" />
-        </g>
+        
         <g className={getCarClass()} style={carStyle}>
         <circle cx="1" cy="1" r="9" fill="#DA2E22"/>
         </g>

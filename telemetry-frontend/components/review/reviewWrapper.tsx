@@ -86,7 +86,7 @@ interface ReviewViewProps {
 export default function ReviewView({ viewNumber }: ReviewViewProps) {
   const [controllerOpen, setControllerOpen] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [showView, setShowView] = React.useState(true);
+  const [showView, setShowView] = React.useState(false);
   const [showGraph, setShowGraph] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -458,6 +458,7 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
       <em>{'Field selects the grouping from which to select the data stream you wish to view, while stream sets the actual stream, changing the field will alter the available streams'}</em>
     </>
   );
+  const viewName = !showView && showGraph ? viewNumber : null;
   return (
 
     <>
@@ -546,7 +547,7 @@ export default function ReviewView({ viewNumber }: ReviewViewProps) {
               </Modal>
             </Grid>
           </Grid></Item>
-        </Grid>:<><Grid item xs={4}><Button className={"sliderArray"} sx={{ml:2}} onClick={() => handleShow("view")}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>SHOW HEADER </Typography><VisibilityIcon /></Button></Grid><Grid item xs={6}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={25} sx={{ color: "white" }}>{viewNumber}</Typography></Grid></>}
+        </Grid>:<><Grid item xs={4}><Button className={"sliderArray"} sx={{ml:2}} onClick={() => handleShow("view")}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={15} sx={{ color: "white" }}>SHOW HEADER </Typography><VisibilityIcon /></Button></Grid><Grid item xs={6}><Typography fontFamily={"Satoshi"} fontWeight={"bold"} fontSize={25} sx={{ color: "white" }}>{viewName}</Typography></Grid></>}
           {showGraph && <Grid item xs={12}>
             <ItemWhite>
               <ReviewChart expectedMaxValue={maxValues[`max${"1"}`]} expectedMinValue={minValues[`min${"1"}`]} expectedMaxValueTwo={maxValues[`max${"2"}`]} expectedMinValueTwo={minValues[`min${"2"}`]} seriesOneLapOne={validateData(selectedStreamsDataLap1[`stream1DataLap${1}`])} seriesTwoLapOne={validateData(selectedStreamsDataLap1[`stream2DataLap${1}`])} seriesOneLapTwo={validateData(selectedStreamsDataLap2[`stream1DataLap${2}`])} seriesTwoLapTwo={validateData(selectedStreamsDataLap2[`stream2DataLap${2}`])} numberOfStreams={selectedNumber.length} numberOfLaps={selectedNumberLaps.length} curves={graphTypesArray} leftLabel={selectedStreams[`stream${1}`]} rightLabel={selectedStreams[`stream${2}`]} label={getLabel(selectedStreams[`stream${1}`], selectedStreams[`stream${2}`])} stream1IsSpecial={selectedSpecialStream[`stream${1}isSpecial`]} stream2IsSpecial={selectedSpecialStream[`stream${2}isSpecial`]} XAxisData={validateData(lapDistanceXAxis)} XAxisDataLap2={validateData(lapDistanceXAxisLap2)} height={350} />

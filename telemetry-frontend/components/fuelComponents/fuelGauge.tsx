@@ -24,7 +24,7 @@ const Gauge = ({ gasLevel, gasCapacity, targetSrc }: GaugeProps) => {
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      <img src={targetSrc} alt="Fuel" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <img src={targetSrc} alt="Fuel" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
       <img
         src={"/images/fuelMark.svg"}
         alt="Fuel Mark"
@@ -34,9 +34,9 @@ const Gauge = ({ gasLevel, gasCapacity, targetSrc }: GaugeProps) => {
           left: '50%',
           transform: `translate(-60%, -63%) rotate(${rotationDegrees}deg)`,
           transformOrigin: 'center',
-          width: '75%',
+          width: '25vw',
           height: '75%',
-          objectFit: 'cover',
+          objectFit: 'contain',
           zIndex: 1,
           //border: '2px solid red', // Add a red border around the center point
           //borderRadius: '50%', 

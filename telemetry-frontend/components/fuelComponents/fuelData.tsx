@@ -59,7 +59,7 @@ const FuelDataDisplay = ({FuelObjectMaps,gasLevel}: FuelDataProps) => {
                   <StyledTableCell align="right">{roundTo3SF(row.consumptionPercentage)}</StyledTableCell>
                   <StyledTableCell align="right">{roundTo1DP(row.fuelConsumedPerLap)}</StyledTableCell>
                   <StyledTableCell align="right">{roundTo1DP(row.lapsRemainingOnCurrentFuel)}</StyledTableCell>
-                  <StyledTableCell align="right">{roundTo1DP(row.timeRemainingOnCurrentFuel)}</StyledTableCell>
+                  <StyledTableCell align="right">{row.timeRemainingOnCurrentFuel}</StyledTableCell>
                   <StyledTableCell align="right">{roundTo1DP(row.lapTimeDiff)}</StyledTableCell>
                   <StyledTableCell align="right">{row.lapTimeExpected}</StyledTableCell>
                 </StyledTableRow>
@@ -90,7 +90,7 @@ const FuelDataDisplay = ({FuelObjectMaps,gasLevel}: FuelDataProps) => {
     Time Remaining:
   </Typography>
   <Typography  fontFamily={"Satoshi"} variant="body1" style={{fontWeight: 'bold',fontSize:30}}>
-    {gasLevel}
+    {FuelObjectMaps[5].timeRemainingOnCurrentFuel}
   </Typography>
 </Box>
 </Grid>
@@ -102,7 +102,7 @@ const FuelDataDisplay = ({FuelObjectMaps,gasLevel}: FuelDataProps) => {
     Laps Remaining:
   </Typography>
   <Typography  fontFamily={"Satoshi"} variant="body1" style={{fontWeight: 'bold',fontSize:30}}>
-    {gasLevel}
+    {roundTo1DP(FuelObjectMaps[5].lapsRemainingOnCurrentFuel)}
   </Typography>
 </Box>
 </Grid>

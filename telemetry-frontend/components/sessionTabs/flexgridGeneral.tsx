@@ -21,6 +21,9 @@ import Homepage from '../background/background';
 import alterSuggestedGearWhenAtLimit from '../../utils/alterSuggestedGear';
 import { convertKMHToMPH, convertToPercentage, getSpeedUnits, getXAxisLabel } from '../../utils/converters';
 import { SettingsContext } from '../authProviderSettings';
+import axios, { AxiosResponse } from 'axios';
+import ActiveChallenge from './activeChallenge';
+import convertSecondsToTime, { convertTimeToSeconds } from '../../utils/secondsToString';
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
@@ -97,6 +100,8 @@ interface GeneralGridProps{
   ) => void;
   handleSetLimits: (newDict: { [key: string]: number },readyFlag:number) => void;
   handleSetLimitsLower: (newDict: { [key: string]: number },readyFlag:number) => void;
+  challenge:string|string[]|undefined;
+  lapCount:number;
 }
 
 function checkTrackStatus(track:string| string[] | undefined){
@@ -110,15 +115,146 @@ function getTrackPath(track:string| string[] | undefined){
   }return "/images/noTrack.svg";
 }
 
-export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestData,valuesOfInterestDefaultLimits,packetFlag,valuesOfInterestGreaterThanWarning,setValuesOfInterestCurrentLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,activeWarningsLower,acknowledgedWarningLower,valuesOfInterestCurrentLimitsLower,handleSetLimits,handleSetLimitsLower,handleSetWarning,valuesOfInterestUnits,compound,setup}:GeneralGridProps) {
+interface ChallengeContent{
+  Track:string;
+  Car:string;
+  Target:number;
+}
+
+export default function GeneralGrid({throttleStream,brakeStream,speedStream,suggestedGear,currentGear,frontLeftTemp,frontRightTemp,rearLeftTemp,rearRightTemp,lastLapTime,bestLapTime,lapTimer,track,distanceInLap,handleAcknowledgedWarnings,handleActiveWarnings,handleSuppressedWarnings,handleIsWarning,activeWarnings,acknowledgedWarnings,setValuesOfInterest,setValuesOfInterestCurrentLimits,setValuesOfInterestData,setValuesOfInterestDefualtLimits,setValuesOfInterestUnits,valueOfInterestUnits,valuesOfInterest,valuesOfInterestCurrentLimits,valuesOfInterestData,valuesOfInterestDefaultLimits,packetFlag,valuesOfInterestGreaterThanWarning,setValuesOfInterestCurrentLimitsLower,handleAcknowledgedWarningsLower,handleActiveWarningsLower,activeWarningsLower,acknowledgedWarningLower,valuesOfInterestCurrentLimitsLower,handleSetLimits,handleSetLimitsLower,handleSetWarning,valuesOfInterestUnits,compound,setup,challenge,lapCount}:GeneralGridProps) {
   const { defaults } = React.useContext(SettingsContext);
   const isMetric = defaults.defaultUnitsMetric;
+  const [lapsCompleted,setLapsCompleted]=useState(0);
+
+
+  const [challengeData, setChallengeData] = useState<ChallengeContent[]>([]); 
+  const [allChallengesArray, setAllChallengesArray] = useState<any[]>([]);
+  const [challengeDataFetched,setChallengeDataFetched]= useState(false);
+  const [targetLaps,setTargetLaps]= useState(0);
+  const [goal,setGoal]= useState('');
+  const [targetValue,setTargetValue]= useState<string|number>();
+  const [hasBeenSet,setHasBeenSet]= useState(false);
+  const [lastTwoLaps,setLastTwoLaps]= useState<number[]>([]);
+
+useEffect(()=>{
+  if(typeof challengeData[0] !== 'undefined'){
+      switch(challenge){
+          case 'Consistency':
+              setTargetLaps(3)
+              setGoal(`You must maintain lap times within ${challengeData[0]["Target"]}% of the previous for three consecutive laps`);
+              setTargetValue(challengeData[0]["Target"]);
+              break;
+          case 'Pace':
+          setTargetLaps(1)
+          setGoal(`You must record a lap time of ${challengeData[1]["Target"]} for one lap `);
+          setTargetValue(challengeData[1]["Target"]);
+          break;
+          case 'Endurance':
+          setTargetLaps(challengeData[2]["Target"])
+          setGoal(`You must complete ${challengeData[2]["Target"]} laps`);
+          setTargetValue(challengeData[2]["Target"]);
+          break;
+      }
+  }
+},[challengeData])
+
+  useEffect(()=>{
+    const handleChallengeUpdate=(originalIndex:number)=>{
+        const challengeArray: ChallengeContent[] = [];
+            for (let i = 0; i < originalIndex; i++) {
+              if (allChallengesArray[i]) {
+                let itemObject: ChallengeContent = {
+                  Track: allChallengesArray[i].Track,
+                  Car: allChallengesArray[i].Car,
+                  Target: allChallengesArray[i].Target,
+                };
+                challengeArray.push(itemObject);
+                
+              }
+            }setChallengeData((prevChallengeData) => [...prevChallengeData, ...challengeArray]);
+            
+      }
+      handleChallengeUpdate(3);
+  },[challengeDataFetched])
+    useEffect(() => {
+    const fetchAvailableChallenges = async () => {
+      try {
+        const Type = "Challenge"
+        const  challengeResponse: AxiosResponse = await axios.get('/api/retrievechallengecontentapi', {
+          params: { Type },
+        });
+        if (challengeResponse.data.message === 'Success') {
+          setAllChallengesArray(challengeResponse.data.data["ChallengeData"])
+          
+          setChallengeDataFetched(true); 
+         //handle dataychallengeResponse.data.data["VideoData"])
+        }
+      } catch (error) {
+        console.error('Error fetching challenges:', error);
+      }
+    };
+  fetchAvailableChallenges();
+  },[]);
+
+  const handlePaceChallenge=(target:number)=>{
+  if(lastLapTime !== "-00:00:00.0010000"){
+    if(target>convertTimeToSeconds(lastLapTime)){
+      setHasBeenSet(true);
+      return 1;
+     }
+     else if(!hasBeenSet){
+      return 0;
+     }
+  }
+  }
+  const handleEnduranceChallenge=(target:number)=>{
+    if(lapCount>target){//might need to be -1 to account for the first lap thing
+      setHasBeenSet(true);
+      return target;
+    }else if(!hasBeenSet){
+      return lapCount;
+     }
+  }
+  const handleConsistencyChallenge=(target:number)=>{
+    let targetIsMet=false;
+    if(lastTwoLaps.length<1){
+      return 0;
+    }
+    if(lastTwoLaps.length<2){
+      return 1;
+    }
+    if(lastTwoLaps.length<3){
+      //check if they are within target% if yes return 2 else return 1
+      return 0;
+    }
+    if(lastTwoLaps.length<3){
+      //check if they are within target% if yes return 3 else return 1
+      return 0;
+    }
+  }
+  const updateChallengeProgress=()=>{
+    switch(challenge){
+      case 'Consistency':
+        handleConsistencyChallenge(targetValue as number);
+          break;
+      case 'Pace':
+      handlePaceChallenge(targetValue as number);
+      break;
+      case 'Endurance':
+        handleEnduranceChallenge(targetValue as number);
+     //
+      break;
+  }
+}
 
 
   return (
+  
     
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
+      {challenge ? <Grid item xs={12}><Item><Box sx={{display:'flex',alignItems:'center'}}><Box sx={{backgroundColor:'black'}}><ActiveChallenge challenge={challenge} lapsCompleted={lapsCompleted} targetLaps={targetLaps} goal={goal}></ActiveChallenge></Box></Box></Item></Grid>:null}
+        
       <Grid item xs={12}><Item><WarningsDashboard valuesOfInterest={valuesOfInterest} valuesOfInterestData={valuesOfInterestData} valuesOfInterestUnits={valueOfInterestUnits} valuesOfInterestDefaultLimits={valuesOfInterestDefaultLimits} handleSetWarning={handleSetWarning} handleSetLimits={handleSetLimits} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleActiveWarnings={handleActiveWarnings} acknowledgedWarnings={acknowledgedWarnings} handleSetLimitsLower={handleSetLimitsLower} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} acknowledgedWarningsLower={acknowledgedWarningLower} valuesOfInterestCurrentLimits={valuesOfInterestCurrentLimits} valuesOfInterestCurrentLimitsLower={valuesOfInterestCurrentLimitsLower}/></Item></Grid>
         <Grid item xs={12} sm={8}>
           <Item><DynamicBasicChart label={'Throttle Trace '} expectedMaxValue={convertToPercentage(255,255)} expectedMinValue={0} dataStream={throttleStream} units={'%'} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import YouTube from 'react-youtube';
 import Skeleton from '@mui/material/Skeleton';
-
+import '../challenge.css'
 interface YouTubePlayerComponentProps{
     videoId:string
 }
@@ -46,6 +46,9 @@ const YouTubePlayerComponent = ({ videoId}:YouTubePlayerComponentProps) => {
         justifyContent:'center',
         alignItems:'center',
         pointerEvents: 'none',
+      };
+      const hoverStyle: React.CSSProperties = {
+        backgroundColor: 'rgba(255, 255, 255, 0.2)', // Change to the desired background color on hover
       };
   
       const innerStyle: React.CSSProperties = {

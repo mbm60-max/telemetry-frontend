@@ -14,6 +14,7 @@ import FuelDataDisplay from '../fuelComponents/fuelData';
 import { SettingsContext } from '../authProviderSettings';
 import { convertBarsToPsi, convertCelciusToFahrenheit, convertLitresToGallons, convertToPercentage, getPressureUnits, getTempUnits, getXAxisLabel } from '../../utils/converters';
 import { Typography } from '@mui/material';
+import { convertTimeToSeconds } from '../../utils/secondsToString';
 
 
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
@@ -99,30 +100,7 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
   const { defaults } = React.useContext(SettingsContext);
   const isMetric = defaults.defaultUnitsMetric;
   "00:02:58.0830000"
-  function convertTimeToSeconds(timeString:string) {
-    const timeParts = timeString.split(":");
-    
-    if (timeParts.length !== 3) {
-     //"Invalid time format. Use the format 'hh:mm:ss.milliseconds'");
-     return 0;
-    }
-    
-    const hours = parseInt(timeParts[0], 10);
-    const minutes = parseInt(timeParts[1], 10);
-    const secondsParts = timeParts[2].split(".");
-    
-    if (secondsParts.length !== 2) {
-      //"Invalid time format. Use the format 'hh:mm:ss.milliseconds'");
-     return 0;
-    }
-    
-    const seconds = parseInt(secondsParts[0], 10);
-    const milliseconds = parseInt(secondsParts[1], 10);
-    
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
-    
-    return Math.round(totalSeconds);
-  }
+  
   const getGasLevel=()=>{
     if(isMetric){
       return gasLevel;

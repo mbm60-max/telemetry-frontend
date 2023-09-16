@@ -7,7 +7,8 @@ import Footer from "../footer/footer";
 import NavBar from "../navbar/navbar";
 import YouTubePlayerComponent from "./videoPlayer.tsx/playercomponent";
 import ChallengeBanner from "./challengeBanner";
-
+import ImageBanner from '../../components/splitImageBanner';
+import HorizontalBanner from '../horizontalBanner/horizontalBanner';
 interface RecommendedWrapperProps {}
 
 const ItemPlayer = styled(Paper)(({ theme }) => ({
@@ -52,6 +53,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
   const challengeLetters = ["Challenge A","Challenge B","Challenge C"]
   const challengeImages = ["/images/matthew-dockery-s99-JP8P3Hg-unsplash.jpg","images/sander-trooijen-gcGqnjTO1i8-unsplash.jpg","/images/test1.jpg"]
   const [lastUpdatedDate,setLastUpdatedDate]=useState('');
+  const [ noDataFoundForQuery, setNoDataFoundForQuery] = useState(true);
   // Function to add a new video to the videoData array
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -143,9 +145,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
   width:'99%',
   }));
 
-  const handleChange=()=>{
-    setLoadMore(!loadMore);
-  }
+
 
   const isMobile = useMediaQuery('(max-width:800px)')
   const cantShowTitle = useMediaQuery('(max-width:950px)')
@@ -163,13 +163,16 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
   useEffect(() => {
     const fetchAvailableVideos = async () => {
       try {
-        const searchQuery = "educational simulator racing (technique)"
+        const searchQuery = "learn simulator racing"
         const  ytQueryResponse: AxiosResponse = await axios.get('/api/fetchyoutubedataapi', {
           params: { searchQuery },
         });
-        if (ytQueryResponse.data.message === 'Success') {
+        if (ytQueryResponse.data.message === 'Success' && ytQueryResponse.data.data) {
          setAllVideosArray(ytQueryResponse.data.data["VideoData"])
          setDataFetched(true); 
+         setNoDataFoundForQuery(false);
+        }else if(ytQueryResponse.data.message === 'Success' && !ytQueryResponse.data.data){
+          setNoDataFoundForQuery(true);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -223,7 +226,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
       <Grid container spacing={4}>
           <Grid item xs={12}sm={isMobile ? 12 : 8} sx={{minWidth:'500px',}}>
            <ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'1105px',overflow:'scroll'}}>
-           <Grid item xs={12}>
+           {!noDataFoundForQuery ? <Grid item xs={12}>
           {videoData.map((item, index) => (
             index === videoData.length - 1 ? (
               <Grid container spacing={0} key={index} sx={{mb:2,paddingLeft:0,paddingTop:1,paddingBottom:0}}>
@@ -247,8 +250,19 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
 </Grid>
 )}</Grid>
             
-            
-          ))}</Grid>
+
+          ))}</Grid>:<Grid item xs={12}><ImageBanner imageSrc={"/images/josh-fincher-_w9BlEYYGCE-unsplash.jpg"} hasOverlay={false} minWidth={'330px'} minHeight={'330px'} borderRadius={100}  >
+          <Box sx={{ height: "90%", width: '100%', overflow: 'auto', mt: '5%' }}>
+            <Grid container spacing={2}> 
+              <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <HorizontalBanner GridContent={["There was a problem loading your videos"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["white"]} isMutliStage={false} marginLeftValue={[]}  isBannerInterface={false} />
+              </Grid>
+              <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <HorizontalBanner GridContent={["Please check back later while we fix this issue."]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]}  isBannerInterface={false} />
+                 </Grid> 
+            </Grid>
+          </Box>
+        </ImageBanner> </Grid>}
         </Grid></Box></Box></ItemPlayer>
          
         </Grid>

@@ -12,6 +12,7 @@ import SignalRService from '../../utils/signalrEndpoint';
 import { useEffect, useState } from 'react';
 import ExtendedPacket from '../../interfaces/extendedPacketInterface';
 import MergeSort from '../../utils/mergeSort';
+import { roundTo3DP } from '../../utils/roudning';
 
 
 interface smallLapTableProps{
@@ -58,17 +59,32 @@ export default function SmallLapTable({lastLapTime,bestLapTime,compound,setup}:s
       /* won't work if the lap times are indentical */ 
       //add sorting and check for time of -1second
 
-      const parseLapTime = (lapTimeString:string) => {
-        const [hours, minutes, seconds, milliseconds] = lapTimeString
-          .split(':')
-          .map((part) => parseFloat(part));
-        return hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
+      const parseLapTime = (lapTimeString: string) => {
+        if(lapTimeString !== ''){
+          const [hours, minutes, secondsAndMilliseconds] = lapTimeString.split(':');
+          const [seconds, rawMilliseconds] = secondsAndMilliseconds.split('.');
+          
+          const milliseconds = parseFloat(rawMilliseconds || "0");
+          
+          const totalSeconds = parseFloat(hours) * 3600 + parseFloat(minutes) * 60 + parseFloat(seconds);
+          console.log(totalSeconds)
+          const roundedMilliseconds = roundTo3DP(milliseconds)/10000000; // Round to 3 decimal places
+          console.log(roundedMilliseconds)
+          return totalSeconds + roundedMilliseconds;
+        }
       };
       const getDeltaOneLap=()=>{
+        console.log(bestLapTime)
+        console.log(lastLapTime)
         const bestLapDuration = parseLapTime(bestLapTime);
         const lapDuration = parseLapTime(lastLapTime);
-        const delta = (lapDuration - bestLapDuration).toFixed(3);
-        return delta;
+        if(lapDuration&&bestLapDuration){
+          console.log(bestLapDuration)
+          console.log(lapDuration)
+          const delta = (lapDuration - bestLapDuration).toFixed(3);
+          console.log(delta)
+          return delta;
+        }return 'NAN'
       }
 
 
@@ -94,15 +110,20 @@ export default function SmallLapTable({lastLapTime,bestLapTime,compound,setup}:s
         //setRows(updatedRows);
       //}, [lastLapTime]);
       useEffect(() => {
-        if (bestLapTime !== "-00:00:00.0010000") {
-          const bestLapDuration = parseLapTime(bestLapTime);
-          const updatedRows = rows.map((row) => {
-            const lapDuration = parseLapTime(row.lapTime);
-            const delta = (lapDuration - bestLapDuration).toFixed(3);
-            return { ...row, delta };
-          });
-          setRows(updatedRows);
+        if(rows[0]){
+          if (bestLapTime !== "-00:00:00.0010000") {
+            const bestLapDuration = parseLapTime(bestLapTime);
+            const updatedRows = rows.map((row) => {
+              const lapDuration = parseLapTime(row.lapTime);
+              if(bestLapDuration&&lapDuration){
+                const delta = (lapDuration - bestLapDuration).toFixed(3);
+                return { ...row, delta };
+              }
+            });
+            setRows(updatedRows);
+          }
         }
+        
       }, [bestLapTime]);
       
       useEffect(() => {

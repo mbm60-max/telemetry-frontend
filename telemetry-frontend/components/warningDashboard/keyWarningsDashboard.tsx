@@ -306,7 +306,6 @@ useEffect(() => {
     prevSelectedLimits.current = selectedLimits;
     // Rest of the useEffect code...
     handleSetLimits(selectedLimits,readyFlagRef.current);
-    console.log(selectedLimits)
   }, [selectedLimits,readyFlagRef.current]);
 
   useEffect(() => {

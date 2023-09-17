@@ -14,29 +14,21 @@ const convertSecondsToTime= (seconds:number)=> {
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
   }
 
-export function convertTimeToSeconds(timeString:string) {
+  export function convertTimeToSeconds(timeString: string) {
     const timeParts = timeString.split(":");
     
     if (timeParts.length !== 3) {
-     //"Invalid time format. Use the format 'hh:mm:ss.milliseconds'");
-     return 0;
+      return 0; // Invalid time format
     }
     
     const hours = parseInt(timeParts[0], 10);
     const minutes = parseInt(timeParts[1], 10);
-    const secondsParts = timeParts[2].split(".");
+    const seconds = parseInt(timeParts[2], 10);
     
-    if (secondsParts.length !== 2) {
-      //"Invalid time format. Use the format 'hh:mm:ss.milliseconds'");
-     return 0;
-    }
+    // Calculate total seconds without milliseconds
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
     
-    const seconds = parseInt(secondsParts[0], 10);
-    const milliseconds = parseInt(secondsParts[1], 10);
-    
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds + milliseconds / 1000;
-    
-    return Math.round(totalSeconds);
+    return totalSeconds;
   }
 
   export default convertSecondsToTime;

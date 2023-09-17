@@ -6,4 +6,7 @@
     background-color: rgba(72, 212, 59,1);
     border-radius: '10px 10px 10px 10px';
   }
-  
+ 
+  .my-button.css-1e6y48t-MuiButtonBase-root-MuiButton-root.Mui-disabled {
+    background-color: red;
+}

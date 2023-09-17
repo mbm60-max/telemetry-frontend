@@ -24,6 +24,7 @@ import { SettingsContext } from '../authProviderSettings';
 import axios, { AxiosResponse } from 'axios';
 import ActiveChallenge from './activeChallenge';
 import convertSecondsToTime, { convertTimeToSeconds } from '../../utils/secondsToString';
+
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
   ssr: false 
@@ -134,7 +135,8 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
   const [goal,setGoal]= useState('');
   const [targetValue,setTargetValue]= useState<string|number>();
   const [hasBeenSet,setHasBeenSet]= useState(false);
-  const [lastTwoLaps,setLastTwoLaps]= useState<number[]>([]);
+  const [lastThreeLaps,setLastThreeLaps]= useState<number[]>([]);
+
 
 useEffect(()=>{
   if(typeof challengeData[0] !== 'undefined'){
@@ -146,7 +148,7 @@ useEffect(()=>{
               break;
           case 'Pace':
           setTargetLaps(1)
-          setGoal(`You must record a lap time of ${challengeData[1]["Target"]} for one lap `);
+          setGoal(`You must record a lap time of ${convertSecondsToTime(challengeData[1]["Target"])} for one lap `);
           setTargetValue(challengeData[1]["Target"]);
           break;
           case 'Endurance':
@@ -197,41 +199,98 @@ useEffect(()=>{
   },[]);
 
   const handlePaceChallenge=(target:number)=>{
-  if(lastLapTime !== "-00:00:00.0010000"){
+  if((lastLapTime !== "-00:00:00.0010000") && (lastLapTime !== "")){
     if(target>convertTimeToSeconds(lastLapTime)){
       setHasBeenSet(true);
-      return 1;
+      setLapsCompleted(1);
+      return;
      }
      else if(!hasBeenSet){
-      return 0;
+      setLapsCompleted(0);
+      return;
      }
-  }
+  }console.log("invalid lap");
   }
   const handleEnduranceChallenge=(target:number)=>{
-    if(lapCount>target){//might need to be -1 to account for the first lap thing
+    if(lapCount>target){//might need to be -1 to account for the first lap being lap 0, or maybe leave as is?
       setHasBeenSet(true);
-      return target;
+      setLapsCompleted(target);
+      return;
     }else if(!hasBeenSet){
-      return lapCount;
+      setLapsCompleted(lapCount);
+      return;
      }
   }
+  //works fine
   const handleConsistencyChallenge=(target:number)=>{
-    let targetIsMet=false;
-    if(lastTwoLaps.length<1){
-      return 0;
+    if((lastLapTime !== "-00:00:00.0010000") && (lastLapTime !== "")){
+    if(lastThreeLaps.length<1){
+      setLapsCompleted(0);
+      return;
     }
-    if(lastTwoLaps.length<2){
-      return 1;
+    if(lastThreeLaps.length<2){
+      setLapsCompleted(1);
+      return;
     }
-    if(lastTwoLaps.length<3){
+    if(lastThreeLaps.length<3){
+      const firstLap=lastThreeLaps[0];
+      const secondLap=lastThreeLaps[1];
       //check if they are within target% if yes return 2 else return 1
-      return 0;
+      //if return value 1 push first value out of array and second value to first positon
+      const percentageDifference = Math.abs((secondLap - firstLap) / firstLap) * 100;
+
+      if (percentageDifference <= target) {
+        setLapsCompleted(2);
+      return;
+      } else {
+        // Update the lastThreeLaps array
+        const updatedLaps = [secondLap];
+        setLastThreeLaps(updatedLaps);
+        setLapsCompleted(1);
+      return;
+      }
     }
-    if(lastTwoLaps.length<3){
-      //check if they are within target% if yes return 3 else return 1
-      return 0;
+    if(lastThreeLaps.length=3){
+      const secondLap=lastThreeLaps[1];
+      const thirdLap=lastThreeLaps[2];
+      const percentageDifference = Math.abs((thirdLap - secondLap) / secondLap) * 100;
+      if (percentageDifference <= target) {
+        setLapsCompleted(3);
+      return;
+      } else {
+        // Update the lastThreeLaps array
+        const updatedLaps = [thirdLap];
+        setLastThreeLaps(updatedLaps);
+        setLapsCompleted(1);
+      return;
+      }
     }
-  }
+  }console.log("invalid lap")
+  };
+
+  useEffect(()=>{
+    const handleLastThreeLaps=()=>{
+      if(lastLapTime !== ""){
+        setLastThreeLaps((prevLaps) => {
+          // Calculate the new value based on the previous state and lastLapTime
+          // For example, you can add the new lap time to the beginning and remove the oldest lap time
+          const newLaps = [...prevLaps, convertTimeToSeconds(lastLapTime)];
+          
+          // Ensure that the array only contains the last three lap times
+          if (newLaps.length > 3) {
+            newLaps.shift(); // Remove the oldest lap time
+          }
+          
+          return newLaps;
+        });
+      }
+      
+    }
+
+handleLastThreeLaps();
+},[lastLapTime]);
+
+useEffect(()=>{
   const updateChallengeProgress=()=>{
     switch(challenge){
       case 'Consistency':
@@ -246,7 +305,8 @@ useEffect(()=>{
       break;
   }
 }
-
+updateChallengeProgress();
+},[lastThreeLaps,lastLapTime,lapCount])
 
   return (
   

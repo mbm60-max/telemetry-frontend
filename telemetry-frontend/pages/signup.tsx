@@ -86,7 +86,8 @@ const SignUpForm: React.FC = () => {
       }
       const token = generateToken(10);
       const emailIsVerified = false;
-      await axios.post("/api/registerapi", { username, email, password, token, emailIsVerified, pfpSVG20,pfpSVG40,pfpSVG60});
+      const completedChallenges = [false,false,false];
+      await axios.post("/api/registerapi", { username, email, password, token, emailIsVerified, pfpSVG20,pfpSVG40,pfpSVG60,completedChallenges});
       const settingsname = "Default Settings"
       const settingsObject: SettingsObject = {
         data: {

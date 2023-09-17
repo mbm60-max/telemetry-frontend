@@ -9,6 +9,7 @@ import YouTubePlayerComponent from "./videoPlayer.tsx/playercomponent";
 import ChallengeBanner from "./challengeBanner";
 import ImageBanner from '../../components/splitImageBanner';
 import HorizontalBanner from '../horizontalBanner/horizontalBanner';
+import { AuthContext } from "../authProvider";
 interface RecommendedWrapperProps {}
 
 const ItemPlayer = styled(Paper)(({ theme }) => ({
@@ -39,7 +40,7 @@ interface ChallengeContent{
 
 
 const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
-
+  const { userName } = useContext(AuthContext);
   const [allVideosArray, setAllVideosArray] = useState<any[]>([]); // Specify the type for allVideosArray
   const [challengeData, setChallengeData] = useState<ChallengeContent[]>([]); 
   const [allChallengesArray, setAllChallengesArray] = useState<any[]>([]);
@@ -54,6 +55,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
   const challengeImages = ["/images/matthew-dockery-s99-JP8P3Hg-unsplash.jpg","images/sander-trooijen-gcGqnjTO1i8-unsplash.jpg","/images/test1.jpg"]
   const [lastUpdatedDate,setLastUpdatedDate]=useState('');
   const [ noDataFoundForQuery, setNoDataFoundForQuery] = useState(true);
+  const [challengeStatusArray,setChallengeStatusArray] = useState([false,false,false]);
   // Function to add a new video to the videoData array
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -193,6 +195,24 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         console.error('Error fetching challenges:', error);
       }
     };
+    const checkChallengeStatus= async (username:string)=>{
+      try {
+          const checkStatusResponse: AxiosResponse = await axios.get('/api/checkuserchallengestatusapi', {
+            params: {username},
+          });
+          
+          console.log('Response:', checkStatusResponse);
+          if(checkStatusResponse.data.completedChallenges){
+            console.log(checkStatusResponse.data.completedChallenges)
+            setChallengeStatusArray(checkStatusResponse.data.completedChallenges)
+          }else{
+            console.log('No Challenge Data For User')
+          }
+          
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    }
     const fetchLastDate = async () => {
       try {
         const collectionName = "LastUpdatedChallenge"
@@ -209,7 +229,9 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
     fetchAvailableVideos();
     fetchAvailableChallenges();
     fetchLastDate();
+    checkChallengeStatus(userName);
   }, []);
+
   
   return (<>
     <Homepage style={'navbar-container'}>
@@ -271,7 +293,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         <Grid container spacing={0} sx={{height:'1105px',overflow:'scroll',mb:1}}>
         {challengeData.map((item, index) => (
           <Grid item xs={12}  key={index}sx={{maxHeight:'550px',display:'flex',justifyContent:'center',mt:2}}>
-          <ChallengeBanner challengeName={challengeTypes[index]} isCompleted={false} image={challengeImages[index]} trackName={item.Track} carName={item.Car} letterName={challengeLetters[index]} targetValue={item.Target} lastUpdatedDate={lastUpdatedDate}></ChallengeBanner>
+          <ChallengeBanner challengeName={challengeTypes[index]} isCompleted={false} image={challengeImages[index]} trackName={item.Track} carName={item.Car} letterName={challengeLetters[index]} targetValue={item.Target} lastUpdatedDate={lastUpdatedDate} challengeStatus={challengeStatusArray[index]}></ChallengeBanner>
         </Grid>
         ))}
          

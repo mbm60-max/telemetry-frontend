@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Divider, Grid, styled, Typography } from '@mui/material';
+import convertSecondsToTime, { convertTimeToSeconds } from '../../utils/secondsToString';
 
 interface TimeRemainingBannerProps{
     lastUpdatedDate:string;
@@ -22,7 +23,7 @@ const TimeRemainingBanner = ({lastUpdatedDate,targetValue,type,onRemainingTimeCh
       setMessage(`Maintain a pace within ${targetValue}%  across 3 consecutive laps`);
       break;
       case "Pace":
-      setMessage(`Hit the target pace of ${1} for ${targetValue} lap/laps`);
+      setMessage(`Hit the target pace of ${convertSecondsToTime(targetValue)} for ${1} lap`);
       break;
       case "Endurance":
       setMessage(`Complete ${targetValue} laps`);

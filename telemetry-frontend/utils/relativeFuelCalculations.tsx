@@ -1,4 +1,4 @@
-import { convertSecondsToTime } from "./secondsToString";
+import  convertSecondsToTime  from "./secondsToString";
 
  class fuelConsumptionObject {
     fuelConsumedPerLap: number = 0;

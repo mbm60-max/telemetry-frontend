@@ -29,6 +29,7 @@ import isNewLapCheck from '../../utils/isNewLapCheck';
 import GridWarningConsumer from '../warningDashboard/activeWarningFunctions/handlesSetLimits';
 import convertMpsToMph, { convertBarsToPsi, convertCelciusToFahrenheit, convertMetresToFeet, convertMMToInches, convertMpsToKMH, convertToPercentage,convertKPAToPSI,convertLitresToGallons, convertNegativeToZero, convertWheelRPS } from '../../utils/converters';
 import { alterSuggestedForGraph } from '../../utils/alterSuggestedGear';
+import convertSecondsToTime, { convertTimeToSeconds } from '../../utils/secondsToString';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -889,6 +890,21 @@ export default function BasicTabs() {
     return "None";
   }
 
+  const lapsToTest =["00:01:10.0010000","00:01:11.0010000","00:01:12.0010000","00:01:53.0010000","00:01:52.0010000"];
+  const [i,setI]=useState(0);
+  const [timeAsString,setTimeAsString]=useState('');
+  const [timeAsSeconds,setTimeAsSeconds]=useState(0);
+  const handleLapTest=()=>{
+    setLastLapTime(lapsToTest[i]);
+    setLapCount(i+1)
+    setI(i+1);
+  }
+  const handleTimeTest=()=>{
+    setLastLapTime(lapsToTest[i]);
+    setTimeAsString(lastLapTime);
+    setTimeAsSeconds(convertTimeToSeconds(lastLapTime));
+    setI(i+1);
+  }
   return (
     <> {activeWarnings.length > 0 ? (
       activeWarnings.map((value, index) => (
@@ -908,7 +924,10 @@ export default function BasicTabs() {
       ) : (
        null
       )}
-
+    <Button onClick={handleLapTest}>Push Next Lap</Button>
+    <Button onClick={handleTimeTest}>Push Next Time</Button>
+    <Button >{timeAsString}</Button>
+    <Button >{timeAsSeconds}</Button>
       <Grid item xs={12}>
         <Homepage style={'navbar-container'}>
           <Item><NavBar /></Item>

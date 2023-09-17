@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import YouTube from 'react-youtube';
 import Skeleton from '@mui/material/Skeleton';
 import { Box, Button, Grid, Typography } from '@mui/material';
@@ -10,6 +10,7 @@ import IsPlayable from './isPlayable';
 import splitAndCapitalise from '../../utils/splitAndCapitalise';
 import './challenge.css'
 import router from 'next/router';
+import axios, { AxiosResponse } from 'axios';
 interface ChallengeBannerProps{
     challengeName:string;
     isCompleted:boolean;
@@ -19,23 +20,29 @@ interface ChallengeBannerProps{
     letterName:string;
     targetValue:number;
     lastUpdatedDate:string;
+    challengeStatus:boolean;
 }
-const ChallengeBanner = ({ challengeName,isCompleted,image,trackName,carName,letterName,targetValue,lastUpdatedDate}:ChallengeBannerProps) => {
+const ChallengeBanner = ({ challengeName,isCompleted,image,trackName,carName,letterName,targetValue,lastUpdatedDate,challengeStatus}:ChallengeBannerProps) => {
   const [isPlayable,setIsPlayable]=useState(true);
 
   const handleTimechange=(timeRemaining:string)=>{
     if(timeRemaining === "Loading Next Event"){
       setIsPlayable(false);
       return;
-    }setIsPlayable(true);
+    }else if(challengeStatus == true){
+      setIsPlayable(false);
+    }else if(challengeStatus == false){
+      setIsPlayable(true);
+    }
   }
+ 
 
   const startSession=()=>{
     const queryParams = `car=${carName}&compound=${"NONE"}&track=${trackName}&setup=${'No Field Selected'}&challenge=${challengeName}`;
     router.push(`/session?${queryParams}`);
   }
       return (
-        <Button className='my-button' variant='text' onClick={startSession}>
+        <Button className='my-button' variant='text' onClick={startSession} disabled={!isPlayable}>
         <Box className='my-button' sx={{width:'95%',height:'100%',display:'flex',justifyContent:'center'}}> <Grid container spacing={0}> <Grid item xs={12} ><ImageBanner imageSrc={image} hasOverlay={false} minWidth={'200px'} minHeight={'200px'}  borderRadius="10px 10px 0px 0px" ><Box sx={{ height: "90%", width: '100%', overflow: 'auto', mt: '5%' }}>
             
         <Grid container spacing={2}> 

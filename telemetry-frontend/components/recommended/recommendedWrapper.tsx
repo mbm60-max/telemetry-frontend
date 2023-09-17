@@ -245,7 +245,9 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         width: "100%",
         height: "100%",display:'flex',justifyContent:'center'}}>
     
-      <Grid container spacing={4}>
+      <Grid container spacing={2}>
+      <Grid item xs={12} sm={isMobile ? 12 : 8}><ItemPlayer><Box sx={{width:'95%',height:'100%',borderRadius:5,display:'flex',justifyContent:'center',alignItems:'center'}}><Typography sx={{color:'White'}}  fontWeight={'bold'} fontFamily={'Yapari'} fontSize={30}>Video Feed</Typography></Box></ItemPlayer></Grid>
+      {!isMobile&&<Grid item xs={4}><ItemPlayer><Box sx={{width:'95%',height:'100%',borderRadius:5,display:'flex',justifyContent:'center',alignItems:'center'}}><Typography sx={{color:'White',whiteSpace:'nowrap',overflow:'auto'}}  fontWeight={'bold'} fontFamily={'Yapari'} fontSize={30}>Daily Challenges</Typography></Box></ItemPlayer></Grid>}
           <Grid item xs={12}sm={isMobile ? 12 : 8} sx={{minWidth:'500px',}}>
            <ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'1105px',overflow:'scroll'}}>
            {!noDataFoundForQuery ? <Grid item xs={12}>
@@ -288,7 +290,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         </Grid></Box></Box></ItemPlayer>
          
         </Grid>
-        
+        {isMobile&&<Grid item xs={12}><ItemPlayer><Box sx={{width:'95%',height:'100%',borderRadius:5,display:'flex',justifyContent:'center',alignItems:'center'}}><Typography sx={{color:'White'}}  fontWeight={'bold'} fontFamily={'Yapari'} fontSize={30}>Daily Challenges</Typography></Box></ItemPlayer></Grid>}
         <Grid item xs={12}sm={isMobile ? 12 : 4} ><ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> 
         <Grid container spacing={0} sx={{height:'1105px',overflow:'scroll',mb:1}}>
         {challengeData.map((item, index) => (

@@ -47,7 +47,7 @@ const Home = () => {
   const Card1Colors = ["#F6F6F6", "#F6F6F6", "#F6F6F6"]
   const Card2Colors = ["#F6F6F6", "#F6F6F6", "#F6F6F6"]
   const Card1Content = ["BOOST YOUR LEARNING", "REAL TIME INSIGHTS - FULLY RIGGED", "SIGN UP TO GET STARTED AND START GAINING EVERY TENTH"]
-  const Card2Content = ["NOT SURE WHERE TO START", "BROWSE HUNDREDS OF PREPLANNED SESSIONS", "CURATED BY EXPERTS FOR YOU"]
+  const Card2Content = ["NOT SURE WHERE TO START", "BROWSE A CURATED FEED FOR TIPS", "OR START ONE OF THE DAILY CHALLENGES"]
 
   console.log(isLoggedIn);
   useEffect(() => {
@@ -107,7 +107,7 @@ const Home = () => {
       titleSize: 29,
       titleFontStyle: 'Yapari',
       titleFontWeight: 'bold',
-      body: ['Sessions allow for real time data streaming directly from your console.', 'Real Time Data Streaming', 'Console/PC Connectivity', 'Data Recording', 'Access to Setups'],
+      body: ['Sessions allow for real time data streaming directly from your console.', 'Real Time Data Streaming', 'PS3-PS5 Connectivity', 'Data Recording and Custom Warnings', 'Fully Customisable Setups'],
       bodySize: [22, 17, 17, 17, 17],
       bodyFontStyle: 'Satoshi',
       bodyFontWeight: 'normal',
@@ -121,7 +121,7 @@ const Home = () => {
       titleSize: 29,
       titleFontStyle: 'Yapari',
       titleFontWeight: 'bold',
-      body: ['Sessions allow for real time data streaming directly from your console.', 'Over 15 Data Streams To Compare', '1-100 Reviewable Laps', 'Cross Lap and Session Comparisons ', 'Multiple Stream Comparisons'],
+      body: ['Sessions allow for real time data streaming directly from your console.', 'Over 15 Data Streams To Compare', '1-10 Reviewable Laps Available At Any Time', 'Cross Lap and Session Comparisons ', 'Multiple Stream Comparisons'],
       bodySize: [22, 17, 17, 17, 17],
       bodyFontStyle: 'Satoshi',
       bodyFontWeight: 'normal',
@@ -134,7 +134,7 @@ const Home = () => {
       titleSize: 29,
       titleFontStyle: 'Yapari',
       titleFontWeight: 'bold',
-      body: ['Sessions allow for real time data streaming directly from your console.', 'Daily Challenge Content', 'Tips To Improve', 'Coming Soon', 'Coming Soon'],
+      body: ['Sessions allow for real time data streaming directly from your console.', 'Daily Challenge Content', 'Daily Sim Racing Youtube Feed', 'Coming Soon', 'Coming Soon'],
       bodySize: [22, 17, 17, 17, 17],
       bodyFontStyle: 'Satoshi',
       bodyFontWeight: 'normal',
@@ -270,7 +270,7 @@ const Home = () => {
                       <Grid item xs={12} >
                         <div >
                           <Button className="parallelogram-buttonCTA-XLG" sx={{ left: 30, fontWeight: 'bold', fontFamily: "Satoshi" }}>
-                            <Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/recomended">Recomended</Link>
+                            <Link style={{ color: '#F6F6F6', textDecoration: 'none' }} href="/recommended">Recommended</Link>
                           </Button>
                         </div>
                       </Grid>

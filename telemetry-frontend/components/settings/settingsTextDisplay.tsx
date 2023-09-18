@@ -40,6 +40,7 @@ interface SettingsTextDisplayProps {
   checkPasswordIsNew?:(password: string) => Promise<{ isValid: boolean; errorMessage: string;}| undefined>
   verifyEmail?: (targetEmail: string, subject: string, message: string, userName: string) => void;
   checkEmailIsNew?:(email: string) => Promise<{ isValid: boolean; errorMessage: string;}| undefined>
+  isPasswordType:boolean;
 }
 const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
@@ -65,6 +66,7 @@ const SettingsTextDisplay = ({
   checkPasswordIsNew,
   verifyEmail,
   checkEmailIsNew,
+  isPasswordType,
 }: SettingsTextDisplayProps) => {
     const [inputValue,setInputValue]=useState<string|number>();
     const [errorValue,setErrorValue]=useState("");
@@ -262,7 +264,7 @@ const SettingsTextDisplay = ({
                     onChange={handleChange}
                     error={Boolean(errorValue)}
                     helperText={errorValue}
-                    type={isNumber ? 'number' : 'text'} 
+                    type={isNumber ? 'number' : isPasswordType ? 'password': 'text'} 
                     inputProps={{
                       min: minValue, 
                       max: maxValue,
@@ -273,7 +275,7 @@ const SettingsTextDisplay = ({
               </Grid>
               <InfoToolTip
                 name={targetSetting}
-                info={tooltipInfo} iconColor={""}              />
+                info={tooltipInfo} iconColor={"white"}              />
             </Grid>
           </Box>
         </Grid>

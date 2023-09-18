@@ -1,13 +1,15 @@
-import React, { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-import { TextField, Button, Typography, styled, Box } from "@mui/material";
+import { TextField, Button, Typography, styled, Box, useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import "../pagesCss/signup.css";
 import Grid from "@mui/material/Grid";
 import ImageBox from "../components/homepageTrack";
 import IconBox from "../components/iconBox";
 import BadgeIcon from "@mui/icons-material/Badge";
+import EmailIcon from '@mui/icons-material/Email';
+import SensorsIcon from '@mui/icons-material/Sensors';
 import Divider from "@mui/material/Divider";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import SettingsObject from "../interfaces/defaultSettingsInterface";
@@ -16,7 +18,8 @@ import { generateToken } from "../utils/emailSender";
 import SvgRenderer from "../components/avatar/svgRenderer";
 import UserAvatar from "../components/avatar/userAvatar";
 import ReactDOMServer from "react-dom/server";
-
+import '../fonts/fonts.css'
+import '../components/sessionStartupComponents/setupComponents/setupStyles.css'
 const SignUpForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -33,11 +36,6 @@ const SignUpForm: React.FC = () => {
   const [pfpSVG60, setPfpSVG60] = useState("");
   const router = useRouter();
 
-  const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
-    borderWidth: "1px", // Adjust the thickness of the line here
-    borderColor: "grey", // You can change the color to any valid CSS color value
-  width:'99%',
-  }));
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
    
@@ -84,6 +82,7 @@ const SignUpForm: React.FC = () => {
       if(Failed==true){
         return
       }
+      const router = useRouter();
       const token = generateToken(10);
       const emailIsVerified = false;
       const completedChallenges = [false,false,false];
@@ -193,6 +192,7 @@ const SignUpForm: React.FC = () => {
     }
   };
 
+ 
   const handleIPChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIPAddress(e.target.value);
     setIPAddressError(""); // Clear username error on change
@@ -204,6 +204,12 @@ const SignUpForm: React.FC = () => {
     setConfirmPasswordError(""); // Clear confirm password error on change
   };
 
+  useEffect(()=>{
+    handleCreateAvatar();
+  },[])
+  const handleLoginRedirect=()=>{
+    router.push('/login');
+  }
   const handleCreateAvatar = () => {
     const token=generateToken(10);
     const avatarComponent20 = (
@@ -231,6 +237,7 @@ const SignUpForm: React.FC = () => {
     setPfpSVG40(ReactDOMServer.renderToString(avatarComponent40))
     setPfpSVG60(ReactDOMServer.renderToString(avatarComponent60))
   };
+  const isMobile = useMediaQuery('(max-width:1000px)')
   return (
     <>
       <div
@@ -238,161 +245,201 @@ const SignUpForm: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+        }}
+      ><Box sx={{minHeight:'900px',height:'100vh',width:'100%'}}><ImageBox
+      Width={"100%"}
+      Height={"100%"}
+      MarginRight={"0px"}
+      MarginLeft={"0px"}
+      MarginTop={"0px"}
+      objectFit={"cover"}
+      imageSrc="/images/milan-csizmadia-pYmH0eTpr70-unsplash.jpg"
+      borderRadius={0} hasOverlay={true}><>  <Box sx={{display: "flex",
+      justifyContent: "center",
+      alignItems: "center",width:'100%',height:'100%'}}><form onSubmit={handleSubmit}>
+      
+      <Grid
+      container
+      rowSpacing={0}
+      columnSpacing={{ xs: 1, sm: 2, md: 0 }}
+      sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%',width:'100%'}}
+      >
+      <Grid
+        item
+        xs={8}
+        sx={{
+          justifyContent: "center",
+          display: "flex",
+          backgroundColor: "rgba(9, 27, 119, 0.5)",
+          height: "600px",
+          minWidth:'400px',
+          overflow:'auto',
+          borderRadius:5,
+          boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 1)",
         }}
       >
-        <div className="elevatedBox">
+        <Grid
+      container spacing={0}>
+        <Grid item xs={12}><Box sx={{height:'5px'}}></Box></Grid>
+        <Grid
+        item
+        xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography fontFamily={"Yapari"} fontWeight={'bold'} sx={{color:'white'}} fontSize={45}>SIGN UP</Typography></Grid>
+        <Grid
+        item
+        xs={isMobile ?12:6}>
+        <Grid container spacing={2} >
+          <Grid item xs={12}>
+          <Grid container spacing={0} >
+            {isMobile && <Grid item xs={12}><Box sx={{height:'50px'}}></Box></Grid>}
           <Grid
-            container
-            rowSpacing={0}
-            columnSpacing={{ xs: 1, sm: 2, md: 0 }}
-          >
-            <Grid
-              item
-              xs={6}
-              sx={{
-                justifyContent: "center",
-                display: "flex",
-                backgroundColor: "#F6F6F6",
-                height: "610px",
-              }}
-            >
-              <div style={{ marginTop:20 }}>
-                <form onSubmit={handleSubmit}>
-                <div style={{ position: "relative",marginBottom:8}}>
-                <Grid container spacing={0}>
-                      <Grid xs={6}><Button variant={'contained'}onClick={handleCreateAvatar}>Generate New Avatar</Button></Grid>
-                      <Grid item xs={6}><Box sx={{ml:2,mt:2}}><SvgRenderer svgString={pfpSVG40}/></Box></Grid>
-                    </Grid>
-                  </div>
-                  <div style={{ position: "relative", marginBottom: 24 }}>
-                    <IconBox icon={BadgeIcon}></IconBox>
-                    <TextField
-                      label="Username"
-                      variant="outlined"
-                      value={username}
-                      onChange={handleUsernameChange}
-                      error={Boolean(usernameError)}
-                      helperText={usernameError}
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: "43px",
-                        width: "310px",
-                      }}
-                    />
-                  </div>
-                  <div style={{ position: "relative", marginBottom: 24 }}>
-                    <IconBox icon={VpnKeyIcon}></IconBox>
-                    <TextField
-                      label="Email"
-                      variant="outlined"
-                      type="email"
-                      value={email}
-                      onChange={handleEmailChange}
-                      error={Boolean(emailError)}
-                      helperText={emailError}
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: "43px",
-                        width: "310px",
-                      }}
-                    />
-                  </div>
-                  <div style={{ position: "relative", marginBottom: 24 }}>
-                    <IconBox icon={VpnKeyIcon}></IconBox>
-                    <TextField
-                      label="Password"
-                      variant="outlined"
-                      type="password"
-                      value={password}
-                      onChange={handlePasswordChange}
-                      error={Boolean(passwordError)}
-                      helperText={passwordError}
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: "43px",
-                        width: "310px",
-                      }}
-                    />
-                  </div>
-                  <div style={{ position: "relative", marginBottom: 24 }}>
-                    <IconBox icon={VpnKeyIcon}></IconBox>
-                    <TextField
-                      label="Confirm Password"
-                      variant="outlined"
-                      type="confirm password"
-                      value={confirmPassword}
-                      onChange={handleConfirmPasswordChange}
-                      error={Boolean(confirmPasswordError)}
-                      helperText={confirmPasswordError}
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: "43px",
-                        width: "310px",
-                      }}
-                    />
-                  </div>
-                  <Grid
-            container
-            rowSpacing={2}
-          > <Grid item xs={12} ><StyledHorizontalDivider/></Grid><Grid item xs={12} ><div style={{ position: "relative" }}>
-          <IconBox icon={VpnKeyIcon}></IconBox>
-          <TextField
-            label="IP Address"
-            variant="outlined"
-            type="IP Address"
-            value={IPAddress}
-            onChange={handleIPChange}
-            error={Boolean(ipAddressError)}
-            helperText={ipAddressError}
-            sx={{
-              position: "absolute",
-              top: 0,
-              left: "43px",
-              width: "310px",
-            }}
-          />
-        </div></Grid><Grid item xs={12} ><StyledHorizontalDivider/></Grid><Grid item xs={12} ><Button
-          type="submit"
-          variant="contained"
-          sx={{ mr: 2, width: "167px" }}
+        item
+        xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography fontFamily={"Yapari"} fontWeight={'bold'} sx={{color:'white'}} fontSize={25}>BASICS</Typography></Grid>
+        
+          <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:usernameError ? 3: 0}}><IconBox icon={BadgeIcon} onHoverText={"Must not already be taken"}></IconBox></Box><TextField
+              label="Username"
+              variant="outlined"
+              value={username}
+              onChange={handleUsernameChange}
+              error={Boolean(usernameError)}
+              helperText={usernameError}
+              sx={{width:'60%'}}
+              className="textBox"
+            /></Grid>
+          </Grid>
+          </Grid>
+          <Grid item xs={12}>
+          <Grid container spacing={0}>
+          <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+          <Box sx={{mb:emailError ? 3: 0}}><IconBox icon={EmailIcon} onHoverText={"Must contain at least two charcters seperated by an @"}></IconBox></Box><TextField
+              label="Email"
+              variant="outlined"
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+              error={Boolean(emailError)}
+              helperText={emailError}
+              sx={{width:'60%'}}
+              className="textBox"
+            />
+          </Grid>
+          </Grid>
+          </Grid>
+          <Grid item xs={12}>
+          <Grid container spacing={0}>
+          <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+          <Box sx={{mb:passwordError ? 3: 0}}><IconBox icon={VpnKeyIcon} onHoverText={"Must be at least six characters long, with at least one upper and lower character"}></IconBox></Box><TextField
+              label="Password"
+              variant="outlined"
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              error={Boolean(passwordError)}
+              helperText={passwordError}
+              sx={{width:'60%'}}
+              className="textBox"
+            />
+          </Grid>
+          </Grid> 
+          </Grid>
+          <Grid item xs={12}>
+          <Grid container spacing={0}>
+          <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+          <Box sx={{mb:confirmPasswordError ? 3: 0}}><IconBox icon={VpnKeyIcon} onHoverText={"Must match your password"}></IconBox></Box><TextField
+              label="Confirm Password"
+              variant="outlined"
+              type="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              error={Boolean(confirmPasswordError)}
+              helperText={confirmPasswordError}
+              sx={{width:'60%'}}
+              className="textBox"
+            />
+          </Grid>
+          </Grid>
+          </Grid>
+      </Grid>
+        </Grid>
+        {isMobile && <Grid item xs={12}><Box sx={{height:'50px'}}></Box></Grid>}
+        <Grid
+        item
+        xs={isMobile ?12:6}> <Grid container spacing={0}>
+        <Grid
+      item
+      xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography fontFamily={"Yapari"} fontWeight={'bold'} sx={{color:'white'}} fontSize={25}>SPECIFICS</Typography></Grid>
+      <Grid xs={12}>
+      <Grid container spacing={0}>
+      <Grid xs={12}><Grid container spacing={2}>
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+              <Box
+              display="flex"
+              alignItems="center"
+              border="1px solid #ccc"
+              padding="8px"
+              width="100px"
+              height="38px"
+              justifyContent='center'
+              sx={{mr:1,backgroundColor:'rgba(9, 27, 119, 0.5)',borderRadius:5}}>
+                <SvgRenderer svgString={pfpSVG40}/>
+            </Box>
+            <Button className={'textBox'}variant={'contained'}onClick={handleCreateAvatar} sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',border:'1px solid white'}}>Generate New Avatar</Button>
+            </Grid>
+            <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+          <Box sx={{mb:confirmPasswordError ? 3: 0}}><IconBox icon={SensorsIcon} onHoverText={"Must contain four number between 0 and 256 seperate by 4 .'s eg 123.123.123.123"}></IconBox></Box>
+        <TextField
+        label="IP Address"
+        variant="outlined"
+        type="password"
+        value={IPAddress}
+        onChange={handleIPChange}
+        error={Boolean(ipAddressError)}
+        helperText={ipAddressError}
+        sx={{width:'60%'}}
+        className="textBox"
+        
+        />
+          </Grid>
+        </Grid>
+     </Grid>
+      </Grid>
+      </Grid>
+       
+        
+      
+      </Grid>
+        
+      </Grid>
+      {isMobile && <Grid item xs={12}><Box sx={{height:'50px'}}></Box></Grid>}
+          <Grid
+        item
+        xs={isMobile ?12:6} sx={{display:'flex',justifyContent:isMobile?'center':'end',ml:isMobile ?0:-4}}><Button className={'textBox'}variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',border:'1px solid white'}}
+        type="submit"
         >
-          Submit
+        Submit
         </Button>
-        <Button variant="contained" sx={{ width: "167px" }}>
-          <Link
-            style={{ color: "#F6F6F6", textDecoration: "none" }}
-            href={"/login"}
-          >
-            Login
-          </Link>
-        </Button></Grid></Grid>
-                  
-                  
-                </form>
-                <Typography sx={{ fontSize: 12, mt: 2, color: "#AFAFAF" }}>
-                  Image Credit: Max Böttinger
-                </Typography>
-              </div>
-            </Grid>
-            <Grid item xs={6} sx={{ height: "610px" }}>
-              <ImageBox
-                Width={"475px"}
-                Height={"610px"}
-                MarginRight={"0px"}
-                MarginLeft={"0px"}
-                MarginTop={"0px"}
-                objectFit={"cover"}
-                imageSrc="/images/Coffee.jpg"
-                borderRadius={0} hasOverlay={false}                ><></></ImageBox>
-            </Grid>
-          </Grid>{" "}
+        </Grid>
+        {isMobile && <Grid item xs={12}><Box sx={{height:'50px'}}></Box></Grid>}
+        <Grid
+        item
+        xs={isMobile ?12:6} sx={{display:'flex',justifyContent:isMobile?'center':'end'}}>
+        
+        <Button onClick={handleLoginRedirect}className={'textBox'}variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',border:'1px solid white'}}>
+        
+        Login
+        
+        </Button>
+        </Grid>
+      </Grid>
+      
+         
+       
+      </Grid>
+      
+      </Grid></form></Box></>
+      </ImageBox>
+      </Box>
         </div>
-      </div>
+    
     </>
   );
 };

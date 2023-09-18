@@ -107,6 +107,7 @@ import '../sessionStartupComponents/setupComponents/setupStyles.css'
                       id="Transmission-Type-Select"
                       value={inputValue}
                       label="New Value"
+                      type="password"
                       onChange={handleChange}
                       error={Boolean(errorValue)}
                       helperText={errorValue}
@@ -116,7 +117,7 @@ import '../sessionStartupComponents/setupComponents/setupStyles.css'
                 </Grid>
                 <InfoToolTip
                   name={targetSetting}
-                  info={tooltipInfo} iconColor={""}              />
+                  info={tooltipInfo} iconColor={"white"}              />
               </Grid>
             </Box>
           </Grid>

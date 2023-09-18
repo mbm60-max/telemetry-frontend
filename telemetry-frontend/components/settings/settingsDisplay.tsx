@@ -303,6 +303,7 @@ const handlePasswordValidation =(newPassword: string) => {
               currentValue={userName}
               targetSetting={"Change Username"}
               hasDivider={true}
+              isPasswordType={false}
               settingsProp={""}
               validateInputPromise={handleUserNameChange}
               tooltipText={
@@ -316,6 +317,7 @@ const handlePasswordValidation =(newPassword: string) => {
           
               targetSetting={"Change Password"}
               hasDivider={true}
+              isPasswordType={true}
               settingsProp={""}
               validatePassword={handlePasswordValidation}
               tooltipText={
@@ -330,6 +332,7 @@ const handlePasswordValidation =(newPassword: string) => {
           
               targetSetting={"Change Email"}
               hasDivider={true}
+              isPasswordType={false}
               settingsProp={""}
               verifyEmail={handleVerifyEmail}
               tooltipText={
@@ -379,6 +382,7 @@ const handlePasswordValidation =(newPassword: string) => {
               handleUpdateSettings={handleUpdateSettings}
               currentSettingsData={userSettings.data}
               settingsProp={"reviewLapLimit"}
+              isPasswordType={false}
               validateInput={validateReviewLimit}
               tooltipText={
                 "This must between 10 and 100, this is how many laps that will be retained for future use"
@@ -400,6 +404,7 @@ const handlePasswordValidation =(newPassword: string) => {
               hasDivider={false}
               handleUpdateSettings={handleUpdateSettings}
               currentSettingsData={userSettings.alerts}
+              isPasswordType={false}
               settingsProp={"alertWarningInterval"}
               validateInput={validateNotificationDelay}
               tooltipText={
@@ -440,6 +445,7 @@ const handlePasswordValidation =(newPassword: string) => {
               hasDivider={true}
               handleUpdateSettings={handleUpdateSettings}
               currentSettingsData={userSettings.defaults}
+              isPasswordType={false}
               settingsProp={"defualtIPAddress"}
               validateInput={validateIPWithMessage}
               tooltipText={

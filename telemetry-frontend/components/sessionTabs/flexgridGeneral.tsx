@@ -24,6 +24,8 @@ import { SettingsContext } from '../authProviderSettings';
 import axios, { AxiosResponse } from 'axios';
 import ActiveChallenge from './activeChallenge';
 import convertSecondsToTime, { convertTimeToSeconds } from '../../utils/secondsToString';
+import { AuthContext } from '../authProvider';
+import { useRouter } from 'next/router';
 
 const DynamicBasicChart = dynamic(() => import('./chart'), { 
   loader: () => import('./chart'),
@@ -126,8 +128,8 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
   const { defaults } = React.useContext(SettingsContext);
   const isMetric = defaults.defaultUnitsMetric;
   const [lapsCompleted,setLapsCompleted]=useState(0);
-
-
+  const { userName } = React.useContext(AuthContext);
+  const router = useRouter();
   const [challengeData, setChallengeData] = useState<ChallengeContent[]>([]); 
   const [allChallengesArray, setAllChallengesArray] = useState<any[]>([]);
   const [challengeDataFetched,setChallengeDataFetched]= useState(false);
@@ -136,7 +138,7 @@ export default function GeneralGrid({throttleStream,brakeStream,speedStream,sugg
   const [targetValue,setTargetValue]= useState<string|number>();
   const [hasBeenSet,setHasBeenSet]= useState(false);
   const [lastThreeLaps,setLastThreeLaps]= useState<number[]>([]);
-
+  const [challengeStatusArray,setChallengeStatusArray]= useState<boolean[]>([]);
 
 useEffect(()=>{
   if(typeof challengeData[0] !== 'undefined'){
@@ -178,6 +180,7 @@ useEffect(()=>{
       }
       handleChallengeUpdate(3);
   },[challengeDataFetched])
+
     useEffect(() => {
     const fetchAvailableChallenges = async () => {
       try {
@@ -198,11 +201,44 @@ useEffect(()=>{
   fetchAvailableChallenges();
   },[]);
 
+  const updateChallengeStatus = async (value:boolean[],userName:string,targetValue:string)=>{
+    const newValue=value;
+    const target=targetValue;
+    try {
+      await axios.post("/api/changeuserdataapi", {newValue,userName,target});
+   }
+   catch (error) {
+     console.error("Error checking for user:", error);
+   }
+  }
+  const checkChallengeStatus= async (username:string)=>{
+    try {
+        const checkStatusResponse: AxiosResponse = await axios.get('/api/checkuserchallengestatusapi', {
+          params: {username},
+        });
+        
+        console.log('Response:', checkStatusResponse);
+        if(checkStatusResponse.data.completedChallenges){
+          console.log(checkStatusResponse.data.completedChallenges)
+          setChallengeStatusArray(checkStatusResponse.data.completedChallenges)
+        }else{
+          console.log('No Challenge Data For User')
+        }
+        
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+  }
   const handlePaceChallenge=(target:number)=>{
   if((lastLapTime !== "-00:00:00.0010000") && (lastLapTime !== "")){
     if(target>convertTimeToSeconds(lastLapTime)){
       setHasBeenSet(true);
       setLapsCompleted(1);
+      const prevStatus=challengeStatusArray;
+      prevStatus[1]=true;
+      const newStatus = prevStatus
+      updateChallengeStatus(newStatus,userName,"completedChallenges");
+      router.push('/recommended');
       return;
      }
      else if(!hasBeenSet){
@@ -215,6 +251,11 @@ useEffect(()=>{
     if(lapCount>target){//might need to be -1 to account for the first lap being lap 0, or maybe leave as is?
       setHasBeenSet(true);
       setLapsCompleted(target);
+      const prevStatus=challengeStatusArray;
+      prevStatus[2]=true;
+      const newStatus = prevStatus
+      updateChallengeStatus(newStatus,userName,"completedChallenges");
+      router.push('/recommended');
       return;
     }else if(!hasBeenSet){
       setLapsCompleted(lapCount);
@@ -256,6 +297,11 @@ useEffect(()=>{
       const percentageDifference = Math.abs((thirdLap - secondLap) / secondLap) * 100;
       if (percentageDifference <= target) {
         setLapsCompleted(3);
+        const prevStatus=challengeStatusArray;
+        prevStatus[0]=true;
+        const newStatus = prevStatus
+        updateChallengeStatus(newStatus,userName,"completedChallenges");
+        router.push('/recommended');
       return;
       } else {
         // Update the lastThreeLaps array
@@ -291,16 +337,19 @@ handleLastThreeLaps();
 },[lastLapTime]);
 
 useEffect(()=>{
-  const updateChallengeProgress=()=>{
+  const updateChallengeProgress= async ()=>{
     switch(challenge){
       case 'Consistency':
-        handleConsistencyChallenge(targetValue as number);
+        await checkChallengeStatus(userName);//needs to wait to check current challenge status before trying to update it 
+         handleConsistencyChallenge(targetValue as number);
           break;
       case 'Pace':
-      handlePaceChallenge(targetValue as number);
+      await checkChallengeStatus(userName);
+       handlePaceChallenge(targetValue as number);
       break;
       case 'Endurance':
-        handleEnduranceChallenge(targetValue as number);
+        await checkChallengeStatus(userName);
+         handleEnduranceChallenge(targetValue as number);
      //
       break;
   }

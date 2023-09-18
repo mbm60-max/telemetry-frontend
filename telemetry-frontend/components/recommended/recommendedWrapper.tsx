@@ -295,7 +295,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
         <Grid container spacing={0} sx={{height:'1105px',overflow:'scroll',mb:1}}>
         {challengeData.map((item, index) => (
           <Grid item xs={12}  key={index}sx={{maxHeight:'550px',display:'flex',justifyContent:'center',mt:2}}>
-          <ChallengeBanner challengeName={challengeTypes[index]} isCompleted={false} image={challengeImages[index]} trackName={item.Track} carName={item.Car} letterName={challengeLetters[index]} targetValue={item.Target} lastUpdatedDate={lastUpdatedDate} challengeStatus={challengeStatusArray[index]}></ChallengeBanner>
+          <ChallengeBanner challengeName={challengeTypes[index]} isCompleted={challengeStatusArray[index]} image={challengeImages[index]} trackName={item.Track} carName={item.Car} letterName={challengeLetters[index]} targetValue={item.Target} lastUpdatedDate={lastUpdatedDate} challengeStatus={challengeStatusArray[index]}></ChallengeBanner>
         </Grid>
         ))}
          

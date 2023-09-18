@@ -109,7 +109,7 @@ import {
                 </Grid>
                 <InfoToolTip
                   name={targetSetting}
-                  info={tooltipInfo} iconColor={""}              />
+                  info={tooltipInfo} iconColor={"white"}              />
               </Grid>
             </Box>
           </Grid>

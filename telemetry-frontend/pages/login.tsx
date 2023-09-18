@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import axios,{ AxiosResponse } from 'axios';
-import { TextField, Button, Divider, Grid, Typography } from '@mui/material';
+import { TextField, Button, Divider, Grid, Typography, Box, useMediaQuery } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import ImageBox from '../components/homepageTrack';
@@ -89,110 +89,135 @@ const LoginForm: React.FC = () => {
       console.error('Error submitting form:', error);
     }
 };
-
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <div className="elevatedBox">
-          <Grid
-            container
-            rowSpacing={0}
-            columnSpacing={{ xs: 1, sm: 2, md: 0 }}
-          >
-            <Grid
-              item
-              xs={6}
-              sx={{
-                justifyContent: "center",
-                display: "flex",
-                backgroundColor: "#F6F6F6",
-                height: "610px",
-              }}
-            >
-              <div style={{ marginTop: 100 }}>
-                <form onSubmit={handleSubmit}>
-                  <div style={{ position: "relative", marginBottom: 24 }}>
-                    <IconBox icon={BadgeIcon}></IconBox>
-                    <TextField
-                      label="Username"
-                      variant="outlined"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: "43px",
-                        width: "310px",
-                      }}
-                      error={Boolean(usernameError)}
-                      helperText={usernameError}
-                    />
-                  </div>
-                  <div style={{ position: "relative", marginBottom: 24 }}>
-                    <IconBox icon={VpnKeyIcon}></IconBox>
-                    <TextField
-                    label="Password"
+const handleSignupRedirect=()=>{
+  router.push('/signup');
+}
+const isMobile = useMediaQuery('(max-width:1000px)')
+return (
+  <>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    ><Box sx={{minHeight:'900px',height:'100vh',width:'100%'}}><ImageBox
+    Width={"100%"}
+    Height={"100%"}
+    MarginRight={"0px"}
+    MarginLeft={"0px"}
+    MarginTop={"0px"}
+    objectFit={"cover"}
+    imageSrc="/images/fluid-imagery-WviYR9d6FY4-unsplash.jpg"
+    borderRadius={0} hasOverlay={true}><>  <Box sx={{display: "flex",
+    justifyContent: "center",
+    alignItems: "center",width:'100%',height:'100%'}}><form onSubmit={handleSubmit}>
+    
+    <Grid
+    container
+    rowSpacing={0}
+    columnSpacing={{ xs: 0, sm: 0, md: 0 }}
+    sx={{display:'flex',justifyContent:'center',alignItems:'center',height:'100%',width:'100%'}}
+    >
+    <Grid
+      item
+      xs={8}
+      sx={{
+        justifyContent: "center",
+        display: "flex",
+        backgroundColor: "rgba(9, 27, 119, 0.5)",
+        height: "600px",
+        minWidth:'400px',
+        overflow:'auto',
+        borderRadius:5,
+        boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.5)",
+      }}
+    >
+      <Grid
+    container spacing={0}>
+      <Grid item xs={12}></Grid>
+      <Grid
+      item
+      xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography fontFamily={"Yapari"} fontWeight={'bold'} sx={{color:'white'}} fontSize={45}>LOGIN</Typography></Grid>
+      <Grid
+      item
+      xs={isMobile ?12:12}>
+      <Grid container spacing={2} >
+        <Grid item xs={12}>
+        <Grid container spacing={0} >
+        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}><Box sx={{mb:usernameError ? 3: 0}}><IconBox icon={BadgeIcon} onHoverText={'Your Username'}></IconBox></Box>
+                  <TextField
+                    label="Username"
                     variant="outlined"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: "43px",
-                      width: "310px",
-                    }}
-                    error={Boolean(passwordError)}
-                      helperText={passwordError}
-                  />
-                  </div>
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    error={Boolean(usernameError)}
+                    helperText={usernameError}
+                    sx={{width:'60%'}}
+                    className={'textBox'}
+                  /></Grid>
+        </Grid>
+        </Grid>
+        <Grid item xs={12}>
+        <Grid container spacing={0}>
+        <Grid item xs={12} sx={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+        <Box sx={{mb:emailError ? 3: 0}}><IconBox icon={VpnKeyIcon} onHoverText={'Your Password'}></IconBox></Box>
+                  <TextField
+                  label="Password"
+                  variant="outlined"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  error={Boolean(passwordError)}
+                    helperText={passwordError}
+                    sx={{width:'60%'}}
+                    className={'textBox'}
+                />
+        </Grid>
+        </Grid>
+        </Grid>
+    </Grid>
 
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{ mr: 2, width: "167px" }}
-                  >
-                    Submit
-                  </Button>
-                  <Button variant="contained" sx={{ width: "167px" }}>
-                    <Link
-                      style={{ color: "#F6F6F6", textDecoration: "none" }}
-                      href={"/signup"}
-                    >
-                      Sign Up
-                    </Link>
-                  </Button>
-                </form>
-               
-                <Typography sx={{ fontSize: 12, mt: 2, color: "#AFAFAF" }}>
-                  Image Credit: Todd Jiang 
-                </Typography>
-              </div>
-            </Grid>
-            <Grid item xs={6} sx={{ height: "610px" }}>
-              <ImageBox
-                Width={"475px"}
-                Height={"610px"}
-                MarginRight={"0px"}
-                MarginLeft={"0px"}
-                MarginTop={"0px"}
-                objectFit={"cover"}
-                imageSrc="/images/max-bottinger-0k_dCKxyIHc-unsplash.jpg"
-                borderRadius={0} hasOverlay={false}                >
-                  </ImageBox>
-            </Grid>
-          </Grid>
-        </div>
+     
+      
+    
+    </Grid>
+      
+    
+
+        <Grid
+      item
+      xs={isMobile ?12:6} sx={{display:'flex',justifyContent:isMobile?'center':'end',ml:isMobile ?0:0}}><Button className={'textBox'}variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',border:'1px solid white'}}
+      type="submit"
+      >
+      SUBMIT
+      </Button>
+      </Grid>
+
+      <Grid
+      item
+      xs={isMobile ?12:6} sx={{display:'flex',justifyContent:isMobile?'center':'center'}}>
+      
+      <Button onClick={handleSignupRedirect}className={'textBox'}variant={'contained'}sx={{whiteSpace:'nowrap',overflow:'auto',width:'60%',height:'55px',border:'1px solid white'}}>
+      
+      SIGNUP
+      
+      </Button>
+      </Grid>
+    
+       
+     
+    </Grid>
+    </Grid>
+    
+    </Grid></form></Box></>
+    </ImageBox>
+    </Box>
       </div>
-    </>
-  );
+  
+  </>
+);
+  
 };
 
 export default LoginForm;

@@ -44,11 +44,13 @@ const TimeRemainingBanner = ({lastUpdatedDate,targetValue,type,onRemainingTimeCh
   
     // Add one day to the input date
     const nextDayDateTime = new Date(inputDateTime);
-    nextDayDateTime.setDate(nextDayDateTime.getDate() + 1);
-  
+    nextDayDateTime.setDate(nextDayDateTime.getDate());
+    console.log(inputDateTime)
+    console.log(nextDayDateTime)
+    console.log(nextDayDateTime.getDate())
     // Get the current GMT time as a timestamp (milliseconds since Unix epoch)
     const currentDateTime = Date.now();
-  
+    console.log(currentDateTime)
     // Calculate the time difference in milliseconds
     const timeDifferenceMillis = currentDateTime - nextDayDateTime.getTime() ;
   
@@ -78,7 +80,9 @@ const TimeRemainingBanner = ({lastUpdatedDate,targetValue,type,onRemainingTimeCh
 
 useEffect(() => {
   const intervalId = setInterval(() => {
+    console.log(lastUpdatedDate)
     const timeDifference = getTimeDifference(lastUpdatedDate);
+    console.log(timeDifference)
     const newRemainingTime = getRemainingTime(timeDifference);
     setRemainingTime(newRemainingTime);
     onRemainingTimeChange(newRemainingTime);

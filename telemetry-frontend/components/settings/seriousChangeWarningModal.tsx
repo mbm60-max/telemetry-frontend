@@ -5,13 +5,13 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import '../sessionStartupComponents/setupComponents/setupStyles.css'
 import { Grid, FormControl, InputLabel, Select, MenuItem, FormHelperText, styled, Paper } from '@mui/material';
 import HorizontalBanner from '../horizontalBanner/horizontalBanner';
 import TextWarningOverlay from '../textWarningOverlay';
 import ClearIcon from '@mui/icons-material/Clear';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-
+import '../sessionStartupComponents/setupComponents/setupStyles.css'
+ 
 const style = {
   position: 'absolute' as 'absolute',
   top: '50%',
@@ -83,7 +83,7 @@ export default function SeriousActionModal({action,triggerActionMethod}: Serious
   
             <Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Box sx={{width:'100%',maxWidth:'920px'}}><TextWarningOverlay height={100} width={100} icon={PriorityHighIcon} color={"#B98D6D"} colorLight={"#D2B29A"} headerText={"Alert"} text={`You are about to proceed with ${action}`} textColour={"white"} textSize={29} fontFamily={"Satoshi"} fontWeight={"Bold"}/></Box></Grid>
           
-            <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}></Grid><Grid item xs={12} sx={{display:'flex',justifyContent:'center'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
+            <Grid item xs={6} sx={{display:'flex',justifyContent:'center'}}></Grid><Grid item xs={12} sx={{display:'flex',justifyContent:'center',color:'white'}}><Typography id="input-slider" gutterBottom sx={{fontSize:25,color:'white'}} fontFamily={"Satoshi"}>
 This action cannot be directly undone
             </Typography></Grid>
             <Grid item xs={12}  sx={{display:'flex',justifyContent:'center'}}> <Button className="parallelogram-buttonCTA-XLG" ><Box style={{ color: '#F6F6F6', textDecoration: 'none',fontFamily:'Satoshi' }}onClick={handleConfirm} >Confirm {action}</Box></Button></Grid>

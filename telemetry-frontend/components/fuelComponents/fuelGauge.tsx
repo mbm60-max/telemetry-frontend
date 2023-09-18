@@ -19,7 +19,6 @@ const Gauge = ({ gasLevel, gasCapacity, targetSrc }: GaugeProps) => {
   }
 
   const fuelPercentage = calculateFuelPercentage(gasLevel, gasCapacity);
-  console.log(fuelPercentage);
   const rotationDegrees = 273 + (fuelPercentage / 100) * 180;
 
   return (

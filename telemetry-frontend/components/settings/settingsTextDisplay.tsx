@@ -20,7 +20,8 @@ import { AuthContext } from "../authProvider";
 import validatePassword from "../../utils/validatePassword";
 import axios, { AxiosResponse } from "axios";
 import handleVerifyEmail from "../../utils/emailSender";
-
+import '../sessionStartupComponents/setupComponents/setupStyles.css'
+  
 interface SettingsTextDisplayProps {
   currentValue?: string | number;
   targetSetting: string;
@@ -225,19 +226,19 @@ const SettingsTextDisplay = ({
     <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
       <Grid container spacing={2} alignItems="center">
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: 30 }} fontWeight="Bold">
+          <Typography  fontFamily={'Satoshi'} sx={{ fontSize: 30,color:'white' }} fontWeight="Bold">
             {targetSetting}
           </Typography>
         </Grid>
         {currentValue ? <>
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: 18 }}>Current Value:</Typography>
+          <Typography fontFamily={'Satoshi'} sx={{ fontSize: 18,color:'white' }}>Current Value:</Typography>
         </Grid>
         <Grid item xs={12}>
-         <Typography sx={{ fontSize: 22 }}>{currentValue}</Typography>
+         <Typography fontFamily={'Satoshi'} sx={{ fontSize: 22,color:'white' }}>{currentValue}</Typography>
         </Grid> </> : null}
         <Grid item xs={10} sm={6}>
-          <Box
+          <Box className={"textBox"}
             sx={{
               width: "100%",
               backgroundColor: "F6F6F6",
@@ -248,7 +249,7 @@ const SettingsTextDisplay = ({
               boxShadow: 1,
             }}
           >
-            <Typography id="input-slider" gutterBottom>
+            <Typography  fontFamily={'Satoshi'} id="input-slider" sx={{color:'white'}}gutterBottom>
               {targetSetting}
             </Typography>
             <Grid container spacing={2} alignItems="center">
@@ -277,7 +278,7 @@ const SettingsTextDisplay = ({
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Button variant="contained" sx={{ml:5}} onClick={handleUpdate} disabled={!canSubmit}>Submit</Button>
+          <Button className={"warningButton"} variant="contained" sx={{ml:5}} onClick={handleUpdate} disabled={!canSubmit}>Submit</Button>
         </Grid>
         {hasDivider && <Grid item xs={12}>
          <StyledHorizontalDivider/>

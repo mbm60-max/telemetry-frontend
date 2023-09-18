@@ -170,11 +170,7 @@ const LoginForm: React.FC = () => {
                     </Link>
                   </Button>
                 </form>
-                <Divider sx={{ width: "350px", mt:6, fontSize:17,color: "#AFAFAF"}} >or</Divider>
-                
-                <Button variant="contained" sx={{ width: "350px", mt: 6 }}>
-                  Sign in with Google
-                </Button>
+               
                 <Typography sx={{ fontSize: 12, mt: 2, color: "#AFAFAF" }}>
                   Image Credit: Todd Jiang 
                 </Typography>
@@ -200,3 +196,8 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
+// <Divider sx={{ width: "350px", mt:6, fontSize:17,color: "#AFAFAF"}} >or</Divider>
+                
+//<Button variant="contained" sx={{ width: "350px", mt: 6 }}>
+//Sign in with Google
+//</Button>

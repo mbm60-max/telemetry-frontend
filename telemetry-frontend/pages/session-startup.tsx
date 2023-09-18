@@ -59,18 +59,6 @@ const SessionStartup: React.FC = () => {
 
   }));
 
-  const ItemCentered = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "rgba(132, 126, 126, 0)",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "90%",
-    width: "95%",
-  }));
 
   const ItemFooter = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -216,11 +204,7 @@ const SessionStartup: React.FC = () => {
   function handleExit() {
     router.push("/");
   }
-  const tooltipInfo = (
-    <>
-      <em>{'A session requires a track,car and tyre compound in order to be started.'}</em> <b>{'You can optionally also add a setup.'}</b> <u>{'This information is then used during and after the session.'}</u>{"hmm"}
-    </>
-  );
+ 
   return (
     <>
       <Grid container spacing={0}>
@@ -457,15 +441,16 @@ const SessionStartup: React.FC = () => {
 
               </Grid>
             </form>
-            <Grid item xs={12}><Box sx={{ height: '150px' }}></Box></Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12}><Box sx={{ height: '250px' }}></Box></Grid>
+            
+
+          </Homepage>
+        </Grid>
+        <Grid item xs={12}>
               <Homepage style={'navbar-container-reverse'}>
                 <ItemFooter><Footer /></ItemFooter>
               </Homepage>
             </Grid>
-
-          </Homepage>
-        </Grid>
       </Grid>
 
     </>

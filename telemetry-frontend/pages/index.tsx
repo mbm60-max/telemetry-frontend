@@ -1,7 +1,7 @@
 'use client'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import NavBar from '../components/navbar/navbar';
-import { Card, Container, Button, Typography } from '@mui/material';
+import { Card, Container, Button, Typography, useMediaQuery } from '@mui/material';
 import Homepage from '../components/background/background';
 import BasicCard from '../components/card';
 import '../calltoaction.css';
@@ -156,7 +156,7 @@ const Home = () => {
       ctaTarget: '',
     },
   ];
-
+  const isMobile = useMediaQuery('(max-width:800px)')
   return (
     <>
       <Grid container spacing={0}>
@@ -177,6 +177,7 @@ const Home = () => {
                     <Box sx={{ flexGrow: 1 }}>
                       <Grid container spacing={1}>
                         <Grid item xs={12}><Box sx={{ height: '100px' }}></Box></Grid>
+                        
                           <Grid item xs={12} sm={5}>
                             <Item>
                               <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -212,6 +213,7 @@ const Home = () => {
           <Homepage style='homepage-containerExtended'>
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={8}>
+              <Grid item xs={12}><Box sx={{ height: '100px' }}></Box></Grid>
                 <Grid item xs={12}>
                   <ImageBanner imageSrc={"/images/test2.jpg"} hasOverlay={true} minWidth={'330px'} minHeight={'550px'} borderRadius={100}  >
                     <Box sx={{ height: "90%", width: '100%', overflow: 'auto', mt: '5%' }}>
@@ -226,7 +228,8 @@ const Home = () => {
                     </Box>
                   </ImageBanner>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}><Box sx={{ height: '100px' }}></Box></Grid>
+                <Grid item xs={12} sm={isMobile ? 12 : 6}>
                   <Box sx={{ height: "93%", width: '100%', overflow: 'auto', mt: '5%' }}> 
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                       <HorizontalBanner GridContent={["OUR PARTNERS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]}  isBannerInterface={false}/>
@@ -236,7 +239,7 @@ const Home = () => {
                     </Grid>
                   </Box>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={isMobile ? 12 : 6}>
                   <Box sx={{ height: "93%", width: '100%', overflow: 'auto', mt: '5%' }}> 
                     <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                       <HorizontalBanner GridContent={["OUR SOCIALS"]} needsBackground={false} fontSizes={[45]} fontFamilies={["Yapari"]} fontWeights={["Bold"]} fontColour={["#FB9536"]} isMutliStage={false} marginLeftValue={[]} isBannerInterface={false} />
@@ -246,6 +249,7 @@ const Home = () => {
                     </Grid>
                   </Box>
                 </Grid>
+                <Grid item xs={12}><Box sx={{ height: '100px' }}></Box></Grid>
               </Grid>
             </Box>
           </Homepage>
@@ -255,12 +259,13 @@ const Home = () => {
               <Grid item xs={12}>
                 <Box sx={{ height: '150px' }}></Box>
               </Grid>
-              <Grid item xs={12} sm={7} sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+              <Grid item xs={12} sm={isMobile?  12:7} sx={{ display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
                 <Item>
                   <LeftContentBox />
                 </Item>
               </Grid>
-              <Grid item xs={12} sm={5}>
+              {isMobile && <Grid item xs={12}><Box sx={{ height: '100px' }}></Box></Grid>}
+              <Grid item xs={12} sm={isMobile?  12:5}>
                 <Item>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <Grid container spacing={1}>
@@ -278,6 +283,7 @@ const Home = () => {
                   </div>
                 </Item>
               </Grid>
+              <Grid item xs={12}><Box sx={{ height: '200px' }}></Box></Grid>
               <Grid item xs={8}>
                 <Item></Item>
                 </Grid></Grid>

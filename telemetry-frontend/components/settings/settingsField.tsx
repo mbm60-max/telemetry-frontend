@@ -36,12 +36,12 @@ width:'73%'
               {!isMobile ?(<Grid item xs={6} sm={10}sx={{display:'flex',justifyContent:'left',alignItems:'center'}}>
                 <Grid container spacing={0} >
                   <Grid item xs={12} sx={{display:'flex',justifyContent:'left'}} >
-                    <Typography sx={{ml:2,mt:2}}id="input-slider" gutterBottom >
+                    <Typography fontFamily={'Satoshi'}sx={{ml:2,mt:2,color:'white'}}id="input-slider" gutterBottom >
                       {name}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sx={{display:'flex',justifyContent:'left'}}>
-                  <Typography sx={{ml:2,mt:2,overflow:'auto',whiteSpace:'nowrap'}}id="input-slider" gutterBottom >
+                  <Typography fontFamily={'Satoshi'} sx={{ml:2,mt:2,overflow:'auto',whiteSpace:'nowrap',color:'white'}}id="input-slider" gutterBottom >
                   {Info}
                     </Typography>
                    

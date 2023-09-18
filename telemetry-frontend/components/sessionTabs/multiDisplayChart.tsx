@@ -24,16 +24,16 @@ interface MultiDisplayChartProps {
 
 export default function MultiDisplayChart({ label, expectedMaxValue, expectedMinValue, dataStream1,dataStream2,dataStream3,dataStream4,height,units,labelXaxis }: MultiDisplayChartProps) {
   const series = [{
-    name: 'FL'+label,
+    name: 'FL'+" "+label,
     data: dataStream1
   },{
-    name: 'FR'+label,
+    name: 'FR'+" "+label,
     data: dataStream2
   },{
-    name: 'RL'+label,
+    name: 'RL'+" "+label,
     data: dataStream3
   },{
-    name: 'RR'+label,
+    name: 'RR'+" "+label,
     data: dataStream4
   }];
 
@@ -117,7 +117,7 @@ export default function MultiDisplayChart({ label, expectedMaxValue, expectedMin
           }
       },
     },
-    yaxis: [...basicYAxis,...extraStreamOne]
+    yaxis: [...basicYAxis,...extraStreamOne,...extraStreamOne,...extraStreamOne]
   };
   
 

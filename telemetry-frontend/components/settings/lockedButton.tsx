@@ -15,7 +15,8 @@ import {
   import { ReactNode, SyntheticEvent, useState } from "react";
 import { isNumber } from "@mui/x-data-grid/internals";
 import axios, { AxiosResponse } from "axios";
-  
+import '../sessionStartupComponents/setupComponents/setupStyles.css'
+ 
   interface LockedButtonProps {
     targetSetting: string;
     hasDivider: boolean;
@@ -80,12 +81,12 @@ import axios, { AxiosResponse } from "axios";
         <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12}>
-            <Typography sx={{ fontSize: 20 }} fontWeight="Bold">
+            <Typography  fontFamily={'Satoshi'} sx={{ fontSize: 20,color:'white' }} fontWeight="Bold">
               Account settings are pasword locked, switching to another settings tab will relock this page, please enter your password to view this page.
             </Typography>
           </Grid>
           <Grid item xs={10} sm={6}>
-            <Box
+            <Box className={'textBox'}
               sx={{
                 width: "100%",
                 backgroundColor: "F6F6F6",
@@ -96,12 +97,12 @@ import axios, { AxiosResponse } from "axios";
                 boxShadow: 1,
               }}
             >
-              <Typography id="input-slider" gutterBottom>
+              <Typography fontFamily={'Satoshi'} id="input-slider" sx={{color:'white'}}gutterBottom>
                 {targetSetting}
               </Typography>
               <Grid container spacing={2} alignItems="center">
                 <Grid item xs>
-                  <FormControl fullWidth>
+                  <FormControl fullWidth >
                     <TextField
                       id="Transmission-Type-Select"
                       value={inputValue}
@@ -120,7 +121,7 @@ import axios, { AxiosResponse } from "axios";
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <Button variant="contained" sx={{ml:5}} onClick={handleUnlock}>Submit</Button>
+            <Button className={"warningButton"} variant="contained" sx={{ml:5}} onClick={handleUnlock}>Submit</Button>
           </Grid>
           {hasDivider && <Grid item xs={12}>
            <StyledHorizontalDivider/>

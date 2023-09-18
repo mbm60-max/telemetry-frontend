@@ -13,6 +13,7 @@ import NavBar from "../navbar/navbar";
 import SettingsDisplay from "./settingsDisplay";
 import SettingsController from "./settingsFieldSelection";
 import SettingsTitle from "./settingsTitle";
+
 interface SettingsWrapperProps {}
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -44,7 +45,7 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
   const StyledHorizontalDivider = styled(Divider)(({ theme }) => ({
     borderWidth: "1px", // Adjust the thickness of the line here
     borderColor: "#EBF2E8", // You can change the color to any valid CSS color value
-  width:'99%',
+  width:'100%',
   }));
   const [field, setField] = useState("");
   const handleFieldSelection = (field: string) => {
@@ -78,7 +79,7 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
         width: "95%",
         height: "100%",
         backgroundColor: "rgba(8, 13, 56, 0.4)",
-        borderRadius: 1.5,
+        borderRadius: 10,
         boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",
 
       }}
@@ -87,13 +88,13 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
           <Grid item xs={6} sx={{borderRight:'1.5px solid white'}}>
             <Grid container spacing={0}>
               <Grid item xs={12}>
-                <Box sx={{mt:4}}><SvgRenderer svgString={pfpSVG60}></SvgRenderer>
-                <SettingsTitle title={"Settings"} fontSize={30} /></Box>
+                <Box sx={{padding:4}}>
+                <SettingsTitle title={"Settings"} fontSize={40} /></Box>
               </Grid>
               <Grid item xs={12}>
                 <Box
                   sx={{
-                    height: "100vh",
+                   
                     display: "flex",
                     alignItems: "center",
                   }}
@@ -107,16 +108,18 @@ const SettingsWrapper = ({}: SettingsWrapperProps) => {
             <Grid container spacing={0} direction="row">
               <Grid item xs={12}>
                 <Grid container spacing={0} direction="row">
-                  <Grid item xs={12} sx={{height:'15vh'}}>
-                    <SettingsTitle title={field+" "+"Settings"} fontSize={30} />
+                  <Grid item xs={12} sx={{paddingTop:4,paddingBottom:4,mr:20}}>
+                    <SettingsTitle title={field+" "+"Settings"} fontSize={40} />
                   </Grid>
-                  <Grid item xs={12}>
-                  <StyledHorizontalDivider />
+                  <Grid item xs={12} sx={{display:'flex',justifyContent:'end'}}>
+                    <Box sx={{width:'85%'}}><StyledHorizontalDivider /></Box>
                   </Grid>
                 </Grid> 
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sx={{display:'flex',justifyContent:'end'}}>
+              <Box sx={{width:'85%',mt:2}}>
                 <SettingsDisplay field={field} userSettings={userSettings} setAlerts={setAlerts} setDefaults={setDefaults} setAppearance={setAppearance} setData={setData}/>
+               </Box>
               </Grid>
             </Grid>
           </Grid>

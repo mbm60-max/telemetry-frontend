@@ -49,12 +49,12 @@ import SeriousActionAddModal from "./seriousChangeWarningModal";
         <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
         <Grid container spacing={2} alignItems="center">
         <Grid item xs={12}>
-            <Typography sx={{ fontSize: 30 }} fontWeight="Bold">
+            <Typography fontFamily={'Satoshi'} sx={{ fontSize: 30,color:'white' }} fontWeight="Bold">
              {targetSetting}
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography sx={{ fontSize: 20 }} fontWeight="Bold">
+            <Typography fontFamily={'Satoshi'} sx={{ fontSize: 20,color:'white' }} fontWeight="Bold">
               {warningMessage}
             </Typography>
           </Grid>

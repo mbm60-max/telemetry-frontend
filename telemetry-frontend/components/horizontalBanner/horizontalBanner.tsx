@@ -94,7 +94,7 @@ export default function HorizontalBanner({GridContent,needsBackground,fontColour
                                 
                                 typeof content === 'string' ? (
                                   <Item>
-                                    <ImageBox imageSrc={content} Width={'90%'} Height={'90%'} MarginRight={''} MarginLeft={marginLeftValue[index]} MarginTop={''} borderRadius={0} hasOverlay={false} >
+                                    <ImageBox imageSrc={content} Width={'150px'} Height={'90%'} MarginRight={''} MarginLeft={marginLeftValue[index]} MarginTop={''} borderRadius={0} hasOverlay={false} >
                                     </ImageBox>
                                 </Item>
                               ) : (
@@ -112,7 +112,7 @@ export default function HorizontalBanner({GridContent,needsBackground,fontColour
                             ) : (
                                 typeof content === 'string' ? (
                                   
-                                    <Typography fontWeight={fontWeights[index]} fontFamily={fontFamilies[index]} fontSize={fontSizes[index]} sx={{ color: fontColour[index] }}>
+                                    <Typography fontWeight={fontWeights[index]} fontFamily={fontFamilies[index]} fontSize={fontSizes[index]} sx={{ color: fontColour[index],whiteSpace:'nowrap',overflow:'auto' }}>
                                         {content}
                                     </Typography>
                                

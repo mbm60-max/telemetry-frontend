@@ -17,6 +17,7 @@ import {
   import InfoToolTip from "../helperTooltip.tsx/infoTooltip";
   import { AlertSettings, AppearanceSettings, DataSettings, DefaultsSettings } from "../../interfaces/defaultSettingsInterface";
   import { ReactNode, SyntheticEvent, useState } from "react";
+  import '../sessionStartupComponents/setupComponents/setupStyles.css'
   
   interface SettingsToggleDisplayProps {
     currentValue: boolean;
@@ -69,21 +70,21 @@ import {
         </>
       );
     return (
-      <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
+      <Box  sx={{ width: "100%", height: "100%", position: "relative" }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12}>
-            <Typography sx={{ fontSize: 30 }} fontWeight="Bold">
+            <Typography fontFamily={'Satoshi'} sx={{ fontSize: 30,color:'white' }} fontWeight="Bold">
               {targetSetting}
             </Typography>
           </Grid>
           <Grid item xs={12}>
-          <Typography sx={{ fontSize: 18 }}>Current Value:</Typography>
+          <Typography fontFamily={'Satoshi'} sx={{ fontSize: 18,color:'white' }}>Current Value:</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography sx={{ fontSize: 22 }}>{currentValue?(toggleLeft):toggleRight}</Typography>
+          <Typography fontFamily={'Satoshi'}  sx={{ fontSize: 22,color:'white' }}>{currentValue?(toggleLeft):toggleRight}</Typography>
         </Grid>
           <Grid item xs={6}>
-            <Box
+            <Box className={"slider"}
               sx={{
                 width: "100%",
                 backgroundColor: "F6F6F6",
@@ -94,7 +95,7 @@ import {
                 boxShadow: 1,
               }}
             >
-              <Typography id="input-slider" gutterBottom>
+              <Typography fontFamily={'Satoshi'} sx={{color:'white'}}id="input-slider" gutterBottom>
                 {targetSetting}
               </Typography>
               <Grid container spacing={2} alignItems="center">

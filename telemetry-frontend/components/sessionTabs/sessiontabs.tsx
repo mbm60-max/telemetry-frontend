@@ -50,7 +50,9 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-
+ useEffect(()=>{
+console.log(`values${value}`)
+ },[value])
 
   return (
     <div
@@ -890,6 +892,17 @@ export default function BasicTabs() {
     return "None";
   }
 
+  useEffect(()=>{
+console.log('rendered')
+  },[value])
+const[i,seti]=useState(0);
+  const handleUpdateRearRight=()=>{
+    const x=0;
+    const y=i;
+    appendData('tireRR_SurfaceTemperature', y, i+10);
+    const newI = i+1;
+    seti(newI);
+  }
   return (
     <> {activeWarnings.length > 0 ? (
       activeWarnings.map((value, index) => (
@@ -909,6 +922,7 @@ export default function BasicTabs() {
       ) : (
        null
       )}
+      <Button onClick={handleUpdateRearRight}>Update Rear Right</Button>
       <Grid item xs={12}>
         <Homepage style={'navbar-container'}>
           <Item><NavBar /></Item>
@@ -922,7 +936,6 @@ export default function BasicTabs() {
               <WhiteTextTab label="Gearbox" {...a11yProps(2)} />
               <WhiteTextTab label="Tyres/Suspension" {...a11yProps(3)} />
               <WhiteTextTab label="Setup" {...a11yProps(4)} />
-              <WhiteTextTab label="Custom Graph" {...a11yProps(5)} />
             </Tabs>
           </ThemeProvider>
         </Homepage>
@@ -937,7 +950,7 @@ export default function BasicTabs() {
             <GridWarningConsumer throttleStream={throttleStream} brakeStream={brakeStream} speedStream={speedStream} suggestedGear={parseNumberStream(suggestedGear)} currentGear={parseNumberStream(currentGear)} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)} lastLapTime={lastLapTime} bestLapTime={bestLapTime} lapTimer={lapTimer} track={track} distanceInLap={getTrackDistancePercentage(track, distanceValue)} handleIsWarning={handleIsWarning} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterest={dashboardWarnings[`dashboard${2}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${2}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${2}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${2}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${2}`]} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${2}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}
               oilTempStream={oilTempStream} rpmStream={rpmStream} turboBoost={turboBoost} oilPressureStream={oilPressureStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} fuelStartLap={fuelStartLap} gasLevel={gasLevel} gasCapacity={gasCapacity} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} waterTempStream={waterTempStream}
               tireFL_SurfaceTemperature={frontLeftTemp} tireRL_SurfaceTemperature={rearLeftTemp} tireFR_SurfaceTemperature={frontRightTemp} tireRR_SurfaceTemperature={rearRightTemp} tireFL_SusHeight={tireFL_SusHeight} tireFR_SusHeight={tireFR_SusHeight} tireRL_SusHeight={tireRL_SusHeight} tireRR_SusHeight={tireRR_SusHeight} tireFL_TireRadius={tireFL_TireRadius} tireFR_TireRadius={tireFR_TireRadius} tireRL_TireRadius={tireRL_TireRadius} tireRR_TireRadius={tireRR_TireRadius} wheelFL_RevPerSecond={wheelFL_RevPerSecond} wheelFR_RevPerSecond={wheelFR_RevPerSecond} wheelRL_RevPerSecond={wheelRL_RevPerSecond} wheelRR_RevPerSecond={wheelRR_RevPerSecond}
-              currentGearStream={currentGear} suggestedGearStream={suggestedGear} rpmClutchToGearboxStream={rpmClutchToGearboxStream} clutchPedalStream={clutchPedalStream} clutchEngagementStream={clutchEngagementStream} inLapShifts={inLapShifts} dashboardIndex={2} possibleWarningsValues={[throttleStream, oilTempStream, rpmStream, turboBoost, oilPressureStream, gasLevel, waterTempStream]} possibleWarningsNames={["Oil Temperature", "RPM", "Turbo Boost Pressure", "Oil Pressure", "Fuel Level", "Water Temperature"]} compound={handleCompoundValueTypeCheck()} setup={handleSetupValueTypeCheck()} challenge={challenge} lapCount={lapCount}> </GridWarningConsumer>
+              currentGearStream={currentGear} suggestedGearStream={suggestedGear} rpmClutchToGearboxStream={rpmClutchToGearboxStream} clutchPedalStream={clutchPedalStream} clutchEngagementStream={clutchEngagementStream} inLapShifts={inLapShifts} dashboardIndex={2} possibleWarningsValues={[throttleStream, oilTempStream, rpmStream, turboBoost, oilPressureStream, gasLevel, waterTempStream]} possibleWarningsNames={["Oil Temperature", "RPM", "Turbo Boost Pressure", "Oil Pressure", "Fuel Level", "Water Temperature"]}  compound={handleCompoundValueTypeCheck()} setup={handleSetupValueTypeCheck()} challenge={challenge} lapCount={lapCount}></GridWarningConsumer>
 
           </TabPanel>
           <TabPanel value={value} index={2}>
@@ -955,10 +968,6 @@ export default function BasicTabs() {
           <TabPanel value={value} index={4}>
             <SetupWrapper setupData={setupData} />
           </TabPanel>
-          <TabPanel value={value} index={5}>
-            {"Mongo Write Status" + mongoDbStatus};
-
-          </TabPanel>
         </Homepage>
       </Box>
 
@@ -969,3 +978,7 @@ export default function BasicTabs() {
       //<EngineGrid throttleStream={throttleStream} lapTimer={lapTimer} oilTempStream={oilTempStream} rpmStream={rpmStream} minAlertRPM={minAlertRPM} maxAlertRPM={maxAlertRPM} calculatedMaxSpeed={calculatedMaxSpeed} transmissionTopSpeed={transmissionTopSpeed} oilPressureStream={oilPressureStream} waterTempStream={waterTempStream} gasCapacity={gasCapacity} gasLevel={gasLevel} turboBoost={turboBoost} handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${2}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${2}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${2}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${2}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${2}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${2}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag} lastLapTime={lastLapTime} fuelStartLap={fuelStartLap}/>
     //<GearboxGrid currentGearStream={currentGear} rpmClutchToGearboxStream={rpmClutchToGearboxStream} rpmStream={rpmStream} clutchEngagementStream={clutchEngagementStream} clutchPedalStream={clutchPedalStream} suggestedGearStream={suggestedGear} lapTimer={lapTimer} inLapShifts={inLapShifts}  handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${3}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${3}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${3}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${3}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${3}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${3}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>
       //<TyresSuspensionGrid tireFL_SurfaceTemperature={frontLeftTemp} tireRL_SurfaceTemperature={rearLeftTemp} tireFR_SurfaceTemperature={frontRightTemp} tireRR_SurfaceTemperature={rearRightTemp} tireFL_SusHeight={tireFL_SusHeight} tireFR_SusHeight={tireFR_SusHeight} tireRL_SusHeight={tireRL_SusHeight} tireRR_SusHeight={tireRR_SusHeight} tireFL_TireRadius={tireFL_TireRadius} tireFR_TireRadius={tireFR_TireRadius} tireRL_TireRadius={tireRL_TireRadius} tireRR_TireRadius={tireRR_TireRadius} wheelFL_RevPerSecond={wheelFL_RevPerSecond} wheelFR_RevPerSecond={wheelFR_RevPerSecond} wheelRL_RevPerSecond={wheelRL_RevPerSecond} wheelRR_RevPerSecond={wheelRR_RevPerSecond} frontLeftTemp={parseNumberStream(frontLeftTemp)} frontRightTemp={parseNumberStream(frontRightTemp)} rearLeftTemp={parseNumberStream(rearLeftTemp)} rearRightTemp={parseNumberStream(rearRightTemp)}  handleActiveWarnings={handleActiveWarnings} handleSuppressedWarnings={handleSuppressedWarnings} handleAcknowledgedWarnings={handleAcknowledgedWarnings} handleIsWarning={handleIsWarning} activeWarnings={activeWarnings} acknowledgedWarnings={acknowledgedWarnings} valuesOfInterest={dashboardWarnings[`dashboard${4}`]} valueOfInterestUnits={dashboardWarningsUnits[`dashboard${4}`]} valuesOfInterestData={dashboardWarningsData[`dashboard${4}`]} valuesOfInterestDefaultLimits={dashboardWarningsDefaultLimits[`dashboard${4}`]} valuesOfInterestCurrentLimits={dashboardWarningsCurrentLimits[`dashboard${4}`]} setValuesOfInterest={handleSetValuesOfInterest} setValuesOfInterestData={handleSetValuesOfInterestData} setValuesOfInterestDefualtLimits={handleSetValuesOfInterestDefaultLimits} setValuesOfInterestUnits={handleSetValuesOfInterestUnits} setValuesOfInterestCurrentLimits={handleSetValuesOfInterestCurrentLimits} handleActiveWarningsLower={handleActiveWarningsLower} handleAcknowledgedWarningsLower={handleAcknowledgedWarningsLower} activeWarningsLower={activeWarningsLower} acknowledgedWarningLower={acknowledgedWarningsLower} valuesOfInterestCurrentLimitsLower={dashboardWarningsCurrentLimitsLower[`dashboard${4}`]} valuesOfInterestGreaterThanWarning={[]} setValuesOfInterestCurrentLimitsLower={handleSetValuesOfInterestCurrentLimitsLower} packetFlag={packetFlag}/>
+
+
+
+      //dashboardIndex={2} possibleWarningsValues={[throttleStream, oilTempStream, rpmStream, turboBoost, oilPressureStream, gasLevel, waterTempStream]} possibleWarningsNames={["Oil Temperature", "RPM", "Turbo Boost Pressure", "Oil Pressure", "Fuel Level", "Water Temperature"]} 

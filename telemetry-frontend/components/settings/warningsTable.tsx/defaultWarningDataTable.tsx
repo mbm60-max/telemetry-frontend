@@ -171,7 +171,8 @@ const fillAllWarningsArray=(WaringData:WarningDataObject[])=>{
 }
     return (
         
-    <Box sx={{ width:'200%',height: "100%", position: "relative" }}>
+    <Box sx={{ width:'100%',height: "100%", position: "relative" }}>
+       <Box sx={{ width:'200%',height: "100%", position: "relative" }}>
     <Grid container spacing={2}>
       <Grid item xs={12} >
 
@@ -226,11 +227,12 @@ const fillAllWarningsArray=(WaringData:WarningDataObject[])=>{
 
       </Grid>
       <Grid item xs={12}><KeyWarningsAddModal handleAddWarning={handleAddWarning} ></KeyWarningsAddModal><KeyWarningsDeleteModal handleDeleteWarning={handleDeleteWarning} allWarnings={fillAllWarningsArray(WarningData)}></KeyWarningsDeleteModal></Grid>
-      {hasDivider && <Grid item xs={12}><Box sx={{ width: "100%", height: "100%", position: "relative" }}>
+      {hasDivider && <Grid item xs={12}><Box sx={{ width: "51%", height: "100%", position: "relative" }}>
        <StyledHorizontalDivider/></Box>
        </Grid>}
      
     </Grid>
+  </Box>
   </Box>
     );
 };

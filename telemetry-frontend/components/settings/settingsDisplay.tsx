@@ -293,16 +293,6 @@ const handlePasswordValidation =(newPassword: string) => {
       {field == "Account" && (<>
       {pageLock ?<LockedButton targetSetting={"Password"} hasDivider={true} tooltipText={"Enter your password to view this page"} setLock={handleSetLock} username={userName}></LockedButton> : <Grid container spacing={2} alignItems="center">
           <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Delete Account
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Button variant="contained" disabled>
-              Reset Account Data
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
             <SeriousActionButton targetSetting={"Delete Account"} hasDivider={true} tooltipText={""} username={userName} warningMessage={"Deleting you account will remove all personal data associated with your username. Your username will become available for others to use. This action cannot be undone. All data will be lost."} action={"ACCOUNT DELETION"} actionMethod={deleteAccount}/>
           </Grid>
           <Grid item xs={12}>

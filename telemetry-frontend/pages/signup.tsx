@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-import { TextField, Button, Typography, styled } from "@mui/material";
+import { TextField, Button, Typography, styled, Box } from "@mui/material";
 import Link from "next/link";
 import "../pagesCss/signup.css";
 import Grid from "@mui/material/Grid";
@@ -259,8 +259,11 @@ const SignUpForm: React.FC = () => {
             >
               <div style={{ marginTop:20 }}>
                 <form onSubmit={handleSubmit}>
-                <div style={{ position: "relative", marginBottom: 24 }}>
-                    <Button onClick={handleCreateAvatar}>Generate Avatar</Button><SvgRenderer svgString={pfpSVG60} />
+                <div style={{ position: "relative",marginBottom:8}}>
+                <Grid container spacing={0}>
+                      <Grid xs={6}><Button variant={'contained'}onClick={handleCreateAvatar}>Generate New Avatar</Button></Grid>
+                      <Grid item xs={6}><Box sx={{ml:2,mt:2}}><SvgRenderer svgString={pfpSVG40}/></Box></Grid>
+                    </Grid>
                   </div>
                   <div style={{ position: "relative", marginBottom: 24 }}>
                     <IconBox icon={BadgeIcon}></IconBox>

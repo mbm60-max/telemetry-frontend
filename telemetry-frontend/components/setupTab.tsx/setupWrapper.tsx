@@ -1,14 +1,29 @@
-import { Box, Grid, Paper, styled } from "@mui/material";
+import { Box, Grid, Paper, styled, SvgIconProps } from "@mui/material";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
 import SetupObject from "../../interfaces/setupDataInterface";
 import { AuthContext } from "../authProvider";
 import SetupCarDisplay from "./setupCarDisplay";
 import SetupController from "./setupController";
 import SetupFeedback from "./setupFeedback";
 import SetupSelectedFieldDisplay from "./setupSelectedFieldDisplay";
-
+import WindPowerIcon from '@mui/icons-material/WindPower';
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
+import ScaleIcon from '@mui/icons-material/Scale';
+import BalanceIcon from '@mui/icons-material/Balance';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import HeightIcon from '@mui/icons-material/Height';
+import WavesIcon from '@mui/icons-material/Waves';
+import SpaceBarIcon from '@mui/icons-material/SpaceBar';
+import CompressIcon from '@mui/icons-material/Compress';
+import ExpandIcon from '@mui/icons-material/Expand';
+import TextRotationAngledownIcon from '@mui/icons-material/TextRotationAngledown';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import SpeedIcon from '@mui/icons-material/Speed';
+import SettingsIcon from '@mui/icons-material/Settings';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 interface SetupWrapperProps {
  setupData:SetupObject;
 }
@@ -19,6 +34,14 @@ const setupFeedbackConditions = [
   "No traction",
   "Throttle Response",
 ];
+
+interface MUIIcon {
+  icon: ReactNode; // You can also use `React.ReactElement` if needed
+  props?: SvgIconProps; // Optional props specific to Material-UI SvgIcon
+}
+interface IconList {
+  icons: MUIIcon[];
+}
 
 const SetupWrapper = ({setupData}: SetupWrapperProps) => {
   const router = useRouter();
@@ -32,7 +55,10 @@ const SetupWrapper = ({setupData}: SetupWrapperProps) => {
   const Suspension_AerodynamicsItems =["Ride Height","Natural Frequency","Anti Roll Bar","Damping Ratio Compression","Damping Ratio Rebound","Camber Angle", "Toe Angle","Downforce"]
   const TransmissionItems=["Transmission Type","Max Speed (Auto Set)","Gear Ratios","Final Gear Ratio"]
   const DifferentialItems=["Differntial Gear","LSD Initial Torque","LSD Acceleration Sensitivity","LSD Braking Sensitivity","Front Rear Torque Distribution"]
-
+  const iconGeneral: IconList = {icons: [{icon: <WindPowerIcon sx={{fontSize:40}}/>, },{ icon: <ScaleIcon sx={{fontSize:40}}/>,},{ icon: <WindPowerIcon sx={{fontSize:40}}/>,},{ icon: <ScaleIcon sx={{fontSize:40}}/>,},{icon:<BalanceIcon sx={{fontSize:40}}/> },{ icon:<SportsEsportsIcon sx={{fontSize:40}}/>},],};
+  const iconSuspension: IconList = {icons: [{icon: <HeightIcon sx={{fontSize:40}}/>, },{ icon: <WavesIcon sx={{fontSize:40}}/>,},{ icon: <SpaceBarIcon sx={{fontSize:40}}/>,},{ icon: <CompressIcon sx={{fontSize:40}}/>,},{icon:<ExpandIcon sx={{fontSize:40}}/> },{ icon:<TextRotationAngledownIcon sx={{fontSize:40}}/>},{ icon:<TextRotationAngledownIcon sx={{fontSize:40}}/>},{ icon:<KeyboardDoubleArrowDownIcon sx={{fontSize:40}}/>}],};
+  const iconTransmission: IconList = {icons: [{icon: <IndeterminateCheckBoxIcon sx={{fontSize:40}}/>, },{ icon: <SpeedIcon sx={{fontSize:40}}/>,},{ icon: <SettingsIcon sx={{fontSize:40}}/>,},{ icon: <SettingsIcon sx={{fontSize:40}}/>,},],};
+  const iconDifferential: IconList = {icons: [{icon: <SettingsIcon sx={{fontSize:40}}/>, },{ icon: <KeyboardDoubleArrowRightIcon sx={{fontSize:40}}/>,},{ icon: <BalanceIcon sx={{fontSize:40}}/>,},{ icon: <BalanceIcon sx={{fontSize:40}}/>,},{icon:<BalanceIcon sx={{fontSize:40}}/> },],};
 
 type SetupObject = {
   [key: string]: any;
@@ -59,7 +85,18 @@ useEffect(() => {
 
 
 
-
+const getIcons = (selectedField:string)=>{
+  switch(selectedField){
+    case "General":
+      return iconGeneral;
+    case "Suspension/Aerodynamics":
+      return iconSuspension;
+    case "Transmission":
+      return iconTransmission;
+    case "Differential":
+      return iconDifferential;
+  }
+}
 
 
 
@@ -97,7 +134,7 @@ useEffect(() => {
        
           <Grid container spacing={2} sx={{height:'102%'}}>
             <Grid item xs={12}>
-              <SetupSelectedFieldDisplay conditions={[]} fieldData={setupDataDict[selectedField]} setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} selectedField={ selectedField === '' ? "No Field Selected" : selectedField}/>
+              <SetupSelectedFieldDisplay conditions={[]} icons={getIcons(selectedField)}fieldData={setupDataDict[selectedField]} setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} selectedField={ selectedField === '' ? "No Field Selected" : selectedField}/>
             </Grid>
             <Grid item xs={12}>
               <SetupCarDisplay carName={typeof carValue === 'string' ? carValue : "No Car Selected"} setupName={typeof setupValue === 'string' ? setupValue : "No Setup Selected"} />

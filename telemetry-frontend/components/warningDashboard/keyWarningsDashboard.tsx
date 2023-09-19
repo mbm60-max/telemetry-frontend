@@ -129,17 +129,17 @@ useEffect(() => {
     setSelectedLimitsLower(valuesOfInterestCurrentLimitsLower);
   }, []);
   const handleLimitSelection = (
-    limitLower: number,
     limit: number,
+    limitLower: number,
     index: string
   ) => {
-    if (limitLower == -1) {
+    if (limit == -1 && limitLower != -1) {
       setSelectedLimitsLower((prevFields) => ({
         ...prevFields,
         [`limitLower${index}`]: limitLower,
       }));
     }
-    if (limit == -1) {
+    if (limitLower == -1&& limit != -1) {
       setSelectedLimits((prevFields) => ({
         ...prevFields,
         [`limit${index}`]: limit,

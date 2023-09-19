@@ -24,8 +24,8 @@
   }
   .parallelogram-buttonCTA {
     position: relative;
-    width: 120px;
-    height: 30px;
+    width:100px;
+  min-height:40px;
      /* Hide any content that overflows the parallelogram shape */
      border-radius: 20px 20px 20px 20px;
     padding: 0;
@@ -151,7 +151,7 @@
      /* Hide any content that overflows the parallelogram shape */
      border-radius: 20px 20px 20px 20px;
     padding: 0;
-    background-color: #ffd4ab;
+    background-color: #FB9536;
   }
   #dark .parallelogram-buttonBlue {
     position: relative;
@@ -195,7 +195,7 @@
      /* Hide any content that overflows the parallelogram shape */
      border-radius: 20px 20px 20px 20px;
     padding: 0;
-    background-color: #ffd4ab;
+    background-color: #FB9536;
   }
   #dark .parallelogram-buttonCTA-XLG {
     position: relative;
@@ -204,7 +204,7 @@
      /* Hide any content that overflows the parallelogram shape */
      border-radius: 20px 20px 20px 20px;
     padding: 0;
-    background-color: #ffd4ab;
+    background-color: #FB9536;
     font-family: "Satoshi";
   }
   #dark .parallelogram-buttonCTA-XLG .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
@@ -237,17 +237,17 @@
 
  
   #dark .externalLink-button:hover {
-    background-color: #ffd4ab;
+    background-color: #FB9536;
   }
   #dark .parallelogram-buttonBlue:hover {
     background-color: grey;
   }
   
   #dark .basic-button:hover {
-    background-color: #ffd4ab;
+    background-color: #FB9536;
   }
   #dark .parallelogram-button:hover {
-    background-color: #ffd4ab;
+    background-color: #FB9536;
   }
   #dark .parallelogram-buttonCTA:hover {
     background-color: rgba(9, 27, 119, 0);

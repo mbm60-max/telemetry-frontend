@@ -1,6 +1,8 @@
 import { Box, TableContainer, Paper, Table, TableHead, TableRow, TableBody, styled, TableCell, tableCellClasses, Typography, Grid } from "@mui/material";
+import React from "react";
 import { fuelMapObject } from "../../utils/relativeFuelCalculations";
 import roundTo1DP, { roundTo3SF } from "../../utils/roudning";
+import { SettingsContext } from "../authProviderSettings";
 
 interface FuelDataProps{
 FuelObjectMaps:fuelMapObject[];
@@ -71,9 +73,9 @@ const FuelDataDisplay = ({FuelObjectMaps,gasLevel}: FuelDataProps) => {
       <Grid item xs={12} >
       <Grid container spacing={2} >
       <Grid item xs={12} sm={4}>
-      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: "rgba(8, 13, 56, 0)",
-        borderRadius: 1.5,minHeight:'80px',overflow:'auto',
-        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "6px solid rgba(8, 13, 100, 0.6)" }}>
+      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: '#FB9536',
+        borderRadius: 25,minHeight:'80px',overflow:'auto',
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "3px solid white",color:'white' }}>
   <Typography fontFamily={"Yapari"}  variant="body1" style={{ marginRight: '8px',marginLeft:'8px',fontSize:25,whiteSpace:'nowrap'}}>
     Fuel Remaining:
   </Typography>
@@ -83,9 +85,9 @@ const FuelDataDisplay = ({FuelObjectMaps,gasLevel}: FuelDataProps) => {
 </Box>
 </Grid>
 <Grid item xs={12} sm={4}>
-      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: "rgba(8, 13, 56, 0)",
-        borderRadius: 1.5,minHeight:'80px',overflow:'auto',
-        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "6px solid rgba(8, 13, 100, 0.6)"  }}>
+      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: '#FB9536',
+        borderRadius: 25,minHeight:'80px',overflow:'auto',
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "3px solid white",color:'white'  }}>
   <Typography fontFamily={"Yapari"}  variant="body1" style={{ marginRight: '8px',marginLeft:'8px',fontSize:25,whiteSpace:'nowrap'}}>
     Time Remaining:
   </Typography>
@@ -95,9 +97,9 @@ const FuelDataDisplay = ({FuelObjectMaps,gasLevel}: FuelDataProps) => {
 </Box>
 </Grid>
 <Grid item xs={12} sm={4}>
-      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: "rgba(8, 13, 56, 0)",
-        borderRadius: 1.5,minHeight:'80px',overflow:'auto',
-        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "6px solid rgba(8, 13, 100, 0.6)" }}>
+      <Box style={{ display: 'flex', alignItems: 'center',backgroundColor: '#FB9536',
+        borderRadius: 25,minHeight:'80px',overflow:'auto',
+        boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.1)",border: "3px solid white",color:'white' }}>
   <Typography fontFamily={"Yapari"}  variant="body1" style={{ marginRight: '8px',marginLeft:'8px',fontSize:25,whiteSpace:'nowrap'}}>
     Laps Remaining:
   </Typography>

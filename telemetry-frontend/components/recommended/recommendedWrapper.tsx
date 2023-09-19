@@ -10,6 +10,7 @@ import ChallengeBanner from "./challengeBanner";
 import ImageBanner from '../../components/splitImageBanner';
 import HorizontalBanner from '../horizontalBanner/horizontalBanner';
 import { AuthContext } from "../authProvider";
+import { SettingsContext } from "../authProviderSettings";
 interface RecommendedWrapperProps {}
 
 const ItemPlayer = styled(Paper)(({ theme }) => ({
@@ -232,7 +233,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
     checkChallengeStatus(userName);
   }, []);
 
-  
+  const {appearance} = React.useContext(SettingsContext);
   return (<>
     <Homepage style={'navbar-container'}>
                 <Item><NavBar /></Item>
@@ -249,7 +250,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
       <Grid item xs={12} sm={isMobile ? 12 : 8}><ItemPlayer><Box sx={{width:'95%',height:'100%',borderRadius:5,display:'flex',justifyContent:'center',alignItems:'center'}}><Typography sx={{color:'White'}}  fontWeight={'bold'} fontFamily={'Yapari'} fontSize={30}>Video Feed</Typography></Box></ItemPlayer></Grid>
       {!isMobile&&<Grid item xs={4}><ItemPlayer><Box sx={{width:'95%',height:'100%',borderRadius:5,display:'flex',justifyContent:'center',alignItems:'center'}}><Typography sx={{color:'White',whiteSpace:'nowrap',overflow:'auto'}}  fontWeight={'bold'} fontFamily={'Yapari'} fontSize={30}>Daily Challenges</Typography></Box></ItemPlayer></Grid>}
           <Grid item xs={12}sm={isMobile ? 12 : 8} sx={{minWidth:'500px',}}>
-           <ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'1105px',overflow:'scroll'}}>
+           <ItemPlayer><Box sx={{width:'95%', backgroundColor:appearance.lightModeEnabled ? 'white' :'rgba(42,42, 42, 1)',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> <Box sx={{width:'95%', backgroundColor:appearance.lightModeEnabled ? 'white' :'rgba(42, 42, 42, 1)',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}><Grid container spacing={0} sx={{height:'1105px',overflow:'scroll'}}>
            {!noDataFoundForQuery ? <Grid item xs={12}>
           {videoData.map((item, index) => (
             index === videoData.length - 1 ? (
@@ -269,7 +270,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
 </Grid>
 {cantShowTitle ? null : (
 <Grid item xs={3} >
-<Box sx={{display:'flex',justifyContent:'start',paddingLeft:2}}><Box sx={{display:'flex',justifyContent:'start'}}><Grid container spacing={1}><Grid item xs={12}><Typography sx={{ color: 'black' }} fontSize={20} fontFamily={"Satoshi"} fontWeight={"bold"}>{item.title}</Typography></Grid><Grid item xs={12}><Typography sx={{ color: 'grey' }} fontSize={15} fontFamily={"Satoshi"} fontWeight={"bold"}>{item.postedBy}</Typography></Grid></Grid></Box></Box>
+<Box sx={{display:'flex',justifyContent:'start',paddingLeft:2}}><Box sx={{display:'flex',justifyContent:'start'}}><Grid container spacing={1}><Grid item xs={12}><Typography sx={{ color: appearance.lightModeEnabled ? 'black' :'white' }} fontSize={20} fontFamily={"Satoshi"} fontWeight={"bold"}>{item.title}</Typography></Grid><Grid item xs={12}><Typography sx={{ color: appearance.lightModeEnabled ? 'grey' :'rgba(211, 211, 211, 1)'  }} fontSize={15} fontFamily={"Satoshi"} fontWeight={"bold"}>{item.postedBy}</Typography></Grid></Grid></Box></Box>
 
 </Grid>
 )}</Grid>
@@ -291,7 +292,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
          
         </Grid>
         {isMobile&&<Grid item xs={12}><ItemPlayer><Box sx={{width:'95%',height:'100%',borderRadius:5,display:'flex',justifyContent:'center',alignItems:'center'}}><Typography sx={{color:'White'}}  fontWeight={'bold'} fontFamily={'Yapari'} fontSize={30}>Daily Challenges</Typography></Box></ItemPlayer></Grid>}
-        <Grid item xs={12}sm={isMobile ? 12 : 4} ><ItemPlayer><Box sx={{width:'95%', backgroundColor:'white',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> 
+        <Grid item xs={12}sm={isMobile ? 12 : 4} ><ItemPlayer><Box sx={{width:'95%', backgroundColor:appearance.lightModeEnabled ? 'white' :'rgba(42, 42, 42, 1)',height:'100%',borderRadius:5,display:'flex',justifyContent:'center'}}> 
         <Grid container spacing={0} sx={{height:'1105px',overflow:'scroll',mb:1}}>
         {challengeData.map((item, index) => (
           <Grid item xs={12}  key={index}sx={{maxHeight:'550px',display:'flex',justifyContent:'center',mt:2}}>

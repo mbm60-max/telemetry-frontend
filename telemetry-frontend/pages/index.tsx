@@ -170,7 +170,7 @@ const Home = () => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Grid container spacing={4}>
+          <Grid container spacing={0}>
            <Grid item xs={12}>
                 <Homepage style={'homepage-container'}>
                   <div style={{ display: 'flex' }}>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import YouTube from 'react-youtube';
 import Skeleton from '@mui/material/Skeleton';
 import '../challenge.css'
+import { SettingsContext } from '../../authProviderSettings';
 interface YouTubePlayerComponentProps{
     videoId:string
 }
@@ -33,14 +34,16 @@ const YouTubePlayerComponent = ({ videoId}:YouTubePlayerComponentProps) => {
         alignItems: 'center',
         position: 'relative', // Added relative positioning
       };
-    
+
+      const {appearance} = React.useContext(SettingsContext);
+      
       const borderStyle: React.CSSProperties = {
         position: 'absolute',
         top: -5,
         left: -5,
         width: '100%',
         height: '100%',
-        border: '5px solid white',
+        border: appearance.lightModeEnabled ? '5px solid white' :'5px solid rgba(42, 42, 42, 1)',
         borderRadius: '10px', // Adjust the border radius as needed
         display:'flex',
         justifyContent:'center',

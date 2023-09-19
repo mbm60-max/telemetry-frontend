@@ -302,7 +302,7 @@ const SignUpForm: React.FC = () => {
               onChange={handleUsernameChange}
               error={Boolean(usernameError)}
               helperText={usernameError}
-              sx={{width:'60%'}}
+              sx={{width:'60%',padding:0.5}}
               className="textBox"
             /></Grid>
           </Grid>
@@ -318,7 +318,7 @@ const SignUpForm: React.FC = () => {
               onChange={handleEmailChange}
               error={Boolean(emailError)}
               helperText={emailError}
-              sx={{width:'60%'}}
+              sx={{width:'60%',padding:0.5}}
               className="textBox"
             />
           </Grid>
@@ -335,7 +335,7 @@ const SignUpForm: React.FC = () => {
               onChange={handlePasswordChange}
               error={Boolean(passwordError)}
               helperText={passwordError}
-              sx={{width:'60%'}}
+              sx={{width:'60%',padding:0.5}}
               className="textBox"
             />
           </Grid>
@@ -352,7 +352,7 @@ const SignUpForm: React.FC = () => {
               onChange={handleConfirmPasswordChange}
               error={Boolean(confirmPasswordError)}
               helperText={confirmPasswordError}
-              sx={{width:'60%'}}
+              sx={{width:'60%',padding:0.5}}
               className="textBox"
             />
           </Grid>
@@ -394,7 +394,7 @@ const SignUpForm: React.FC = () => {
         onChange={handleIPChange}
         error={Boolean(ipAddressError)}
         helperText={ipAddressError}
-        sx={{width:'60%'}}
+        sx={{width:'60%',padding:0.5}}
         className="textBox"
         
         />

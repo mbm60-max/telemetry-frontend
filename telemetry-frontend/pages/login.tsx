@@ -8,6 +8,7 @@ import IconBox from '../components/iconBox';
 import BadgeIcon from "@mui/icons-material/Badge";
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import { AuthContext } from '../components/authProvider';
+import '../components/sessionStartupComponents/setupComponents/setupStyles.css'
 const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -153,7 +154,7 @@ return (
                     onChange={(e) => setUsername(e.target.value)}
                     error={Boolean(usernameError)}
                     helperText={usernameError}
-                    sx={{width:'60%'}}
+                    sx={{width:'60%',padding:0.5}}
                     className={'textBox'}
                   /></Grid>
         </Grid>
@@ -170,7 +171,7 @@ return (
                   onChange={(e) => setPassword(e.target.value)}
                   error={Boolean(passwordError)}
                     helperText={passwordError}
-                    sx={{width:'60%'}}
+                    sx={{width:'60%',padding:0.5}}
                     className={'textBox'}
                 />
         </Grid>

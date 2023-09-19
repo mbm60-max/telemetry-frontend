@@ -15,6 +15,9 @@ border-radius: 25px;
 .slider .css-187mznn-MuiSlider-root{
     color: white !important;
 }
+.slider .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked{
+    color: white !important;
+}
 
 .sliderArray {
 color: white !important;

@@ -108,7 +108,10 @@ export default function BasicTabs() {
     loader: () => import('./chart'),
     ssr: false
   });
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(4);
+  useEffect(()=>{
+    console.log(`value has changed ${value}`)
+  },[value])
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -181,7 +184,7 @@ export default function BasicTabs() {
       },
       "Damping Ratio Rebound": {
         Value: ["", ""],
-        Units: "",
+        Units: "%",
       },
       "Camber Angle": {
         Value: ["", ""],
@@ -201,19 +204,19 @@ export default function BasicTabs() {
       },
       "LSD Initial Torque": {
         Value: ["", ""],
-        Units: "?",
+        Units: "Nm",
       },
       "LSD Acceleration Sensitivity": {
         Value: ["", ""],
-        Units: "?",
+        Units: "%",
       },
       "LSD Braking Sensitivity": {
         Value: ["", ""],
-        Units: "?",
+        Units: "%",
       },
       "Front Rear Torque Distribution": {
         Value: "",
-        Units: "?",
+        Units: "",
       },
       "Transmission Type": {
         Value: "",
@@ -221,7 +224,7 @@ export default function BasicTabs() {
       },
       "Max Speed (Auto Set)": {
         Value: "",
-        Units: "mph",
+        Units: "KM/h",
       },
       "Gear Ratios": {
         Value: ["", ""],

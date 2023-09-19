@@ -61,19 +61,19 @@ const emptySetupObject = {
     },
     "LSD Initial Torque": {
       Value: "",
-      Units: "",
+      Units: "Nm",
     },
     "LSD Acceleration Sensitivity": {
       Value: "",
-      Units: "",
+      Units: "%",
     },
     "LSD Braking Sensitivity": {
       Value: "",
-      Units: "",
+      Units: "%",
     },
     "Front Rear Torque Distribution": {
       Value: "",
-      Units: "?",
+      Units: "",
     },
     "Transmission Type": {
       Value: "",
@@ -81,7 +81,7 @@ const emptySetupObject = {
     },
     "Max Speed (Auto Set)": {
       Value: "",
-      Units: "mph",
+      Units: "KM/h",
     },
     "Gear Ratios": {
       Value:"",

@@ -5,6 +5,7 @@ import InfoToolTip from "../helperTooltip.tsx/infoTooltip";
 import SetupFeedbackSlider from "./setupFeedbackSlider";
 import SetupField from "./setupField";
 import splitAndCapitalise from "../../utils/splitAndCapitalise";
+import { SettingsContext } from "../authProviderSettings";
 
 interface SetupController {
     setupName:string;
@@ -28,16 +29,17 @@ const SetupController = ({setupName,onClick}: SetupController) => {
       </em>
     </>
   );
+  const {appearance} = React.useContext(SettingsContext);
   return (
     
     <Box
       sx={{
         width: "100%",
         height: "102%",
-        backgroundColor: "white",
+        backgroundColor: appearance.lightModeEnabled ? "white" :"rgba(6, 14, 55, 0.9)",
         borderRadius: 1.5,
         boxShadow: "0px 0px 9px rgba(0, 0, 0, 0.3)",
-        border: "6px solid rgba(8, 13, 100, 0.6)",
+        border: appearance.lightModeEnabled ? "3px solid rgba(8, 13, 100, 0.3)" :" 3px solid white",
       }}
     >
       <Box >
@@ -51,7 +53,7 @@ const SetupController = ({setupName,onClick}: SetupController) => {
               >
                 <Typography
                   variant="h6"
-                  sx={{ fontSize: 30 }}
+                  sx={{ fontSize: 30,color:appearance.lightModeEnabled ? "black" :"white" }}
                   fontWeight="bold"
                   fontFamily={"Yapari"}
                 >
@@ -62,7 +64,7 @@ const SetupController = ({setupName,onClick}: SetupController) => {
             </Grid>
             <Grid item xs={12}><Box sx={{height:'30px'}}></Box></Grid>
             <Grid item xs={12} sx={{ display: "flex",ml:2 }}>
-                <Typography variant="body2" sx={{ fontSize: 20 }} fontFamily={"Satoshi"}>
+                <Typography variant="body2" sx={{ fontSize: 20,color:appearance.lightModeEnabled ? "black" :"white" }} fontFamily={"Satoshi"}>
                   {Boolean(selectedField) ? selectedField : 'No field selected'}
                 </Typography>
               </Grid>

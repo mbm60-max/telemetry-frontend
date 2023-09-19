@@ -8,7 +8,8 @@ import {
   } from "@mui/material";
 import SeriousActionModal from "./seriousChangeWarningModal";
 import SeriousActionAddModal from "./seriousChangeWarningModal";
-
+import '../sessionStartupComponents/setupComponents/setupStyles.css'
+ 
   
   interface SeriousActionButtonProps {
     targetSetting: string;
@@ -38,13 +39,6 @@ import SeriousActionAddModal from "./seriousChangeWarningModal";
     const triggerActionMethod=()=>{
         actionMethod(username);
     }
-    const tooltipInfo = (
-        <>
-          <em>
-              {tooltipText}
-          </em>
-        </>
-      );
     return (
         <Box sx={{ width: "100%", height: "100%", position: "relative" }}>
         <Grid container spacing={2} alignItems="center">

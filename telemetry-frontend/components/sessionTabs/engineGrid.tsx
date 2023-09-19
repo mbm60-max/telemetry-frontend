@@ -109,6 +109,7 @@ export default function EngineGrid({throttleStream,lapTimer,oilTempStream,rpmStr
   }
   const fuelObject = calculateRemainingFuel(fuelStartLap,getGasLevel(),convertTimeToSeconds(lastLapTime)); 
   const FuelObjectMaps = getFuelOnConsumptionByRelativeFuelLevels(fuelObject,convertTimeToSeconds(lastLapTime),gasLevel); 
+  const {appearance} = React.useContext(SettingsContext);
 return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
@@ -132,12 +133,12 @@ return (
           <Item><DynamicBasicChart label={'RPM Trace '} expectedMaxValue={15000} expectedMinValue={0} dataStream={rpmStream} units={'RPM'} labelXaxis={getXAxisLabel(isMetric)}></DynamicBasicChart></Item>
         </Grid>
         <Grid item xs={12}  >
-          <Item><Grid container spacing={2} sx={{maxHeight:'448px'}}> <Grid item xs={12} ><Typography fontFamily={'Yapari'} fontSize={35} fontWeight={"bold"} sx={{color:'black',whiteSpace:'nowrap',overflow:'scroll'}}>Turbo Pressure:{turboBoost*100} {getPressureUnits(isMetric)}</Typography></Grid> <Grid item xs={12} sx={{display:'flex',justifyContent:'center',maxHeight:'448px'}} ><Gauge gasCapacity={100} gasLevel={turboBoost} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
+          <Item><Grid container spacing={2} sx={{maxHeight:'448px'}}> <Grid item xs={12} ><Typography fontFamily={'Yapari'} fontSize={35} fontWeight={"bold"} sx={{color:appearance.lightModeEnabled ?'black':'white',whiteSpace:'nowrap',overflow:'scroll'}}>Turbo Pressure:{turboBoost*100} {getPressureUnits(isMetric)}</Typography></Grid> <Grid item xs={12} sx={{display:'flex',justifyContent:'center',maxHeight:'448px'}} ><Gauge gasCapacity={100} gasLevel={turboBoost} targetSrc={"/images/turbo.svg"}/></Grid></Grid></Item>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Item><TwoValueDisplay nameOne='Minimum Alert RPM' nameTwo='Maximum Alert RPM' dataValueOne={minAlertRPM} dataValueTwo={maxAlertRPM}/></Item>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Item><TwoValueDisplay nameOne='Calculated Max Speed' nameTwo='Transmission Max Speed' dataValueOne={calculatedMaxSpeed} dataValueTwo={transmissionTopSpeed}/></Item>
         </Grid>
       </Grid>

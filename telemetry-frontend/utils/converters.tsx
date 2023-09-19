@@ -146,6 +146,8 @@ const convertMpsToMph = (dataPoint: number)=>{
         return 'Gallons';
       case '°C':
         return '°F';
+      case 'Nm':
+        return 'ft-lbs';
       default:
         return metricUnit; // If no mapping is available, return the metric unit itself
     }

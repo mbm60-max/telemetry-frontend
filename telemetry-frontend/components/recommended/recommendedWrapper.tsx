@@ -166,7 +166,7 @@ const RecommendedWrapper = ({}: RecommendedWrapperProps) => {
   useEffect(() => {
     const fetchAvailableVideos = async () => {
       try {
-        const searchQuery = "learn simulator racing"
+        const searchQuery = "Simulator Racing Tips/Technique"
         const  ytQueryResponse: AxiosResponse = await axios.get('/api/fetchyoutubedataapi', {
           params: { searchQuery },
         });

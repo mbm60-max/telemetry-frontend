@@ -19,8 +19,9 @@ targetAttribute:string
 toolTipContent:string;
 stringValue:string;
 targetAttributeValue:number;
+className?:string;
 }
-export default function BoxedNumber({width,targetAttribute,toolTipContent,stringValue,targetAttributeValue}:InputSliderProps) {
+export default function BoxedNumber({width,targetAttribute,toolTipContent,stringValue,targetAttributeValue,className}:InputSliderProps) {
   
   const tooltipInfo = (
     <>
@@ -28,10 +29,10 @@ export default function BoxedNumber({width,targetAttribute,toolTipContent,string
     </>
   );
   return (
-    <Box sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
-        <Grid container spacing={2}><Grid item xs={8}><Typography id="input-slider" gutterBottom>
+    <Box className={className} sx={{ width: width,backgroundColor:'F6F6F6', margin:1, padding:2, borderRadius:1, border: '1px solid grey' ,boxShadow:1}}>
+        <Grid container spacing={2}><Grid item xs={8} sx={{display:'flex',justifyContent:'center'}}><Typography  sx={{mt:0.5}}>
         {targetAttribute}&nbsp;{targetAttributeValue}{stringValue}
-      </Typography></Grid><Grid item xs={4}>  <InfoToolTip name={targetAttribute} info={tooltipInfo} iconColor={''}/></Grid></Grid>
+      </Typography></Grid><Grid item xs={4}>  <InfoToolTip name={targetAttribute} info={tooltipInfo} iconColor={'white'}/></Grid></Grid>
     </Box>
   );
 }

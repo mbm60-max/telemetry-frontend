@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
-import { useRouter } from "next/router";
+
 import { TextField, Button, Typography, styled, Box, useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import "../pagesCss/signup.css";
@@ -20,6 +20,7 @@ import UserAvatar from "../components/avatar/userAvatar";
 import ReactDOMServer from "react-dom/server";
 import '../fonts/fonts.css'
 import '../components/sessionStartupComponents/setupComponents/setupStyles.css'
+import { useRouter } from "next/router";
 const SignUpForm: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -82,7 +83,7 @@ const SignUpForm: React.FC = () => {
       if(Failed==true){
         return
       }
-      const router = useRouter();
+      
       const token = generateToken(10);
       const emailIsVerified = false;
       const completedChallenges = [false,false,false];

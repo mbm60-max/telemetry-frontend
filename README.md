@@ -5,9 +5,10 @@ This is the frontend for GTEAM a GT Sport Pitwall and Telemetry Web App
 This project takes inspiration from ATLAS (mclaren applied technolgies) and telemetry software like Motec and Track Titan. The aim was to create a web app with functionality between the last two. The project acts as both an experiment with c# and a test of my react and next js understanding. 
 
 It is meant to act as a proof of concept for a semi-pro sim racer or sim racing team. It offers tools for a sim racing team and for individuals looking to improve.
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/mbm60-max/telemetry-frontend)
 
-## Table of Content, licesne, credit , how to use
-* [Tech Stack](#Tech Stack)
+## Table of Content
+* [Tech Stack](#Tech)
 * [Home](#Home)
 * [User-Auth](#User-Auth)
 * [Session-Startup](#Session-Startup)
@@ -17,9 +18,12 @@ It is meant to act as a proof of concept for a semi-pro sim racer or sim racing 
 * [Settings](#Settings)
 * [Verify](#Verify)
 * [Extras](#Extras)
-* [Features](#Features/Pages)
+* [Run](#Run)
+* [Credit](#Credit)
+* [License](#License)
 
-## Tech Stack
+
+## Tech
 ### Technology Used
 
 Free M0 Tier mongodb Cluster - Having briefly used mongo during my part time work (2022-23) I was inclined to experiment with it. The free tier has proved fine for my use case up till now. However I do see limitations in future particular with storing large amounts of lapdata for reviewing or for ML purposes.
@@ -127,8 +131,38 @@ Verify - Simply used in the email verification process to allow users to confirm
 - Light/Dark mode, all pages are responsive to the mode selection and content is configured to match.
 ![footer-lightmode](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/10babc12-5946-4ed3-bf6d-7090d08224be)
 
+## Run
 
+- This project requires the backend to also be run at the same time. Currently these only work locally. You will also need a playstation console and copy of the game GT Sport or another GT game in order to see the full functionality.
 
+  
+## Credit
 
+- Intial discovery of fuel usage - Encvel, 2017, Test Results: Fuel Mixture Settings and Other Fuel-Saving Techniques, 21 November, https://www.gtplanet.net/forum/threads/test-results-fuel-mixture-settings-and-other-fuel-saving-techniques.369387/
+  
+- Intial code basis for fuel calculation (in python) - snipem, Matthias Küch, gt7dashboard, 2023, https://github.com/snipem/gt7dashboard 
+
+## License
+
+Copyright (c) 2023 Max Byng-Maddick
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 

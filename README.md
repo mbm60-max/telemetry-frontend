@@ -34,7 +34,7 @@ react-youtube - This is used as a small wrapper of the youtube video player api.
 ### Languages 
 Typescript - Again used as a learning oppurtunity having come across it before. Given it is an industry standard it made sense to work forward in this way.
 
-### (Features and Pages)
+## Features/Pages
 
 #### Home Page 
 

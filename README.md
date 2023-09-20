@@ -144,7 +144,7 @@ Verify - Simply used in the email verification process to allow users to confirm
   
 - Intial code basis for fuel calculation (in python) - snipem, Matthias Küch, gt7dashboard, 2023, https://github.com/snipem/gt7dashboard 
 
-## License
+## Licence
 
 Copyright (c) 2023 Max Byng-Maddick
 

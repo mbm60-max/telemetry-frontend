@@ -15,7 +15,7 @@ It is meant to act as a proof of concept for a semi-pro sim racer or sim racing 
 * [Recommended](#Recommended)
 * [Review](#Review)
 * [Settings](#Settings)
-* [Other](#Other)
+* [Verify](#Verify)
 * [Extras](#Extras)
 * [Features](#Features/Pages)
 ### Technology Used
@@ -51,7 +51,6 @@ Typescript - Again used as a learning oppurtunity having come across it before. 
 ![homepage](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/7a561a07-4ac3-4908-a0af-36485630107a)
 ![responsive-home](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/86473552-b077-4ebb-b575-cc96e14faf23)
 
-## Main
 
 ### User-Auth 
 
@@ -115,7 +114,7 @@ All warnings can be suppressed or ignored, suppressing a warning pushes it away 
 ![moresettings](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/f899b7be-c6d5-4424-937f-7555a6512528)
 
 
-#### Other
+### Verify
 Verify - Simply used in the email verification process to allow users to confirm, or provide alerts as to why this has failed.
 ![email-verify](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/38718415-db3d-4531-8ec4-f79210a0c1aa)
 

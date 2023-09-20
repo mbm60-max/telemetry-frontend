@@ -6,6 +6,8 @@ This is the frontend for GTEAM a GT Sport Pitwall and Telemetry Web App
 This project takes inspiration from ATLAS (mclaren applied technolgies) and telemetry software like Motec and Track Titan. The aim was to create a web app with functionality between the last two. The project acts as both an experiment with c# and a test of my react and next js understanding. 
 
 It is meant to act as a proof of concept for a semi-pro sim racer or sim racing team. It offers tools for a sim racing team and for individuals looking to improve.
+
+### Table of Content, licesne, credit , how to use
 ### Technology Used
 
 Free M0 Tier mongodb Cluster - Having briefly used mongo during my part time work (2022-23) I was inclined to experiment with it. The free tier has proved fine for my use case up till now. However I do see limitations in future particular with storing large amounts of lapdata for reviewing or for ML purposes.

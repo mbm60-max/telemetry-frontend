@@ -9,14 +9,14 @@ It is meant to act as a proof of concept for a semi-pro sim racer or sim racing 
 
 ## Table of Content, licesne, credit , how to use
 * [Home](#Home)
-* [Home](#User-Auth)
-* [Home](#Session-Startup)
-* [Home](#Session)
-* [Home](#Recommended)
-* [Home](#Review)
-* [Home](#Settings)
-* [Home](#Other)
-* [Home](#Extras)
+* [User-Auth](#User-Auth)
+* [Session-Startup](#Session-Startup)
+* [Session](#Session)
+* [Recommended](#Recommended)
+* [Review](#Review)
+* [Settings](#Settings)
+* [Other](#Other)
+* [Extras](#Extras)
 * [Features](#Features/Pages)
 ### Technology Used
 

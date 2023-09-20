@@ -32,6 +32,13 @@ react-youtube - This is used as a small wrapper of the youtube video player api.
 Typescript - Again used as a learning oppurtunity having come across it before. Given it is an industry standard it made sense to work forward in this way.
 
 ### (Features and Pages)
+
+#### Home Page 
+
+- This contains a hero container with a randomly assigned track, as well as its data + the CTA button to start a session, as users scroll they see a section explaining what the website offers, following this the user sees the (fake) partners of the app and (fake) social media of the app. Then the user sees the (fake) community reviews and another CTA for the recommended page.
+![homepage](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/7a561a07-4ac3-4908-a0af-36485630107a)
+![responsive-home](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/86473552-b077-4ebb-b575-cc96e14faf23)
+
 #### Main
 Custom User Auth - User Authentication was built from the ground up. There are various regex patterns used to validate things such as email and passwords. While calls to mongo allow me to check for existing users, emails etc. When all conditions are met users are uploaded to a mongo document. While other files are also created for them, such as a settings collection and setups. Settings are set to an intial object and can be changed later. Users are able to delete their full account (removes all files associated with a user and frees the username for use), delete all their account data(resets the account to all intial values, no lap data etc, username is kept for current user). As well as the option to reset password, email and username.
 ![login](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/ab594f0d-a048-46eb-8151-96e1627ee457)
@@ -66,6 +73,8 @@ All warnings can be suppressed or ignored, suppressing a warning pushes it away 
 ![first page warning](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/c0a73f31-a9cb-4ceb-8675-10145a2120ec)
 ![edit warning](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/c8f9a8ed-3b9f-43c3-b14d-1cfe79de78af)
 ![delete warning](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/f741161b-3ed6-4cce-989f-7f990d5c1425)
+![tyre-warning](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/e873f064-d355-49f3-8136-7467348ac2d2)
+
 
 Recommended Page - Daily refreshed video content using the youtube data api, video content is arranged into an infinite scroll format loading more content as the user scrolls, until content is no longer available. Daily refreshed challenges, three types, consistency, endurance and pace. Each has countdown till the next challenge is available, challenges are locked on completion and at 12:00 pm as the next challenge is loaded. Each challenge starts a session with the randomly assigned car and track (these are picked as part of the daily refresh, from all available content), there is then a display to show the user the progress into the challenge, upon completion the user is redirected to the recommended page where the challenge is now locked and has a golden hue. The challenges work as such Consistency -  The user must maintain three laps in a row at a pace within the randomly allocated % (between 2-5) for example a lap time of 1:40 and 1:41 would be within 1% of each other !chedck!!!  Pace - This challenge requires the user to record a single laptime below the allocated lap time chosen from (110-200) seconds, Endurance -  Users aim to completed between 5-10 laps (randomly assigned).
 ![challenge-waiting](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/1f068fdb-2479-40df-9638-fd9ab784e242)
@@ -90,23 +99,7 @@ Verify - Simply used in the email verification process to allow users to confirm
   ![test](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/830b98a1-014c-4304-b92b-080daa49de50)
   ![session-startup-responsive](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/8f60dbf6-04c3-4e71-8608-982583ad0a7f)
 - Light/Dark mode, all pages are responsive to the mode selection and content is configured to match.
-
-
-
-
-
-
 ![footer-lightmode](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/10babc12-5946-4ed3-bf6d-7090d08224be)
-![homepage](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/7a561a07-4ac3-4908-a0af-36485630107a)
-
-
-![responsive-home](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/86473552-b077-4ebb-b575-cc96e14faf23)
-
-
-
-![tyre-warning](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/e873f064-d355-49f3-8136-7467348ac2d2)
-
-
 
 
 

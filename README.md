@@ -8,6 +8,7 @@ This project takes inspiration from ATLAS (mclaren applied technolgies) and tele
 It is meant to act as a proof of concept for a semi-pro sim racer or sim racing team. It offers tools for a sim racing team and for individuals looking to improve.
 
 ### Table of Content, licesne, credit , how to use
+* [Introduction](#Intro)
 * [Features](#Features and Pages)
 ### Technology Used
 
@@ -69,7 +70,7 @@ The final of the streaming pages is the Tyre/Suspension tab. This contains tempe
 The only non streaming tab is the setup tab, it allows users to view the currently selected setup, drivers can then provide feedback on this. Currently this feedback does nothing but it could provide a good training set for ML to set or select setups. 
 
 All the session tabs bar the setup tab contain an active warnings tab. These are values that can be monitored. Users can set an upper and lower limit for all values, these can be adjusted at any point, each tab can also have its warning deleted or users can add new ones. When a limit is exceeded a warning is flashed on screen, this persists across all tabs so no matter the tab the warning and the limit that triggered it is shown, allowing users to focus on data without worrying about always checking these values. 
-
+## Intro
 So when the values are in a dangerous zone a user is quickly informed and can make decisions based on this. All changes are local and do not persist between sessions, however users can alter the default warnings, with all the same functionality from within settings, this allows for customisation before the session starts, these values do persist. 
 
 All warnings can be suppressed or ignored, suppressing a warning pushes it away for a set time, this can be adjsuted in settings, betwen 5 seconds and 30 minutes, after this time it appears again. Ignoring a warning stops it being shown again even if the value changes or gets worse it is not shown again, However adjusting the limits will allow this warning to be shown again.

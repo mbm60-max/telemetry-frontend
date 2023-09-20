@@ -8,6 +8,7 @@ This project takes inspiration from ATLAS (mclaren applied technolgies) and tele
 It is meant to act as a proof of concept for a semi-pro sim racer or sim racing team. It offers tools for a sim racing team and for individuals looking to improve.
 
 ## Table of Content, licesne, credit , how to use
+* [Tech Stack](#Tech Stack)
 * [Home](#Home)
 * [User-Auth](#User-Auth)
 * [Session-Startup](#Session-Startup)
@@ -18,6 +19,8 @@ It is meant to act as a proof of concept for a semi-pro sim racer or sim racing 
 * [Verify](#Verify)
 * [Extras](#Extras)
 * [Features](#Features/Pages)
+
+## Tech Stack
 ### Technology Used
 
 Free M0 Tier mongodb Cluster - Having briefly used mongo during my part time work (2022-23) I was inclined to experiment with it. The free tier has proved fine for my use case up till now. However I do see limitations in future particular with storing large amounts of lapdata for reviewing or for ML purposes.

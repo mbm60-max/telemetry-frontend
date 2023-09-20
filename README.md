@@ -1,11 +1,6 @@
 # telemetry-frontend
 This is the frontend for GTEAM a GT Sport Pitwall and Telemetry Web App
 
-GET /github/gist/last-commit/:gistId
-gistId — path
-gistId
-![GitHub Gist last commit](https://img.shields.io/github/gist/last-commit/:gistId)
-
 ## Purpose
 This project takes inspiration from ATLAS (mclaren applied technolgies) and telemetry software like Motec and Track Titan. The aim was to create a web app with functionality between the last two. The project acts as both an experiment with c# and a test of my react and next js understanding. 
 

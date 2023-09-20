@@ -1,4 +1,4 @@
-# telemetry-frontend
+# Telemetry-Frontend
 This is the frontend for GTEAM a GT Sport Pitwall and Telemetry Web App
 
 ## Purpose

@@ -99,7 +99,7 @@ import ExtendedPacket from "../interfaces/extendedPacketInterface";
       } catch (error) {
         console.error("Error establishing SignalR connection: ", error);
         // Retry after 3 seconds
-        setTimeout(this.startConnection, 2000000);//3000 before,20000
+        setTimeout(this.startConnection, 20000);//3000 before,20000
       }
     };
     // Set the callback function for handleFullPacket

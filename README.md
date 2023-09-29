@@ -70,7 +70,7 @@ Typescript - Again used as a learning oppurtunity having come across it before. 
 ### Session-Startup 
 
 - Used to start any session, the other way to start a session is via challenges. This however is the primary way to start a session, users can chose and search for cars, select from all tracks, select a compound to be used and create and select custom setups for the session. Setups are saved for later use and can be refered to at any point once created. This requires a track, car and compound to start a session. Once these conditions are met they are fed to the session page and a session is started. With a new signalr connection being established.
-![tire selection](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/1be89159-8eae-417c-bfaa-ab9eac3ff247)
+![tire selection](assets/tire%20selection.gif)
 ![setup-create](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/28de680d-e47f-4618-a700-25c122b27b62)
 ![session-start](https://github.com/mbm60-max/telemetry-frontend/assets/118545306/70e41d5d-c59a-4489-a356-220e3e1666da)
 

@@ -1,6 +1,8 @@
 # Telemetry-Frontend
 This is the frontend for GTEAM a GT Sport Pitwall and Telemetry Web App
 
+Please be aware gifs may be slow to load, almost all headings should have at least a gif associated with them, so please give this time. This is not something I can control.
+
 
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/mbm60-max/telemetry-frontend)
 ## Purpose
